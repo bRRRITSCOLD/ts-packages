@@ -9,7 +9,7 @@ import YAML from 'yaml'
 // types
 import type { ServerMiddleware } from '../types/middleware.js'
 
-// TODO: to be tested and documented in future tickets
+/** Creates an Express app with permissive CORS, JSON body parsing, optional Swagger UI at `/api-docs` (served from `./openapi.yaml` with `swagger.baseUrl` as its server), and the given middlewares, returning it with `listen(port)` and `close()` helpers. */
 export const createServer = (params: {
 	middlewares?: ServerMiddleware[]
 	swagger?: { baseUrl: string }

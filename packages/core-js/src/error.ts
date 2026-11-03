@@ -19,10 +19,13 @@ export enum ExceptionCodes {
 	INTERNAL = 2,
 }
 
+/** Default message an `Exception` uses when none is given. */
 export const ExceptionMessage = 'Unhandled'
 
+/** Name assigned to every `Exception`, so they are easy to find in logs. */
 export const ExceptionName = 'Exception'
 
+/** Options accepted by the `Exception` constructor: message, code, fault and an optional cause. */
 export type ExceptionConstructorInput = {
 	message?: string
 	code?: number

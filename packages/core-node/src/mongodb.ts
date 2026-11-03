@@ -10,6 +10,7 @@ import {
 	StrictUpdateFilter,
 } from 'mongodb'
 
+/** Settings for one named MongoDB connection: the URL parts, database to select and optional client options. */
 export type MongoConnectionConfig = {
 	name: string
 	protocol: string
@@ -32,6 +33,8 @@ const MONGO_CLIENT_OPTIONS_DEFAULTS = {
 }
 
 /**
+ * Opens and holds named MongoDB connections, connecting each name once and returning its client and database by name until closed.
+ *
  * @example
  * ///////////////
  * ///// CJS /////
@@ -145,13 +148,19 @@ export class MongoConnections {
 	}
 }
 
+/** Type-checked MongoDB query filter for documents of type `T`. */
 export type MongoStrictFilter<T> = StrictFilter<T>
+/** Type-checked map of document keys to values for documents of type `T`, as used in queries and `$set`. */
 export type MongoStrictMatchKeysAndValues<T> = StrictMatchKeysAndValues<T>
+/** Type-checked MongoDB update document for documents of type `T`. */
 export type MongoStrictUpdateFilter<T> = StrictUpdateFilter<T>
 
+/** MongoDB collection handle for documents of type `T`. */
 export type MongoCollectionClient<T extends Document> = Collection<T>
 
 /**
+ * Returns a typed collection handle for `collectionName` from an open database.
+ *
  * @example
  * ///////////////
  * ///// CJS /////

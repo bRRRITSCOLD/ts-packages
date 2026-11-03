@@ -23,6 +23,8 @@ jobs:
             - run: pnpm build
             - run: pnpm typecheck
             - run: pnpm test:unit
+            # TypeDoc with warnings-as-errors + README API sections up to date + every export has a summary
+            - run: pnpm docs:check
 
     integration:
         runs-on: ubuntu-latest
@@ -70,3 +72,35 @@ jobs:
                   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
                   NPM_CONFIG_PROVENANCE: true
+
+    # Publishes the API reference to GitHub Pages after every successful release
+    # job, so the site always matches what is on npm.
+    docs:
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        needs: release
+        runs-on: ubuntu-latest
+        concurrency:
+            group: pages
+            cancel-in-progress: false
+        permissions:
+            contents: read
+            pages: write
+            id-token: write
+        environment:
+            name: github-pages
+            url: ${{ steps.deploy.outputs.page_url }}
+        steps:
+            - uses: actions/checkout@v4
+            - uses: pnpm/action-setup@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+                  cache: pnpm
+            - run: pnpm install --frozen-lockfile
+            - run: pnpm build
+            - run: pnpm docs:build
+            - uses: actions/upload-pages-artifact@v3
+              with:
+                  path: site
+            - id: deploy
+              uses: actions/deploy-pages@v4

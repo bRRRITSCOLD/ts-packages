@@ -8,6 +8,7 @@ import {
 
 export { CREDENTIAL_PROVIDERS, type CredentialProvider }
 
+/** Settings for `SecretsManager.initClient`: region, credential provider and an optional custom endpoint. */
 export type SecretsManagerConfig = {
 	/** AWS region (e.g., 'us-east-1') */
 	region: string

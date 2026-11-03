@@ -2,10 +2,10 @@ import { expect } from 'chai'
 // application/testee
 import { hashQuery } from '../../src/query.js'
 
-// What ledger-api's compileEntryFilter and hashEntryQuery produce at origin/int
-// 3e64919. Cursors issued before ledger adopts the kit carry these hashes, so
-// they must not change.
-const ledger = {
+// Pinned output of the hand-written compileEntryFilter / hashEntryQuery this
+// module replaces. Cursors issued before the switch carry these hashes, so they
+// must not change.
+const legacy = {
 	strings: {
 		compiled: { event: { $in: ['b', 'a'] }, correlationId: { $nin: ['x'] } },
 		hashNoSearch: 'T_Yl4f9JDSBuyoYGNd8zDwIK-OhAZ580UYWbtW_n5Eg',
@@ -39,8 +39,8 @@ const group = { by: 'correlationId', accumulators: { count: { op: 'count' } } }
 
 describe('query.ts', () => {
 	describe('hashQuery', () => {
-		for (const [name, pinned] of Object.entries(ledger)) {
-			it(`should hash ledger's ${name} filter byte for byte as hashEntryQuery does`, () => {
+		for (const [name, pinned] of Object.entries(legacy)) {
+			it(`should hash the legacy ${name} filter byte for byte as hashEntryQuery did`, () => {
 				expect(hashQuery(pinned.compiled, { search: null })).to.eq(pinned.hashNoSearch)
 				expect(hashQuery(pinned.compiled, { search: 'needle' })).to.eq(pinned.hashSearch)
 				expect(hashQuery(pinned.compiled, { search: null, group })).to.eq(pinned.hashGroup)
@@ -82,7 +82,7 @@ describe('query.ts', () => {
 
 		it('should leave out an undefined extra', () => {
 			expect(hashQuery({}, { search: null, group: undefined })).to.eq(
-				ledger.empty.hashNoSearch
+				legacy.empty.hashNoSearch
 			)
 		})
 	})

@@ -6,6 +6,7 @@ type JwtVerification = {
 	id: string
 }
 
+/** Result `verifyJwt` returns when no configuration could verify the token: `success: false` with an empty `id`. */
 export const JwtVerificationFailure: JwtVerification = {
 	success: false,
 	id: '',

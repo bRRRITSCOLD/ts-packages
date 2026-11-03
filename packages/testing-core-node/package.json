@@ -4,6 +4,7 @@
 	"description": "Node-only test helpers: testcontainers wrappers and nock interceptors.",
 	"license": "MIT",
 	"author": "Blaine Richardson",
+	"homepage": "https://brrritscold.github.io/ts-packages/modules/_brrritscold_testing-core-node.html",
 	"type": "module",
 	"repository": {
 		"type": "git",
@@ -59,7 +60,6 @@
 	"scripts": {
 		"build": "tsup",
 		"clean": "rm -rf dist .turbo",
-		"generate:docs": "typedoc src",
 		"lint": "biome check --write",
 		"lint:check": "biome check",
 		"test:e2e": "mocha --require tsx tests/**/*.e2e.test.ts --recursive --timeout 99999999  --exit",
@@ -82,5 +82,9 @@
 		"@types/jsonwebtoken": "^9.0.10",
 		"mongodb": "^6.21.0",
 		"supertest": "^7.1.4"
-	}
+	},
+	"keywords": [
+		"brrritscold",
+		"typescript"
+	]
 }

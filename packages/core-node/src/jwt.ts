@@ -1,8 +1,10 @@
 // node_modules
 import jwt, { Algorithm, JsonWebTokenError } from 'jsonwebtoken'
 
+/** Signing algorithm accepted by `jsonwebtoken`, such as `HS256` or `RS256`. */
 export type JWTAlgorithm = Algorithm
 
+/** Options for constructing a `JWT`; only `secret` and `algorithm` are required, the rest fall back to defaults. */
 export type JWTConstructor = {
 	id?: string
 	aud?: string
@@ -12,6 +14,7 @@ export type JWTConstructor = {
 	exp?: number
 }
 
+/** Claims embedded in a token produced by `JWT.sign`. */
 export type JWTPayload = {
 	iss: string
 	iat: string
@@ -21,9 +24,12 @@ export type JWTPayload = {
 	id: string
 }
 
+/** Fully resolved `JWT` settings, with every optional constructor field filled in by its default. */
 export type JWTConfig = Required<JWTConstructor>
 
 /**
+ * Signs, verifies and decodes JSON Web Tokens with a fixed secret and algorithm, issuing tokens that expire after 24 hours by default.
+ *
  * @example
  * ///////////////
  * ///// CJS /////

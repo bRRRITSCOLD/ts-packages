@@ -4,6 +4,7 @@
 	"description": "Runtime-agnostic test helpers.",
 	"license": "MIT",
 	"author": "Blaine Richardson",
+	"homepage": "https://brrritscold.github.io/ts-packages/modules/_brrritscold_testing-core-js.html",
 	"type": "module",
 	"repository": {
 		"type": "git",
@@ -48,7 +49,6 @@
 	"scripts": {
 		"build": "tsup",
 		"clean": "rm -rf dist .turbo",
-		"generate:docs": "typedoc src",
 		"lint": "biome check --write",
 		"lint:check": "biome check",
 		"test:e2e": "mocha --require tsx tests/**/*.e2e.test.ts --recursive --timeout 99999999  --exit",
@@ -62,5 +62,9 @@
 	},
 	"devDependencies": {
 		"@types/lodash": "^4.17.16"
-	}
+	},
+	"keywords": [
+		"brrritscold",
+		"typescript"
+	]
 }
