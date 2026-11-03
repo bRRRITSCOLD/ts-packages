@@ -1,0 +1,118 @@
+{
+	"name": "@brrritscold/core-js",
+	"version": "0.1.0",
+	"description": "Runtime-agnostic (browser + node) core utilities: date, error, obj, query, zod.",
+	"license": "MIT",
+	"author": "Blaine Richardson",
+	"type": "module",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/bRRRITSCOLD/ts-packages.git",
+		"directory": "packages/core-js"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE"
+	],
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"import": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.mjs"
+			},
+			"require": {
+				"types": "./dist/index.d.cts",
+				"default": "./dist/index.cjs"
+			},
+			"default": "./dist/index.mjs"
+		},
+		"./date": {
+			"import": {
+				"types": "./dist/date.d.ts",
+				"default": "./dist/date.mjs"
+			},
+			"require": {
+				"types": "./dist/date.d.cts",
+				"default": "./dist/date.cjs"
+			},
+			"default": "./dist/date.mjs"
+		},
+		"./error": {
+			"import": {
+				"types": "./dist/error.d.ts",
+				"default": "./dist/error.mjs"
+			},
+			"require": {
+				"types": "./dist/error.d.cts",
+				"default": "./dist/error.cjs"
+			},
+			"default": "./dist/error.mjs"
+		},
+		"./obj": {
+			"import": {
+				"types": "./dist/obj.d.ts",
+				"default": "./dist/obj.mjs"
+			},
+			"require": {
+				"types": "./dist/obj.d.cts",
+				"default": "./dist/obj.cjs"
+			},
+			"default": "./dist/obj.mjs"
+		},
+		"./query": {
+			"import": {
+				"types": "./dist/query.d.ts",
+				"default": "./dist/query.mjs"
+			},
+			"require": {
+				"types": "./dist/query.d.cts",
+				"default": "./dist/query.cjs"
+			},
+			"default": "./dist/query.mjs"
+		},
+		"./zod": {
+			"import": {
+				"types": "./dist/zod.d.ts",
+				"default": "./dist/zod.mjs"
+			},
+			"require": {
+				"types": "./dist/zod.d.cts",
+				"default": "./dist/zod.cjs"
+			},
+			"default": "./dist/zod.mjs"
+		}
+	},
+	"scripts": {
+		"build": "tsup",
+		"clean": "rm -rf dist .turbo",
+		"generate:docs": " mkdir -p docs && typedoc src",
+		"lint": "biome check --write",
+		"lint:check": "biome check",
+		"test:e2e": "mocha --require tsx tests/**/*.e2e.test.ts --recursive --timeout 99999999  --exit",
+		"test:e2e:watch": "nodemon --config ./nodemon.e2e.test.json",
+		"test:integration": "mocha --require tsx tests/**/*.integration.test.ts --recursive --timeout 99999999  --exit",
+		"test:integration:ci": "npm run test:integration:setup && npm run test:integration && npm run test:integration:teardown",
+		"test:integration:setup": "tsx ./tests/integration/__utils__/setup.ts",
+		"test:integration:teardown": "tsx ./tests/integration/__utils__/teardown.ts",
+		"test:integration:watch": "nodemon --config ./nodemon.integration.test.json",
+		"test:unit": "mocha --require tsx tests/**/*.unit.test.ts --recursive --timeout 99999999  --exit",
+		"test:unit:watch": "nodemon --config ./nodemon.unit.test.json",
+		"typecheck": "tsc -p ./tsconfig.json"
+	},
+	"dependencies": {
+		"json-stringify-safe": "^5.0.1",
+		"lodash": "^4.17.21",
+		"zod": "^4.2.1"
+	},
+	"devDependencies": {
+		"@types/json-stringify-safe": "^5.0.3",
+		"@types/lodash": "^4.17.20"
+	}
+}

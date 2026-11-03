@@ -1,0 +1,200 @@
+{
+	"name": "@brrritscold/core-node",
+	"version": "0.1.0",
+	"description": "Node-only core utilities: dotenv, JWT, MongoDB, Postgres, S3, Secrets Manager, query compilation.",
+	"license": "MIT",
+	"author": "Blaine Richardson",
+	"type": "module",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/bRRRITSCOLD/ts-packages.git",
+		"directory": "packages/core-node"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE"
+	],
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"import": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.mjs"
+			},
+			"require": {
+				"types": "./dist/index.d.cts",
+				"default": "./dist/index.cjs"
+			},
+			"default": "./dist/index.mjs"
+		},
+		"./dotenv": {
+			"import": {
+				"types": "./dist/dotenv.d.ts",
+				"default": "./dist/dotenv.mjs"
+			},
+			"require": {
+				"types": "./dist/dotenv.d.cts",
+				"default": "./dist/dotenv.cjs"
+			},
+			"default": "./dist/dotenv.mjs"
+		},
+		"./jwt": {
+			"import": {
+				"types": "./dist/jwt.d.ts",
+				"default": "./dist/jwt.mjs"
+			},
+			"require": {
+				"types": "./dist/jwt.d.cts",
+				"default": "./dist/jwt.cjs"
+			},
+			"default": "./dist/jwt.mjs"
+		},
+		"./mongodb": {
+			"import": {
+				"types": "./dist/mongodb.d.ts",
+				"default": "./dist/mongodb.mjs"
+			},
+			"require": {
+				"types": "./dist/mongodb.d.cts",
+				"default": "./dist/mongodb.cjs"
+			},
+			"default": "./dist/mongodb.mjs"
+		},
+		"./postgres": {
+			"import": {
+				"types": "./dist/postgres.d.ts",
+				"default": "./dist/postgres.mjs"
+			},
+			"require": {
+				"types": "./dist/postgres.d.cts",
+				"default": "./dist/postgres.cjs"
+			},
+			"default": "./dist/postgres.mjs"
+		},
+		"./query": {
+			"import": {
+				"types": "./dist/query.d.ts",
+				"default": "./dist/query.mjs"
+			},
+			"require": {
+				"types": "./dist/query.d.cts",
+				"default": "./dist/query.cjs"
+			},
+			"default": "./dist/query.mjs"
+		},
+		"./query/mongodb": {
+			"import": {
+				"types": "./dist/query/mongodb.d.ts",
+				"default": "./dist/query/mongodb.mjs"
+			},
+			"require": {
+				"types": "./dist/query/mongodb.d.cts",
+				"default": "./dist/query/mongodb.cjs"
+			},
+			"default": "./dist/query/mongodb.mjs"
+		},
+		"./s3": {
+			"import": {
+				"types": "./dist/s3.d.ts",
+				"default": "./dist/s3.mjs"
+			},
+			"require": {
+				"types": "./dist/s3.d.cts",
+				"default": "./dist/s3.cjs"
+			},
+			"default": "./dist/s3.mjs"
+		},
+		"./secrets-manager": {
+			"import": {
+				"types": "./dist/secrets-manager.d.ts",
+				"default": "./dist/secrets-manager.mjs"
+			},
+			"require": {
+				"types": "./dist/secrets-manager.d.cts",
+				"default": "./dist/secrets-manager.cjs"
+			},
+			"default": "./dist/secrets-manager.mjs"
+		}
+	},
+	"scripts": {
+		"build": "tsup",
+		"clean": "rm -rf dist .turbo",
+		"generate:docs": " mkdir -p docs && typedoc src",
+		"lint": "biome check --write",
+		"lint:check": "biome check",
+		"test:e2e": "mocha --require tsx tests --recursive --extension .e2e.test.ts --timeout 99999999  --exit",
+		"test:e2e:watch": "nodemon --config ./nodemon.e2e.test.json",
+		"test:integration": "mocha --require tsx tests --recursive --extension .integration.test.ts --timeout 99999999  --exit",
+		"test:integration:ci": "npm run test:integration:setup && npm run test:integration && npm run test:integration:teardown",
+		"test:integration:setup": "tsx ./tests/integration/__utils__/setup.ts",
+		"test:integration:teardown": "tsx ./tests/integration/__utils__/teardown.ts",
+		"test:integration:watch": "nodemon --config ./nodemon.integration.test.json",
+		"test:unit": "mocha --require tsx tests --recursive --extension .unit.test.ts --timeout 99999999  --exit",
+		"test:unit:watch": "nodemon --config ./nodemon.unit.test.json",
+		"typecheck": "tsc -p ./tsconfig.json"
+	},
+	"dependencies": {
+		"dotenv": "^17.2.3",
+		"dotenv-safe": "^9.1.0",
+		"jsonwebtoken": "^9.0.2"
+	},
+	"peerDependencies": {
+		"@aws-sdk/client-s3": "^3.0.0",
+		"@aws-sdk/client-secrets-manager": "^3.0.0",
+		"@aws-sdk/credential-providers": "^3.0.0",
+		"@aws-sdk/types": "^3.0.0",
+		"@brrritscold/core-js": "^0.1.0",
+		"knex": "^3.3.0",
+		"mongodb": "^6.20.0",
+		"pg": "^8.23.0"
+	},
+	"optionalDependencies": {
+		"knex": "^3.3.0",
+		"pg": "^8.23.0"
+	},
+	"devDependencies": {
+		"@aws-sdk/client-s3": "^3.1102.0",
+		"@aws-sdk/client-secrets-manager": "^3.1102.0",
+		"@aws-sdk/credential-providers": "^3.1102.0",
+		"@aws-sdk/types": "^3.975.0",
+		"@brrritscold/core-js": "workspace:^",
+		"@brrritscold/testing-core-node": "workspace:^",
+		"@types/dotenv-safe": "^9.1.0",
+		"@types/jsonwebtoken": "^9.0.10",
+		"knex": "^3.3.0",
+		"mongodb": "^7.5.0",
+		"pg": "^8.23.0"
+	},
+	"peerDependenciesMeta": {
+		"@aws-sdk/client-s3": {
+			"optional": true
+		},
+		"@aws-sdk/client-secrets-manager": {
+			"optional": true
+		},
+		"@aws-sdk/credential-providers": {
+			"optional": true
+		},
+		"@aws-sdk/types": {
+			"optional": true
+		},
+		"@brrritscold/core-js": {
+			"optional": true
+		},
+		"knex": {
+			"optional": true
+		},
+		"mongodb": {
+			"optional": true
+		},
+		"pg": {
+			"optional": true
+		}
+	}
+}
