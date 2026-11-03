@@ -1,6 +1,6 @@
 {
 	"name": "@brrritscold/testing-core-js",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Runtime-agnostic test helpers.",
 	"license": "MIT",
 	"author": "Blaine Richardson",
