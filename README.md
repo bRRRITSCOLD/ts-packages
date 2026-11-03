@@ -26,7 +26,7 @@ Work on one package: `pnpm --filter @brrritscold/core-node test:unit`.
 ## Release
 
 1. `pnpm changeset` — pick packages, bump type, summary. Commit the generated file.
-2. Merge to `main`. The Release workflow opens a "Version Packages" PR.
+2. Merge to `main`. After CI (check + integration) passes, the `release` job opens a "Version Packages" PR.
 3. Merge that PR. The workflow publishes changed packages to npm.
 
 Needs repo secret `NPM_TOKEN` (npm automation token with publish rights to `@brrritscold`).
