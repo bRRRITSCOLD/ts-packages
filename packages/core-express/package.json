@@ -1,6 +1,6 @@
 {
 	"name": "@brrritscold/core-express",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Express middlewares and helpers: JWT middleware, typed OpenAPI router, server creation.",
 	"license": "MIT",
 	"author": "Blaine Richardson",

@@ -1,6 +1,6 @@
 {
 	"name": "@brrritscold/core-node",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Node-only core utilities: dotenv, JWT, MongoDB, Postgres, S3, Secrets Manager, query compilation.",
 	"license": "MIT",
 	"author": "Blaine Richardson",
@@ -149,7 +149,7 @@
 		"@aws-sdk/client-secrets-manager": "^3.0.0",
 		"@aws-sdk/credential-providers": "^3.0.0",
 		"@aws-sdk/types": "^3.0.0",
-		"@brrritscold/core-js": "^0.1.0",
+		"@brrritscold/core-js": "^0.1.1",
 		"knex": "^3.3.0",
 		"mongodb": "^6.20.0",
 		"pg": "^8.23.0"
