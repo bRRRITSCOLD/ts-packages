@@ -2,6 +2,8 @@
 
 Turborepo + pnpm monorepo for shared TypeScript libraries, published to npm under `@brrritscold`.
 
+**API reference:** https://brrritscold.github.io/ts-packages/
+
 | Package                                                          | Runtime        | What                                                                     |
 | ---------------------------------------------------------------- | -------------- | ------------------------------------------------------------------------ |
 | [`@brrritscold/core-js`](./packages/core-js)                     | browser + node | `date`, `error`, `obj`, `query`, `zod`                                   |
@@ -22,6 +24,18 @@ pnpm lint
 ```
 
 Work on one package: `pnpm --filter @brrritscold/core-node test:unit`.
+
+## Docs
+
+Docs come from the TSDoc comments in `src/` — there is nothing to write by hand outside them.
+
+| Output                                                   | Where                                                   | Built by                                        |
+| -------------------------------------------------------- | ------------------------------------------------------- | ----------------------------------------------- |
+| API reference site                                       | GitHub Pages                                            | `docs` job in CI, after every release on `main` |
+| `## API` section of each package README (what npm shows) | `packages/*/README.md` between `<!-- api:start/end -->` | `pnpm docs:readme`, committed                   |
+| CHANGELOG with PR + commit links                         | `packages/*/CHANGELOG.md`                               | Changesets, on the Version Packages PR          |
+
+`pnpm docs:check` runs in CI and fails when TypeDoc warns, a README API section is stale, or a public export has no summary sentence. After changing a public API, run `pnpm docs:readme` and commit the README diff.
 
 ## Release
 

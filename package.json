@@ -8,20 +8,23 @@
 	},
 	"scripts": {
 		"build": "turbo run build",
-		"typecheck": "turbo run typecheck",
+		"changeset": "changeset",
+		"clean": "turbo run clean && rm -rf node_modules",
+		"docs:build": "typedoc",
+		"docs:check": "typedoc && node scripts/readme-api.mjs --check",
+		"docs:readme": "typedoc && node scripts/readme-api.mjs",
 		"lint": "biome check --write",
 		"lint:check": "biome check",
-		"test:unit": "turbo run test:unit",
-		"test:integration": "turbo run test:integration:ci --concurrency=1",
-		"generate:docs": "turbo run generate:docs",
-		"clean": "turbo run clean && rm -rf node_modules",
-		"changeset": "changeset",
-		"version-packages": "changeset version",
+		"prepare": "husky",
 		"release": "turbo run build && changeset publish",
-		"prepare": "husky"
+		"test:integration": "turbo run test:integration:ci --concurrency=1",
+		"test:unit": "turbo run test:unit",
+		"typecheck": "turbo run typecheck",
+		"version-packages": "changeset version"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.4.8",
+		"@changesets/changelog-github": "^1.0.1",
 		"@changesets/cli": "^2.29.7",
 		"@types/chai": "^5.2.2",
 		"@types/mocha": "^10.0.10",
@@ -35,7 +38,6 @@
 		"tsx": "^4.19.4",
 		"turbo": "^2.5.8",
 		"typedoc": "^0.28.5",
-		"typedoc-plugin-markdown": "^4.6.4",
 		"typescript": "^5.8.3"
 	},
 	"lint-staged": {

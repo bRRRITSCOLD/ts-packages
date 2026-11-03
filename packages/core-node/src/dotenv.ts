@@ -1,6 +1,8 @@
 import * as dotenvSafe from 'dotenv-safe'
 
 /**
+ * Loads `.env` into `process.env` via dotenv-safe, checking it against an example file, and returns `{ data, error }` instead of throwing when variables are missing.
+ *
  * @example
  * ///////////////
  * ///// CJS /////

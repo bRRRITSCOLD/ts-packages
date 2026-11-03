@@ -110,7 +110,7 @@ describe('query/mongodb.ts', () => {
 	})
 
 	describe('cursorFilter', () => {
-		it("should resume a date sort exactly as the hand-written buildCursorFilter did", () => {
+		it('should resume a date sort exactly as the hand-written buildCursorFilter did', () => {
 			const lastValue = '2026-01-01T00:00:00.000Z'
 			expect(
 				dialect.cursorFilter(entryFields, {
@@ -127,7 +127,7 @@ describe('query/mongodb.ts', () => {
 			})
 		})
 
-		it("should resume a string sort exactly as the hand-written buildCursorFilter did", () => {
+		it('should resume a string sort exactly as the hand-written buildCursorFilter did', () => {
 			expect(
 				dialect.cursorFilter(entryFields, {
 					sortKey: 'event',

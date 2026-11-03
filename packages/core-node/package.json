@@ -4,6 +4,7 @@
 	"description": "Node-only core utilities: dotenv, JWT, MongoDB, Postgres, S3, Secrets Manager, query compilation.",
 	"license": "MIT",
 	"author": "Blaine Richardson",
+	"homepage": "https://brrritscold.github.io/ts-packages/modules/_brrritscold_core-node.html",
 	"type": "module",
 	"repository": {
 		"type": "git",
@@ -125,7 +126,6 @@
 	"scripts": {
 		"build": "tsup",
 		"clean": "rm -rf dist .turbo",
-		"generate:docs": " mkdir -p docs && typedoc src",
 		"lint": "biome check --write",
 		"lint:check": "biome check",
 		"test:e2e": "mocha --require tsx tests --recursive --extension .e2e.test.ts --timeout 99999999  --exit",
@@ -196,5 +196,9 @@
 		"pg": {
 			"optional": true
 		}
-	}
+	},
+	"keywords": [
+		"brrritscold",
+		"typescript"
+	]
 }

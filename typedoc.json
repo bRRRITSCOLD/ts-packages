@@ -1,0 +1,56 @@
+{
+	"$schema": "https://typedoc.org/schema.json",
+	"name": "@brrritscold packages",
+	"entryPointStrategy": "packages",
+	"entryPoints": ["packages/*"],
+	"packageOptions": {
+		"tsconfig": "tsconfig.build.json",
+		"excludeExternals": true
+	},
+	"readme": "README.md",
+	"out": "site",
+	"json": "site/api.json",
+	"githubPages": true,
+	"navigationLinks": {
+		"GitHub": "https://github.com/bRRRITSCOLD/ts-packages",
+		"npm": "https://www.npmjs.com/org/brrritscold"
+	},
+	"excludePrivate": true,
+	"excludeInternal": true,
+	"treatWarningsAsErrors": true,
+	"validation": {
+		"notExported": true,
+		"invalidLink": true,
+		"notDocumented": true
+	},
+	"requiredToBeDocumented": [
+		"Enum",
+		"Variable",
+		"Function",
+		"Class",
+		"Interface",
+		"TypeAlias",
+		"Method"
+	],
+	"externalSymbolLinkMappings": {
+		"@types/node": {
+			"*": "https://nodejs.org/api/"
+		}
+	},
+	"highlightLanguages": [
+		"bash",
+		"console",
+		"css",
+		"html",
+		"http",
+		"javascript",
+		"json",
+		"jsonc",
+		"json5",
+		"shell",
+		"sh",
+		"tsx",
+		"typescript",
+		"yaml"
+	]
+}

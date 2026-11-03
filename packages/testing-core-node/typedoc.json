@@ -1,12 +1,6 @@
-// typedoc.json
 {
-	"plugin": ["typedoc-plugin-markdown"],
-	"readme": "none",
-	"outputs": [
-		{
-			// requires typedoc-plugin-markdown
-			"name": "markdown",
-			"path": "./docs"
-		}
-	]
+	"$schema": "https://typedoc.org/schema.json",
+	"entryPoints": ["src/docker.ts", "src/nock.ts"],
+	"readme": "README.md",
+	"includeVersion": true
 }

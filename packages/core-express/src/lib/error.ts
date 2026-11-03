@@ -1,11 +1,13 @@
 import { ExceptionCodes, ExceptionFaults, HttpException } from '@brrritscold/core-js/error'
 
+/** Constructor parameters for `JwtMiddlewareException`: the failure message plus an optional HTTP status code and underlying cause. */
 export type JwtMidExceptionConstructorInput = {
 	message: JwtMidExceptionMessages
 	statusCode?: number
 	cause?: Error | object
 }
 
+/** Messages a `JwtMiddlewareException` can carry, one per way the `authorization` header can fail JWT verification. */
 export enum JwtMidExceptionMessages {
 	MISSING_HEADER = 'Missing "authorization" header.',
 	INVALID_BEARER = 'Missing "bearer" auth or "bearer" is missing the JWT.',

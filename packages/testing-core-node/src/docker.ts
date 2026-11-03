@@ -3,6 +3,8 @@ import { GenericContainer, StartedTestContainer, Wait, WaitStrategy } from 'test
 const labels = { application: 'brrritscold-testing-core-node' }
 
 /**
+ * Wraps a testcontainers `GenericContainer` for a given image, exposed port and environment, labelled and reused by default, with `start`/`stop` and `getMappedPort` helpers.
+ *
  * @example
  * // node_modules
  * import { Container } from '@brrritscold/testing-core-node/docker'
@@ -69,6 +71,8 @@ export class Container {
 }
 
 /**
+ * Community MongoDB (`mongo` image) test container on port 27017, seeded with a root user and initial database.
+ *
  * @example
  * // node_modules
  * import { MongoDbContainer } from '@brrritscold/testing-core-node/docker'
@@ -253,6 +257,8 @@ export class MongoDbAtlasLocalContainer extends Container {
 }
 
 /**
+ * PostgreSQL (`postgres` image) test container on port 5432, configured with the given user, password and database.
+ *
  * @example
  * // node_modules
  * import { PostgresContainer } from '@brrritscold/testing-core-node/docker'
@@ -296,6 +302,8 @@ export class PostgresContainer extends Container {
 }
 
 /**
+ * LocalStack AWS emulator test container on port 4566, running the given comma-separated services in the given default region.
+ *
  * @example
  * // node_modules
  * import { LocalstackContainer } from '@brrritscold/testing-core-node/docker'

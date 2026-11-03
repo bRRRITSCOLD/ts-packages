@@ -5,8 +5,10 @@ import { ObjectId } from 'mongodb'
 // application
 import type { QueryDialect } from '../query.js'
 
+/** MongoDB filter document produced by `MongoQueryDialect`. */
 export type MongoFilter = Record<string, unknown>
 
+/** MongoDB sort document mapping field names to `1` (ascending) or `-1` (descending). */
 export type MongoSort = Record<string, 1 | -1>
 
 /**

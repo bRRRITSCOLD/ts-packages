@@ -10,6 +10,7 @@ import nock, {
 } from 'nock'
 import { ParsedUrlQuery } from 'querystring'
 
+/** Describes one HTTP interception for `intercept`: method, base URL and endpoint to match (optionally by headers, body and query), plus the reply, delay or error to return. */
 export type InterceptConfig = {
 	method: 'get' | 'post' | 'put' | 'delete' | 'patch' | 'options' | 'head'
 	url: string
@@ -33,6 +34,8 @@ export type InterceptConfig = {
 }
 
 /**
+ * Registers a nock interceptor for each config and returns the resulting scopes, so tests can assert every expected request was made via `scope.isDone()`.
+ *
  * @example
  * // node_modules
  * import { intercept } from '@brrritscold/testing-core-node/nock'
@@ -132,6 +135,8 @@ export const intercept = (configs: InterceptConfig[]) => {
 }
 
 /**
+ * Removes all registered nock interceptors so subsequent HTTP requests are no longer mocked.
+ *
  * @see {@link intercept} examples here
  */
 export const clearInterceptors = () => nock.cleanAll()
