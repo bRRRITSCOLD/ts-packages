@@ -29,6 +29,9 @@ Work on one package: `pnpm --filter @brrritscold/core-node test:unit`.
 2. Merge to `main`. After CI (check + integration) passes, the `release` job opens a "Version Packages" PR.
 3. Merge that PR. The workflow publishes changed packages to npm.
 
+`main` is protected: changes land by PR, `check` and `integration` must pass, squash-merge only.
+The "Version Packages" PR is opened by `GITHUB_TOKEN`, which does not trigger workflows — **close and reopen it** to run the required checks before merging.
+
 Needs repo secret `NPM_TOKEN` (npm automation token with publish rights to `@brrritscold`).
 
 ## License
