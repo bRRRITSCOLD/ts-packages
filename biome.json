@@ -1,6 +1,13 @@
 {
 	"files": {
-		"includes": ["**", "!**/dist/**", "!**/node_modules/**", "!**/.turbo/**", "!**/*.d.ts"]
+		"includes": [
+			"**",
+			"!**/dist/**",
+			"!**/node_modules/**",
+			"!**/site/**",
+			"!**/.turbo/**",
+			"!**/*.d.ts"
+		]
 	},
 	"formatter": {
 		"enabled": true,

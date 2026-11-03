@@ -23,8 +23,8 @@ const fields = {
 	notes: { type: 'string' },
 } as const
 
-// The way ledger-api encodes a cursor today, so tokens it issued still decode
-const ledgerToken = (payload: object) =>
+// How hand-built cursors were encoded before the codec, so those tokens still decode
+const legacyToken = (payload: object) =>
 	Buffer.from(JSON.stringify(payload), 'utf8').toString('base64')
 
 function catchError(fn: () => unknown): HttpException {
@@ -201,11 +201,11 @@ describe('query.ts', () => {
 			filterHash: 'hash',
 		}
 
-		it('should encode exactly as ledger-api does today', () => {
+		it('should encode exactly as hand-built cursors did', () => {
 			const withUnicode = { ...payload, lastValue: 'événement ✓', sortKey: 'event' }
-			expect(codec.encode(payload)).to.eq(ledgerToken(payload))
-			expect(codec.encode(withUnicode)).to.eq(ledgerToken(withUnicode))
-			expect(codec.decode(ledgerToken(withUnicode))).to.deep.eq(withUnicode)
+			expect(codec.encode(payload)).to.eq(legacyToken(payload))
+			expect(codec.encode(withUnicode)).to.eq(legacyToken(withUnicode))
+			expect(codec.decode(legacyToken(withUnicode))).to.deep.eq(withUnicode)
 		})
 
 		it('should round-trip a payload', () => {
@@ -214,7 +214,7 @@ describe('query.ts', () => {
 
 		it('should encode a payload too large to spread into one call', () => {
 			const large = { ...payload, sortKey: 'event', lastValue: 'x'.repeat(300_000) }
-			expect(codec.encode(large)).to.eq(ledgerToken(large))
+			expect(codec.encode(large)).to.eq(legacyToken(large))
 			expect(codec.decode(codec.encode(large))).to.deep.eq(large)
 		})
 
@@ -231,51 +231,51 @@ describe('query.ts', () => {
 
 		it('should reject a sortKey that is not sortable', () => {
 			expectBadRequest(
-				() => codec.decode(ledgerToken({ ...payload, sortKey: 'correlationId' })),
+				() => codec.decode(legacyToken({ ...payload, sortKey: 'correlationId' })),
 				'malformed cursor: unknown sortKey "correlationId"'
 			)
 		})
 
 		it('should name a malformed sortBy, lastId, lastValue or filterHash', () => {
 			expectBadRequest(
-				() => codec.decode(ledgerToken({ ...payload, sortBy: 'up' })),
+				() => codec.decode(legacyToken({ ...payload, sortBy: 'up' })),
 				'malformed cursor: invalid sortBy "up"'
 			)
 			expectBadRequest(
-				() => codec.decode(ledgerToken({ ...payload, lastId: 1 })),
+				() => codec.decode(legacyToken({ ...payload, lastId: 1 })),
 				'malformed cursor: lastId must be a string'
 			)
 			expectBadRequest(
-				() => codec.decode(ledgerToken({ ...payload, sortKey: 'event', lastValue: {} })),
+				() => codec.decode(legacyToken({ ...payload, sortKey: 'event', lastValue: {} })),
 				'malformed cursor: lastValue must be string, number, or null'
 			)
 			expectBadRequest(
-				() => codec.decode(ledgerToken({ ...payload, filterHash: 1 })),
+				() => codec.decode(legacyToken({ ...payload, filterHash: 1 })),
 				'malformed cursor: filterHash must be a string'
 			)
 		})
 
 		it('should check a date lastValue', () => {
 			expectBadRequest(
-				() => codec.decode(ledgerToken({ ...payload, lastValue: 1 })),
+				() => codec.decode(legacyToken({ ...payload, lastValue: 1 })),
 				'malformed cursor: timestamp lastValue must be an ISO string (got number)'
 			)
 			expectBadRequest(
-				() => codec.decode(ledgerToken({ ...payload, lastValue: null })),
+				() => codec.decode(legacyToken({ ...payload, lastValue: null })),
 				'malformed cursor: timestamp lastValue must be an ISO string (got object)'
 			)
 			expectBadRequest(
-				() => codec.decode(ledgerToken({ ...payload, lastValue: 'yesterday' })),
+				() => codec.decode(legacyToken({ ...payload, lastValue: 'yesterday' })),
 				'malformed cursor: timestamp lastValue is not a valid date "yesterday"'
 			)
 		})
 
 		it('should allow a null lastValue on a nullable date and a string field', () => {
 			const inNullBlock = { ...payload, sortKey: 'nextRunAt', lastValue: null }
-			expect(codec.parseLastValue(codec.decode(ledgerToken(inNullBlock)))).to.eq(null)
+			expect(codec.parseLastValue(codec.decode(legacyToken(inNullBlock)))).to.eq(null)
 
 			const nullString = { ...payload, sortKey: 'event', lastValue: null }
-			expect(codec.parseLastValue(codec.decode(ledgerToken(nullString)))).to.eq(null)
+			expect(codec.parseLastValue(codec.decode(legacyToken(nullString)))).to.eq(null)
 		})
 
 		it('should parse a date lastValue to a Date and leave a string as it is', () => {
@@ -291,7 +291,7 @@ describe('query.ts', () => {
 			})
 			const extended = createCursorCodec({ fields, schema })
 			const window = { gte: '2026-01-01T00:00:00Z', lte: '2026-01-02T00:00:00Z' }
-			expect(extended.decode(ledgerToken({ ...payload, window })).window).to.deep.eq(window)
+			expect(extended.decode(legacyToken({ ...payload, window })).window).to.deep.eq(window)
 		})
 
 		it('should resolve a cursor that continues the same read', () => {

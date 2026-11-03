@@ -8,6 +8,7 @@ import {
 
 export { CREDENTIAL_PROVIDERS, type CredentialProvider }
 
+/** Settings for `S3.initClient`: region, credential provider, and an optional custom endpoint and path-style flag. */
 export type S3Config = {
 	/** AWS region (e.g., 'us-east-1') */
 	region: string

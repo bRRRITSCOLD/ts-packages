@@ -18,9 +18,6 @@
 			"cache": false,
 			"passThroughEnv": ["DEBUG", "DOCKER_HOST", "TESTCONTAINERS_*"]
 		},
-		"generate:docs": {
-			"outputs": ["docs/**"]
-		},
 		"clean": {
 			"cache": false
 		}

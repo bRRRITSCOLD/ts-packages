@@ -5,8 +5,10 @@ import { ObjectId } from 'mongodb'
 // application
 import type { QueryDialect } from '../query.js'
 
+/** MongoDB filter document produced by `MongoQueryDialect`. */
 export type MongoFilter = Record<string, unknown>
 
+/** MongoDB sort document mapping field names to `1` (ascending) or `-1` (descending). */
 export type MongoSort = Record<string, 1 | -1>
 
 /**
@@ -155,8 +157,8 @@ export class MongoQueryDialect implements QueryDialect<MongoFilter, MongoSort> {
 	 *
 	 * A null lastValue on a sort field not declared nullable is rejected with a
 	 * 400, as the cursor codec already does for a date field. This diverges from
-	 * ledger-api, whose cursor compiled to `$gt`/`$lt: null`, matched nothing and
-	 * ended the walk early: a field that can be null must be declared nullable.
+	 * the hand-written cursors it replaced, which compiled to `$gt`/`$lt: null`,
+	 * matched nothing and ended the walk early: a field that can be null must be declared nullable.
 	 */
 	cursorFilter(fields: FieldSpecs, cursor: CursorPayload): MongoFilter {
 		const { sortKey, sortBy, lastValue, lastId } = cursor
@@ -188,7 +190,7 @@ export class MongoQueryDialect implements QueryDialect<MongoFilter, MongoSort> {
 	 * cursor inside it carries a null lastValue.
 	 *
 	 * Public for walks `cursorFilter` cannot serve, whose rows are not documents
-	 * with an ObjectId `_id`: e.g. ledger-api pages its grouped reads after a
+	 * with an ObjectId `_id`: e.g. paging grouped reads after a
 	 * `$group` stage, where `_id` is the group key. The caller passes that key as
 	 * `lastId` and converts `lastValue` itself, since no field spec describes it.
 	 */

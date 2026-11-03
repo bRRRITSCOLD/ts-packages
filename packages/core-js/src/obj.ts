@@ -2,6 +2,8 @@ import isNil from 'lodash/isNil.js'
 import omitBy from 'lodash/omitBy.js'
 
 /**
+ * Returns a shallow copy of an object without its `null` and `undefined` properties, keeping other falsy values.
+ *
  * @example
  * ///////////////
  * ///// CJS /////

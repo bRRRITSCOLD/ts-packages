@@ -4,8 +4,8 @@ import { ObjectId } from 'mongodb'
 // application/testee
 import { MongoQueryDialect } from '../../../src/query/mongodb.js'
 
-// ledger-api's v2 entry fields, as it will declare them on the kit
-const ledgerFields = {
+// An entries collection's fields, as a consumer declares them on the kit
+const entryFields = {
 	timestamp: { type: 'date', filter: true, sort: true },
 	applicationId: { type: 'string', filter: true, sort: true },
 	event: { type: 'string', filter: true, sort: true },
@@ -20,9 +20,9 @@ const jobFields = {
 	disabled: { type: 'boolean', filter: true },
 } as const
 
-// What ledger-api's compileEntryFilter produces at origin/int 3e64919 for the
-// same filters
-const ledger = {
+// Pinned output of the hand-written compileEntryFilter this module replaces,
+// for the same filters
+const legacy = {
 	strings: {
 		filter: { event: { in: ['b', 'a'] }, correlationId: { notIn: ['x'] }, actor: {} },
 		compiled: { event: { $in: ['b', 'a'] }, correlationId: { $nin: ['x'] } },
@@ -56,9 +56,9 @@ const dialect = new MongoQueryDialect()
 
 describe('query/mongodb.ts', () => {
 	describe('compileFilter', () => {
-		for (const [name, pinned] of Object.entries(ledger)) {
-			it(`should compile ledger's ${name} filter exactly as ledger does today`, () => {
-				expect(dialect.compileFilter(ledgerFields, pinned.filter)).to.deep.eq(
+		for (const [name, pinned] of Object.entries(legacy)) {
+			it(`should compile the legacy ${name} filter exactly as the hand-written version did`, () => {
+				expect(dialect.compileFilter(entryFields, pinned.filter)).to.deep.eq(
 					pinned.compiled
 				)
 			})
@@ -104,16 +104,16 @@ describe('query/mongodb.ts', () => {
 
 		it('should compile in and notIn on one field to both operators', () => {
 			expect(
-				dialect.compileFilter(ledgerFields, { event: { in: ['a', 'b'], notIn: ['c'] } })
+				dialect.compileFilter(entryFields, { event: { in: ['a', 'b'], notIn: ['c'] } })
 			).to.deep.eq({ event: { $in: ['a', 'b'], $nin: ['c'] } })
 		})
 	})
 
 	describe('cursorFilter', () => {
-		it("should resume a date sort exactly as ledger's buildCursorFilter does", () => {
+		it('should resume a date sort exactly as the hand-written buildCursorFilter did', () => {
 			const lastValue = '2026-01-01T00:00:00.000Z'
 			expect(
-				dialect.cursorFilter(ledgerFields, {
+				dialect.cursorFilter(entryFields, {
 					sortKey: 'timestamp',
 					sortBy: 'desc',
 					lastValue,
@@ -127,9 +127,9 @@ describe('query/mongodb.ts', () => {
 			})
 		})
 
-		it("should resume a string sort exactly as ledger's buildCursorFilter does", () => {
+		it('should resume a string sort exactly as the hand-written buildCursorFilter did', () => {
 			expect(
-				dialect.cursorFilter(ledgerFields, {
+				dialect.cursorFilter(entryFields, {
 					sortKey: 'event',
 					sortBy: 'asc',
 					lastValue: 'e',
@@ -140,10 +140,10 @@ describe('query/mongodb.ts', () => {
 			})
 		})
 
-		// Diverges from ledger, which compiled this to $lt: null and ended the walk
+		// Diverges from the hand-written version, which compiled this to $lt: null and ended the walk
 		it('should reject a null lastValue on a sort field not declared nullable with a 400', () => {
 			expect(() =>
-				dialect.cursorFilter(ledgerFields, {
+				dialect.cursorFilter(entryFields, {
 					sortKey: 'event',
 					sortBy: 'desc',
 					lastValue: null,
@@ -175,7 +175,7 @@ describe('query/mongodb.ts', () => {
 
 		it('should reject a lastId that is not an ObjectId with a 400', () => {
 			expect(() =>
-				dialect.cursorFilter(ledgerFields, {
+				dialect.cursorFilter(entryFields, {
 					sortKey: 'event',
 					sortBy: 'asc',
 					lastValue: 'e',
@@ -241,7 +241,7 @@ describe('query/mongodb.ts', () => {
 			).to.deep.eq({ _id: { $gt: 'g' } })
 		})
 
-		// ledger-api's grouped reads page over $group rows, whose _id is the group key
+		// Grouped reads page over $group rows, whose _id is the group key
 		it('should resume grouped rows with the group key as the tiebreak', () => {
 			expect(
 				dialect.keysetFilter({

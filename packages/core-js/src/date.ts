@@ -1,4 +1,6 @@
 /**
+ * Returns the current time as epoch milliseconds (`Date.now()` equivalent).
+ *
  * ///////////////
  * ///// CJS /////
  * ///////////////

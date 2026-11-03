@@ -12,6 +12,7 @@ export const CREDENTIAL_PROVIDERS = Object.freeze({
 	NODE_PROVIDER_CHAIN: 'fromNodeProviderChain',
 } as const)
 
+/** Name of a supported AWS credential provider, one of the `CREDENTIAL_PROVIDERS` values. */
 export type CredentialProvider = (typeof CREDENTIAL_PROVIDERS)[keyof typeof CREDENTIAL_PROVIDERS]
 
 /**

@@ -1,15 +1,18 @@
 import knex, { Knex } from 'knex'
 
+/** A Knex event name and the handler to attach to it when a connection opens. */
 export type PostgresConnectionEvent = {
 	name: string
 	handler: (...args: unknown[]) => unknown
 }
 
+/** Knex config for one named Postgres connection, plus optional event handlers to attach. */
 export type PostgresConnectionConfig = Knex.Config & {
 	name: string
 	events?: PostgresConnectionEvent[]
 }
 
+/** Default pool size, timeouts and search path that `PostgresConnections` applies when a config leaves them unset. */
 export const POSTGRES_CLIENT_OPTIONS_DEFAULTS = {
 	pool: {
 		min: 3,
@@ -20,12 +23,15 @@ export const POSTGRES_CLIENT_OPTIONS_DEFAULTS = {
 	searchPath: ['public'] as const,
 }
 
+/** An open Knex instance together with the config it was created from. */
 export type PostgresConnection = {
 	db: Knex
 	config: PostgresConnectionConfig
 }
 
 /**
+ * Opens and holds named Knex Postgres connections, verifying each with `select 1` and returning it by name until closed.
+ *
  * @example
  * ///////////////
  * ///// CJS /////
@@ -116,9 +122,12 @@ export class PostgresConnections {
 	}
 }
 
+/** Knex query builder scoped to one table whose rows have type `T`. */
 export type PostgresTableClient<T extends object> = Knex.QueryBuilder<T, unknown[]>
 
 /**
+ * Returns a typed Knex query builder for `tableName`, scoped to `schemaName` when given.
+ *
  * @example
  * ///////////////
  * ///// CJS /////

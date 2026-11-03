@@ -30,6 +30,7 @@ import { badRequestException } from './error.js'
 
 export type FieldType = 'string' | 'date' | 'boolean'
 
+/** Direction a sort runs in: ascending or descending. */
 export type SortDirection = 'asc' | 'desc'
 
 const FILTER_OPERATORS = {
@@ -38,6 +39,7 @@ const FILTER_OPERATORS = {
 	boolean: ['eq'],
 } as const
 
+/** Filter operators allowed for a field type (`in`/`notIn` for strings, `gte`/`lte` for dates, `eq` for booleans). */
 export type FilterOperator<T extends FieldType = FieldType> = (typeof FILTER_OPERATORS)[T][number]
 
 type FieldSpecOf<T extends FieldType> = {
@@ -57,11 +59,15 @@ type FieldSpecOf<T extends FieldType> = {
  */
 export type FieldSpec = FieldSpecOf<'string'> | FieldSpecOf<'date'> | FieldSpecOf<'boolean'>
 
+/** A service's field specs, keyed by field name. */
 export type FieldSpecs = Record<string, FieldSpec>
 
+/** Filter predicate for a string field: match any of `in` and none of `notIn`. */
 export type StringPredicate = { in?: string[]; notIn?: string[] }
+/** Filter predicate for a date field: an inclusive `gte`/`lte` range. */
 export type DatePredicate = { gte?: Date; lte?: Date }
 // A missing field counts as false
+/** Filter predicate for a boolean field: an exact `eq` match, where a missing field counts as false. */
 export type BooleanPredicate = { eq?: boolean }
 
 type PredicateOf<T extends FieldType> = T extends 'string'
@@ -74,6 +80,7 @@ type FilterableKeys<F extends FieldSpecs> = {
 	[K in keyof F]: F[K]['filter'] extends true | readonly unknown[] ? K : never
 }[keyof F]
 
+/** Names of the fields whose spec sets `sort: true`. */
 export type SortableKeys<F extends FieldSpecs> = Extract<
 	{ [K in keyof F]: F[K]['sort'] extends true ? K : never }[keyof F],
 	string
@@ -84,12 +91,14 @@ type PredicateFor<S extends FieldSpec> = S['filter'] extends readonly (infer O)[
 	? Pick<PredicateOf<S['type']>, Extract<O, keyof PredicateOf<S['type']>>>
 	: PredicateOf<S['type']>
 
+/** Parsed filter for a set of field specs: an optional predicate per filterable field, narrowed to the operators each allows. */
 export type Filter<F extends FieldSpecs> = {
 	[K in FilterableKeys<F>]?: PredicateFor<F[K]>
 }
 
 // The planner stops merging per-value index scans and switches to a blocking
 // sort past this many values, so it caps each in / notIn list
+/** Maximum number of values allowed in a single `in` or `notIn` list. */
 export const MAX_FILTER_VALUES = 200
 
 function allowedOperators(spec: FieldSpec): readonly FilterOperator[] {
@@ -150,6 +159,7 @@ export function filterSchema<F extends FieldSpecs>(fields: F): z.ZodType<Filter<
 	return z.object(shape).strict().default({}) as unknown as z.ZodType<Filter<F>>
 }
 
+/** Parsed sort: a sortable field key and a direction. */
 export type Sort<F extends FieldSpecs> = { key: SortableKeys<F>; direction: SortDirection }
 
 /**
@@ -171,6 +181,7 @@ export function sortSchema<F extends FieldSpecs>(params: {
 		.prefault({}) as unknown as z.ZodType<Sort<F>>
 }
 
+/** Parsed page request: a page size and an optional cursor token from the previous page. */
 export type Page = { limit: number; cursor?: string }
 
 /**
@@ -215,6 +226,7 @@ function sortableKeys(fields: FieldSpecs): string[] {
 		.map(([field]) => field)
 }
 
+/** Sort value a cursor records for the last row of a page: a string, number or null. */
 export type CursorValue = string | number | null
 
 /**
@@ -237,6 +249,7 @@ export const cursorPayloadSchema = z.object({
 	filterHash: z.string({ error: 'malformed cursor: filterHash must be a string' }).optional(),
 })
 
+/** Decoded contents of a cursor token, as validated by `cursorPayloadSchema`. */
 export type CursorPayload = z.infer<typeof cursorPayloadSchema>
 
 /**

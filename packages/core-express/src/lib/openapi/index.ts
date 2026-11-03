@@ -10,47 +10,48 @@ import type {
 	RequestBodyJSON,
 } from 'openapi-typescript-helpers'
 
-// return response content(s) for a specific status code(s) from an operation object, allowing any media type
+/** Resolves the response body type an operation declares for the given status code(s), narrowed to the given media type (any by default). */
 export type OperationResponseContent<
 	PathOperation,
 	Status extends keyof OperationResponses<PathOperation>,
 	Media extends MediaType = MediaType,
 > = FilterKeys<OperationContent<FilterKeys<OperationResponses<PathOperation>, Status>>, Media>
 
-// return 2XX response(s) from a operation object, allowing any media type
+/** Resolves the response body type an operation declares for its 2XX success status codes, narrowed to the given media type (any by default). */
 export type OperationSuccessResponseContent<
 	PathOperation,
 	Media extends MediaType = MediaType,
 > = OperationResponseContent<PathOperation, OkStatus, Media>
 
-// return first `parameters/path` from an operation object
+/** Extracts the `parameters.path` object an operation declares, or `never` if it declares none. */
 export type OperationPathParams<PathOperation> = PathOperation extends {
 	parameters: { path: unknown }
 }
 	? NonNullable<PathOperation['parameters']['path']>
 	: never
 
-// return first `parameters/query` from an operation object
+/** Extracts the `parameters.query` object an operation declares, or `never` if it declares none. */
 export type OperationQueryParams<PathOperation> = PathOperation extends {
 	parameters: { query: unknown }
 }
 	? NonNullable<PathOperation['parameters']['query']>
 	: never
 
-// return first `parameters/header` from an operation object
+/** Extracts the `parameters.header` object an operation declares, or `never` if it declares none. */
 export type OperationHeader<PathOperation> = PathOperation extends {
 	parameters: { header: unknown }
 }
 	? NonNullable<PathOperation['parameters']['header']>
 	: never
 
-// return `content` for a Response Object
+/** Extracts the `content` map (media type to body) from a response object, or `unknown` if it has none. */
 export type OperationContent<ObjectWithContent> = ObjectWithContent extends {
 	content: unknown
 }
 	? ObjectWithContent['content']
 	: unknown
 
+/** Extracts the `responses` map (status code to response object) from an operation, or `never` if it has none. */
 // `any` rather than `unknown`: this only has to match the presence of a
 // `responses` key on whatever openapi-typescript generated, and `unknown`
 // makes the conditional fail for operations whose responses are a union.
@@ -61,30 +62,34 @@ export type OperationResponses<PathOperation> = PathOperation extends {
 	? PathOperation['responses']
 	: never
 
+/** Route definition passed to an `OpenApiRouter` method: the typed handler for the operation plus optional middlewares that run before it. */
 export type OpenApiRouteConfig<PathOperation> = {
 	handler: OpenApiRequestHandler<PathOperation>
 	middlewares?: OpenApiRequestHandler<PathOperation> | RequestHandler[]
 }
 
+/** Type of `req.query` for an operation: its declared query parameters, falling back to `Record<string, unknown>` when it declares none. */
 export type OpenApiQueryParams<PathOperation> =
 	OperationQueryParams<PathOperation> extends never
 		? Record<string, unknown>
 		: OperationQueryParams<PathOperation>
 
+/** Type of `req.params` for an operation: its declared path parameters, falling back to `Record<string, unknown>` when it declares none. */
 export type OpenApiPathParams<PathOperation> =
 	OperationPathParams<PathOperation> extends never
 		? Record<string, unknown>
 		: OperationPathParams<PathOperation>
 
+/** Type of `req.body` for an operation: the JSON request body it declares. */
 export type OpenApiRequestBody<PathOperation> = RequestBodyJSON<PathOperation>
 
+/** Express `Response` whose body is typed as the operation's 2XX success response content. */
 export type OpenApiResponse<PathOperation> = Response<
 	OperationSuccessResponseContent<PathOperation>,
 	Locals
 >
 
-// decorate the base express request object wth the specific
-// info provided from the paths type
+/** Express `Request` typed from an operation: path params, success response body, JSON request body and query params all come from the OpenAPI `paths` type. */
 export type OpenApiRequest<PathOperation> = Request<
 	OpenApiPathParams<PathOperation>, // request path params
 	OperationSuccessResponseContent<PathOperation>, // response body
@@ -92,12 +97,14 @@ export type OpenApiRequest<PathOperation> = Request<
 	OpenApiQueryParams<PathOperation> // request query params
 >
 
+/** Express handler signature whose `req` and `res` are typed from an OpenAPI operation; may be async. */
 export type OpenApiRequestHandler<PathOperation> = (
 	req: OpenApiRequest<PathOperation>,
 	res: OpenApiResponse<PathOperation>,
 	next: NextFunction
 ) => Promise<void> | void
 
+/** Route-registration method for one HTTP verb: accepts a path the spec declares for that verb (any string is still allowed) and a config whose handler is typed from the matching operation. */
 export type OpenApiRouterMethod<Paths extends object, Method extends HttpMethod> = <
 	Path extends PathsWithMethod<Paths, Method>,
 	PathOperation extends FilterKeys<Paths[Path], Method>,
@@ -106,6 +113,7 @@ export type OpenApiRouterMethod<Paths extends object, Method extends HttpMethod>
 	config: OpenApiRouteConfig<PathOperation>
 ) => void
 
+/** Typed facade returned by `createOpenApiRouter`: `get`/`post`/`patch`/`put`/`delete` methods bound to the spec, with the underlying Express router exposed as `_router`. */
 export type OpenApiRouter<P extends object> = {
 	_router: Router
 	get: OpenApiRouterMethod<P, 'get'>
