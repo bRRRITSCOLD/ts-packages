@@ -15,7 +15,8 @@
 		},
 		"test:integration:ci": {
 			"dependsOn": ["^build"],
-			"cache": false
+			"cache": false,
+			"passThroughEnv": ["DEBUG", "DOCKER_HOST", "TESTCONTAINERS_*"]
 		},
 		"generate:docs": {
 			"outputs": ["docs/**"]
