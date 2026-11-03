@@ -1,0 +1,52 @@
+{
+	"files": {
+		"includes": ["**", "!**/dist/**", "!**/node_modules/**", "!**/.turbo/**", "!**/*.d.ts"]
+	},
+	"formatter": {
+		"enabled": true,
+		"indentStyle": "tab",
+		"indentWidth": 4,
+		"lineEnding": "lf",
+		"lineWidth": 100,
+		"includes": ["**", "!**/*.d.ts"]
+	},
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "single",
+			"semicolons": "asNeeded",
+			"trailingCommas": "es5"
+		},
+		"parser": {
+			"unsafeParameterDecoratorsEnabled": true
+		}
+	},
+	"linter": {
+		"enabled": true,
+		"includes": ["**", "!**/*.d.ts"],
+		"rules": {
+			"preset": "none",
+			"complexity": {
+				"noUselessTypeConstraint": "error"
+			},
+			"correctness": {
+				"noUnusedVariables": "error"
+			},
+			"style": {
+				"noCommonJs": "error",
+				"noNamespace": "error",
+				"useArrayLiterals": "error",
+				"useAsConstAssertion": "error"
+			},
+			"suspicious": {
+				"noExplicitAny": "error",
+				"noExtraNonNullAssertion": "error",
+				"noMisleadingInstantiator": "error",
+				"noNonNullAssertedOptionalChain": "error",
+				"noUnsafeDeclarationMerging": "error",
+				"noUnusedExpressions": "off",
+				"useNamespaceKeyword": "error"
+			}
+		}
+	},
+	"overrides": []
+}

@@ -1,0 +1,8 @@
+{
+	"extends": "./tsconfig",
+	"exclude": ["tests"],
+	"include": ["src"],
+	"compilerOptions": {
+		"module": "commonjs"
+	}
+}

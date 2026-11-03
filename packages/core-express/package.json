@@ -1,0 +1,77 @@
+{
+	"name": "@brrritscold/core-express",
+	"version": "0.1.0",
+	"description": "Express middlewares and helpers: JWT middleware, typed OpenAPI router, server creation.",
+	"license": "MIT",
+	"author": "Blaine Richardson",
+	"type": "module",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/bRRRITSCOLD/ts-packages.git",
+		"directory": "packages/core-express"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE"
+	],
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"import": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.mjs"
+			},
+			"require": {
+				"types": "./dist/index.d.cts",
+				"default": "./dist/index.cjs"
+			},
+			"default": "./dist/index.mjs"
+		}
+	},
+	"scripts": {
+		"build": "tsup",
+		"clean": "rm -rf dist .turbo",
+		"generate:docs": " mkdir -p docs && typedoc src",
+		"lint": "biome check --write",
+		"lint:check": "biome check",
+		"test:e2e": "mocha --require tsx tests --recursive --extension .e2e.test.ts --timeout 99999999  --exit",
+		"test:e2e:watch": "nodemon --config ./nodemon.e2e.test.json",
+		"test:integration": "mocha --require tsx tests --recursive --extension .integration.test.ts --timeout 99999999  --exit",
+		"test:integration:ci": "npm run test:integration:setup && npm run test:integration && npm run test:integration:teardown",
+		"test:integration:setup": "tsx ./tests/integration/__utils__/setup.ts",
+		"test:integration:teardown": "tsx ./tests/integration/__utils__/teardown.ts",
+		"test:integration:watch": "nodemon --config ./nodemon.integration.test.json",
+		"test:unit": "mocha --require tsx tests --recursive --extension .unit.test.ts --timeout 99999999  --exit",
+		"test:unit:watch": "nodemon --config ./nodemon.unit.test.json",
+		"typecheck": "tsc -p ./tsconfig.json"
+	},
+	"dependencies": {
+		"@brrritscold/core-js": "workspace:^",
+		"@brrritscold/core-node": "workspace:^",
+		"@types/cors": "^2.8.19",
+		"@types/swagger-ui-express": "^4.1.8",
+		"cors": "^2.8.5",
+		"dotenv": "^17.2.3",
+		"dotenv-safe": "^9.1.0",
+		"express": "^5.1.0",
+		"openapi-typescript-helpers": "^0.0.15",
+		"swagger-ui-express": "^5.0.1",
+		"yaml": "^2.9.1"
+	},
+	"devDependencies": {
+		"@brrritscold/testing-core-node": "workspace:^",
+		"@types/dotenv-safe": "^9.1.0",
+		"@types/express": "^5.0.5",
+		"@types/jsonwebtoken": "^9.0.10",
+		"@types/sinon": "^21.0.0",
+		"@types/supertest": "^7.2.1",
+		"sinon": "^21.0.0",
+		"supertest": "^7.1.4"
+	}
+}

@@ -1,0 +1,86 @@
+{
+	"name": "@brrritscold/testing-core-node",
+	"version": "0.1.0",
+	"description": "Node-only test helpers: testcontainers wrappers and nock interceptors.",
+	"license": "MIT",
+	"author": "Blaine Richardson",
+	"type": "module",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/bRRRITSCOLD/ts-packages.git",
+		"directory": "packages/testing-core-node"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE"
+	],
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"import": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.mjs"
+			},
+			"require": {
+				"types": "./dist/index.d.cts",
+				"default": "./dist/index.cjs"
+			},
+			"default": "./dist/index.mjs"
+		},
+		"./docker": {
+			"import": {
+				"types": "./dist/docker.d.ts",
+				"default": "./dist/docker.mjs"
+			},
+			"require": {
+				"types": "./dist/docker.d.cts",
+				"default": "./dist/docker.cjs"
+			},
+			"default": "./dist/docker.mjs"
+		},
+		"./nock": {
+			"import": {
+				"types": "./dist/nock.d.ts",
+				"default": "./dist/nock.mjs"
+			},
+			"require": {
+				"types": "./dist/nock.d.cts",
+				"default": "./dist/nock.cjs"
+			},
+			"default": "./dist/nock.mjs"
+		}
+	},
+	"scripts": {
+		"build": "tsup",
+		"clean": "rm -rf dist .turbo",
+		"generate:docs": "typedoc src",
+		"lint": "biome check --write",
+		"lint:check": "biome check",
+		"test:e2e": "mocha --require tsx tests/**/*.e2e.test.ts --recursive --timeout 99999999  --exit",
+		"test:e2e:watch": "nodemon --config ./nodemon.e2e.test.json",
+		"test:integration": "mocha --require tsx tests/**/*.integration.test.ts --recursive --timeout 99999999  --exit",
+		"test:integration:ci": "npm run test:integration:setup && npm run test:integration && npm run test:integration:teardown",
+		"test:integration:setup": "tsx ./tests/integration/__utils__/setup.ts",
+		"test:integration:teardown": "tsx ./tests/integration/__utils__/teardown.ts",
+		"test:integration:watch": "nodemon --config ./nodemon.integration.test.json",
+		"test:unit": "mocha --require tsx tests/**/*.unit.test.ts --recursive --timeout 99999999  --exit",
+		"test:unit:watch": "nodemon --config ./nodemon.unit.test.json",
+		"typecheck": "tsc -p ./tsconfig.json"
+	},
+	"dependencies": {
+		"nock": "^14.0.10",
+		"testcontainers": "^12.1.0"
+	},
+	"devDependencies": {
+		"@types/dotenv-safe": "^9.1.0",
+		"@types/jsonwebtoken": "^9.0.10",
+		"mongodb": "^6.21.0",
+		"supertest": "^7.1.4"
+	}
+}

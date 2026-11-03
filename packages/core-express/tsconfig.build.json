@@ -1,0 +1,10 @@
+{
+	"extends": "./tsconfig",
+	"exclude": ["tests"],
+	"include": ["src"],
+	"compilerOptions": {
+		"outDir": "./dist",
+		"rootDir": "./src",
+		"noEmit": false
+	}
+}

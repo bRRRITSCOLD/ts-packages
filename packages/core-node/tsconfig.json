@@ -1,0 +1,21 @@
+{
+	"compilerOptions": {
+		"outDir": "./dist",
+		"rootDir": ".",
+		"target": "esnext",
+		"lib": ["esnext"],
+		"module": "nodenext",
+		"allowJs": true,
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"declaration": true,
+		"allowSyntheticDefaultImports": true,
+		"sourceMap": true,
+		"noEmit": true,
+		"types": ["node", "mocha"]
+	},
+	"include": ["src", "tests"]
+}
