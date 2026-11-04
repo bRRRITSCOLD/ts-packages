@@ -14,7 +14,7 @@ spec:
   valuesContent: |-
     config:
       publicUri: "http://localhost:9001"
-      flags: "enable-registration enable-login-with-password disable-email-verification disable-secure-session-cookies enable-mcp"
+      flags: "enable-registration enable-login-with-password disable-email-verification disable-secure-session-cookies enable-mcp enable-access-tokens"
       existingSecret: penpot-proto-secrets
       secretKeys:
         apiSecretKey: apiSecretKey
