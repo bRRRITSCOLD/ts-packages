@@ -1,0 +1,88 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      class-variance-authority:
+        specifier: 0.7.1
+        version: 0.7.1
+      clsx:
+        specifier: 2.1.1
+        version: 2.1.1
+      lucide-react:
+        specifier: 0.545.0
+        version: 0.545.0(react@19.2.0)
+      react:
+        specifier: 19.2.0
+        version: 19.2.0
+      tailwind-merge:
+        specifier: 3.3.1
+        version: 3.3.1
+    devDependencies:
+      '@types/react':
+        specifier: 19.2.2
+        version: 19.2.2
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
+
+packages:
+
+  '@types/react@19.2.2':
+    resolution: {integrity: sha512-6mDvHUFSjyT2B2yeNx2nUgMxh9LtOWvkhIU3uePn2I2oyNymUAX1NIsdgviM4CH+JSrp2D2hsMvJOkxY+0wNRA==}
+
+  class-variance-authority@0.7.1:
+    resolution: {integrity: sha512-Ka+9Trutv7G8M6WT6SeiRWz792K5qEqIGEGzXKhAE6xOWAY6pPH8U+9IY3oCMv6kqTmLsv7Xh/2w2RigkePMsg==}
+
+  clsx@2.1.1:
+    resolution: {integrity: sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA==}
+    engines: {node: '>=6'}
+
+  csstype@3.2.3:
+    resolution: {integrity: sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ==}
+
+  lucide-react@0.545.0:
+    resolution: {integrity: sha512-7r1/yUuflQDSt4f1bpn5ZAocyIxcTyVyBBChSVtBKn5M+392cPmI5YJMWOJKk/HUWGm5wg83chlAZtCcGbEZtw==}
+    peerDependencies:
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
+
+  react@19.2.0:
+    resolution: {integrity: sha512-tmbWg6W31tQLeB5cdIBOicJDJRR2KzXsV7uSK9iNfLWQ5bIZfxuPEHp7M8wiHyHnn0DD1i7w3Zmin0FtkrwoCQ==}
+    engines: {node: '>=0.10.0'}
+
+  tailwind-merge@3.3.1:
+    resolution: {integrity: sha512-gBXpgUm/3rp1lMZZrM/w7D8GKqshif0zAymAhbCyIt8KMe+0v9DQ7cdYLR4FHH/cKpdTXb+A/tKKU3eolfsI+g==}
+
+  typescript@5.9.3:
+    resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
+snapshots:
+
+  '@types/react@19.2.2':
+    dependencies:
+      csstype: 3.2.3
+
+  class-variance-authority@0.7.1:
+    dependencies:
+      clsx: 2.1.1
+
+  clsx@2.1.1: {}
+
+  csstype@3.2.3: {}
+
+  lucide-react@0.545.0(react@19.2.0):
+    dependencies:
+      react: 19.2.0
+
+  react@19.2.0: {}
+
+  tailwind-merge@3.3.1: {}
+
+  typescript@5.9.3: {}

@@ -1,0 +1,28 @@
+# PROTOTYPE, wipe me. Penpot via k3s's built-in helm-controller (no helm binary needed).
+# Chart 1.11.5 = Penpot 2.18.5 (map decision: pin >= 2.17). Reached by port-forward on localhost:9001.
+# The API secret is created by up.sh as Secret penpot-proto-secrets, never committed.
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: penpot
+  namespace: penpot-proto
+spec:
+  repo: https://penpot.github.io/penpot-helm
+  chart: penpot
+  version: 1.11.5
+  targetNamespace: penpot-proto
+  valuesContent: |-
+    config:
+      publicUri: "http://localhost:9001"
+      flags: "enable-registration enable-login-with-password disable-email-verification disable-secure-session-cookies enable-mcp"
+      existingSecret: penpot-proto-secrets
+      secretKeys:
+        apiSecretKey: apiSecretKey
+      telemetryEnabled: false
+      postgresql:
+        host: postgres.penpot-proto.svc.cluster.local
+      redis:
+        host: valkey.penpot-proto.svc.cluster.local
+    persistence:
+      assets:
+        size: 2Gi

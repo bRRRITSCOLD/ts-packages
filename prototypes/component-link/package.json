@@ -1,0 +1,20 @@
+{
+  "name": "prototype-component-link",
+  "private": true,
+  "description": "PROTOTYPE, wipe me. Throwaway harness for the component-link prototype.",
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit -p ."
+  },
+  "dependencies": {
+    "class-variance-authority": "0.7.1",
+    "clsx": "2.1.1",
+    "lucide-react": "0.545.0",
+    "react": "19.2.0",
+    "tailwind-merge": "3.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.2",
+    "typescript": "5.9.3"
+  }
+}

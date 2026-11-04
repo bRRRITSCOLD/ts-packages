@@ -1,0 +1,88 @@
+# PROTOTYPE, wipe me. Throwaway Postgres + Valkey for the component-link prototype.
+# The Penpot chart no longer bundles either, so they live here as plain manifests.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: penpot-proto
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+  namespace: penpot-proto
+spec:
+  serviceName: postgres
+  replicas: 1
+  selector:
+    matchLabels: { app: postgres }
+  template:
+    metadata:
+      labels: { app: postgres }
+    spec:
+      # On this host (Ubuntu 26.04, kernel 7.0) containerd's default AppArmor profile
+      # denies signals between the container's own processes: gosu spins forever and
+      # postgres dies with "could not signal for checkpoint: Permission denied".
+      securityContext:
+        appArmorProfile: { type: Unconfined }
+      containers:
+        - name: postgres
+          image: postgres:16.10-alpine
+          env:
+            - { name: POSTGRES_USER, value: penpot }
+            - { name: POSTGRES_PASSWORD, value: penpot }
+            - { name: POSTGRES_DB, value: penpot }
+            - { name: PGDATA, value: /var/lib/postgresql/data/pgdata }
+          ports:
+            - containerPort: 5432
+          readinessProbe:
+            exec: { command: ["pg_isready", "-U", "penpot"] }
+            periodSeconds: 5
+          volumeMounts:
+            - { name: data, mountPath: /var/lib/postgresql/data }
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 2Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  namespace: penpot-proto
+spec:
+  selector: { app: postgres }
+  ports:
+    - port: 5432
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: valkey
+  namespace: penpot-proto
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: valkey }
+  template:
+    metadata:
+      labels: { app: valkey }
+    spec:
+      containers:
+        - name: valkey
+          image: valkey/valkey:8.1-alpine
+          ports:
+            - containerPort: 6379
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: valkey
+  namespace: penpot-proto
+spec:
+  selector: { app: valkey }
+  ports:
+    - port: 6379
