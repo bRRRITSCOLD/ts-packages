@@ -6,7 +6,8 @@
 			"!**/node_modules/**",
 			"!**/site/**",
 			"!**/.turbo/**",
-			"!**/*.d.ts"
+			"!**/*.d.ts",
+			"!.changeset/**"
 		]
 	},
 	"formatter": {

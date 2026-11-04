@@ -71,11 +71,7 @@ describe('docker.ts', () => {
 		p = createPostgresContainer()
 		l = createLocalstackContainer()
 
-		// Started one at a time: on GitHub-hosted runners, concurrent starts make
-		// the readiness check's `docker exec` calls fail with `write EPIPE`.
-		await m.start()
-		await p.start()
-		await l.start()
+		await Promise.all([m.start(), p.start(), l.start()])
 
 		expect(m.startedContainer).to.be.not.undefined
 		expect(p.startedContainer).to.be.not.undefined
