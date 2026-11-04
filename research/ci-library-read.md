@@ -88,3 +88,7 @@ Risks:
 - **Format drift:** neither the RPC payload nor the zip has a compatibility promise, and the published file-format doc already lags reality. Pin the Penpot version the check is tested against, validate the parsed shape with a schema, and fail with a clear "format changed" message instead of reporting false drift. Re-run against each Penpot minor (2.19 changes `export-binfile` params and closes RPC param schemas).
 - **SSE parsing:** the export stream is transit-encoded even with `Accept: application/json`; the CI client only needs the `end` event's `~#uri` value.
 - **Untested here:** the token-authenticated read itself (blocked by the instance flag). Enable the flag on a test instance and repeat `get-file` / `export-binfile` with `Authorization: Token` before building on it.
+
+## Addendum: token-authenticated read verified (2026-11-03)
+
+**V.** After adding `enable-access-tokens` to the local instance's flags (prototype `k8s/penpot.yaml`), a freshly minted access token alone (no session cookie) authenticated as the CI profile (`get-profile` returned the profile, not the anonymous id). `get-file` (JSON) with only `Authorization: Token <pat>` returned 26 components, 25 with the `link` plugin data, 20 with `variantProperties`, and `tokensLib` with `primitive` / `light` / `dark` / `$themes` / `$metadata`. The same call without the header returned 401. Token revoked afterwards (`delete-access-token` → 204). This closes the U above.
