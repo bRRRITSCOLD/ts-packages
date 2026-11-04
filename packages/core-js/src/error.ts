@@ -50,26 +50,11 @@ export type ExceptionConstructorInput = {
  * keys recursively.
  *
  * @example
- * ///////////////
- * ///// CJS /////
- * ///////////////
- * const { error } = require('@brrritscold/core-js')
- * const { Exception } = error
- *
- * // or
- * const { error: { Exception } } = require('@brrritscold/core-js')
- *
- * //or
- * const { Exception } = require('@brrritscold/core-js/error')
- *
- * ///////////////
- * ///// ESM /////
- * ///////////////
- * import { error } from '@brrritscold/core-js'
- * const { Exception } = error
- *
- * // or
+ * // ESM
  * import { Exception } from '@brrritscold/core-js/error'
+ *
+ * // CJS
+ * const { Exception } = require('@brrritscold/core-js/error')
  *
  * // CODE
  * const ramException = new Exception({
@@ -230,15 +215,11 @@ export function mapErrorToException<E extends { message?: string }>(error: E) {
  * @returns Object representing the original error's content.
  *
  * @example
- * ///////////////
- * ///// CJS /////
- * ///////////////
- * const { mapErrorToObject } = require('@brrritscold/core-js/error')
- *
- * ///////////////
- * ///// ESM /////
- * ///////////////
+ * // ESM
  * import { mapErrorToObject } from '@brrritscold/core-js/error'
+ *
+ * // CJS
+ * const { mapErrorToObject } = require('@brrritscold/core-js/error')
  *
  * // CODE
  * const error = new Error('Something went wrong!')

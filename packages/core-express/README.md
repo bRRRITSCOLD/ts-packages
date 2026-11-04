@@ -14,17 +14,18 @@ API reference: [brrritscold.github.io/ts-packages](https://brrritscold.github.io
 ## Features
 
 - ESM + CJS compatabilities
-  - any `import ... from '@brrritscold/core-express'` in documentation can be replaced with a `const ... = require('@brrritscold/core-express')`
-- `openapi.createOpenApiRouter` - an Express router bound to the service's OpenAPI contract, so a route that drifts from the spec fails to compile
+  - any `import { x } from '@brrritscold/core-express/<subpath>'` in documentation can be replaced with a `const { x } = require('@brrritscold/core-express/<subpath>')`
+- Import from fully qualified subpaths only (`/error`, `/middlewares/jwt`, `/openapi`, `/utils/create-server`, `/utils/jwt`); there is no package-root entry
+- `createOpenApiRouter` (`/openapi`) - an Express router bound to the service's OpenAPI contract, so a route that drifts from the spec fails to compile
 
   ```ts
-  import { openapi } from '@brrritscold/core-express'
+  import { createOpenApiRouter } from '@brrritscold/core-express/openapi'
   import { Router } from 'express'
 
   import type { paths } from './types/openapi.js'
 
   const todosRouter = Router()
-  const openApiRouter = openapi.createOpenApiRouter<paths>(todosRouter)
+  const openApiRouter = createOpenApiRouter<paths>(todosRouter)
 
   openApiRouter.get('/v1/todos/{id}', {
       middlewares: [authMiddleware],
@@ -53,10 +54,10 @@ API reference: [brrritscold.github.io/ts-packages](https://brrritscold.github.io
 
 Full reference: [brrritscold.github.io/ts-packages](https://brrritscold.github.io/ts-packages/modules/_brrritscold_core-express.html)
 
-### [`@brrritscold/core-express → error`](https://brrritscold.github.io/ts-packages/modules/_brrritscold_core-express.error.html)
+### [`@brrritscold/core-express/error`](https://brrritscold.github.io/ts-packages/modules/_brrritscold_core-express.error.html)
 
 ```ts
-import { error } from '@brrritscold/core-express'
+import { … } from '@brrritscold/core-express/error'
 ```
 
 | Export                            | Kind  | Summary                                                                                                                          |
@@ -65,20 +66,21 @@ import { error } from '@brrritscold/core-express'
 | `JwtMidExceptionConstructorInput` | type  | Constructor parameters for `JwtMiddlewareException`: the failure message plus an optional HTTP status code and underlying cause. |
 | `JwtMidExceptionMessages`         | enum  | Messages a `JwtMiddlewareException` can carry, one per way the `authorization` header can fail JWT verification.                 |
 
-### [`@brrritscold/core-express → middlewares`](https://brrritscold.github.io/ts-packages/modules/_brrritscold_core-express.middlewares.html)
+### [`@brrritscold/core-express/middlewares/jwt`](https://brrritscold.github.io/ts-packages/modules/_brrritscold_core-express.middlewares_jwt.html)
 
 ```ts
-import { middlewares } from '@brrritscold/core-express'
+import { … } from '@brrritscold/core-express/middlewares/jwt'
 ```
 
-| Export | Kind      | Summary |
-| ------ | --------- | ------- |
-| `jwt`  | namespace |         |
+| Export                 | Kind      | Summary                                                                                                                                                                                                                                                     |
+| ---------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `jwtMiddleware`        | function  | Verifies the JWT stored in the headers of request match with the expected ones from our system. Once checked, it stores the value of the JWT _id_ within the Express Request. Its important that the Request implements the JwtMiddlewareRequest interface. |
+| `JwtMiddlewareRequest` | interface | Express Request interface with additional fields to store JWT related data.                                                                                                                                                                                 |
 
-### [`@brrritscold/core-express → openapi`](https://brrritscold.github.io/ts-packages/modules/_brrritscold_core-express.openapi.html)
+### [`@brrritscold/core-express/openapi`](https://brrritscold.github.io/ts-packages/modules/_brrritscold_core-express.openapi.html)
 
 ```ts
-import { openapi } from '@brrritscold/core-express'
+import { … } from '@brrritscold/core-express/openapi'
 ```
 
 | Export                            | Kind     | Summary                                                                                                                                                                                    |
@@ -102,15 +104,25 @@ import { openapi } from '@brrritscold/core-express'
 | `OperationSuccessResponseContent` | type     | Resolves the response body type an operation declares for its 2XX success status codes, narrowed to the given media type (any by default).                                                 |
 | `replacePath`                     | function | Rewrites an OpenAPI path template into the Express form.                                                                                                                                   |
 
-### [`@brrritscold/core-express → utils`](https://brrritscold.github.io/ts-packages/modules/_brrritscold_core-express.utils.html)
+### [`@brrritscold/core-express/utils/create-server`](https://brrritscold.github.io/ts-packages/modules/_brrritscold_core-express.utils_create-server.html)
 
 ```ts
-import { utils } from '@brrritscold/core-express'
+import { … } from '@brrritscold/core-express/utils/create-server'
 ```
 
-| Export         | Kind      | Summary |
-| -------------- | --------- | ------- |
-| `createServer` | namespace |         |
-| `jwt`          | namespace |         |
+| Export         | Kind     | Summary                                                                                                                                                                                                                                                    |
+| -------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `createServer` | function | Creates an Express app with permissive CORS, JSON body parsing, optional Swagger UI at `/api-docs` (served from `./openapi.yaml` with `swagger.baseUrl` as its server), and the given middlewares, returning it with `listen(port)` and `close()` helpers. |
+
+### [`@brrritscold/core-express/utils/jwt`](https://brrritscold.github.io/ts-packages/modules/_brrritscold_core-express.utils_jwt.html)
+
+```ts
+import { … } from '@brrritscold/core-express/utils/jwt'
+```
+
+| Export                   | Kind     | Summary                                                                                                       |
+| ------------------------ | -------- | ------------------------------------------------------------------------------------------------------------- |
+| `JwtVerificationFailure` | variable | Result `verifyJwt` returns when no configuration could verify the token: `success: false` with an empty `id`. |
+| `verifyJwt`              | function | Verifies that a JWT is well-formed and not expired, given some configurations.                                |
 
 <!-- api:end -->

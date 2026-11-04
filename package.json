@@ -9,6 +9,7 @@
 	"scripts": {
 		"build": "turbo run build",
 		"changeset": "changeset",
+		"check:entries": "node scripts/check-entries.mjs",
 		"clean": "turbo run clean && rm -rf node_modules",
 		"docs:build": "typedoc",
 		"docs:check": "typedoc && node scripts/readme-api.mjs --check",

@@ -7,23 +7,11 @@ import cloneDeep from 'lodash/cloneDeep.js'
  * leaking the mutation into other test cases.
  *
  * @example
- * ///////////////
- * ///// CJS /////
- * ///////////////
- * const { common } = require('@brrritscold/testing-core-js')
- * const { deepCopy } = common
- *
- * // or
- * const { deepCopy } = require('@brrritscold/testing-core-js/common')
- *
- * ///////////////
- * ///// ESM /////
- * ///////////////
- * import { common } from '@brrritscold/testing-core-js'
- * const { deepCopy } = common
- *
- * // or
+ * // ESM
  * import { deepCopy } from '@brrritscold/testing-core-js/common'
+ *
+ * // CJS
+ * const { deepCopy } = require('@brrritscold/testing-core-js/common')
  *
  * const fixture = { id: 1, nested: { status: 'pending' } }
  * const variant = deepCopy(fixture)

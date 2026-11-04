@@ -24,10 +24,10 @@ API reference: [brrritscold.github.io/ts-packages](https://brrritscold.github.io
 
 Full reference: [brrritscold.github.io/ts-packages](https://brrritscold.github.io/ts-packages/modules/_brrritscold_testing-core-js.html)
 
-### `@brrritscold/testing-core-js`
+### `@brrritscold/testing-core-js/common`
 
 ```ts
-import { … } from '@brrritscold/testing-core-js'
+import { … } from '@brrritscold/testing-core-js/common'
 ```
 
 | Export     | Kind     | Summary                                                                      |

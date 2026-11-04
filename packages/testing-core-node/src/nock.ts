@@ -38,15 +38,10 @@ export type InterceptConfig = {
  *
  * @example
  * // node_modules
- * import { intercept } from '@brrritscold/testing-core-node/nock'
- *
- * // or
- * import { nock } from '@brrritscold/testing-core-node'
- *
- * const { intercept, clearInterceptors } = nock
+ * import { clearInterceptors, intercept } from '@brrritscold/testing-core-node/nock'
  *
  * // set up http interceptors
- * const interceptScopes = nock.intercept([{
+ * const interceptScopes = intercept([{
  *     method: 'post',
  *     url: 'https://dummyjson.com',
  *     endpoint: '/products',

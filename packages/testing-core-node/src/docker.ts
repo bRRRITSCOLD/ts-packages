@@ -9,11 +9,6 @@ const labels = { application: 'brrritscold-testing-core-node' }
  * // node_modules
  * import { Container } from '@brrritscold/testing-core-node/docker'
  *
- * // or
- * import { docker } from '@brrritscold/testing-core-node'
- *
- * const { Container } = docker
- *
  * const container = new Container({
  *     image: `mongo`,
  *     port:  27017,
@@ -76,11 +71,6 @@ export class Container {
  * @example
  * // node_modules
  * import { MongoDbContainer } from '@brrritscold/testing-core-node/docker'
- *
- * // or
- * import { docker } from '@brrritscold/testing-core-node'
- *
- * const { MongoDbContainer } = docker
  *
  * const mongoDbContainer = new MongoDbContainer({
  *     username: process.env.USERNAME,
@@ -263,11 +253,6 @@ export class MongoDbAtlasLocalContainer extends Container {
  * // node_modules
  * import { PostgresContainer } from '@brrritscold/testing-core-node/docker'
  *
- * // or
- * import { docker } from '@brrritscold/testing-core-node'
- *
- * const { PostgresContainer } = docker
- *
  * const postgresContainer = new PostgresContainer({
  *     username: process.env.USERNAME,
  *     password: process.env.PASSWORD,
@@ -307,11 +292,6 @@ export class PostgresContainer extends Container {
  * @example
  * // node_modules
  * import { LocalstackContainer } from '@brrritscold/testing-core-node/docker'
- *
- * // or
- * import { docker } from '@brrritscold/testing-core-node'
- *
- * const { LocalstackContainer } = docker
  *
  * const localstackContainer = new LocalstackContainer({
  *     services: 'secretsmanager,
@@ -354,11 +334,6 @@ export class LocalstackContainer extends Container {
  * @example
  * // node_modules
  * import { FlociContainer } from '@brrritscold/testing-core-node/docker'
- *
- * // or
- * import { docker } from '@brrritscold/testing-core-node'
- *
- * const { FlociContainer } = docker
  *
  * const flociContainer = new FlociContainer()
  *

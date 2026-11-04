@@ -4,13 +4,13 @@ Turborepo + pnpm monorepo for shared TypeScript libraries, published to npm unde
 
 **API reference:** https://brrritscold.github.io/ts-packages/
 
-| Package                                                          | Runtime        | What                                                                     |
-| ---------------------------------------------------------------- | -------------- | ------------------------------------------------------------------------ |
-| [`@brrritscold/core-js`](./packages/core-js)                     | browser + node | `date`, `error`, `obj`, `query`, `zod`                                   |
-| [`@brrritscold/core-node`](./packages/core-node)                 | node           | `dotenv`, `jwt`, `mongodb`, `postgres`, `s3`, `secrets-manager`, `query` |
-| [`@brrritscold/core-express`](./packages/core-express)           | node           | JWT middleware, typed OpenAPI router, server creation                    |
-| [`@brrritscold/testing-core-js`](./packages/testing-core-js)     | browser + node | test helpers (`deepCopy`)                                                |
-| [`@brrritscold/testing-core-node`](./packages/testing-core-node) | node           | testcontainers wrappers, nock interceptors                               |
+| Package                                                          | Runtime        | What                                                                      |
+| ---------------------------------------------------------------- | -------------- | ------------------------------------------------------------------------- |
+| [`@brrritscold/core-js`](./packages/core-js)                     | browser + node | `date`, `error`, `obj`, `query`, `zod`                                    |
+| [`@brrritscold/core-node`](./packages/core-node)                 | node           | `dotenv`, `jwt`, `mongodb`, `postgres`, `s3`, `secrets-manager`, `query`  |
+| [`@brrritscold/core-express`](./packages/core-express)           | node           | `error`, `middlewares/jwt`, `openapi`, `utils/create-server`, `utils/jwt` |
+| [`@brrritscold/testing-core-js`](./packages/testing-core-js)     | browser + node | test helpers (`deepCopy`)                                                 |
+| [`@brrritscold/testing-core-node`](./packages/testing-core-node) | node           | testcontainers wrappers, nock interceptors                                |
 
 ## Develop
 
@@ -24,6 +24,12 @@ pnpm lint
 ```
 
 Work on one package: `pnpm --filter @brrritscold/core-node test:unit`.
+
+## Entry points
+
+Packages have **no root entry**: always import a fully qualified subpath, such as `@brrritscold/core-js/date` or `@brrritscold/testing-core-node/docker`, never `@brrritscold/core-js`. There are no `index.ts` barrels. Each subpath loads only its own module, and each export has exactly one import path. Shared code between subpaths is split into chunks (tsup `splitting: true`), so classes keep one identity across entries.
+
+`pnpm check:entries` enforces this in CI. It fails on a `"."` export, on `main` / `module` / `types` fields, on any `src/**/index.ts`, or when `exports`, tsup `entryPoints` and typedoc `entryPoints` disagree.
 
 ## Docs
 
