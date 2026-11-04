@@ -1,6 +1,6 @@
 {
 	"name": "@brrritscold/core-js",
-	"version": "0.1.1",
+	"version": "0.2.0",
 	"description": "Runtime-agnostic (browser + node) core utilities: date, error, obj, query, zod.",
 	"license": "MIT",
 	"author": "Blaine Richardson",
