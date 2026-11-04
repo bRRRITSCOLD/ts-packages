@@ -56,7 +56,7 @@ feature PR (code + .changeset/*.md) ──merge──▶ main
 2. Merge the PR. After `check` + `integration` pass, the `release` job opens or updates the **Version Packages** PR. Changesets from several PRs pile up in that one PR, which is how releases get batched.
 3. Merge the Version Packages PR when you want to release. That run publishes.
 
-**Which mode ran?** The `release` job has two named steps, and only one runs per push: _Open or update Version Packages PR (no publish)_ or _Publish to npm_. The mode is chosen by whether `.changeset/` still holds changeset files. The run page shows a "Release mode" notice, and the job summary lists what was opened or published. A green `release` job in Version PR mode published nothing.
+**Did it publish?** Read the **"Release result"** notice on the run page: `PUBLISHED: name@version, …` or `NOT published` with the reason. Don't go by the job's colour or by which step ran. The `release` job has two named steps, and only one runs per push: _Open or update Version Packages PR (no publish)_ when `.changeset/` holds changeset files, otherwise _Publish unpublished versions to npm (no-op if all are published)_. A green publish step often publishes nothing, for example on any merge after the Version Packages PR. A "Release mode" notice states the mode up front, and the job summary repeats the result.
 
 The `docs` job (GitHub Pages) deploys only when the release job actually published, so the site always matches npm.
 

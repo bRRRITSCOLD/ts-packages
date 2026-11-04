@@ -81,7 +81,7 @@ jobs:
                     echo "::notice title=Release mode: Version PR::$pending pending changeset(s) → opening/updating the Version Packages PR. Nothing is published to npm by this run."
                   else
                     echo "mode=publish" >> "$GITHUB_OUTPUT"
-                    echo "::notice title=Release mode: publish::No pending changesets → publishing any package version not yet on npm."
+                    echo "::notice title=Release mode: publish check::No pending changesets → checking npm for package versions not yet published. The result notice says whether anything was published."
                   fi
             - name: Open or update Version Packages PR (no publish)
               id: version
@@ -91,7 +91,7 @@ jobs:
                   version: pnpm version-packages
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            - name: Publish to npm
+            - name: Publish unpublished versions to npm (no-op if all are published)
               id: publish
               if: steps.mode.outputs.mode == 'publish'
               uses: changesets/action@v1
@@ -121,9 +121,17 @@ jobs:
                       echo "**Mode: publish.** Published to npm:"
                       echo "$PACKAGES" | jq -r '.[] | "- `\(.name)@\(.version)`"'
                     else
-                      echo "**Mode: publish.** Nothing new to publish — every package version is already on npm."
+                      echo "**Mode: publish.** Nothing published: every package version is already on npm."
                     fi
                   } >> "$GITHUB_STEP_SUMMARY"
+                  # Outcome on the run page, next to the mode notice.
+                  if [ "$MODE" = "version-pr" ]; then
+                    echo "::notice title=Release result: NOT published::Version Packages PR ${PR_NUMBER:+#$PR_NUMBER }opened/updated. Merge it to publish."
+                  elif [ "$PUBLISHED" = "true" ]; then
+                    echo "::notice title=Release result: PUBLISHED::$(echo "$PACKAGES" | jq -r 'map("\(.name)@\(.version)") | join(", ")')"
+                  else
+                    echo "::notice title=Release result: NOT published::Nothing new; every package version is already on npm."
+                  fi
 
     # Publishes the API reference to GitHub Pages only when the release job
     # actually published to npm, so the site always matches what is on npm.
