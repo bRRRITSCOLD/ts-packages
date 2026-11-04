@@ -27,3 +27,15 @@ _Avoid_: variable, style
 **Token file**:
 The single W3C DTCG file in this repo that holds every design token and is the source of truth for them.
 _Avoid_: theme file, tokens.json (as a concept)
+
+**Primitive token**:
+A design token holding a raw value from the palette or a scale, with no meaning of its own (a specific slate shade, a step on the spacing scale).
+_Avoid_: base token, global token, core token
+
+**Semantic token**:
+A design token that names a role in the interface (background, primary, border) and points at a primitive token; it is what components use, and it can point at a different primitive per mode.
+_Avoid_: alias token, theme token
+
+**Token sync**:
+Making the design system library's design tokens match the token file, always in that direction; a change made in the design tool reaches the token file only through a reviewed change to the token file.
+_Avoid_: token import, token push
