@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import _nock from 'nock'
 // application/testee
-import { nock } from '../../src/index.js'
+import * as nock from '../../src/nock.js'
 // types
 import { GenericRecord } from '../__utils__/types.js'
 
