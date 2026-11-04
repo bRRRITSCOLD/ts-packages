@@ -41,9 +41,14 @@ jobs:
             - run: pnpm build
             - run: pnpm test:integration
 
-    # Runs only on pushes to main, and only after check + integration pass.
-    # With pending changesets it opens/updates the "Version Packages" PR;
-    # when that PR is merged it publishes to npm.
+    # Runs only on pushes to main, after check + integration pass. Exactly ONE of
+    # its two release steps runs, chosen by whether .changeset/ holds pending
+    # changeset files:
+    #   pending changesets → "Open or update Version Packages PR"  (publishes nothing)
+    #   none               → "Publish to npm"  (publishes every version not yet on
+    #                         npm; a no-op when there is nothing new)
+    # The run page shows a notice and the job summary says which one ran.
+    # Full flow: README.md → Release.
     release:
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         needs: [check, integration]
@@ -55,6 +60,9 @@ jobs:
             contents: write
             pull-requests: write
             id-token: write
+        outputs:
+            mode: ${{ steps.mode.outputs.mode }}
+            published: ${{ steps.publish.outputs.published }}
         steps:
             - uses: actions/checkout@v4
             - uses: pnpm/action-setup@v4
@@ -64,20 +72,64 @@ jobs:
                   cache: pnpm
                   registry-url: https://registry.npmjs.org
             - run: pnpm install --frozen-lockfile
-            - uses: changesets/action@v1
+            - name: Decide release mode
+              id: mode
+              run: |
+                  pending=$(find .changeset -maxdepth 1 -name '*.md' ! -name 'README.md' | wc -l)
+                  echo "pending=$pending" >> "$GITHUB_OUTPUT"
+                  if [ "$pending" -gt 0 ]; then
+                    echo "mode=version-pr" >> "$GITHUB_OUTPUT"
+                    echo "::notice title=Release mode: Version PR::$pending pending changeset(s) → opening/updating the Version Packages PR. Nothing is published to npm by this run."
+                  else
+                    echo "mode=publish" >> "$GITHUB_OUTPUT"
+                    echo "::notice title=Release mode: publish::No pending changesets → publishing any package version not yet on npm."
+                  fi
+            - name: Open or update Version Packages PR (no publish)
+              id: version
+              if: steps.mode.outputs.mode == 'version-pr'
+              uses: changesets/action@v1
+              with:
+                  version: pnpm version-packages
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            - name: Publish to npm
+              id: publish
+              if: steps.mode.outputs.mode == 'publish'
+              uses: changesets/action@v1
               with:
                   publish: pnpm release
-                  version: pnpm version-packages
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
                   NPM_CONFIG_PROVENANCE: true
+            - name: Release summary
+              if: always()
+              env:
+                  MODE: ${{ steps.mode.outputs.mode }}
+                  PENDING: ${{ steps.mode.outputs.pending }}
+                  PR_NUMBER: ${{ steps.version.outputs.pullRequestNumber }}
+                  PUBLISHED: ${{ steps.publish.outputs.published }}
+                  PACKAGES: ${{ steps.publish.outputs.publishedPackages }}
+                  REPO: ${{ github.repository }}
+              run: |
+                  {
+                    echo "## Release"
+                    if [ "$MODE" = "version-pr" ]; then
+                      echo "**Mode: Version PR.** $PENDING pending changeset(s). **Nothing was published to npm.**"
+                      [ -n "$PR_NUMBER" ] && echo "Version Packages PR: https://github.com/$REPO/pull/$PR_NUMBER — merge it to publish."
+                    elif [ "$PUBLISHED" = "true" ]; then
+                      echo "**Mode: publish.** Published to npm:"
+                      echo "$PACKAGES" | jq -r '.[] | "- `\(.name)@\(.version)`"'
+                    else
+                      echo "**Mode: publish.** Nothing new to publish — every package version is already on npm."
+                    fi
+                  } >> "$GITHUB_STEP_SUMMARY"
 
-    # Publishes the API reference to GitHub Pages after every successful release
-    # job, so the site always matches what is on npm.
+    # Publishes the API reference to GitHub Pages only when the release job
+    # actually published to npm, so the site always matches what is on npm.
     docs:
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.release.outputs.published == 'true'
         needs: release
         runs-on: ubuntu-latest
         concurrency:
