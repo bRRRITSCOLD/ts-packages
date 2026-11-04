@@ -3,10 +3,9 @@
 import { Exception, isHttpException } from '@brrritscold/core-js/error'
 import type { JWTConstructor } from '@brrritscold/core-node/jwt'
 import type { NextFunction, Request, Response } from 'express'
-
-// configs
-import { verifyJwt } from '../../utils/jwt.js'
 import { JwtMiddlewareException, JwtMidExceptionMessages } from '../error.js'
+// configs
+import { verifyJwt } from '../utils/jwt.js'
 
 /**
  * Express Request interface with additional fields to store JWT related data.

@@ -3,7 +3,6 @@ import { defineConfig } from 'tsup'
 export default defineConfig([
 	{
 		entryPoints: [
-			'src/index.ts',
 			'src/dotenv.ts',
 			'src/jwt.ts',
 			'src/mongodb.ts',
@@ -20,7 +19,9 @@ export default defineConfig([
 		clean: true,
 		sourcemap: false,
 		bundle: true,
-		splitting: false,
+		// Shared modules become chunks, so a class (HttpException) has one identity
+		// across subpath entries and instanceof keeps working.
+		splitting: true,
 		outExtension(ctx) {
 			return {
 				dts: '.d.ts',

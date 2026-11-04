@@ -2,7 +2,7 @@
 import { expect } from 'chai'
 
 // src
-import { common } from '../../src/index.js'
+import * as common from '../../src/common.js'
 
 describe('e2e', () => {
 	it('exposes common off the package root', () => {

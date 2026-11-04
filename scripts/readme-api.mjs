@@ -76,12 +76,19 @@ const render = (pkg) => {
 	const entries = (pkg.children ?? []).filter((c) => c.kind === 2 || c.kind === 4)
 
 	if (!entries.length) {
-		// Single entry point: TypeDoc flattens the exports onto the package.
+		// Single entry point: TypeDoc flattens the exports onto the package, so the
+		// subpath comes from the package's exports map (packages have no root entry).
+		const dir = name.replace('@brrritscold/', '')
+		const { exports } = JSON.parse(
+			readFileSync(join(ROOT, 'packages', dir, 'package.json'), 'utf8')
+		)
+		const [only] = Object.keys(exports)
+		const importPath = `${name}/${only.replace(/^\.\//, '')}`
 		out.push(
-			`### \`${name}\``,
+			`### \`${importPath}\``,
 			'',
 			'```ts',
-			`import { … } from '${name}'`,
+			`import { … } from '${importPath}'`,
 			'```',
 			'',
 			table(pkg.children),

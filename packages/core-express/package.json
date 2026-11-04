@@ -19,20 +19,61 @@
 		"README.md",
 		"LICENSE"
 	],
-	"main": "./dist/index.cjs",
-	"module": "./dist/index.mjs",
-	"types": "./dist/index.d.ts",
 	"exports": {
-		".": {
+		"./error": {
 			"import": {
-				"types": "./dist/index.d.ts",
-				"default": "./dist/index.mjs"
+				"types": "./dist/error.d.ts",
+				"default": "./dist/error.mjs"
 			},
 			"require": {
-				"types": "./dist/index.d.cts",
-				"default": "./dist/index.cjs"
+				"types": "./dist/error.d.cts",
+				"default": "./dist/error.cjs"
 			},
-			"default": "./dist/index.mjs"
+			"default": "./dist/error.mjs"
+		},
+		"./middlewares/jwt": {
+			"import": {
+				"types": "./dist/middlewares/jwt.d.ts",
+				"default": "./dist/middlewares/jwt.mjs"
+			},
+			"require": {
+				"types": "./dist/middlewares/jwt.d.cts",
+				"default": "./dist/middlewares/jwt.cjs"
+			},
+			"default": "./dist/middlewares/jwt.mjs"
+		},
+		"./openapi": {
+			"import": {
+				"types": "./dist/openapi.d.ts",
+				"default": "./dist/openapi.mjs"
+			},
+			"require": {
+				"types": "./dist/openapi.d.cts",
+				"default": "./dist/openapi.cjs"
+			},
+			"default": "./dist/openapi.mjs"
+		},
+		"./utils/create-server": {
+			"import": {
+				"types": "./dist/utils/create-server.d.ts",
+				"default": "./dist/utils/create-server.mjs"
+			},
+			"require": {
+				"types": "./dist/utils/create-server.d.cts",
+				"default": "./dist/utils/create-server.cjs"
+			},
+			"default": "./dist/utils/create-server.mjs"
+		},
+		"./utils/jwt": {
+			"import": {
+				"types": "./dist/utils/jwt.d.ts",
+				"default": "./dist/utils/jwt.mjs"
+			},
+			"require": {
+				"types": "./dist/utils/jwt.d.cts",
+				"default": "./dist/utils/jwt.cjs"
+			},
+			"default": "./dist/utils/jwt.mjs"
 		}
 	},
 	"scripts": {

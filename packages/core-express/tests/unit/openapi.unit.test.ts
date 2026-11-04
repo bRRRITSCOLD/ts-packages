@@ -4,7 +4,7 @@ import express, { type NextFunction, type Request, type Response, Router } from 
 import request from 'supertest'
 
 // src
-import { createOpenApiRouter, replacePath } from '../../src/lib/openapi/index.js'
+import { createOpenApiRouter, replacePath } from '../../src/openapi.js'
 
 /**
  * A hand-written stand-in for what openapi-typescript generates, small enough

@@ -15,7 +15,8 @@ API reference: [brrritscold.github.io/ts-packages](https://brrritscold.github.io
 
 - Type-safety
 - ESM + CJS compatabilities
-  - any `import ... from '@brrritscold/core-node'` in documentation can be replaced with a `const ... = require('@brrritscold/core-node')`
+  - any `import { x } from '@brrritscold/core-node/<subpath>'` in documentation can be replaced with a `const { x } = require('@brrritscold/core-node/<subpath>')`
+- Import from fully qualified subpaths only (`/mongodb`, `/query/mongodb`, …); there is no package-root entry
 
 
 ### Peer Dependencies

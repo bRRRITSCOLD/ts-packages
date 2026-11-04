@@ -1,6 +1,12 @@
 {
 	"$schema": "https://typedoc.org/schema.json",
-	"entryPoints": ["src/index.ts"],
+	"entryPoints": [
+		"src/error.ts",
+		"src/middlewares/jwt.ts",
+		"src/openapi.ts",
+		"src/utils/create-server.ts",
+		"src/utils/jwt.ts"
+	],
 	"readme": "README.md",
 	"includeVersion": true,
 	"intentionallyNotExported": ["JwtVerification", "ServerMiddleware"]
