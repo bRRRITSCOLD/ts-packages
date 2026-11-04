@@ -20,6 +20,18 @@ _Avoid_: extraction, publishing
 The connection between a design system library component and the `core-react` component that implements it, including how design properties map to props.
 _Avoid_: Code Connect, mapping, binding
 
+**Exceptions record**:
+The part of a component link stored on a library component that holds only what its names cannot say.
+_Avoid_: link data, mapping file, full link
+
+**Slot placeholder**:
+A stand-in part inside a library component that a designer swaps for their own component to fill an open area of a compound component.
+_Avoid_: slot, children, content area
+
+**Drift check**:
+The check that the design system library still agrees with `core-react` under the component link's naming convention.
+_Avoid_: sync check, lint, link validation
+
 **Design token**:
 A named design decision (a colour, a space, a type size) defined once in the token file and used by both the design tool and `core-react`.
 _Avoid_: variable, style
