@@ -2,7 +2,16 @@ import { defineConfig } from 'tsup'
 
 export default defineConfig([
 	{
-		entryPoints: ['src/index.ts'],
+		entryPoints: [
+			'src/error.ts',
+			'src/middlewares/jwt.ts',
+			'src/openapi.ts',
+			'src/utils/create-server.ts',
+			'src/utils/jwt.ts',
+		],
+		// One entry per subpath shares code through chunks, so a class (HttpException)
+		// has one identity across entries and instanceof keeps working.
+		splitting: true,
 		format: ['cjs', 'esm'],
 		dts: true,
 		minify: false,

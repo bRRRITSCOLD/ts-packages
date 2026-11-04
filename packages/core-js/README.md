@@ -14,7 +14,8 @@ API reference: [brrritscold.github.io/ts-packages](https://brrritscold.github.io
 ## Features
 
 - ESM + CJS compatabilities
-  - any `import ... from '@brrritscold/core-node'` in documentation can be replaced with a `const ... = require('@brrritscold/core-node')`
+  - any `import { x } from '@brrritscold/core-js/<subpath>'` in documentation can be replaced with a `const { x } = require('@brrritscold/core-js/<subpath>')`
+- Import from fully qualified subpaths only (`/date`, `/error`, `/obj`, `/query`, `/zod`); there is no package-root entry
 
 ## FAQs
 

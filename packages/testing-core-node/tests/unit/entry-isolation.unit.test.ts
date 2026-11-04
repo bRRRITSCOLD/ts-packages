@@ -27,10 +27,6 @@ const isHttpPatchedAfterImporting = (entry: string): boolean => {
 }
 
 describe('entry isolation', () => {
-	it('should not patch http when importing the root entry', () => {
-		expect(isHttpPatchedAfterImporting('index.ts')).to.equal(false)
-	})
-
 	it('should not patch http when importing the docker entry', () => {
 		expect(isHttpPatchedAfterImporting('docker.ts')).to.equal(false)
 	})

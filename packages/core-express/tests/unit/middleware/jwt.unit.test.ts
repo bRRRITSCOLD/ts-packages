@@ -2,8 +2,8 @@ import { JWT } from '@brrritscold/core-node/jwt'
 import { expect } from 'chai'
 import type { Response } from 'express'
 import sinon from 'sinon'
-import { JwtMiddlewareException, JwtMidExceptionMessages } from '../../../src/lib/error.js'
-import { type JwtMiddlewareRequest, jwtMiddleware } from '../../../src/lib/middlewares/jwt.js'
+import { JwtMiddlewareException, JwtMidExceptionMessages } from '../../../src/error.js'
+import { type JwtMiddlewareRequest, jwtMiddleware } from '../../../src/middlewares/jwt.js'
 import { setup } from '../__utils__/utils.js'
 
 describe('middlewares/jwt.ts ', () => {

@@ -5,26 +5,11 @@ import omitBy from 'lodash/omitBy.js'
  * Returns a shallow copy of an object without its `null` and `undefined` properties, keeping other falsy values.
  *
  * @example
- * ///////////////
- * ///// CJS /////
- * ///////////////
- * const { obj } = require('@brrritscold/core-js')
- * const { omitNil } = obj
- *
- * // or
- * const { obj: { omitNil } } = require('@brrritscold/core-js')
- *
- * //or
- * const { omitNil } = require('@brrritscold/core-js/obj')
- *
- * ///////////////
- * ///// ESM /////
- * ///////////////
- * import { obj } from '@brrritscold/core-js'
- * const { omitNil } = obj
- *
- * // or
+ * // ESM
  * import { omitNil } from '@brrritscold/core-js/obj'
+ *
+ * // CJS
+ * const { omitNil } = require('@brrritscold/core-js/obj')
  *
  * const item = omitNil({ zero: 0, one: 'world', two: undefined, three: null, four: NaN, five: false })
  *
