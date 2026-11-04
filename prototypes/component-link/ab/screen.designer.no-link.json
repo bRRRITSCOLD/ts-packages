@@ -1,0 +1,207 @@
+{
+ "name": "Notification settings",
+ "type": "board",
+ "children": [
+  {
+   "name": "Panel",
+   "type": "board",
+   "component": {
+    "name": "Panel",
+    "path": "",
+    "library": "Library"
+   },
+   "children": [
+    {
+     "name": "Header",
+     "type": "board",
+     "children": [
+      {
+       "name": "Title",
+       "type": "text",
+       "text": "Notifications"
+      },
+      {
+       "name": "Subtitle",
+       "type": "text",
+       "text": "Choose what we email you about."
+      }
+     ]
+    },
+    {
+     "name": "Body",
+     "type": "board",
+     "children": [
+      {
+       "name": "Notifications / Content",
+       "type": "board",
+       "component": {
+        "name": "Content",
+        "path": "Notifications",
+        "library": "local"
+       },
+       "children": [
+        {
+         "name": "Tag",
+         "type": "board",
+         "component": {
+          "name": "Tag",
+          "path": "",
+          "library": "Library"
+         },
+         "variantProps": {
+          "Style": "Outlined"
+         },
+         "children": [
+          {
+           "name": "txt",
+           "type": "text",
+           "text": "Weekly digest"
+          }
+         ]
+        },
+        {
+         "name": "Tag",
+         "type": "board",
+         "component": {
+          "name": "Tag",
+          "path": "",
+          "library": "Library"
+         },
+         "variantProps": {
+          "Style": "Muted"
+         },
+         "children": [
+          {
+           "name": "txt",
+           "type": "text",
+           "text": "Beta"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Actions",
+     "type": "board",
+     "children": [
+      {
+       "name": "Notifications / Footer",
+       "type": "board",
+       "component": {
+        "name": "Footer",
+        "path": "Notifications",
+        "library": "local"
+       },
+       "children": [
+        {
+         "name": "CTA",
+         "type": "board",
+         "component": {
+          "name": "CTA",
+          "path": "",
+          "library": "Library"
+         },
+         "variantProps": {
+          "Type": "Secondary",
+          "Size": "Medium",
+          "State": "Default"
+         },
+         "children": [
+          {
+           "name": "txt",
+           "type": "text",
+           "text": "Cancel"
+          }
+         ]
+        },
+        {
+         "name": "CTA",
+         "type": "board",
+         "component": {
+          "name": "CTA",
+          "path": "",
+          "library": "Library"
+         },
+         "variantProps": {
+          "Type": "Primary",
+          "Size": "Medium",
+          "State": "Default"
+         },
+         "children": [
+          {
+           "name": "ic_envelope",
+           "type": "board",
+           "component": {
+            "name": "ic_envelope",
+            "path": "icons",
+            "library": "Library"
+           }
+          },
+          {
+           "name": "txt",
+           "type": "text",
+           "text": "Save"
+          }
+         ]
+        },
+        {
+         "name": "CTA",
+         "type": "board",
+         "component": {
+          "name": "CTA",
+          "path": "",
+          "library": "Library"
+         },
+         "variantProps": {
+          "Type": "Danger",
+          "Size": "Small",
+          "State": "Default"
+         },
+         "children": [
+          {
+           "name": "ic_bin",
+           "type": "board",
+           "component": {
+            "name": "ic_bin",
+            "path": "icons",
+            "library": "Library"
+           }
+          },
+          {
+           "name": "txt",
+           "type": "text",
+           "text": "Delete"
+          }
+         ]
+        },
+        {
+         "name": "CTA",
+         "type": "board",
+         "component": {
+          "name": "CTA",
+          "path": "",
+          "library": "Library"
+         },
+         "variantProps": {
+          "Type": "Subtle",
+          "Size": "Small",
+          "State": "Disabled"
+         },
+         "children": [
+          {
+           "name": "txt",
+           "type": "text",
+           "text": "Archived"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,472 @@
+{
+ "name": "Notification settings",
+ "type": "board",
+ "children": [
+  {
+   "name": "Panel",
+   "type": "board",
+   "component": {
+    "name": "Panel",
+    "path": "",
+    "library": "Library"
+   },
+   "link": {
+    "v": 3,
+    "package": "@brrritscold/core-react",
+    "export": "Card",
+    "parts": {
+     "Header": "CardHeader",
+     "Title": "CardTitle",
+     "Subtitle": "CardDescription",
+     "Body": "CardContent",
+     "Actions": "CardFooter"
+    },
+    "slots": {
+     "Body": "single child of the part (whatever was swapped in)",
+     "Actions": "single child of the part (whatever was swapped in)"
+    },
+    "rules": [
+     "A layer named after a part renders as that part's export.",
+     "A text part takes its text as children.",
+     "A slot renders its single child: a linked copy by its own link, an unlinked local component by rendering its children. A slot still holding the placeholder is omitted."
+    ]
+   },
+   "children": [
+    {
+     "name": "Header",
+     "type": "board",
+     "children": [
+      {
+       "name": "Title",
+       "type": "text",
+       "text": "Notifications"
+      },
+      {
+       "name": "Subtitle",
+       "type": "text",
+       "text": "Choose what we email you about."
+      }
+     ]
+    },
+    {
+     "name": "Body",
+     "type": "board",
+     "children": [
+      {
+       "name": "Notifications / Content",
+       "type": "board",
+       "component": {
+        "name": "Content",
+        "path": "Notifications",
+        "library": "local"
+       },
+       "link": null,
+       "children": [
+        {
+         "name": "Tag",
+         "type": "board",
+         "component": {
+          "name": "Tag",
+          "path": "",
+          "library": "Library"
+         },
+         "variantProps": {
+          "Style": "Outlined"
+         },
+         "link": {
+          "v": 3,
+          "package": "@brrritscold/core-react",
+          "export": "Badge",
+          "props": {
+           "variant": {
+            "from": "Style",
+            "map": {
+             "Neutral": "default",
+             "Muted": "secondary",
+             "Error": "destructive",
+             "Outlined": "outline"
+            }
+           }
+          },
+          "children": [
+           {
+            "role": "label",
+            "match": "text layer"
+           }
+          ],
+          "defaults": {
+           "variant": "default"
+          }
+         },
+         "children": [
+          {
+           "name": "txt",
+           "type": "text",
+           "text": "Weekly digest"
+          }
+         ]
+        },
+        {
+         "name": "Tag",
+         "type": "board",
+         "component": {
+          "name": "Tag",
+          "path": "",
+          "library": "Library"
+         },
+         "variantProps": {
+          "Style": "Muted"
+         },
+         "link": {
+          "v": 3,
+          "package": "@brrritscold/core-react",
+          "export": "Badge",
+          "props": {
+           "variant": {
+            "from": "Style",
+            "map": {
+             "Neutral": "default",
+             "Muted": "secondary",
+             "Error": "destructive",
+             "Outlined": "outline"
+            }
+           }
+          },
+          "children": [
+           {
+            "role": "label",
+            "match": "text layer"
+           }
+          ],
+          "defaults": {
+           "variant": "default"
+          }
+         },
+         "children": [
+          {
+           "name": "txt",
+           "type": "text",
+           "text": "Beta"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Actions",
+     "type": "board",
+     "children": [
+      {
+       "name": "Notifications / Footer",
+       "type": "board",
+       "component": {
+        "name": "Footer",
+        "path": "Notifications",
+        "library": "local"
+       },
+       "link": null,
+       "children": [
+        {
+         "name": "CTA",
+         "type": "board",
+         "component": {
+          "name": "CTA",
+          "path": "",
+          "library": "Library"
+         },
+         "variantProps": {
+          "Type": "Secondary",
+          "Size": "Medium",
+          "State": "Default"
+         },
+         "link": {
+          "v": 3,
+          "package": "@brrritscold/core-react",
+          "export": "Button",
+          "props": {
+           "variant": {
+            "from": "Type",
+            "map": {
+             "Primary": "default",
+             "Danger": "destructive",
+             "Secondary": "outline",
+             "Subtle": "ghost"
+            }
+           },
+           "size": {
+            "from": "Size",
+            "map": {
+             "Medium": "default",
+             "Small": "sm"
+            }
+           },
+           "disabled": {
+            "from": "State",
+            "map": {
+             "Disabled": true,
+             "Default": false
+            }
+           }
+          },
+          "children": [
+           {
+            "role": "icon",
+            "match": "nested icon copy, any layer name"
+           },
+           {
+            "role": "label",
+            "match": "text layer"
+           }
+          ],
+          "defaults": {
+           "variant": "default",
+           "size": "default",
+           "disabled": false
+          }
+         },
+         "children": [
+          {
+           "name": "txt",
+           "type": "text",
+           "text": "Cancel"
+          }
+         ]
+        },
+        {
+         "name": "CTA",
+         "type": "board",
+         "component": {
+          "name": "CTA",
+          "path": "",
+          "library": "Library"
+         },
+         "variantProps": {
+          "Type": "Primary",
+          "Size": "Medium",
+          "State": "Default"
+         },
+         "link": {
+          "v": 3,
+          "package": "@brrritscold/core-react",
+          "export": "Button",
+          "props": {
+           "variant": {
+            "from": "Type",
+            "map": {
+             "Primary": "default",
+             "Danger": "destructive",
+             "Secondary": "outline",
+             "Subtle": "ghost"
+            }
+           },
+           "size": {
+            "from": "Size",
+            "map": {
+             "Medium": "default",
+             "Small": "sm"
+            }
+           },
+           "disabled": {
+            "from": "State",
+            "map": {
+             "Disabled": true,
+             "Default": false
+            }
+           }
+          },
+          "children": [
+           {
+            "role": "icon",
+            "match": "nested icon copy, any layer name"
+           },
+           {
+            "role": "label",
+            "match": "text layer"
+           }
+          ],
+          "defaults": {
+           "variant": "default",
+           "size": "default",
+           "disabled": false
+          }
+         },
+         "children": [
+          {
+           "name": "ic_envelope",
+           "type": "board",
+           "component": {
+            "name": "ic_envelope",
+            "path": "icons",
+            "library": "Library"
+           },
+           "link": {
+            "v": 3,
+            "package": "@brrritscold/core-react",
+            "export": "icons.Mail",
+            "kind": "icon"
+           }
+          },
+          {
+           "name": "txt",
+           "type": "text",
+           "text": "Save"
+          }
+         ]
+        },
+        {
+         "name": "CTA",
+         "type": "board",
+         "component": {
+          "name": "CTA",
+          "path": "",
+          "library": "Library"
+         },
+         "variantProps": {
+          "Type": "Danger",
+          "Size": "Small",
+          "State": "Default"
+         },
+         "link": {
+          "v": 3,
+          "package": "@brrritscold/core-react",
+          "export": "Button",
+          "props": {
+           "variant": {
+            "from": "Type",
+            "map": {
+             "Primary": "default",
+             "Danger": "destructive",
+             "Secondary": "outline",
+             "Subtle": "ghost"
+            }
+           },
+           "size": {
+            "from": "Size",
+            "map": {
+             "Medium": "default",
+             "Small": "sm"
+            }
+           },
+           "disabled": {
+            "from": "State",
+            "map": {
+             "Disabled": true,
+             "Default": false
+            }
+           }
+          },
+          "children": [
+           {
+            "role": "icon",
+            "match": "nested icon copy, any layer name"
+           },
+           {
+            "role": "label",
+            "match": "text layer"
+           }
+          ],
+          "defaults": {
+           "variant": "default",
+           "size": "default",
+           "disabled": false
+          }
+         },
+         "children": [
+          {
+           "name": "ic_bin",
+           "type": "board",
+           "component": {
+            "name": "ic_bin",
+            "path": "icons",
+            "library": "Library"
+           },
+           "link": {
+            "v": 3,
+            "package": "@brrritscold/core-react",
+            "export": "icons.Trash2",
+            "kind": "icon"
+           }
+          },
+          {
+           "name": "txt",
+           "type": "text",
+           "text": "Delete"
+          }
+         ]
+        },
+        {
+         "name": "CTA",
+         "type": "board",
+         "component": {
+          "name": "CTA",
+          "path": "",
+          "library": "Library"
+         },
+         "variantProps": {
+          "Type": "Subtle",
+          "Size": "Small",
+          "State": "Disabled"
+         },
+         "link": {
+          "v": 3,
+          "package": "@brrritscold/core-react",
+          "export": "Button",
+          "props": {
+           "variant": {
+            "from": "Type",
+            "map": {
+             "Primary": "default",
+             "Danger": "destructive",
+             "Secondary": "outline",
+             "Subtle": "ghost"
+            }
+           },
+           "size": {
+            "from": "Size",
+            "map": {
+             "Medium": "default",
+             "Small": "sm"
+            }
+           },
+           "disabled": {
+            "from": "State",
+            "map": {
+             "Disabled": true,
+             "Default": false
+            }
+           }
+          },
+          "children": [
+           {
+            "role": "icon",
+            "match": "nested icon copy, any layer name"
+           },
+           {
+            "role": "label",
+            "match": "text layer"
+           }
+          ],
+          "defaults": {
+           "variant": "default",
+           "size": "default",
+           "disabled": false
+          }
+         },
+         "children": [
+          {
+           "name": "txt",
+           "type": "text",
+           "text": "Archived"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

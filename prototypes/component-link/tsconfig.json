@@ -9,5 +9,5 @@
     "noEmit": true,
     "paths": { "@brrritscold/core-react": ["./core-react/src/index.ts"] }
   },
-  "include": ["core-react/src", "generated"]
+  "include": ["core-react/src", "generated", "ab"]
 }

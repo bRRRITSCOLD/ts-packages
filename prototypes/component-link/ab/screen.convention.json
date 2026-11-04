@@ -1,0 +1,262 @@
+{
+ "name": "Notification settings",
+ "type": "board",
+ "children": [
+  {
+   "name": "Card",
+   "type": "board",
+   "component": {
+    "name": "Card",
+    "path": "",
+    "library": "Library"
+   },
+   "children": [
+    {
+     "name": "CardHeader",
+     "type": "board",
+     "children": [
+      {
+       "name": "CardTitle",
+       "type": "text",
+       "text": "Notifications"
+      },
+      {
+       "name": "CardDescription",
+       "type": "text",
+       "text": "Choose what we email you about."
+      }
+     ]
+    },
+    {
+     "name": "CardContent",
+     "type": "board",
+     "children": [
+      {
+       "name": "Notifications / Content",
+       "type": "board",
+       "component": {
+        "name": "Content",
+        "path": "Notifications",
+        "library": "local"
+       },
+       "children": [
+        {
+         "name": "Badge",
+         "type": "board",
+         "component": {
+          "name": "Badge",
+          "path": "",
+          "library": "Library"
+         },
+         "variantProps": {
+          "variant": "outline"
+         },
+         "children": [
+          {
+           "name": "Label",
+           "type": "text",
+           "text": "Weekly digest"
+          }
+         ]
+        },
+        {
+         "name": "Badge",
+         "type": "board",
+         "component": {
+          "name": "Badge",
+          "path": "",
+          "library": "Library"
+         },
+         "variantProps": {
+          "variant": "secondary"
+         },
+         "children": [
+          {
+           "name": "Label",
+           "type": "text",
+           "text": "Beta"
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "name": "CardFooter",
+     "type": "board",
+     "children": [
+      {
+       "name": "Notifications / Footer",
+       "type": "board",
+       "component": {
+        "name": "Footer",
+        "path": "Notifications",
+        "library": "local"
+       },
+       "children": [
+        {
+         "name": "Button",
+         "type": "board",
+         "component": {
+          "name": "Button",
+          "path": "",
+          "library": "Library"
+         },
+         "variantProps": {
+          "variant": "outline",
+          "size": "default",
+          "state": "Default"
+         },
+         "children": [
+          {
+           "name": "Label",
+           "type": "text",
+           "text": "Cancel"
+          }
+         ],
+         "link": {
+          "v": 3,
+          "props": {
+           "disabled": {
+            "from": "state",
+            "map": {
+             "Disabled": true,
+             "Default": false
+            }
+           }
+          }
+         }
+        },
+        {
+         "name": "Button",
+         "type": "board",
+         "component": {
+          "name": "Button",
+          "path": "",
+          "library": "Library"
+         },
+         "variantProps": {
+          "variant": "default",
+          "size": "default",
+          "state": "Default"
+         },
+         "children": [
+          {
+           "name": "Icon",
+           "type": "board",
+           "component": {
+            "name": "Mail",
+            "path": "icon",
+            "library": "Library"
+           }
+          },
+          {
+           "name": "Label",
+           "type": "text",
+           "text": "Save"
+          }
+         ],
+         "link": {
+          "v": 3,
+          "props": {
+           "disabled": {
+            "from": "state",
+            "map": {
+             "Disabled": true,
+             "Default": false
+            }
+           }
+          }
+         }
+        },
+        {
+         "name": "Button",
+         "type": "board",
+         "component": {
+          "name": "Button",
+          "path": "",
+          "library": "Library"
+         },
+         "variantProps": {
+          "variant": "destructive",
+          "size": "sm",
+          "state": "Default"
+         },
+         "children": [
+          {
+           "name": "icon / Trash2",
+           "type": "board",
+           "component": {
+            "name": "Trash2",
+            "path": "icon",
+            "library": "Library"
+           }
+          },
+          {
+           "name": "Label",
+           "type": "text",
+           "text": "Delete"
+          }
+         ],
+         "link": {
+          "v": 3,
+          "props": {
+           "disabled": {
+            "from": "state",
+            "map": {
+             "Disabled": true,
+             "Default": false
+            }
+           }
+          }
+         }
+        },
+        {
+         "name": "Button",
+         "type": "board",
+         "component": {
+          "name": "Button",
+          "path": "",
+          "library": "Library"
+         },
+         "variantProps": {
+          "variant": "ghost",
+          "size": "sm",
+          "state": "Disabled"
+         },
+         "children": [
+          {
+           "name": "Label",
+           "type": "text",
+           "text": "Archived"
+          }
+         ],
+         "link": {
+          "v": 3,
+          "props": {
+           "disabled": {
+            "from": "state",
+            "map": {
+             "Disabled": true,
+             "Default": false
+            }
+           }
+          }
+         }
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "link": {
+    "v": 3,
+    "slots": [
+     "CardContent",
+     "CardFooter"
+    ]
+   }
+  }
+ ]
+}
