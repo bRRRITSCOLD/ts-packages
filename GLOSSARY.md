@@ -8,6 +8,10 @@ The shared design system that several apps reuse, and how its designs connect to
 The shared library of components and design tokens in the design tool, reused across every app's designs.
 _Avoid_: DS file, UI kit, shared file
 
+**Opt-in library**:
+A separate shared library of heavier components that a page design connects only when it wants them, mirrored by its own entry point in `core-react`.
+_Avoid_: add-on library, extension library, plugin library
+
 **Page design**:
 A design for one screen of one app, built from design system library components plus anything local to that page.
 _Avoid_: mockup, frame, comp
@@ -19,6 +23,18 @@ _Avoid_: extraction, publishing
 **Component link**:
 The connection between a design system library component and the `core-react` component that implements it, including how design properties map to props.
 _Avoid_: Code Connect, mapping, binding
+
+**Exceptions record**:
+The part of a component link stored on a library component that holds only what its names cannot say.
+_Avoid_: link data, mapping file, full link
+
+**Slot placeholder**:
+A stand-in part inside a library component that a designer swaps for their own component to fill an open area of a compound component.
+_Avoid_: slot, children, content area
+
+**Drift check**:
+The check that the design system library and opt-in libraries still agree with `core-react` under the component link's naming convention.
+_Avoid_: sync check, lint, link validation
 
 **Design token**:
 A named design decision (a colour, a space, a type size) defined once in the token file and used by both the design tool and `core-react`.
