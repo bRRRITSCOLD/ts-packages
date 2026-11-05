@@ -4,6 +4,7 @@ import type { CodeManifest } from './code-manifest.js'
 import {
 	COMPONENT_PACKAGE,
 	exceptionsRecordSchema,
+	type LinkedProp,
 	resolveComponentLink,
 } from './component-link.js'
 import type { LibraryComponent, LibrarySnapshot } from './library-snapshot.js'
@@ -60,6 +61,51 @@ export type DriftReport = {
 	coverageGaps: CoverageGap[]
 }
 
+type Mismatch = Pick<DriftError, 'expected' | 'found'>
+
+/** Rule 2 on one variant: each resolved prop exists in the code and takes the resolved value. */
+const checkProps = (
+	exportName: string,
+	linkedProps: Record<string, LinkedProp>,
+	codeProps: CodeManifest['exports'][string]['props']
+): Mismatch[] =>
+	Object.entries(linkedProps).flatMap(([prop, { value }]): Mismatch[] => {
+		const codeProp = codeProps[prop]
+		if (!codeProp)
+			return [
+				{
+					expected: `prop \`${prop}\` (boolean or literal union) on \`${exportName}\``,
+					found: 'no such prop',
+				},
+			]
+		if (value === undefined)
+			return codeProp.optional
+				? []
+				: [
+						{
+							expected: `\`${prop}\` optional (the variant value \`default\` omits it)`,
+							found: 'required',
+						},
+					]
+		if (codeProp.type === 'boolean')
+			return typeof value === 'boolean'
+				? []
+				: [{ expected: `\`${prop}\` true | false`, found: JSON.stringify(value) }]
+		return codeProp.values.includes(String(value))
+			? []
+			: [
+					{
+						expected: `\`${prop}\` one of ${codeProp.values.map((v) => JSON.stringify(v)).join(' | ')}`,
+						found: JSON.stringify(value),
+					},
+				]
+	})
+
+/** Variants of one component share most mismatches; each is reported once. */
+const uniqueErrors = (errors: DriftError[]): DriftError[] => [
+	...new Map(errors.map((error) => [JSON.stringify(error), error])).values(),
+]
+
 const componentLabel = ({ path, name }: LibraryComponent) => (path ? `${path}/${name}` : name)
 
 /**
@@ -71,14 +117,38 @@ export const checkDrift = ({ snapshot, manifest }: DriftCheckInput): DriftReport
 	for (const component of Object.values(snapshot.components)) {
 		const record = exceptionsRecordSchema.safeParse(component.exceptionsRecord)
 		const link = resolveComponentLink(component, record.data)
+		const label = componentLabel(component)
+		if (link.kind === 'icon' && !manifest.icons.includes(link.export))
+			errors.push({
+				rule: 4,
+				component: label,
+				expected: `export \`${link.export}\` in ${link.package}`,
+				found: 'no such icon',
+			})
 		if (link.kind !== 'component') continue
-		if (!(link.export in manifest.exports))
+		const codeExport = manifest.exports[link.export]
+		if (!codeExport) {
 			errors.push({
 				rule: 1,
-				component: componentLabel(component),
+				component: label,
 				expected: `export \`${link.export}\` in ${COMPONENT_PACKAGE}`,
 				found: 'no such export',
 			})
+			continue
+		}
+		errors.push(
+			...checkProps(link.export, link.props, codeExport.props).map((mismatch) => ({
+				rule: 2 as const,
+				component: label,
+				...mismatch,
+			})),
+			...link.unresolved.map(({ variantProperty, value }) => ({
+				rule: 2 as const,
+				component: label,
+				expected: `an exceptions record value for \`${variantProperty}\` = \`${value}\``,
+				found: 'no such value in the map',
+			}))
+		)
 	}
-	return { errors, unchecked: [], coverageGaps: [] }
+	return { errors: uniqueErrors(errors), unchecked: [], coverageGaps: [] }
 }

@@ -21,6 +21,12 @@ export const createLibrarySnapshot = (
 	components,
 })
 
+/** Button's exceptions record: the variant property `state` sets the boolean prop `disabled`. */
+export const mapsStateToDisabled = {
+	v: 1,
+	props: { disabled: { from: 'state', map: { Default: false, Disabled: true } } },
+}
+
 /**
  * A design system library in step with core-react: Button (two variants, `state` mapped
  * to `disabled` by its exceptions record), Card with a Header part and a Content part
@@ -30,18 +36,12 @@ export const createInStepLibrary = (): Record<string, LibraryComponent> => ({
 	'button-default': createLibraryComponent({
 		name: 'Button',
 		variantProperties: { variant: 'default', size: 'default', state: 'Default' },
-		exceptionsRecord: {
-			v: 1,
-			props: { disabled: { from: 'state', map: { Default: false, Disabled: true } } },
-		},
+		exceptionsRecord: mapsStateToDisabled,
 	}),
 	'button-outline-sm-disabled': createLibraryComponent({
 		name: 'Button',
 		variantProperties: { variant: 'outline', size: 'sm', state: 'Disabled' },
-		exceptionsRecord: {
-			v: 1,
-			props: { disabled: { from: 'state', map: { Default: false, Disabled: true } } },
-		},
+		exceptionsRecord: mapsStateToDisabled,
 	}),
 	card: createLibraryComponent({
 		name: 'Card',
