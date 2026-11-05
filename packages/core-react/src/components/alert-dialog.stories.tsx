@@ -34,7 +34,7 @@ const openAlertDialog = async (name: string) => {
 
 /** `title` is the library component's Penpot path; one story per value of `size`. */
 const meta = {
-	title: 'Components/Alert Dialog',
+	title: 'Components/AlertDialog',
 	component: AlertDialogContent,
 	args: { size: 'default' },
 	render: (args) => (

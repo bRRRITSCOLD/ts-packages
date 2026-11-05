@@ -21,7 +21,7 @@ test.describe('dialog(root)', () => {
 	})
 
 	test('should drive an alert dialog the same way', async ({ page }) => {
-		await openStory(page, 'components-alert-dialog--default')
+		await openStory(page, 'components-alertdialog--default')
 		await page.getByRole('button', { name: 'Delete account' }).click()
 		const confirm = dialog(page.getByRole('alertdialog', { name: 'Delete your account?' }))
 
@@ -49,7 +49,7 @@ test.describe('dialog(root)', () => {
 		test('should dismiss an alert dialog and leave the dialog that opened it open', async ({
 			page,
 		}) => {
-			await openStory(page, 'components-alert-dialog--in-dialog')
+			await openStory(page, 'components-alertdialog--in-dialog')
 			const profile = dialog(page.getByRole('dialog', { name: 'Edit profile' }))
 			const confirm = dialog(page.getByRole('alertdialog', { name: 'Delete your account?' }))
 

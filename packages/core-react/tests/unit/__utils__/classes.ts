@@ -114,3 +114,29 @@ export const componentClasses = (file: string): string[] => {
 	visit(parse(file))
 	return found.flatMap((s) => s.split(/\s+/)).filter(Boolean)
 }
+
+/** The `title` of a stories file's default export, `Components/Button`. */
+export const storyTitle = (file: string): string | undefined => {
+	let title: string | undefined
+	const visit = (node: ts.Node) => {
+		if (
+			ts.isPropertyAssignment(node) &&
+			node.name.getText() === 'title' &&
+			isString(node.initializer)
+		)
+			title ??= node.initializer.text
+		ts.forEachChild(node, visit)
+	}
+	visit(parse(file))
+	return title
+}
+
+/** The names `src/index.ts`, the `.` entry, exports. */
+export const rootExports = (): string[] =>
+	parse('src/index.ts').statements.flatMap((statement) =>
+		ts.isExportDeclaration(statement) &&
+		statement.exportClause &&
+		ts.isNamedExports(statement.exportClause)
+			? statement.exportClause.elements.map((element) => element.name.text)
+			: []
+	)
