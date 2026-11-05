@@ -184,6 +184,12 @@ importers:
         specifier: ^3.7.0
         version: 3.7.0
     devDependencies:
+      '@brrritscold/design-core-js':
+        specifier: workspace:*
+        version: link:../design-core-js
+      '@brrritscold/design-core-node':
+        specifier: workspace:*
+        version: link:../design-core-node
       '@storybook/addon-a11y':
         specifier: ^10.6.5
         version: 10.6.5(storybook@10.6.5(@types/react@19.3.0)(prettier@3.9.10)(react@19.3.1))

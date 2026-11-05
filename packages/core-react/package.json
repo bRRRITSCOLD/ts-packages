@@ -67,6 +67,8 @@
 		"design-system"
 	],
 	"devDependencies": {
+		"@brrritscold/design-core-js": "workspace:*",
+		"@brrritscold/design-core-node": "workspace:*",
 		"@storybook/addon-a11y": "^10.6.5",
 		"@storybook/addon-docs": "^10.6.5",
 		"@storybook/addon-vitest": "^10.6.5",

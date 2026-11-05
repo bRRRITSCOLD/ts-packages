@@ -1,0 +1,3 @@
+/* The built theme (pnpm build:styles), plus the sources it would otherwise scan as built .js. */
+@import "../dist/styles.css";
+@source "../src";
