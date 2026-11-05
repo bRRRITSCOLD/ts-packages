@@ -172,6 +172,15 @@ importers:
         specifier: workspace:^
         version: link:../core-js
 
+  packages/design-core-node:
+    dependencies:
+      '@brrritscold/design-core-js':
+        specifier: workspace:^
+        version: link:../design-core-js
+      typescript:
+        specifier: ^5.8.3
+        version: 5.9.3
+
   packages/testing-core-js:
     dependencies:
       lodash:
