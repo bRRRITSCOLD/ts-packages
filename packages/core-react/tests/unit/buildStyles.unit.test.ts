@@ -22,6 +22,15 @@ describe('buildStyles', () => {
 		expect(css).toContain('@custom-variant dark (&:is(.dark *));')
 	})
 
+	it('should import tw-animate-css, which shadcn components animate open and closed with', async () => {
+		const css = await buildStyles(tokenFile())
+
+		expect(css).toContain('@import "tw-animate-css";')
+		expect(css.indexOf('@import "tw-animate-css";')).toBeGreaterThan(
+			css.indexOf('@import "tailwindcss";')
+		)
+	})
+
 	it('should put primitives and light semantics on :root, semantics referencing primitives', async () => {
 		const root = block(await buildStyles(tokenFile()), ':root')
 

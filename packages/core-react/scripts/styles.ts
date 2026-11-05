@@ -1,7 +1,8 @@
 /**
- * Builds `dist/styles.css` from the token file with Style Dictionary: Tailwind, the primitives and
- * light semantics on `:root`, the dark semantics on `.dark`, and a `@theme inline` block that
- * turns each semantic into a Tailwind utility.
+ * Builds `dist/styles.css` from the token file with Style Dictionary: Tailwind and tw-animate-css
+ * (the `animate-in` / `fade-in-0` / `zoom-in-95` utilities shadcn components open and close with),
+ * the primitives and light semantics on `:root`, the dark semantics on `.dark`, and a
+ * `@theme inline` block that turns each semantic into a Tailwind utility.
  */
 import StyleDictionary from 'style-dictionary'
 import type { DesignTokens, TransformedToken } from 'style-dictionary/types'
@@ -91,6 +92,7 @@ export const buildStyles = async ({ primitive, light, dark }: TokenFile): Promis
 	return [
 		'/* Generated from tokens/tokens.json by scripts/build-styles.ts. Do not edit. */',
 		'@import "tailwindcss";',
+		'@import "tw-animate-css";',
 		'@source "./**/*.js";',
 		'',
 		'@custom-variant dark (&:is(.dark *));',
