@@ -20,6 +20,14 @@ const openDialog = async (name: string) => {
 	return dialog
 }
 
+/** A plain labelled input; core-react's `Input` and `Field` arrive with the form controls. */
+const NameField = () => (
+	<label className="flex flex-col gap-2">
+		Name
+		<input name="name" className="h-9 rounded-md border border-input px-2.5" />
+	</label>
+)
+
 /**
  * `title` is the library component's Penpot path. Each story opens its dialog in `play`; the
  * integration tier drives the same stories through the `dialog()` component object.
@@ -36,6 +44,7 @@ const meta = {
 					<DialogTitle>Edit profile</DialogTitle>
 					<DialogDescription>Make changes to your profile here.</DialogDescription>
 				</DialogHeader>
+				<NameField />
 				<DialogFooter>
 					<DialogClose render={<Button variant="outline" />}>Cancel</DialogClose>
 					<Button>Save changes</Button>
@@ -118,13 +127,14 @@ export const Nested: Story = {
 }
 
 /**
- * A page holding a twin of a dialog button: Base UI marks the page `aria-hidden`, not `inert`,
- * so only a lookup scoped to the dialog is sure to hit the dialog's own (Base UI trap 2).
+ * A page holding twins of the dialog's field and button: Base UI marks the page `aria-hidden`,
+ * not `inert`, so only a lookup scoped to the dialog is sure to hit the dialog's own (Base UI
+ * trap 2).
  */
 export const OverMatchingPage: Story = {
 	render: (args) => (
 		<div className="flex flex-col items-start gap-4">
-			<p>Save changes</p>
+			<NameField />
 			<Button variant="secondary">Save changes</Button>
 			{meta.render(args)}
 		</div>

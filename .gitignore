@@ -153,3 +153,5 @@ private
 .turbo
 site
 storybook-static
+test-results
+playwright-report

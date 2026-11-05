@@ -7,6 +7,8 @@
 			"!**/site/**",
 			"!**/.turbo/**",
 			"!**/storybook-static/**",
+			"!**/test-results/**",
+			"!**/playwright-report/**",
 			"!**/*.d.ts",
 			"!.changeset/**"
 		]
