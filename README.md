@@ -13,7 +13,7 @@ Turborepo + pnpm monorepo for shared TypeScript libraries, published to npm unde
 | [`@brrritscold/testing-core-node`](./packages/testing-core-node)                                                | node           | testcontainers wrappers, nock interceptors                                |
 | [`@brrritscold/design-core-js`](./packages/design-core-js) (private)                                            | browser + node | component-link resolver, snapshot schemas, drift rules, coverage report   |
 | [`@brrritscold/design-core-node`](./packages/design-core-node) (private)                                        | node           | code manifest generator, `design-drift` CLI                               |
-| [`@brrritscold/design-penpot-sdk-node`](./packages/design-penpot-sdk-node) (private)                            | node           | Penpot RPC client, library-snapshot normalizer                            |
+| [`@brrritscold/design-penpot-sdk-node`](./packages/design-penpot-sdk-node) (private)                            | node           | Penpot RPC client, library-snapshot normalizer, `design-snapshot-refresh` |
 | [`@brrritscold/core-react`](https://github.com/bRRRITSCOLD/ts-packages/tree/main/packages/core-react) (private) | browser + SSR  | React components, design tokens, `styles.css` (Storybook is its docs)     |
 
 ## Develop
@@ -79,6 +79,16 @@ The Version Packages PR is opened by `GITHUB_TOKEN`, which does not trigger work
 Needs repo secret `NPM_TOKEN`: a granular npm token, read-write on `@brrritscold`, with bypass-2FA enabled.
 
 npm uses staged publishing: a `0.0.0-stage` placeholder appears first, and the real version goes live a minute or three later. A version missing from `npm view` right after a green publish run is lag, not a failure.
+
+## Side images
+
+`.github/workflows/side-images.yml` builds the design system's container images from `images/<name>/Dockerfile` and pushes them to GHCR, on pushes to `main` that touch their sources and on manual dispatch. Tags are the **short git SHA** only, never `latest`.
+
+| Image                                         | Runs                                                                                 |
+| --------------------------------------------- | ------------------------------------------------------------------------------------ |
+| `ghcr.io/brrritscold/design-snapshot-refresh` | the snapshot refresh ([`design-penpot-sdk-node`](./packages/design-penpot-sdk-node)) |
+
+Build one locally from the repo root: `docker build -f images/design-snapshot-refresh/Dockerfile .`. A new image's GHCR package starts private: set it to public in its package settings after the first push.
 
 ## License
 

@@ -1,0 +1,15 @@
+# Allowlist: the workspace manifests and the packages the image bundles, never their build output.
+*
+!package.json
+!pnpm-lock.yaml
+!pnpm-workspace.yaml
+!packages/core-js
+!packages/design-core-js
+!packages/design-penpot-sdk-node
+!packages/testing-core-js/package.json
+!packages/testing-core-node/package.json
+**/node_modules
+**/dist
+**/.turbo
+**/tests
+**/.env*
