@@ -36,6 +36,14 @@ _Avoid_: plugin, Code Connect panel, dev mode
 What an agent uses to get the component link for everything on a page design in one call; the agent's counterpart to the link inspector.
 _Avoid_: screen reader, read-screen
 
+**Part**:
+A copy of one design system library component placed inside another, standing for one of that component's nested pieces in `core-react`; plain layout boards around it don't change what it is a part of.
+_Avoid_: sub-component, child, slot
+
+**Role**:
+A part's name inside its component, which stays the same when the part is swapped for another component.
+_Avoid_: layer name, slot name
+
 **Slot placeholder**:
 A stand-in part inside a library component that a designer swaps for their own component to fill an open area of a compound component.
 _Avoid_: slot, children, content area
