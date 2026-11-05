@@ -19,6 +19,7 @@
 		"prepare": "husky",
 		"release": "turbo run build && changeset publish",
 		"test:integration": "turbo run test:integration:ci --concurrency=1",
+		"test:stories": "turbo run test:stories",
 		"test:unit": "turbo run test:unit",
 		"typecheck": "turbo run typecheck",
 		"version-packages": "changeset version"

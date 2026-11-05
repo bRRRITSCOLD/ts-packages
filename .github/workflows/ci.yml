@@ -24,6 +24,9 @@ jobs:
             - run: pnpm build
             - run: pnpm typecheck
             - run: pnpm test:unit
+            # core-react's stories run as tests in Chromium (play functions + a11y)
+            - run: pnpm --filter @brrritscold/core-react exec playwright install --with-deps chromium
+            - run: pnpm test:stories
             # TypeDoc with warnings-as-errors + README API sections up to date + every export has a summary
             - run: pnpm docs:check
 
