@@ -174,6 +174,9 @@ importers:
 
   packages/design-core-node:
     dependencies:
+      '@brrritscold/core-js':
+        specifier: workspace:^
+        version: link:../core-js
       '@brrritscold/design-core-js':
         specifier: workspace:^
         version: link:../design-core-js
