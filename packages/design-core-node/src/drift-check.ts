@@ -11,6 +11,7 @@ import {
 } from '@brrritscold/design-core-js/drift-check'
 import { librarySnapshotSchema } from '@brrritscold/design-core-js/library-snapshot'
 import { tokenFileSchema } from '@brrritscold/design-core-js/token-file'
+import { buildTokenSyncScript, tokenMigrationsSchema } from '@brrritscold/design-core-js/token-sync'
 
 import { generateCodeManifest } from './code-manifest.js'
 import { formatAnnotations, formatStepSummary } from './drift-report.js'
@@ -54,7 +55,12 @@ const USAGE = `Usage: design-drift <command> [options]
       and the step summary to $GITHUB_STEP_SUMMARY (stdout when unset).
       Exit 1 on drift; coverage gaps and unchecked components only warn.
 
-Exit 2 on a usage error or an input file that doesn't match its schema.`
+  token-sync --tokens <tokens.json> [--migrations <token-migrations.json>]
+      Print the token sync script: run it as the body of one Penpot MCP execute_code call in
+      the tab of the file to sync. It returns { changes, flagged }; a second run, no changes.
+
+Exit 2 on a usage error, an input file that doesn't match its schema, or a token Penpot
+can't hold.`
 
 /** Input the CLI can't use: a usage error or a file that doesn't match its schema (exit 2). */
 class DriftCliInputError extends Error {}
@@ -75,16 +81,23 @@ const readJson = <T>(io: DriftCliIo, path: string, what: string, schema: z.ZodTy
 	)
 }
 
-const options = (argv: string[], names: string[]) => {
+/** Parses `--<name> <value>` options: every name in `names` is required, `optional` may be left out. */
+const options = <Name extends string, Optional extends string = never>(
+	argv: string[],
+	names: Name[],
+	optional: Optional[] = []
+) => {
 	const { values } = parseArgs({
 		args: argv,
-		options: Object.fromEntries(names.map((name) => [name, { type: 'string' as const }])),
+		options: Object.fromEntries(
+			[...names, ...optional].map((name) => [name, { type: 'string' as const }])
+		),
 		strict: true,
 	})
 	const missing = names.filter((name) => !values[name])
 	if (missing.length)
 		throw new DriftCliInputError(`Missing ${missing.map((name) => `--${name}`).join(', ')}`)
-	return values as Record<string, string>
+	return values as Record<Name, string> & Partial<Record<Optional, string>>
 }
 
 const runManifest = (argv: string[], io: DriftCliIo) => {
@@ -108,15 +121,33 @@ const runCheck = (argv: string[], io: DriftCliIo) => {
 	return report.errors.length ? 1 : 0
 }
 
+const runTokenSync = (argv: string[], io: DriftCliIo) => {
+	const paths = options(argv, ['tokens'], ['migrations'])
+	const tokens = readJson(io, paths.tokens, 'token file', tokenFileSchema)
+	const migrations = paths.migrations
+		? readJson(io, paths.migrations, 'token migrations', tokenMigrationsSchema)
+		: []
+	let script: string
+	try {
+		script = buildTokenSyncScript({ tokens, migrations })
+	} catch (error) {
+		throw new DriftCliInputError((error as Error).message)
+	}
+	io.stdout(script)
+	return 0
+}
+
 /**
  * Runs the `design-drift` CLI and returns its exit code: `manifest` writes the code manifest,
- * `check` runs the drift check (1 on drift); 2 on a usage error or an invalid input file.
+ * `check` runs the drift check (1 on drift), `token-sync` prints the token sync script; 2 on a
+ * usage error, an invalid input file or a token Penpot can't hold.
  */
 export const runDriftCli = (argv: string[], io: DriftCliIo = processIo): number => {
 	const [command, ...rest] = argv
 	try {
 		if (command === 'manifest') return runManifest(rest, io)
 		if (command === 'check') return runCheck(rest, io)
+		if (command === 'token-sync') return runTokenSync(rest, io)
 		throw new DriftCliInputError(command ? `Unknown command: ${command}` : 'No command')
 	} catch (error) {
 		const isUsageError =
