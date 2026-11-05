@@ -1,5 +1,5 @@
-import { expect } from 'chai'
 import { MongoClient } from 'mongodb'
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 
 // application/testee
 import { MongoDbAtlasLocalContainer } from '../../src/docker.js'
@@ -18,7 +18,7 @@ let container: MongoDbAtlasLocalContainer
 let client: MongoClient
 
 describe('docker.ts - MongoDbAtlasLocalContainer', () => {
-	before(async () => {
+	beforeAll(async () => {
 		container = new MongoDbAtlasLocalContainer(atlasFixture)
 
 		await container.start()
@@ -28,19 +28,19 @@ describe('docker.ts - MongoDbAtlasLocalContainer', () => {
 		await client.connect()
 	})
 
-	after(async () => {
+	afterAll(async () => {
 		await client?.close().catch((e) => console.log(e))
 		await container?.stop().catch((e) => console.log(e))
 	})
 
 	it('should start and expose a connection string that connects', async () => {
-		expect(container.startedContainer).to.be.not.undefined
-		expect(container.getMappedPort()).to.be.not.undefined
-		expect(container.getConnectionString()).to.contain('directConnection=true')
+		expect(container.startedContainer).toBeDefined()
+		expect(container.getMappedPort()).toBeDefined()
+		expect(container.getConnectionString()).toContain('directConnection=true')
 
 		const { ok } = await client.db(atlasFixture.database).command({ ping: 1 })
 
-		expect(ok).to.equal(1)
+		expect(ok).toBe(1)
 	})
 
 	it('should create, query and drop an atlas search index', async () => {
@@ -66,7 +66,7 @@ describe('docker.ts - MongoDbAtlasLocalContainer', () => {
 			])
 			.toArray()
 
-		expect(results).to.have.lengthOf(1)
+		expect(results).toHaveLength(1)
 
 		await collection.dropSearchIndex(searchIndexName)
 	})
@@ -79,9 +79,7 @@ describe('docker.ts - MongoDbAtlasLocalContainer', () => {
 		await second.start()
 
 		try {
-			expect(second.startedContainer?.getId()).to.not.equal(
-				container.startedContainer?.getId()
-			)
+			expect(second.startedContainer?.getId()).not.toBe(container.startedContainer?.getId())
 		} finally {
 			await second.stop()
 		}
@@ -90,16 +88,16 @@ describe('docker.ts - MongoDbAtlasLocalContainer', () => {
 	it('should throw a clear error when an index never becomes queryable', async () => {
 		const collection = client.db(atlasFixture.database).collection('entries')
 
-		try {
-			await MongoDbAtlasLocalContainer.waitForSearchIndex(collection, 'does-not-exist', {
+		const waiting = MongoDbAtlasLocalContainer.waitForSearchIndex(
+			collection,
+			'does-not-exist',
+			{
 				timeoutMs: 500,
 				intervalMs: 100,
-			})
+			}
+		)
 
-			expect.fail('expected waitForSearchIndex to throw')
-		} catch (e) {
-			expect((e as Error).message).to.contain('does-not-exist')
-			expect((e as Error).message).to.contain('not found')
-		}
+		await expect(waiting).rejects.toThrow('"does-not-exist"')
+		await expect(waiting).rejects.toThrow('status: not found')
 	})
 })

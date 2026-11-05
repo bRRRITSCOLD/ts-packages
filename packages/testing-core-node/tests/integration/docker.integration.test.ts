@@ -1,4 +1,4 @@
-import { expect } from 'chai'
+import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 
 // application/testee
 import {
@@ -54,10 +54,6 @@ const cleanAll = async () => {
 }
 
 describe('docker.ts', () => {
-	before(async () => {})
-
-	after(async () => {})
-
 	beforeEach(async () => {
 		await cleanAll()
 	})
@@ -73,13 +69,13 @@ describe('docker.ts', () => {
 
 		await Promise.all([m.start(), p.start(), l.start()])
 
-		expect(m.startedContainer).to.be.not.undefined
-		expect(p.startedContainer).to.be.not.undefined
-		expect(l.startedContainer).to.be.not.undefined
+		expect(m.startedContainer).toBeDefined()
+		expect(p.startedContainer).toBeDefined()
+		expect(l.startedContainer).toBeDefined()
 
-		expect(m.getMappedPort()).to.be.not.undefined
-		expect(p.getMappedPort()).to.be.not.undefined
-		expect(l.getMappedPort()).to.be.not.undefined
+		expect(m.getMappedPort()).toBeDefined()
+		expect(p.getMappedPort()).toBeDefined()
+		expect(l.getMappedPort()).toBeDefined()
 
 		await Promise.all([m.stop(), p.stop(), l.stop()])
 	})
@@ -89,8 +85,8 @@ describe('docker.ts', () => {
 
 		await f.start()
 
-		expect(f.startedContainer).to.be.not.undefined
-		expect(f.getMappedPort()).to.be.not.undefined
+		expect(f.startedContainer).toBeDefined()
+		expect(f.getMappedPort()).toBeDefined()
 
 		await f.stop()
 	})
