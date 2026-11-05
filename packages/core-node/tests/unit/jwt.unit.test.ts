@@ -1,20 +1,12 @@
-import { expect } from 'chai'
 import crypto from 'crypto'
 import { JsonWebTokenError } from 'jsonwebtoken'
+import { describe, expect, it } from 'vitest'
 
 // application/testee
 import { JWT, JWTPayload } from '../../src/jwt.js'
 
 describe('jwt.ts', () => {
-	before(async () => {})
-
-	after(async () => {})
-
-	beforeEach(async () => {})
-
-	afterEach(async () => {})
-
-	context('JWT', () => {
+	describe('JWT', () => {
 		it('should sign, decode and verify a token (valid token - HS256)', async () => {
 			const config = {
 				algorithm: 'HS256' as const,
@@ -27,23 +19,23 @@ describe('jwt.ts', () => {
 
 			const token = jwt.sign()
 
-			expect(token).to.be.not.undefined
-			expect(typeof token === 'string').to.be.true
-			expect(token).to.have.length.greaterThan(1)
+			expect(token).toBeDefined()
+			expect(token).toBeTypeOf('string')
+			expect(token.length).toBeGreaterThan(1)
 
 			const decodedToken = jwt.decode(token) as JWTPayload
 
-			expect(decodedToken).to.be.not.undefined
-			expect(decodedToken.id).to.be.not.undefined
-			expect(decodedToken.id).to.eq(config.id)
+			expect(decodedToken).toBeDefined()
+			expect(decodedToken.id).toBeDefined()
+			expect(decodedToken.id).toBe(config.id)
 
 			const verifiedToken = jwt.verify(token)
 
-			expect(verifiedToken).to.be.not.undefined
-			expect(verifiedToken.error).to.be.undefined
-			expect(verifiedToken.data).to.be.not.undefined
-			expect((verifiedToken.data as unknown as JWTPayload).id).to.be.not.undefined
-			expect((verifiedToken.data as unknown as JWTPayload).id).to.eq(config.id)
+			expect(verifiedToken).toBeDefined()
+			expect(verifiedToken.error).toBeUndefined()
+			expect(verifiedToken.data).toBeDefined()
+			expect((verifiedToken.data as unknown as JWTPayload).id).toBeDefined()
+			expect((verifiedToken.data as unknown as JWTPayload).id).toBe(config.id)
 		})
 
 		it('should sign, decode and verify a token (valid token - RS256)', async () => {
@@ -72,9 +64,9 @@ describe('jwt.ts', () => {
 
 			const token = jwtPrivateKey.sign()
 
-			expect(token).to.be.not.undefined
-			expect(typeof token === 'string').to.be.true
-			expect(token).to.have.length.greaterThan(1)
+			expect(token).toBeDefined()
+			expect(token).toBeTypeOf('string')
+			expect(token.length).toBeGreaterThan(1)
 
 			// create jwt to verify with public key
 			const jwtPublicKey = new JWT({
@@ -84,17 +76,17 @@ describe('jwt.ts', () => {
 
 			const decodedToken = jwtPublicKey.decode(token) as JWTPayload
 
-			expect(decodedToken).to.be.not.undefined
-			expect(decodedToken.id).to.be.not.undefined
-			expect(decodedToken.id).to.eq(configPrivateKey.id)
+			expect(decodedToken).toBeDefined()
+			expect(decodedToken.id).toBeDefined()
+			expect(decodedToken.id).toBe(configPrivateKey.id)
 
 			const verifiedToken = jwtPublicKey.verify(token)
 
-			expect(verifiedToken).to.be.not.undefined
-			expect(verifiedToken.error).to.be.undefined
-			expect(verifiedToken.data).to.be.not.undefined
-			expect((verifiedToken.data as unknown as JWTPayload).id).to.be.not.undefined
-			expect((verifiedToken.data as unknown as JWTPayload).id).to.eq(configPrivateKey.id)
+			expect(verifiedToken).toBeDefined()
+			expect(verifiedToken.error).toBeUndefined()
+			expect(verifiedToken.data).toBeDefined()
+			expect((verifiedToken.data as unknown as JWTPayload).id).toBeDefined()
+			expect((verifiedToken.data as unknown as JWTPayload).id).toBe(configPrivateKey.id)
 		})
 
 		it('should verify a token (invalid token - HS256)', async () => {
@@ -109,10 +101,10 @@ describe('jwt.ts', () => {
 
 			const verifiedToken = jwt.verify('afnasjdfnjasndfjknas')
 
-			expect(verifiedToken).to.be.not.undefined
-			expect(verifiedToken.data).to.be.undefined
-			expect(verifiedToken.error).to.be.not.undefined
-			expect((verifiedToken.error as unknown as JsonWebTokenError).name).to.eq(
+			expect(verifiedToken).toBeDefined()
+			expect(verifiedToken.data).toBeUndefined()
+			expect(verifiedToken.error).toBeDefined()
+			expect((verifiedToken.error as unknown as JsonWebTokenError).name).toBe(
 				'JsonWebTokenError'
 			)
 		})

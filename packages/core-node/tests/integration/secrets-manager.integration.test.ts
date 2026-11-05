@@ -5,25 +5,24 @@ import {
 	PutSecretValueCommand,
 	ResourceNotFoundException,
 } from '@aws-sdk/client-secrets-manager'
-import { expect } from 'chai'
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { CREDENTIAL_PROVIDERS, SecretsManager } from '../../src/secrets-manager.js'
-import { getLocalstackContainer, setup } from './__utils__/utils.js'
+import { getLocalstackContainer } from './__utils__/utils.js'
 
 describe('secrets-manager.ts', () => {
 	let secretsManager: SecretsManager
 	let localstackContainer: Awaited<ReturnType<typeof getLocalstackContainer>>
 
-	before(async () => {
-		await setup()
+	beforeAll(async () => {
 		localstackContainer = await getLocalstackContainer()
 	})
 
-	after(async () => {
+	afterAll(async () => {
 		secretsManager?.closeClient()
 		await localstackContainer?.stop()
 	})
 
-	context('SecretsManager client initialization and operations', () => {
+	describe('SecretsManager client initialization and operations', () => {
 		describe('SecretsManager.initClient + getClient + operations + closeClient', () => {
 			it('should initialize the client, perform CRUD operations on Localstack, and close the client', async () => {
 				secretsManager = new SecretsManager()
@@ -36,12 +35,12 @@ describe('secrets-manager.ts', () => {
 					},
 				})
 
-				expect(initialized).to.be.true
-				expect(secretsManager.credentials.provider).to.equal(CREDENTIAL_PROVIDERS.ENV)
-				expect(secretsManager.credentials.tokens).to.not.be.undefined
+				expect(initialized).toBe(true)
+				expect(secretsManager.credentials.provider).toBe(CREDENTIAL_PROVIDERS.ENV)
+				expect(secretsManager.credentials.tokens).toBeDefined()
 
 				const client = await secretsManager.getClient()
-				expect(client).to.not.be.null
+				expect(client).not.toBeNull()
 
 				const secretId = 'core-node/integration-test'
 				const secret = { apiKey: 'abc123' }
@@ -62,7 +61,7 @@ describe('secrets-manager.ts', () => {
 					})
 				)
 
-				expect(JSON.parse(created.SecretString!)).to.deep.equal(secret)
+				expect(JSON.parse(created.SecretString!)).toStrictEqual(secret)
 
 				// PutSecretValue
 				await client!.send(
@@ -78,7 +77,7 @@ describe('secrets-manager.ts', () => {
 					})
 				)
 
-				expect(JSON.parse(updated.SecretString!)).to.deep.equal(updatedSecret)
+				expect(JSON.parse(updated.SecretString!)).toStrictEqual(updatedSecret)
 
 				// DeleteSecret
 				await client!.send(
@@ -89,20 +88,16 @@ describe('secrets-manager.ts', () => {
 				)
 
 				// Verify deletion
-				try {
-					await client!.send(
+				await expect(
+					client!.send(
 						new GetSecretValueCommand({
 							SecretId: secretId,
 						})
 					)
-
-					expect.fail('expected the deleted secret to no longer resolve')
-				} catch (error) {
-					expect(error).to.be.instanceOf(ResourceNotFoundException)
-				}
+				).rejects.toBeInstanceOf(ResourceNotFoundException)
 
 				const closed = secretsManager.closeClient()
-				expect(closed).to.be.true
+				expect(closed).toBe(true)
 			})
 		})
 
@@ -122,8 +117,8 @@ describe('secrets-manager.ts', () => {
 				const client1 = await secretsManager.getClient()
 				const client2 = await secretsManager.getClient()
 
-				expect(client1).to.not.be.null
-				expect(client2).to.not.be.null
+				expect(client1).not.toBeNull()
+				expect(client2).not.toBeNull()
 
 				secretsManager.closeClient()
 			})
@@ -133,7 +128,7 @@ describe('secrets-manager.ts', () => {
 			it('should return null', async () => {
 				const uninitialized = new SecretsManager()
 
-				expect(await uninitialized.getClient()).to.be.null
+				expect(await uninitialized.getClient()).toBeNull()
 			})
 		})
 	})

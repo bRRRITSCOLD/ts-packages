@@ -1,10 +1,10 @@
-import { expect } from 'chai'
+import { afterAll, describe, expect, it } from 'vitest'
 import {
 	createPostgresTableClient,
 	PostgresConnectionConfig,
 	PostgresConnections,
 } from '../../src/postgres.js'
-import { getPostgresContainer, setup } from './__utils__/utils.js'
+import { getPostgresContainer } from './__utils__/utils.js'
 
 const postgresConnections = new PostgresConnections()
 
@@ -14,15 +14,11 @@ type TodoRow = {
 }
 
 describe('postgres.ts', () => {
-	before(async () => {
-		await setup()
-	})
-
-	after(async () => {
+	afterAll(async () => {
 		await postgresConnections.closeConnections()
 	})
 
-	context('PostgresConnections + createPostgresTableClient', () => {
+	describe('PostgresConnections + createPostgresTableClient', () => {
 		describe('PostgresConnections.initConnections + PostgresConnections.getConnection + createPostgresTableClient + PostgresConnections.closeConnection + PostgresConnections.closeConnections', () => {
 			it('should connect 1...N postgres connection configurations, get a connection, create a table client (insert row, select row, delete rows), close one connection, and then close all connections', async () => {
 				const container = await getPostgresContainer()
@@ -54,7 +50,7 @@ describe('postgres.ts', () => {
 					process.env.POSTGRES_DB_DATABASE as string
 				)
 
-				expect(postgresConnection).to.not.be.undefined
+				expect(postgresConnection).toBeDefined()
 
 				const db = postgresConnection!.db
 
@@ -74,27 +70,27 @@ describe('postgres.ts', () => {
 					tableName: 'todos',
 				}).where({ title: 'write it down' })
 
-				expect(rows).to.have.lengthOf(1)
-				expect(rows[0]?.title).to.equal('write it down')
+				expect(rows).toHaveLength(1)
+				expect(rows[0]?.title).toBe('write it down')
 
 				const deleted = await createPostgresTableClient<TodoRow>({
 					db,
 					tableName: 'todos',
 				}).delete()
 
-				expect(deleted).to.equal(1)
+				expect(deleted).toBe(1)
 
 				await db.schema.dropTableIfExists('todos')
 
 				await postgresConnections.closeConnection('anothaOneDb')
 
-				expect(postgresConnections.getConnection('anothaOneDb')).to.be.undefined
+				expect(postgresConnections.getConnection('anothaOneDb')).toBeUndefined()
 
 				await postgresConnections.closeConnections()
 
 				expect(
 					postgresConnections.getConnection(process.env.POSTGRES_DB_DATABASE as string)
-				).to.be.undefined
+				).toBeUndefined()
 			})
 		})
 	})

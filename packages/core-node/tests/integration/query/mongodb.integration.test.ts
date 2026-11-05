@@ -1,11 +1,11 @@
 import { createCursorCodec, Filter, serializeCursorValue } from '@brrritscold/core-js/query'
-import { expect } from 'chai'
 import { Collection, Document, ObjectId } from 'mongodb'
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { MongoConnectionConfig, MongoConnections } from '../../../src/mongodb.js'
 // application/testee
 import { MongoQueryDialect } from '../../../src/query/mongodb.js'
 import { hashQuery } from '../../../src/query.js'
-import { getMongoDbContainer, setup } from '../__utils__/utils.js'
+import { getMongoDbContainer } from '../__utils__/utils.js'
 
 // a job scheduler's fields: nextRunAt is null once a job has run.
 // owner is a nullable string, so a string walk crosses a null block too
@@ -78,8 +78,7 @@ async function unpaged(sortKey: string, sortBy: 'asc' | 'desc', filter: Document
 }
 
 describe('query/mongodb.ts', () => {
-	before(async () => {
-		await setup()
+	beforeAll(async () => {
 		const container = await getMongoDbContainer()
 		const config: MongoConnectionConfig = {
 			protocol: process.env.MONGO_DB_PROTOCOL as string,
@@ -100,7 +99,7 @@ describe('query/mongodb.ts', () => {
 		await collection.insertMany(jobs.map((job) => ({ ...job })))
 	})
 
-	after(async () => {
+	afterAll(async () => {
 		await collection.deleteMany({})
 		await mongoConnections.closeConnections()
 	})
@@ -109,10 +108,10 @@ describe('query/mongodb.ts', () => {
 		for (const sortBy of ['asc', 'desc'] as const) {
 			it(`should page through every job once, in order, by ${sortKey} ${sortBy}`, async () => {
 				const expected = await unpaged(sortKey, sortBy)
-				expect(expected).to.have.length(jobs.length)
+				expect(expected).toHaveLength(jobs.length)
 
 				for (const limit of [1, 2, 3]) {
-					expect(await walk(sortKey, sortBy, {}, limit)).to.deep.eq(expected)
+					expect(await walk(sortKey, sortBy, {}, limit)).toStrictEqual(expected)
 				}
 			})
 		}
@@ -122,8 +121,8 @@ describe('query/mongodb.ts', () => {
 		const compiled = dialect.compileFilter(fields, { nextRunAt: { gte: new Date(0) } })
 		const rows = await collection.find(compiled).toArray()
 
-		expect(rows).to.have.length(4)
-		for (const row of rows) expect(row.nextRunAt).to.be.instanceOf(Date)
+		expect(rows).toHaveLength(4)
+		for (const row of rows) expect(row.nextRunAt).toBeInstanceOf(Date)
 	})
 
 	it('should count a missing disabled as false', async () => {
@@ -134,14 +133,14 @@ describe('query/mongodb.ts', () => {
 			.find(dialect.compileFilter(fields, { disabled: { eq: true } }))
 			.toArray()
 
-		expect(enabled).to.have.length(5)
-		expect(disabled).to.have.length(2)
+		expect(enabled).toHaveLength(5)
+		expect(disabled).toHaveLength(2)
 	})
 
 	it('should page a filtered walk by nextRunAt desc across the null block', async () => {
 		const filter = { disabled: { eq: false } }
 		const expected = await unpaged('nextRunAt', 'desc', dialect.compileFilter(fields, filter))
 
-		expect(await walk('nextRunAt', 'desc', filter)).to.deep.eq(expected)
+		expect(await walk('nextRunAt', 'desc', filter)).toStrictEqual(expected)
 	})
 })
