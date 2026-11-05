@@ -275,7 +275,7 @@ _Decided in:_ [How is Penpot deployed on k3s?][t29] with amendments from [creden
 - **Hosted CI holds no Penpot credentials.** GitHub Actions uses only `GITHUB_TOKEN` (GHCR).
 - **One agent session drives Penpot at a time.**
 - Pods read Secrets as env vars and never talk to a secret store, so a future store (OpenBao + ESO, a separate `personal-infra` effort) can fill the same Secrets without touching manifests or images.
-- **Local:** tools read `PENPOT_URL`, `PENPOT_MCP_KEY`, `PENPOT_AUTOMATION_EMAIL`, `PENPOT_AUTOMATION_PASSWORD` from the process env and fail naming the missing variable. Interim source: `~/.config/penpot/env`, `chmod 600`, sourced by `~/.zshrc`. Each repo with Penpot tooling commits a `.env.example` (names only). **No repo `.env`.**
+- **Local:** tools read `PENPOT_URL`, `PENPOT_MCP_KEY`, `PENPOT_AUTOMATION_EMAIL`, `PENPOT_AUTOMATION_PASSWORD` from the process env and fail naming the missing variable. Interim source: `~/.config/penpot/env`, `chmod 600`, sourced by `~/.zshenv` (so launchers and non-interactive shells, including the one that starts Claude Code, see it). Each repo with Penpot tooling commits a `.env.example` (names only). **No repo `.env`.**
 - **Claude Code:** user-scope `~/.claude.json`, never a project `.mcp.json`:
 
   ```json
