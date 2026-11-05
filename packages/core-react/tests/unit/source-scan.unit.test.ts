@@ -1,0 +1,56 @@
+// node_modules
+import { describe, expect, it } from 'vitest'
+
+// utils
+import { forbiddenClasses, sourceFiles, stringsIn } from './__utils__/classes.js'
+
+describe('source scan', () => {
+	it('should find no arbitrary value or default-palette utility anywhere in src/', () => {
+		const offenders = sourceFiles().flatMap((file) =>
+			forbiddenClasses(stringsIn(file)).map((cls) => `${file}: ${cls}`)
+		)
+
+		expect(offenders).toEqual([])
+	})
+
+	describe('forbiddenClasses', () => {
+		it('should reject arbitrary values, behind any variant', () => {
+			expect(
+				forbiddenClasses([
+					'bg-[#fff] p-[13px]',
+					'hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)]',
+					'rounded-[min(var(--radius-md),8px)] bg-(--brand) [mask-type:luminance]',
+					'bg-primary/[0.4]',
+				])
+			).toEqual([
+				'bg-[#fff]',
+				'p-[13px]',
+				'hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)]',
+				'rounded-[min(var(--radius-md),8px)]',
+				'bg-(--brand)',
+				'[mask-type:luminance]',
+				'bg-primary/[0.4]',
+			])
+		})
+
+		it('should reject default-palette utilities, with or without an opacity', () => {
+			expect(
+				forbiddenClasses([
+					'bg-slate-500 text-white',
+					'dark:ring-offset-zinc-950/50 bg-black/50',
+				])
+			).toEqual(['bg-slate-500', 'text-white', 'dark:ring-offset-zinc-950/50', 'bg-black/50'])
+		})
+
+		it('should accept token utilities and arbitrary variants', () => {
+			expect(
+				forbiddenClasses([
+					'bg-primary hover:bg-primary/80 text-primary-foreground rounded-md h-9 px-2.5',
+					"[&_svg:not([class*='size-'])]:size-4 has-data-[icon=inline-end]:pr-2",
+					'active:not-aria-[haspopup]:translate-y-px in-data-[slot=button-group]:rounded-md',
+					'@base-ui/react/button use client',
+				])
+			).toEqual([])
+		})
+	})
+})
