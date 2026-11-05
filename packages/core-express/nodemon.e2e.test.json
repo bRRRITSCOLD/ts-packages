@@ -1,5 +1,0 @@
-{
-	"watch": ["./src", "./tests", "./tsconfig.json", "./package.json"],
-	"ext": "ts,json",
-	"exec": "npm run test:e2e"
-}
