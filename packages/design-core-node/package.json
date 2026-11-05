@@ -5,6 +5,7 @@
 	"description": "The drift check's node side: the code manifest generator (TS compiler API over core-react's .d.ts) and the drift-check CLI.",
 	"license": "MIT",
 	"author": "Blaine Richardson",
+	"homepage": "https://brrritscold.github.io/ts-packages/modules/_brrritscold_design-core-node.html",
 	"type": "module",
 	"repository": {
 		"type": "git",

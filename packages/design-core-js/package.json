@@ -5,6 +5,7 @@
 	"description": "The component link between the design system library and core-react: resolver, exceptions-record and library-snapshot schemas, drift-check rule engine and coverage report.",
 	"license": "MIT",
 	"author": "Blaine Richardson",
+	"homepage": "https://brrritscold.github.io/ts-packages/modules/_brrritscold_design-core-js.html",
 	"type": "module",
 	"repository": {
 		"type": "git",
