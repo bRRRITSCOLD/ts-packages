@@ -1,11 +1,9 @@
 // Reads core-react's test tree for the tier-placement convention test.
-import { readdirSync, readFileSync } from 'node:fs'
-import { join, relative } from 'node:path'
-
 // node_modules
 import ts from 'typescript'
 
-const PACKAGE_DIR = join(import.meta.dirname, '../../..')
+// utils
+import { filesUnder, parse } from './package.js'
 
 /** Each tier directory under tests/ and the suffix its files carry. */
 const TIERS: Record<string, RegExp> = {
@@ -13,16 +11,15 @@ const TIERS: Record<string, RegExp> = {
 	integration: /\.integration\.spec\.ts$/,
 }
 
-const walk = (dir: string): string[] =>
-	readdirSync(dir, { withFileTypes: true }).flatMap((entry) =>
-		entry.isDirectory() ? walk(join(dir, entry.name)) : [join(dir, entry.name)]
-	)
-
 /** Every file under a tier directory, harness included, relative to the package. */
 export const tierFiles = (): string[] =>
-	Object.keys(TIERS)
-		.flatMap((tier) => walk(join(PACKAGE_DIR, 'tests', tier)))
-		.map((file) => relative(PACKAGE_DIR, file))
+	Object.keys(TIERS).flatMap((tier) => filesUnder(`tests/${tier}`))
+
+/** Every file that holds tests: each tier's files, and the stories (the `stories` tier, in `src/`). */
+export const testFiles = (): string[] => [
+	...tierFiles(),
+	...filesUnder('src').filter((file) => file.endsWith('.stories.tsx')),
+]
 
 /** True when a test file's suffix doesn't match its tier directory; `__utils__/` and the like are exempt. */
 export const misplaced = (file: string): boolean => {
@@ -31,11 +28,8 @@ export const misplaced = (file: string): boolean => {
 	return !TIERS[tier]?.test(file)
 }
 
-/** A file's source text, by its path relative to the package. */
-export const source = (file: string): string => readFileSync(join(PACKAGE_DIR, file), 'utf8')
-
 /** The callees of every `….skip(…)` call in a source: `it.skip`, `test.describe.skip`, `ctx.skip`. */
-export const skipCalls = (code: string): string[] => {
+export const skipCalls = (code: string, file = 'source.ts'): string[] => {
 	const found: string[] = []
 	const visit = (node: ts.Node) => {
 		if (
@@ -46,6 +40,6 @@ export const skipCalls = (code: string): string[] => {
 			found.push(node.expression.getText())
 		ts.forEachChild(node, visit)
 	}
-	visit(ts.createSourceFile('source.ts', code, ts.ScriptTarget.Latest, true))
+	visit(parse(file, code))
 	return found
 }

@@ -100,7 +100,7 @@ Naming is the component link: export name = library component name, cva variant 
 
 A story's `title` is its library component's Penpot path (`Components/Button`), one story per variant value, each with a `play` function. The component name in that path is the export, so a two-word component is `Components/AlertDialog`, never `Alert Dialog`; the unit tier's story-title check fails a title whose last segment isn't a `.` export. A story that opts out of a11y (`parameters: { a11y: { test: 'off' } }`) says why in a comment beside it. The token checks: light and dark define the same semantic tokens, every class a component applies compiles to a utility of the built theme, and each of those utilities reads a token for every token-typed property it sets.
 
-An integration spec opens a story by id (`openStory(page, 'components-dialog--nested')`, from `tests/integration/__utils__/story.ts`), which waits until Storybook has run the story's `play` function: the spec starts from the state `play` leaves. `retries` is 0. The tier-placement check fails a file whose suffix doesn't match its tier directory, and any skipped test or suite (`test.fixme` is allowed).
+An integration spec opens a story by id (`openStory(page, 'components-dialog--nested')`, from `tests/integration/__utils__/story.ts`), which waits until Storybook has run the story's `play` function: the spec starts from the state `play` leaves. `retries` is 0. The tier-placement check fails a file whose suffix doesn't match its tier directory, and any skipped test or suite in a tier or a stories file (`test.fixme` is allowed).
 
 `pnpm test:stories` and `pnpm test:integration` need Chromium once: `pnpm exec playwright install chromium`.
 

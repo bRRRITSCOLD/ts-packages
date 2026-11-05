@@ -8,7 +8,8 @@ import { beforeAll, describe, expect, it } from 'vitest'
 // testee
 import { buildStyles, type TokenFile, tokenVars } from '../../scripts/styles.js'
 // utils
-import { componentClasses, PACKAGE_DIR, sourceFiles } from './__utils__/classes.js'
+import { componentClasses, sourceFiles } from './__utils__/classes.js'
+import { PACKAGE_DIR } from './__utils__/package.js'
 
 const tokens = JSON.parse(
 	readFileSync(join(PACKAGE_DIR, 'tokens/tokens.json'), 'utf8')

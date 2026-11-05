@@ -1,28 +1,13 @@
-// Reads class names out of core-react's sources for the token checks and the source scan.
-import { readdirSync, readFileSync } from 'node:fs'
-import { join, relative } from 'node:path'
-
+// Reads core-react's sources: the classes for the token checks and the source scan, and story
+// titles and `.` exports for the story-title check.
 // node_modules
 import ts from 'typescript'
 
-export const PACKAGE_DIR = join(import.meta.dirname, '../../..')
+// utils
+import { filesUnder, parse } from './package.js'
 
 /** Every `.ts` / `.tsx` file under `src/`, stories included, relative to the package. */
-export const sourceFiles = (dir = join(PACKAGE_DIR, 'src')): string[] =>
-	readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
-		const path = join(dir, entry.name)
-		if (entry.isDirectory()) return sourceFiles(path)
-		return /\.tsx?$/.test(entry.name) ? [relative(PACKAGE_DIR, path)] : []
-	})
-
-const parse = (file: string) =>
-	ts.createSourceFile(
-		file,
-		readFileSync(join(PACKAGE_DIR, file), 'utf8'),
-		ts.ScriptTarget.Latest,
-		true,
-		file.endsWith('.tsx') ? ts.ScriptKind.TSX : ts.ScriptKind.TS
-	)
+export const sourceFiles = (): string[] => filesUnder('src').filter((file) => /\.tsx?$/.test(file))
 
 const isString = (node: ts.Node): node is ts.StringLiteral | ts.NoSubstitutionTemplateLiteral =>
 	ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node)
