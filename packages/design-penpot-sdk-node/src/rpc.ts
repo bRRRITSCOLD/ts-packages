@@ -19,7 +19,8 @@ export type CreatePenpotRpcClientParameters = {
 export type PenpotRpcClient = {
 	/**
 	 * Calls one RPC command with JSON params and returns its JSON result, untyped: the caller
-	 * validates what it reads. A non-2xx answer throws, naming the command and Penpot's error code.
+	 * validates what it reads; `undefined` for a command that answers with no body
+	 * (`delete-file`). A non-2xx answer throws, naming the command and Penpot's error code.
 	 */
 	command: (name: string, params: Record<string, unknown>) => Promise<unknown>
 	/** The raw `get-file` result for a file, requested without `features`. */
@@ -82,7 +83,8 @@ export const createPenpotRpcClient = ({
 			throw new Error(
 				`Penpot RPC ${name} failed (${response.status}): ${await describeFailure(response)}`
 			)
-		return response.json()
+		const text = await response.text()
+		return text ? JSON.parse(text) : undefined
 	}
 
 	const getVersion = async (): Promise<string> => {
