@@ -117,7 +117,8 @@ const checkParts = (component: LibraryComponent, snapshot: LibrarySnapshot): Mis
 
 /**
  * Rule 5 beyond the schema: every key of the record points at something real. `codeProps` is
- * `undefined` when the export can't be checked (another package, or rule 1 already failed).
+ * `undefined` when the export can't be checked (another package, or rule 1 failed), which
+ * leaves the `props` keys unchecked.
  */
 const checkRecordKeys = (
 	component: LibraryComponent,
@@ -173,6 +174,27 @@ const collectVariantValues = (
 	return byComponent
 }
 
+/**
+ * The coverage report: each export no library component links to (unless allowlisted), and
+ * each literal of a prop the library sets that no variant uses (`default` omits the prop).
+ */
+const reportCoverage = (
+	manifest: CodeManifest,
+	allowlist: string[],
+	linked: Map<string, Record<string, Set<string>>>
+): CoverageGap[] =>
+	Object.entries(manifest.exports).flatMap(([exportName, { props }]): CoverageGap[] => {
+		const usedValues = linked.get(exportName)
+		if (!usedValues) return allowlist.includes(exportName) ? [] : [{ export: exportName }]
+		return Object.entries(usedValues).flatMap(([prop, used]) => {
+			const codeProp = props[prop]
+			if (codeProp?.type !== 'literals') return []
+			return codeProp.values
+				.filter((value) => !used.has(value))
+				.map((value) => ({ export: exportName, prop, value }))
+		})
+	})
+
 /** Variants of one component share most mismatches; each is reported once. */
 const uniqueBy = <T>(items: T[]): T[] => [
 	...new Map(items.map((item) => [JSON.stringify(item), item])).values(),
@@ -189,9 +211,11 @@ const schemaIssues = (error: z.ZodError) =>
  * Checks the library snapshot against the code manifest: library → code mismatches are errors
  * (rules 1–5), code → library mismatches are coverage gaps.
  */
-export const checkDrift = ({ snapshot, manifest }: DriftCheckInput): DriftReport => {
+export const checkDrift = ({ snapshot, manifest, config }: DriftCheckInput): DriftReport => {
 	const errors: DriftError[] = []
 	const unchecked: UncheckedComponent[] = []
+	/** Per core-react export a library component links to: the values it gives each prop. */
+	const linked = new Map<string, Record<string, Set<string>>>()
 	const variantValues = collectVariantValues(snapshot)
 
 	for (const component of Object.values(snapshot.components)) {
@@ -219,24 +243,23 @@ export const checkDrift = ({ snapshot, manifest }: DriftCheckInput): DriftReport
 			})
 		if (link.kind !== 'component') continue
 
-		if (link.package !== COMPONENT_PACKAGE) {
-			unchecked.push({ component: label, package: link.package })
-			if (record)
-				checkRecordKeys(
-					component,
-					record,
-					variantValues.get(label) ?? {},
-					link.export,
-					undefined
-				).forEach(report(5))
-			continue
+		// Another package's exports aren't in the code manifest, so they can't be checked.
+		const checked = link.package === COMPONENT_PACKAGE
+		const codeExport = checked ? manifest.exports[link.export] : undefined
+		if (!checked) unchecked.push({ component: label, package: link.package })
+		else {
+			const usedValues = linked.get(link.export) ?? {}
+			for (const [prop, { value }] of Object.entries(link.props))
+				(usedValues[prop] ??= new Set()).add(
+					value === undefined ? 'default' : String(value)
+				)
+			linked.set(link.export, usedValues)
+			if (!codeExport)
+				report(1)({
+					expected: `export \`${link.export}\` in ${COMPONENT_PACKAGE}`,
+					found: 'no such export',
+				})
 		}
-		const codeExport = manifest.exports[link.export]
-		if (!codeExport)
-			report(1)({
-				expected: `export \`${link.export}\` in ${COMPONENT_PACKAGE}`,
-				found: 'no such export',
-			})
 		if (record)
 			checkRecordKeys(
 				component,
@@ -254,5 +277,9 @@ export const checkDrift = ({ snapshot, manifest }: DriftCheckInput): DriftReport
 				found: 'no such value in the map',
 			})
 	}
-	return { errors: uniqueBy(errors), unchecked: uniqueBy(unchecked), coverageGaps: [] }
+	return {
+		errors: uniqueBy(errors),
+		unchecked: uniqueBy(unchecked),
+		coverageGaps: reportCoverage(manifest, config.allowlist, linked),
+	}
 }

@@ -346,4 +346,40 @@ describe('checkDrift', () => {
 			})
 		})
 	})
+
+	describe('coverage report: code → library', () => {
+		it('should report an export no library component links to as a coverage gap, not an error', () => {
+			const manifest = createCodeManifest()
+			manifest.exports.Badge = { props: {} }
+
+			expect(
+				checkDrift(createDriftCheckInput(createInStepLibrary(), manifest))
+			).toMatchObject({
+				errors: [],
+				coverageGaps: [{ export: 'Badge' }],
+			})
+		})
+
+		it('should not report an allowlisted export', () => {
+			const manifest = createCodeManifest()
+			manifest.exports.Toaster = { props: {} }
+			const input = createDriftCheckInput(createInStepLibrary(), manifest)
+			input.config.allowlist.push('Toaster')
+
+			expect(checkDrift(input).coverageGaps).toEqual([])
+		})
+
+		it('should report a literal of a prop the library sets that no variant uses', () => {
+			const manifest = createCodeManifest()
+			manifest.exports.Button.props.variant = {
+				type: 'literals',
+				values: ['default', 'outline', 'secondary'],
+				optional: true,
+			}
+
+			expect(
+				checkDrift(createDriftCheckInput(createInStepLibrary(), manifest)).coverageGaps
+			).toEqual([{ export: 'Button', prop: 'variant', value: 'secondary' }])
+		})
+	})
 })
