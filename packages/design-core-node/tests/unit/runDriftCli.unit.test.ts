@@ -11,6 +11,7 @@ const fixture = (file: string) => fileURLToPath(new URL(`./__fixtures__/${file}`
 const DESIGN_FIXTURES = [
 	'library.snapshot.json',
 	'library.drifted.snapshot.json',
+	'tokens.json',
 	'drift.config.json',
 ]
 const MANIFEST = 'code-manifest.json'
@@ -75,6 +76,8 @@ const check = (snapshot: string) => {
 		MANIFEST,
 		'--snapshot',
 		fixture(`design/${snapshot}`),
+		'--tokens',
+		fixture('design/tokens.json'),
 		'--config',
 		fixture('design/drift.config.json')
 	)
@@ -131,9 +134,13 @@ describe('design-drift CLI', () => {
 			expect(exitCode).toBe(1)
 			expect(stdout).toEqual([
 				'::error title=Drift rule 2 (variant)%3A Components/Badge::Expected `variant` one of "default" | "secondary"; found "ghost"',
+				'::error title=Drift rule 8 (unknown token)%3A Components/Badge::Expected a token of tokens.json on `fill` of layer `Badge / Label` (badge-label); found `brand.foreground`: no such token',
 				'::error title=Drift rule 3 (part)%3A Components/Card::Expected part `Footer` a copy of a library component; found a plain layer',
+				'::error title=Drift rule 7 (unbound)%3A Components/Card::Expected a token on `fill` of layer `Card` (card-board); found a raw value',
 				'::error title=Drift rule 5 (exceptions record)%3A Components/Card/Content::Expected `slots` → roles of the parts; found `Footer`: no such role',
+				'::error title=Drift rule 9 (primitive colour)%3A Components/Card/Header::Expected a semantic colour on `fill` of layer `Header` (card-header-board); found the primitive `color.neutral.100`',
 				'::error title=Drift rule 1 (export)%3A Components/Tag::Expected export `Tag` in @brrritscold/core-react; found no such export',
+				'::error title=Drift rule 6 (token catalog)%3A Token catalog::Expected `light` token `primary` = color "{color.neutral.900}" (re-run token sync); found color "{color.neutral.100}"',
 				'::error title=Drift rule 4 (icon)%3A icon/Envelope::Expected export `EnvelopeIcon` in @brrritscold/core-react/icons; found no such icon',
 				'::warning title=Drift check%3A unchecked component::Components/DatePicker links to @brrritscold/other-react, which the drift check cannot check',
 				'::warning title=Drift check%3A coverage gaps::1 export or prop value of core-react has no counterpart in the design system library: Toggle',
@@ -147,14 +154,18 @@ describe('design-drift CLI', () => {
 				[
 					'## Drift check',
 					'',
-					'**5 errors**: the design system library disagrees with core-react. Fix the library, then refresh the snapshot.',
+					'**9 errors**: the design system library disagrees with core-react. Fix the library, then refresh the snapshot.',
 					'',
 					'| Component | Rule | Expected | Found |',
 					'| --- | --- | --- | --- |',
 					'| Components/Badge | 2 variant | `variant` one of "default" \\| "secondary" | "ghost" |',
+					'| Components/Badge | 8 unknown token | a token of tokens.json on `fill` of layer `Badge / Label` (badge-label) | `brand.foreground`: no such token |',
 					'| Components/Card | 3 part | part `Footer` a copy of a library component | a plain layer |',
+					'| Components/Card | 7 unbound | a token on `fill` of layer `Card` (card-board) | a raw value |',
 					'| Components/Card/Content | 5 exceptions record | `slots` → roles of the parts | `Footer`: no such role |',
+					'| Components/Card/Header | 9 primitive colour | a semantic colour on `fill` of layer `Header` (card-header-board) | the primitive `color.neutral.100` |',
 					'| Components/Tag | 1 export | export `Tag` in @brrritscold/core-react | no such export |',
+					'| Token catalog | 6 token catalog | `light` token `primary` = color "{color.neutral.900}" (re-run token sync) | color "{color.neutral.100}" |',
 					'| icon/Envelope | 4 icon | export `EnvelopeIcon` in @brrritscold/core-react/icons | no such icon |',
 					'',
 					'### Unchecked (1)',
@@ -190,6 +201,8 @@ describe('design-drift CLI', () => {
 				MANIFEST,
 				'--snapshot',
 				'bad.snapshot.json',
+				'--tokens',
+				fixture('design/tokens.json'),
 				'--config',
 				fixture('design/drift.config.json')
 			)
@@ -198,6 +211,43 @@ describe('design-drift CLI', () => {
 			expect(stderr.join('\n')).toContain(
 				'bad.snapshot.json does not match the library snapshot schema'
 			)
+		})
+
+		it('should fail loudly on a token file that does not match its schema (exit 2)', () => {
+			const { files, run, stderr } = cliWithManifest()
+			files.set('tokens.json', JSON.stringify({ primitive: {}, light: {}, $themes: [] }))
+
+			const exitCode = run(
+				'check',
+				'--manifest',
+				MANIFEST,
+				'--snapshot',
+				fixture('design/library.snapshot.json'),
+				'--tokens',
+				'tokens.json',
+				'--config',
+				fixture('design/drift.config.json')
+			)
+
+			expect(exitCode).toBe(2)
+			expect(stderr.join('\n')).toContain('tokens.json does not match the token file schema')
+		})
+
+		it('should name a missing --tokens (exit 2)', () => {
+			const { run, stderr } = cliWithManifest()
+
+			const exitCode = run(
+				'check',
+				'--manifest',
+				MANIFEST,
+				'--snapshot',
+				fixture('design/library.snapshot.json'),
+				'--config',
+				fixture('design/drift.config.json')
+			)
+
+			expect(exitCode).toBe(2)
+			expect(stderr.join('\n')).toContain('Missing --tokens')
 		})
 
 		it('should print usage for an unknown command (exit 2)', () => {

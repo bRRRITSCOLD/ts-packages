@@ -1,0 +1,69 @@
+# Builds the design system's side images and pushes them to GHCR, tagged with the short git SHA
+# only, never `latest`: rolling one out is a personal-infra PR bumping its kustomize `images:` tag.
+#
+# Adding an image (design-penpot-static, penpot-backup): a Dockerfile under images/<name>/, a
+# matrix entry below, and its sources in `paths`. The filter is per workflow, so a push touching
+# any image's sources rebuilds all of them; an unchanged image just gets one more SHA tag.
+name: Side images
+
+on:
+    push:
+        branches: [main]
+        paths:
+            - .github/workflows/side-images.yml
+            - images/**
+            - pnpm-lock.yaml
+            - pnpm-workspace.yaml
+            # design-snapshot-refresh bundles these packages
+            - packages/core-js/src/**
+            - packages/core-js/package.json
+            - packages/core-js/tsup.config.ts
+            - packages/design-core-js/src/**
+            - packages/design-core-js/package.json
+            - packages/design-core-js/tsup.config.ts
+            - packages/design-penpot-sdk-node/bin/**
+            - packages/design-penpot-sdk-node/src/**
+            - packages/design-penpot-sdk-node/package.json
+            - packages/design-penpot-sdk-node/tsup.config.ts
+    workflow_dispatch:
+
+permissions:
+    contents: read
+    packages: write
+
+concurrency:
+    group: side-images-${{ github.ref }}
+    cancel-in-progress: false
+
+jobs:
+    build:
+        name: ${{ matrix.image }}
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                image:
+                    - design-snapshot-refresh
+        steps:
+            - uses: actions/checkout@v4
+            - name: Short SHA
+              id: sha
+              run: echo "short=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+            - uses: docker/setup-buildx-action@v3
+            - uses: docker/login-action@v3
+              with:
+                  registry: ghcr.io
+                  username: ${{ github.actor }}
+                  password: ${{ secrets.GITHUB_TOKEN }}
+            - name: Build and push ghcr.io/brrritscold/${{ matrix.image }}:${{ steps.sha.outputs.short }}
+              uses: docker/build-push-action@v6
+              with:
+                  context: .
+                  file: images/${{ matrix.image }}/Dockerfile
+                  push: true
+                  tags: ghcr.io/brrritscold/${{ matrix.image }}:${{ steps.sha.outputs.short }}
+                  labels: |
+                      org.opencontainers.image.source=https://github.com/${{ github.repository }}
+                      org.opencontainers.image.revision=${{ github.sha }}
+            - name: Summary
+              run: echo "Pushed \`ghcr.io/brrritscold/${{ matrix.image }}:${{ steps.sha.outputs.short }}\`" >> "$GITHUB_STEP_SUMMARY"

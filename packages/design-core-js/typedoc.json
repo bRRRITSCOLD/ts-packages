@@ -4,7 +4,8 @@
 		"src/code-manifest.ts",
 		"src/component-link.ts",
 		"src/drift-check.ts",
-		"src/library-snapshot.ts"
+		"src/library-snapshot.ts",
+		"src/token-file.ts"
 	],
 	"readme": "README.md",
 	"includeVersion": true

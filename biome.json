@@ -10,7 +10,8 @@
 			"!**/test-results/**",
 			"!**/playwright-report/**",
 			"!**/*.d.ts",
-			"!.changeset/**"
+			"!.changeset/**",
+			"!**/design/library.snapshot.json"
 		]
 	},
 	"formatter": {

@@ -1,0 +1,1531 @@
+{
+	"penpotVersion": "2.18.6",
+	"fileId": "de716cff-f170-81a2-8008-e6482008d970",
+	"interactions": [
+		{
+			"method": "GET",
+			"path": "/version.txt",
+			"status": 200,
+			"responseText": "2.18.6\n"
+		},
+		{
+			"method": "POST",
+			"path": "/api/rpc/command/get-file",
+			"requestBody": {
+				"id": "de716cff-f170-81a2-8008-e6482008d970"
+			},
+			"status": 200,
+			"responseBody": {
+				"features": [
+					"fdata/path-data",
+					"plugins/runtime",
+					"design-tokens/v1",
+					"variants/v1",
+					"layout/grid",
+					"styles/v2",
+					"fdata/objects-map",
+					"tokens/numeric-input",
+					"render-wasm/v1",
+					"components/v2",
+					"fdata/shape-data-type"
+				],
+				"teamId": "90351bb9-226b-8199-8008-e62e755cd128",
+				"permissions": {
+					"type": "membership",
+					"isOwner": true,
+					"isAdmin": true,
+					"canEdit": true,
+					"canRead": true,
+					"isLogged": true
+				},
+				"hasMediaTrimmed": false,
+				"commentThreadSeqn": 0,
+				"name": "snapshot-fixture",
+				"revn": 1,
+				"modifiedAt": "2026-11-05T14:14:59.378003Z",
+				"vern": 0,
+				"id": "de716cff-f170-81a2-8008-e6482008d970",
+				"isShared": true,
+				"migrations": [
+					"legacy-2",
+					"legacy-3",
+					"legacy-5",
+					"legacy-6",
+					"legacy-7",
+					"legacy-8",
+					"legacy-9",
+					"legacy-10",
+					"legacy-11",
+					"legacy-12",
+					"legacy-13",
+					"legacy-14",
+					"legacy-16",
+					"legacy-17",
+					"legacy-18",
+					"legacy-19",
+					"legacy-25",
+					"legacy-26",
+					"legacy-27",
+					"legacy-28",
+					"legacy-29",
+					"legacy-31",
+					"legacy-32",
+					"legacy-33",
+					"legacy-34",
+					"legacy-36",
+					"legacy-37",
+					"legacy-38",
+					"legacy-39",
+					"legacy-40",
+					"legacy-41",
+					"legacy-42",
+					"legacy-43",
+					"legacy-44",
+					"legacy-45",
+					"legacy-46",
+					"legacy-47",
+					"legacy-48",
+					"legacy-49",
+					"legacy-50",
+					"legacy-51",
+					"legacy-52",
+					"legacy-53",
+					"legacy-54",
+					"legacy-55",
+					"legacy-56",
+					"legacy-57",
+					"legacy-59",
+					"legacy-62",
+					"legacy-65",
+					"legacy-66",
+					"legacy-67",
+					"0001-remove-tokens-from-groups",
+					"0002-normalize-bool-content-v2",
+					"0002-clean-shape-interactions",
+					"0003-fix-root-shape",
+					"0003-convert-path-content-v2",
+					"0005-deprecate-image-type",
+					"0006-fix-old-texts-fills",
+					"0008-fix-library-colors-v4",
+					"0009-clean-library-colors",
+					"0009-add-partial-text-touched-flags",
+					"0010-fix-swap-slots-pointing-non-existent-shapes",
+					"0011-fix-invalid-text-touched-flags",
+					"0012-fix-position-data",
+					"0013-fix-component-path",
+					"0013-clear-invalid-strokes-and-fills",
+					"0014-fix-tokens-lib-duplicate-ids",
+					"0014-clear-components-nil-objects",
+					"0015-fix-text-attrs-blank-strings",
+					"0015-clean-shadow-color",
+					"0016-copy-fills-from-position-data-to-text-node",
+					"0017-fix-layout-flex-dir",
+					"0018-remove-unneeded-objects-from-components",
+					"0019-fix-missing-swap-slots",
+					"0020-sync-component-id-with-near-main",
+					"0021-fix-shape-svg-attrs",
+					"0022-normalize-component-root-and-resync",
+					"0023-repair-token-themes-with-inexistent-sets",
+					"0024b-fix-stroke-cap-placement",
+					"0025-repair-empty-text-content",
+					"0026-fix-svg-raw-shapes-uuids"
+				],
+				"version": 67,
+				"projectId": "90351bb9-226b-8199-8008-e62e755dfffc",
+				"createdAt": "2026-11-05T14:14:59.363606Z",
+				"backend": "db",
+				"data": {
+					"pages": ["de716cff-f170-81a2-8008-e6482008d971"],
+					"pagesIndex": {
+						"de716cff-f170-81a2-8008-e6482008d971": {
+							"objects": {
+								"00000000-0000-0000-0000-000000000000": {
+									"id": "00000000-0000-0000-0000-000000000000",
+									"name": "Root Frame",
+									"type": "frame",
+									"x": 0,
+									"y": 0,
+									"width": 0.01,
+									"height": 0.01,
+									"rotation": 0,
+									"selrect": {
+										"x": 0,
+										"y": 0,
+										"width": 0.01,
+										"height": 0.01,
+										"x1": 0,
+										"y1": 0,
+										"x2": 0.01,
+										"y2": 0.01
+									},
+									"points": [
+										{
+											"x": 0,
+											"y": 0
+										},
+										{
+											"x": 0.01,
+											"y": 0
+										},
+										{
+											"x": 0.01,
+											"y": 0.01
+										},
+										{
+											"x": 0,
+											"y": 0.01
+										}
+									],
+									"transform": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"transformInverse": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"parentId": "00000000-0000-0000-0000-000000000000",
+									"frameId": "00000000-0000-0000-0000-000000000000",
+									"flipX": null,
+									"flipY": null,
+									"hideFillOnExport": false,
+									"r2": 0,
+									"proportionLock": false,
+									"r3": 0,
+									"r1": 0,
+									"strokes": [],
+									"proportion": 1,
+									"r4": 0,
+									"fills": [
+										{
+											"fillColor": "#FFFFFF",
+											"fillOpacity": 1
+										}
+									],
+									"shapes": [
+										"dd8c2127-ddd0-472e-b2b1-a0c787c884db",
+										"0695930d-c9fe-4048-9931-dd8e19a5c61f",
+										"9229ce07-71b8-43f6-8934-1b34219ceeba",
+										"b954bfa2-696b-4184-8853-5d6db0c8b020",
+										"ddf1f9c4-3aa4-4ebe-9dca-e47ac3885ab1",
+										"3c807937-dfba-4a07-93a3-9e9a29ea9d8a"
+									]
+								},
+								"3c807937-dfba-4a07-93a3-9e9a29ea9d8a": {
+									"id": "3c807937-dfba-4a07-93a3-9e9a29ea9d8a",
+									"name": "Components / Button",
+									"type": "frame",
+									"x": 0,
+									"y": 200,
+									"width": 240,
+									"height": 80,
+									"rotation": 0,
+									"selrect": {
+										"x": 0,
+										"y": 200,
+										"width": 240,
+										"height": 80,
+										"x1": 0,
+										"y1": 200,
+										"x2": 240,
+										"y2": 280
+									},
+									"points": [
+										{
+											"x": 0,
+											"y": 200
+										},
+										{
+											"x": 240,
+											"y": 200
+										},
+										{
+											"x": 240,
+											"y": 280
+										},
+										{
+											"x": 0,
+											"y": 280
+										}
+									],
+									"transform": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"transformInverse": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"parentId": "00000000-0000-0000-0000-000000000000",
+									"frameId": "00000000-0000-0000-0000-000000000000",
+									"flipX": null,
+									"flipY": null,
+									"isVariantContainer": true,
+									"strokes": [],
+									"fills": [],
+									"shapes": [
+										"5c49c5b4-603f-401f-8d7e-e400f1477618",
+										"ee243c79-578c-47de-a442-adf51a46367c"
+									]
+								},
+								"e563c236-a6df-48d1-91f9-65b12f9b7f35": {
+									"id": "e563c236-a6df-48d1-91f9-65b12f9b7f35",
+									"name": "Header",
+									"type": "frame",
+									"x": 720,
+									"y": 0,
+									"width": 200,
+									"height": 40,
+									"rotation": 0,
+									"selrect": {
+										"x": 720,
+										"y": 0,
+										"width": 200,
+										"height": 40,
+										"x1": 720,
+										"y1": 0,
+										"x2": 920,
+										"y2": 40
+									},
+									"points": [
+										{
+											"x": 720,
+											"y": 0
+										},
+										{
+											"x": 920,
+											"y": 0
+										},
+										{
+											"x": 920,
+											"y": 40
+										},
+										{
+											"x": 720,
+											"y": 40
+										}
+									],
+									"transform": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"transformInverse": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"parentId": "ddf1f9c4-3aa4-4ebe-9dca-e47ac3885ab1",
+									"frameId": "ddf1f9c4-3aa4-4ebe-9dca-e47ac3885ab1",
+									"flipX": null,
+									"flipY": null,
+									"shapeRef": "9229ce07-71b8-43f6-8934-1b34219ceeba",
+									"appliedTokens": {
+										"fill": "color.neutral.100"
+									},
+									"componentId": "b834c0d3-027b-4b00-8bac-50f6ecb40b48",
+									"strokes": [],
+									"fills": [
+										{
+											"fillColor": "#f5f5f5",
+											"fillOpacity": 1
+										}
+									],
+									"componentFile": "de716cff-f170-81a2-8008-e6482008d970",
+									"shapes": []
+								},
+								"584ae1da-3866-4e7e-85c7-a872a357075c": {
+									"id": "584ae1da-3866-4e7e-85c7-a872a357075c",
+									"name": "Label",
+									"type": "text",
+									"x": 36,
+									"y": 230,
+									"width": 40,
+									"height": 20,
+									"rotation": 0,
+									"selrect": {
+										"x": 36,
+										"y": 230,
+										"width": 40,
+										"height": 20,
+										"x1": 36,
+										"y1": 230,
+										"x2": 76,
+										"y2": 250
+									},
+									"points": [
+										{
+											"x": 36,
+											"y": 230
+										},
+										{
+											"x": 76,
+											"y": 230
+										},
+										{
+											"x": 76,
+											"y": 250
+										},
+										{
+											"x": 36,
+											"y": 250
+										}
+									],
+									"transform": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"transformInverse": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"parentId": "5c49c5b4-603f-401f-8d7e-e400f1477618",
+									"frameId": "5c49c5b4-603f-401f-8d7e-e400f1477618",
+									"flipX": null,
+									"flipY": null,
+									"growType": "auto-width",
+									"content": {
+										"type": "root",
+										"children": [
+											{
+												"type": "paragraph-set",
+												"children": [
+													{
+														"type": "paragraph",
+														"children": [
+															{
+																"fontStyle": "normal",
+																"fontId": "sourcesanspro",
+																"fontSize": "14",
+																"fontWeight": "500",
+																"fontVariantId": "regular",
+																"letterSpacing": "0",
+																"fills": [
+																	{
+																		"fillColor": "#fafafa",
+																		"fillOpacity": 1
+																	}
+																],
+																"fontFamily": "sourcesanspro",
+																"text": "Label"
+															}
+														]
+													}
+												]
+											}
+										]
+									},
+									"appliedTokens": {
+										"fill": "primary-foreground",
+										"fontWeight": "font-weight.medium"
+									}
+								},
+								"b954bfa2-696b-4184-8853-5d6db0c8b020": {
+									"id": "b954bfa2-696b-4184-8853-5d6db0c8b020",
+									"name": "Content",
+									"type": "frame",
+									"x": 480,
+									"y": 0,
+									"width": 200,
+									"height": 80,
+									"rotation": 0,
+									"selrect": {
+										"x": 480,
+										"y": 0,
+										"width": 200,
+										"height": 80,
+										"x1": 480,
+										"y1": 0,
+										"x2": 680,
+										"y2": 80
+									},
+									"points": [
+										{
+											"x": 480,
+											"y": 0
+										},
+										{
+											"x": 680,
+											"y": 0
+										},
+										{
+											"x": 680,
+											"y": 80
+										},
+										{
+											"x": 480,
+											"y": 80
+										}
+									],
+									"transform": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"transformInverse": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"parentId": "00000000-0000-0000-0000-000000000000",
+									"frameId": "00000000-0000-0000-0000-000000000000",
+									"flipX": null,
+									"flipY": null,
+									"layoutPadding": {
+										"p1": 16,
+										"p2": 16,
+										"p3": 16,
+										"p4": 16
+									},
+									"layout": "flex",
+									"layoutPaddingType": "multiple",
+									"componentRoot": true,
+									"layoutFlexDir": "column",
+									"appliedTokens": {
+										"p1": "space.4",
+										"p2": "space.4",
+										"p3": "space.4",
+										"p4": "space.4"
+									},
+									"componentId": "2daa109c-39bc-4b80-bac5-419db576b885",
+									"strokes": [],
+									"mainInstance": true,
+									"fills": [],
+									"componentFile": "de716cff-f170-81a2-8008-e6482008d970",
+									"shapes": ["4e66bbb4-1d7a-4015-ba56-94f10491fa81"]
+								},
+								"ee243c79-578c-47de-a442-adf51a46367c": {
+									"id": "ee243c79-578c-47de-a442-adf51a46367c",
+									"name": "Components / Button",
+									"type": "frame",
+									"x": 130,
+									"y": 220,
+									"width": 90,
+									"height": 40,
+									"rotation": 0,
+									"selrect": {
+										"x": 130,
+										"y": 220,
+										"width": 90,
+										"height": 40,
+										"x1": 130,
+										"y1": 220,
+										"x2": 220,
+										"y2": 260
+									},
+									"points": [
+										{
+											"x": 130,
+											"y": 220
+										},
+										{
+											"x": 220,
+											"y": 220
+										},
+										{
+											"x": 220,
+											"y": 260
+										},
+										{
+											"x": 130,
+											"y": 260
+										}
+									],
+									"transform": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"transformInverse": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"parentId": "3c807937-dfba-4a07-93a3-9e9a29ea9d8a",
+									"frameId": "3c807937-dfba-4a07-93a3-9e9a29ea9d8a",
+									"flipX": null,
+									"flipY": null,
+									"layoutGapType": "multiple",
+									"layout": "flex",
+									"r2": 10,
+									"componentRoot": true,
+									"layoutGap": {
+										"rowGap": 0,
+										"columnGap": 8
+									},
+									"r3": 10,
+									"r1": 10,
+									"layoutFlexDir": "row",
+									"appliedTokens": {
+										"fill": "primary",
+										"r1": "radius",
+										"r2": "radius",
+										"r3": "radius",
+										"r4": "radius",
+										"columnGap": "space.2"
+									},
+									"componentId": "d68f0a16-90c8-4ab9-90d7-f8958d25cf0d",
+									"strokes": [],
+									"mainInstance": true,
+									"r4": 10,
+									"fills": [
+										{
+											"fillColor": "#171717",
+											"fillOpacity": 1
+										}
+									],
+									"variantId": "3c807937-dfba-4a07-93a3-9e9a29ea9d8a",
+									"componentFile": "de716cff-f170-81a2-8008-e6482008d970",
+									"shapes": ["aa9990a3-347f-41c0-88fe-2a272d8bf719"]
+								},
+								"ddf1f9c4-3aa4-4ebe-9dca-e47ac3885ab1": {
+									"id": "ddf1f9c4-3aa4-4ebe-9dca-e47ac3885ab1",
+									"name": "Card",
+									"type": "frame",
+									"x": 720,
+									"y": 0,
+									"width": 200,
+									"height": 120,
+									"rotation": 0,
+									"selrect": {
+										"x": 720,
+										"y": 0,
+										"width": 200,
+										"height": 120,
+										"x1": 720,
+										"y1": 0,
+										"x2": 920,
+										"y2": 120
+									},
+									"points": [
+										{
+											"x": 720,
+											"y": 0
+										},
+										{
+											"x": 920,
+											"y": 0
+										},
+										{
+											"x": 920,
+											"y": 120
+										},
+										{
+											"x": 720,
+											"y": 120
+										}
+									],
+									"transform": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"transformInverse": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"parentId": "00000000-0000-0000-0000-000000000000",
+									"frameId": "00000000-0000-0000-0000-000000000000",
+									"flipX": null,
+									"flipY": null,
+									"r2": 10,
+									"componentRoot": true,
+									"r3": 10,
+									"r1": 10,
+									"appliedTokens": {
+										"fill": "background",
+										"strokeColor": "border",
+										"r1": "radius",
+										"r2": "radius",
+										"r3": "radius",
+										"r4": "radius",
+										"shadow": "shadow.xs"
+									},
+									"componentId": "5eff257b-0ea5-445b-96eb-93da0c4ba459",
+									"strokes": [
+										{
+											"strokeColor": "#e5e5e5",
+											"strokeOpacity": 1,
+											"strokeWidth": 1,
+											"strokeStyle": "solid",
+											"strokeAlignment": "inner"
+										}
+									],
+									"mainInstance": true,
+									"shadow": [
+										{
+											"id": "45cf35f5-4234-47a1-bfff-501b19fd9db8",
+											"style": "drop-shadow",
+											"offsetX": 0,
+											"offsetY": 1,
+											"blur": 2,
+											"spread": 0,
+											"hidden": false,
+											"color": {
+												"color": "#000000",
+												"opacity": 0.05
+											}
+										}
+									],
+									"r4": 10,
+									"fills": [
+										{
+											"fillColor": "#ffffff",
+											"fillOpacity": 1
+										}
+									],
+									"componentFile": "de716cff-f170-81a2-8008-e6482008d970",
+									"shapes": [
+										"e563c236-a6df-48d1-91f9-65b12f9b7f35",
+										"c7f5f33c-2a72-45b6-a874-d5293fa40d7d"
+									]
+								},
+								"4e66bbb4-1d7a-4015-ba56-94f10491fa81": {
+									"id": "4e66bbb4-1d7a-4015-ba56-94f10491fa81",
+									"name": "Body",
+									"type": "frame",
+									"x": 496,
+									"y": 16,
+									"width": 120,
+									"height": 40,
+									"rotation": 0,
+									"selrect": {
+										"x": 496,
+										"y": 16,
+										"width": 120,
+										"height": 40,
+										"x1": 496,
+										"y1": 16,
+										"x2": 616,
+										"y2": 56
+									},
+									"points": [
+										{
+											"x": 496,
+											"y": 16
+										},
+										{
+											"x": 616,
+											"y": 16
+										},
+										{
+											"x": 616,
+											"y": 56
+										},
+										{
+											"x": 496,
+											"y": 56
+										}
+									],
+									"transform": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"transformInverse": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"parentId": "b954bfa2-696b-4184-8853-5d6db0c8b020",
+									"frameId": "b954bfa2-696b-4184-8853-5d6db0c8b020",
+									"flipX": null,
+									"flipY": null,
+									"shapeRef": "dd8c2127-ddd0-472e-b2b1-a0c787c884db",
+									"componentId": "e2560207-2305-4c65-af69-15c6ba16fdab",
+									"strokes": [],
+									"fills": [
+										{
+											"fillColor": "#FF00FF",
+											"fillOpacity": 1
+										}
+									],
+									"componentFile": "de716cff-f170-81a2-8008-e6482008d970",
+									"shapes": []
+								},
+								"5c49c5b4-603f-401f-8d7e-e400f1477618": {
+									"id": "5c49c5b4-603f-401f-8d7e-e400f1477618",
+									"name": "Components / Button",
+									"type": "frame",
+									"x": 20,
+									"y": 220,
+									"width": 90,
+									"height": 40,
+									"rotation": 0,
+									"selrect": {
+										"x": 20,
+										"y": 220,
+										"width": 90,
+										"height": 40,
+										"x1": 20,
+										"y1": 220,
+										"x2": 110,
+										"y2": 260
+									},
+									"points": [
+										{
+											"x": 20,
+											"y": 220
+										},
+										{
+											"x": 110,
+											"y": 220
+										},
+										{
+											"x": 110,
+											"y": 260
+										},
+										{
+											"x": 20,
+											"y": 260
+										}
+									],
+									"transform": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"transformInverse": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"parentId": "3c807937-dfba-4a07-93a3-9e9a29ea9d8a",
+									"frameId": "3c807937-dfba-4a07-93a3-9e9a29ea9d8a",
+									"flipX": null,
+									"flipY": null,
+									"layoutGapType": "multiple",
+									"layout": "flex",
+									"r2": 10,
+									"componentRoot": true,
+									"layoutGap": {
+										"rowGap": 0,
+										"columnGap": 8
+									},
+									"r3": 10,
+									"r1": 10,
+									"layoutFlexDir": "row",
+									"appliedTokens": {
+										"fill": "primary",
+										"r1": "radius",
+										"r2": "radius",
+										"r3": "radius",
+										"r4": "radius",
+										"columnGap": "space.2"
+									},
+									"componentId": "794866af-bd24-476b-9352-bffdea0853ff",
+									"strokes": [],
+									"mainInstance": true,
+									"r4": 10,
+									"fills": [
+										{
+											"fillColor": "#171717",
+											"fillOpacity": 1
+										}
+									],
+									"variantId": "3c807937-dfba-4a07-93a3-9e9a29ea9d8a",
+									"componentFile": "de716cff-f170-81a2-8008-e6482008d970",
+									"shapes": ["584ae1da-3866-4e7e-85c7-a872a357075c"]
+								},
+								"0695930d-c9fe-4048-9931-dd8e19a5c61f": {
+									"id": "0695930d-c9fe-4048-9931-dd8e19a5c61f",
+									"name": "Trash2",
+									"type": "frame",
+									"x": 160,
+									"y": 0,
+									"width": 24,
+									"height": 24,
+									"rotation": 0,
+									"selrect": {
+										"x": 160,
+										"y": 0,
+										"width": 24,
+										"height": 24,
+										"x1": 160,
+										"y1": 0,
+										"x2": 184,
+										"y2": 24
+									},
+									"points": [
+										{
+											"x": 160,
+											"y": 0
+										},
+										{
+											"x": 184,
+											"y": 0
+										},
+										{
+											"x": 184,
+											"y": 24
+										},
+										{
+											"x": 160,
+											"y": 24
+										}
+									],
+									"transform": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"transformInverse": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"parentId": "00000000-0000-0000-0000-000000000000",
+									"frameId": "00000000-0000-0000-0000-000000000000",
+									"flipX": null,
+									"flipY": null,
+									"componentRoot": true,
+									"appliedTokens": {
+										"strokeColor": "foreground"
+									},
+									"componentId": "493897ef-7157-41f9-b33d-b70e766f9a07",
+									"strokes": [
+										{
+											"strokeColor": "#0a0a0a",
+											"strokeOpacity": 1,
+											"strokeWidth": 1,
+											"strokeStyle": "solid",
+											"strokeAlignment": "inner"
+										}
+									],
+									"mainInstance": true,
+									"fills": [],
+									"componentFile": "de716cff-f170-81a2-8008-e6482008d970",
+									"shapes": []
+								},
+								"dd8c2127-ddd0-472e-b2b1-a0c787c884db": {
+									"id": "dd8c2127-ddd0-472e-b2b1-a0c787c884db",
+									"name": "Slot",
+									"type": "frame",
+									"x": 0,
+									"y": 0,
+									"width": 120,
+									"height": 40,
+									"rotation": 0,
+									"selrect": {
+										"x": 0,
+										"y": 0,
+										"width": 120,
+										"height": 40,
+										"x1": 0,
+										"y1": 0,
+										"x2": 120,
+										"y2": 40
+									},
+									"points": [
+										{
+											"x": 0,
+											"y": 0
+										},
+										{
+											"x": 120,
+											"y": 0
+										},
+										{
+											"x": 120,
+											"y": 40
+										},
+										{
+											"x": 0,
+											"y": 40
+										}
+									],
+									"transform": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"transformInverse": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"parentId": "00000000-0000-0000-0000-000000000000",
+									"frameId": "00000000-0000-0000-0000-000000000000",
+									"flipX": null,
+									"flipY": null,
+									"componentRoot": true,
+									"componentId": "e2560207-2305-4c65-af69-15c6ba16fdab",
+									"strokes": [],
+									"mainInstance": true,
+									"fills": [
+										{
+											"fillColor": "#FF00FF",
+											"fillOpacity": 1
+										}
+									],
+									"componentFile": "de716cff-f170-81a2-8008-e6482008d970",
+									"shapes": []
+								},
+								"aa9990a3-347f-41c0-88fe-2a272d8bf719": {
+									"id": "aa9990a3-347f-41c0-88fe-2a272d8bf719",
+									"name": "Label",
+									"type": "text",
+									"x": 146,
+									"y": 230,
+									"width": 40,
+									"height": 20,
+									"rotation": 0,
+									"selrect": {
+										"x": 146,
+										"y": 230,
+										"width": 40,
+										"height": 20,
+										"x1": 146,
+										"y1": 230,
+										"x2": 186,
+										"y2": 250
+									},
+									"points": [
+										{
+											"x": 146,
+											"y": 230
+										},
+										{
+											"x": 186,
+											"y": 230
+										},
+										{
+											"x": 186,
+											"y": 250
+										},
+										{
+											"x": 146,
+											"y": 250
+										}
+									],
+									"transform": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"transformInverse": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"parentId": "ee243c79-578c-47de-a442-adf51a46367c",
+									"frameId": "ee243c79-578c-47de-a442-adf51a46367c",
+									"flipX": null,
+									"flipY": null,
+									"growType": "auto-width",
+									"content": {
+										"type": "root",
+										"children": [
+											{
+												"type": "paragraph-set",
+												"children": [
+													{
+														"type": "paragraph",
+														"children": [
+															{
+																"fontStyle": "normal",
+																"fontId": "sourcesanspro",
+																"fontSize": "14",
+																"fontWeight": "500",
+																"fontVariantId": "regular",
+																"letterSpacing": "0",
+																"fills": [
+																	{
+																		"fillColor": "#fafafa",
+																		"fillOpacity": 1
+																	}
+																],
+																"fontFamily": "sourcesanspro",
+																"text": "Label"
+															}
+														]
+													}
+												]
+											}
+										]
+									},
+									"appliedTokens": {
+										"fill": "primary-foreground",
+										"fontWeight": "font-weight.medium"
+									}
+								},
+								"c7f5f33c-2a72-45b6-a874-d5293fa40d7d": {
+									"id": "c7f5f33c-2a72-45b6-a874-d5293fa40d7d",
+									"name": "Footer",
+									"type": "frame",
+									"x": 720,
+									"y": 80,
+									"width": 200,
+									"height": 40,
+									"rotation": 0,
+									"selrect": {
+										"x": 720,
+										"y": 80,
+										"width": 200,
+										"height": 40,
+										"x1": 720,
+										"y1": 80,
+										"x2": 920,
+										"y2": 120
+									},
+									"points": [
+										{
+											"x": 720,
+											"y": 80
+										},
+										{
+											"x": 920,
+											"y": 80
+										},
+										{
+											"x": 920,
+											"y": 120
+										},
+										{
+											"x": 720,
+											"y": 120
+										}
+									],
+									"transform": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"transformInverse": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"parentId": "ddf1f9c4-3aa4-4ebe-9dca-e47ac3885ab1",
+									"frameId": "ddf1f9c4-3aa4-4ebe-9dca-e47ac3885ab1",
+									"flipX": null,
+									"flipY": null,
+									"strokes": [],
+									"fills": [],
+									"shapes": []
+								},
+								"9229ce07-71b8-43f6-8934-1b34219ceeba": {
+									"id": "9229ce07-71b8-43f6-8934-1b34219ceeba",
+									"name": "Header",
+									"type": "frame",
+									"x": 240,
+									"y": 0,
+									"width": 200,
+									"height": 40,
+									"rotation": 0,
+									"selrect": {
+										"x": 240,
+										"y": 0,
+										"width": 200,
+										"height": 40,
+										"x1": 240,
+										"y1": 0,
+										"x2": 440,
+										"y2": 40
+									},
+									"points": [
+										{
+											"x": 240,
+											"y": 0
+										},
+										{
+											"x": 440,
+											"y": 0
+										},
+										{
+											"x": 440,
+											"y": 40
+										},
+										{
+											"x": 240,
+											"y": 40
+										}
+									],
+									"transform": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"transformInverse": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"parentId": "00000000-0000-0000-0000-000000000000",
+									"frameId": "00000000-0000-0000-0000-000000000000",
+									"flipX": null,
+									"flipY": null,
+									"componentRoot": true,
+									"appliedTokens": {
+										"fill": "color.neutral.100"
+									},
+									"componentId": "b834c0d3-027b-4b00-8bac-50f6ecb40b48",
+									"strokes": [],
+									"mainInstance": true,
+									"fills": [
+										{
+											"fillColor": "#f5f5f5",
+											"fillOpacity": 1
+										}
+									],
+									"componentFile": "de716cff-f170-81a2-8008-e6482008d970",
+									"shapes": []
+								}
+							},
+							"id": "de716cff-f170-81a2-8008-e6482008d971",
+							"name": "Page 1"
+						}
+					},
+					"id": "de716cff-f170-81a2-8008-e6482008d970",
+					"options": {
+						"componentsV2": true,
+						"baseFontSize": "16px"
+					},
+					"tokensLib": {
+						"primitive": {
+							"color": {
+								"white": {
+									"$value": "#ffffff",
+									"$type": "color",
+									"$description": ""
+								},
+								"neutral": {
+									"50": {
+										"$value": "#fafafa",
+										"$type": "color",
+										"$description": ""
+									},
+									"100": {
+										"$value": "#f5f5f5",
+										"$type": "color",
+										"$description": ""
+									},
+									"200": {
+										"$value": "#e5e5e5",
+										"$type": "color",
+										"$description": ""
+									},
+									"800": {
+										"$value": "#262626",
+										"$type": "color",
+										"$description": ""
+									},
+									"900": {
+										"$value": "#171717",
+										"$type": "color",
+										"$description": ""
+									},
+									"950": {
+										"$value": "#0a0a0a",
+										"$type": "color",
+										"$description": ""
+									}
+								}
+							},
+							"space": {
+								"2": {
+									"$value": "8px",
+									"$type": "spacing",
+									"$description": ""
+								},
+								"4": {
+									"$value": "16px",
+									"$type": "spacing",
+									"$description": ""
+								}
+							},
+							"border-radius": {
+								"lg": {
+									"$value": "10px",
+									"$type": "borderRadius",
+									"$description": ""
+								}
+							},
+							"font-weight": {
+								"medium": {
+									"$value": 500,
+									"$type": "fontWeights",
+									"$description": ""
+								}
+							},
+							"shadow": {
+								"xs": {
+									"$value": {
+										"color": "#0000000d",
+										"offsetX": "0px",
+										"offsetY": "1px",
+										"blur": "2px",
+										"spread": "0px"
+									},
+									"$type": "shadow",
+									"$description": ""
+								}
+							}
+						},
+						"light": {
+							"background": {
+								"$value": "{color.white}",
+								"$type": "color",
+								"$description": ""
+							},
+							"foreground": {
+								"$value": "{color.neutral.950}",
+								"$type": "color",
+								"$description": ""
+							},
+							"primary": {
+								"$value": "{color.neutral.900}",
+								"$type": "color",
+								"$description": ""
+							},
+							"primary-foreground": {
+								"$value": "{color.neutral.50}",
+								"$type": "color",
+								"$description": ""
+							},
+							"border": {
+								"$value": "{color.neutral.200}",
+								"$type": "color",
+								"$description": ""
+							},
+							"radius": {
+								"$value": "{border-radius.lg}",
+								"$type": "borderRadius",
+								"$description": ""
+							}
+						},
+						"dark": {
+							"background": {
+								"$value": "{color.neutral.950}",
+								"$type": "color",
+								"$description": ""
+							},
+							"foreground": {
+								"$value": "{color.neutral.50}",
+								"$type": "color",
+								"$description": ""
+							},
+							"primary": {
+								"$value": "{color.neutral.200}",
+								"$type": "color",
+								"$description": ""
+							},
+							"primary-foreground": {
+								"$value": "{color.neutral.900}",
+								"$type": "color",
+								"$description": ""
+							},
+							"border": {
+								"$value": "{color.neutral.800}",
+								"$type": "color",
+								"$description": ""
+							},
+							"radius": {
+								"$value": "{border-radius.lg}",
+								"$type": "borderRadius",
+								"$description": ""
+							}
+						},
+						"$themes": [
+							{
+								"id": "de716cff-f170-81a2-8008-e648200cfea9",
+								"name": "Light",
+								"group": "Mode",
+								"description": "",
+								"isSource": false,
+								"selectedTokenSets": {
+									"light": "enabled",
+									"primitive": "enabled"
+								}
+							},
+							{
+								"id": "de716cff-f170-81a2-8008-e648200cfeaa",
+								"name": "Dark",
+								"group": "Mode",
+								"description": "",
+								"isSource": false,
+								"selectedTokenSets": {
+									"primitive": "enabled",
+									"dark": "enabled"
+								}
+							}
+						],
+						"$metadata": {
+							"tokenSetOrder": ["primitive", "light", "dark"],
+							"activeThemes": ["Mode/Light"],
+							"activeSets": ["light", "primitive"]
+						}
+					},
+					"components": {
+						"e2560207-2305-4c65-af69-15c6ba16fdab": {
+							"id": "e2560207-2305-4c65-af69-15c6ba16fdab",
+							"name": "Slot",
+							"path": "_internal",
+							"modifiedAt": "2026-11-05T14:14:59.379Z",
+							"mainInstanceId": "dd8c2127-ddd0-472e-b2b1-a0c787c884db",
+							"mainInstancePage": "de716cff-f170-81a2-8008-e6482008d971"
+						},
+						"493897ef-7157-41f9-b33d-b70e766f9a07": {
+							"id": "493897ef-7157-41f9-b33d-b70e766f9a07",
+							"name": "Trash2",
+							"path": "icon",
+							"modifiedAt": "2026-11-05T14:14:59.379Z",
+							"mainInstanceId": "0695930d-c9fe-4048-9931-dd8e19a5c61f",
+							"mainInstancePage": "de716cff-f170-81a2-8008-e6482008d971"
+						},
+						"b834c0d3-027b-4b00-8bac-50f6ecb40b48": {
+							"id": "b834c0d3-027b-4b00-8bac-50f6ecb40b48",
+							"name": "Header",
+							"path": "Components / Card",
+							"modifiedAt": "2026-11-05T14:14:59.379Z",
+							"mainInstanceId": "9229ce07-71b8-43f6-8934-1b34219ceeba",
+							"mainInstancePage": "de716cff-f170-81a2-8008-e6482008d971"
+						},
+						"2daa109c-39bc-4b80-bac5-419db576b885": {
+							"id": "2daa109c-39bc-4b80-bac5-419db576b885",
+							"name": "Content",
+							"path": "Components / Card",
+							"modifiedAt": "2026-11-05T14:14:59.379Z",
+							"mainInstanceId": "b954bfa2-696b-4184-8853-5d6db0c8b020",
+							"mainInstancePage": "de716cff-f170-81a2-8008-e6482008d971",
+							"pluginData": {
+								"brrritscoldCoreReact": {
+									"link": "{\"v\":1,\"slots\":[\"Body\"]}"
+								}
+							}
+						},
+						"5eff257b-0ea5-445b-96eb-93da0c4ba459": {
+							"id": "5eff257b-0ea5-445b-96eb-93da0c4ba459",
+							"name": "Card",
+							"path": "Components",
+							"modifiedAt": "2026-11-05T14:14:59.379Z",
+							"mainInstanceId": "ddf1f9c4-3aa4-4ebe-9dca-e47ac3885ab1",
+							"mainInstancePage": "de716cff-f170-81a2-8008-e6482008d971"
+						},
+						"794866af-bd24-476b-9352-bffdea0853ff": {
+							"path": "Components",
+							"mainInstanceId": "5c49c5b4-603f-401f-8d7e-e400f1477618",
+							"name": "Button",
+							"variantProperties": [
+								{
+									"name": "size",
+									"value": "default"
+								}
+							],
+							"modifiedAt": "2026-11-05T14:14:59.379Z",
+							"mainInstancePage": "de716cff-f170-81a2-8008-e6482008d971",
+							"id": "794866af-bd24-476b-9352-bffdea0853ff",
+							"variantId": "3c807937-dfba-4a07-93a3-9e9a29ea9d8a"
+						},
+						"d68f0a16-90c8-4ab9-90d7-f8958d25cf0d": {
+							"path": "Components",
+							"mainInstanceId": "ee243c79-578c-47de-a442-adf51a46367c",
+							"name": "Button",
+							"variantProperties": [
+								{
+									"name": "size",
+									"value": "sm"
+								}
+							],
+							"modifiedAt": "2026-11-05T14:14:59.379Z",
+							"mainInstancePage": "de716cff-f170-81a2-8008-e6482008d971",
+							"id": "d68f0a16-90c8-4ab9-90d7-f8958d25cf0d",
+							"variantId": "3c807937-dfba-4a07-93a3-9e9a29ea9d8a"
+						}
+					}
+				}
+			}
+		}
+	]
+}

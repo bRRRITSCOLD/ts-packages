@@ -7,6 +7,7 @@ export default defineConfig([
 			'src/component-link.ts',
 			'src/drift-check.ts',
 			'src/library-snapshot.ts',
+			'src/token-file.ts',
 		],
 		format: ['cjs', 'esm'],
 		dts: true,

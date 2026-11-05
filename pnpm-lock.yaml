@@ -269,6 +269,25 @@ importers:
         specifier: ^5.8.3
         version: 5.9.3
 
+  packages/design-penpot-sdk-node:
+    dependencies:
+      '@brrritscold/core-js':
+        specifier: workspace:^
+        version: link:../core-js
+      '@brrritscold/design-core-js':
+        specifier: workspace:^
+        version: link:../design-core-js
+    devDependencies:
+      '@brrritscold/testing-core-js':
+        specifier: workspace:^
+        version: link:../testing-core-js
+      '@brrritscold/testing-core-node':
+        specifier: workspace:^
+        version: link:../testing-core-node
+      nock:
+        specifier: ^14.0.10
+        version: 14.0.17
+
   packages/testing-core-js:
     dependencies:
       lodash:
