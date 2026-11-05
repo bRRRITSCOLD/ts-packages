@@ -1,21 +1,15 @@
 import { JWT, type JWTConstructor } from '@brrritscold/core-node/jwt'
-import { expect } from 'chai'
+import { beforeAll, describe, expect, it } from 'vitest'
 import { verifyJwt } from '../../src/utils/jwt.js'
 // application/testee
 import { setup } from './__utils__/utils.js'
 
 describe('utils/jwt.ts', () => {
-	before(async () => {
+	beforeAll(async () => {
 		setup()
 	})
 
-	after(async () => {})
-
-	beforeEach(async () => {})
-
-	afterEach(async () => {})
-
-	context('verifyJwt', () => {
+	describe('verifyJwt', () => {
 		it('should verify a valid JWT and return successfully the payload id [Happy path]', async () => {
 			const config: JWTConstructor = {
 				algorithm: 'RS256',
@@ -28,9 +22,9 @@ describe('utils/jwt.ts', () => {
 
 			const token = jwt.sign()
 
-			expect(token).to.be.not.undefined
-			expect(typeof token === 'string').to.be.true
-			expect(token).to.have.length.greaterThan(1)
+			expect(token).toBeDefined()
+			expect(token).toBeTypeOf('string')
+			expect(token.length).toBeGreaterThan(1)
 
 			const verifyConfigs: JWTConstructor[] = [
 				{
@@ -48,9 +42,9 @@ describe('utils/jwt.ts', () => {
 			]
 			const verification = verifyJwt(token, verifyConfigs)
 
-			expect(verification).to.be.not.undefined
-			expect(verification.success).to.be.true
-			expect(verification.id).to.eq(config.id)
+			expect(verification).toBeDefined()
+			expect(verification.success).toBe(true)
+			expect(verification.id).toBe(config.id)
 		})
 
 		it('should verify a valid JWT with the wrong algorithm and return gracefully the failure', async () => {
@@ -65,9 +59,9 @@ describe('utils/jwt.ts', () => {
 
 			const token = jwt.sign()
 
-			expect(token).to.be.not.undefined
-			expect(typeof token === 'string').to.be.true
-			expect(token).to.have.length.greaterThan(1)
+			expect(token).toBeDefined()
+			expect(token).toBeTypeOf('string')
+			expect(token.length).toBeGreaterThan(1)
 
 			const verifyConfigs: JWTConstructor[] = [
 				{
@@ -85,8 +79,8 @@ describe('utils/jwt.ts', () => {
 			]
 			const verification = verifyJwt(token, verifyConfigs)
 
-			expect(verification).to.be.not.undefined
-			expect(verification.success).to.be.false
+			expect(verification).toBeDefined()
+			expect(verification.success).toBe(false)
 		})
 
 		it('should verify a invalid JWT with the wrong algorithm and return gracefully the failure', async () => {
@@ -108,8 +102,8 @@ describe('utils/jwt.ts', () => {
 			]
 			const verification = verifyJwt(token, verifyConfigs)
 
-			expect(verification).to.be.not.undefined
-			expect(verification.success).to.be.false
+			expect(verification).toBeDefined()
+			expect(verification.success).toBe(false)
 		})
 
 		it('should verify an expired valid JWT and return gracefully the failure', async () => {
@@ -141,8 +135,8 @@ describe('utils/jwt.ts', () => {
 			]
 			const verification = verifyJwt(token, verifyConfigs)
 
-			expect(verification).to.be.not.undefined
-			expect(verification.success).to.be.false
+			expect(verification).toBeDefined()
+			expect(verification.success).toBe(false)
 		})
 	})
 })

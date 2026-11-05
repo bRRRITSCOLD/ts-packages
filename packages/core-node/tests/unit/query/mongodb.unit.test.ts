@@ -1,6 +1,6 @@
 import { HttpException } from '@brrritscold/core-js/error'
-import { expect } from 'chai'
 import { ObjectId } from 'mongodb'
+import { describe, expect, it } from 'vitest'
 // application/testee
 import { MongoQueryDialect } from '../../../src/query/mongodb.js'
 
@@ -58,24 +58,24 @@ describe('query/mongodb.ts', () => {
 	describe('compileFilter', () => {
 		for (const [name, pinned] of Object.entries(legacy)) {
 			it(`should compile the legacy ${name} filter exactly as the hand-written version did`, () => {
-				expect(dialect.compileFilter(entryFields, pinned.filter)).to.deep.eq(
+				expect(dialect.compileFilter(entryFields, pinned.filter)).toStrictEqual(
 					pinned.compiled
 				)
 			})
 		}
 
 		it('should compile boolean eq, with a missing field counting as false', () => {
-			expect(dialect.compileFilter(jobFields, { disabled: { eq: true } })).to.deep.eq({
+			expect(dialect.compileFilter(jobFields, { disabled: { eq: true } })).toStrictEqual({
 				disabled: { $eq: true },
 			})
-			expect(dialect.compileFilter(jobFields, { disabled: { eq: false } })).to.deep.eq({
+			expect(dialect.compileFilter(jobFields, { disabled: { eq: false } })).toStrictEqual({
 				disabled: { $ne: true },
 			})
 		})
 
 		it('should compile a bound on a nullable date to a plain range', () => {
 			const gte = new Date('2026-01-01T00:00:00Z')
-			expect(dialect.compileFilter(jobFields, { nextRunAt: { gte } })).to.deep.eq({
+			expect(dialect.compileFilter(jobFields, { nextRunAt: { gte } })).toStrictEqual({
 				nextRunAt: { $gte: gte },
 			})
 		})
@@ -85,7 +85,7 @@ describe('query/mongodb.ts', () => {
 			const zero = 0 as unknown as Date
 			expect(
 				dialect.compileFilter(jobFields, { nextRunAt: { gte: zero, lte: zero } })
-			).to.deep.eq({
+			).toStrictEqual({
 				nextRunAt: { $gte: 0, $lte: 0 },
 			})
 		})
@@ -95,17 +95,17 @@ describe('query/mongodb.ts', () => {
 			const none = null as unknown as Date
 			expect(
 				dialect.compileFilter(jobFields, { nextRunAt: { gte: none, lte: none } })
-			).to.deep.eq({})
+			).toStrictEqual({})
 		})
 
 		it('should leave out a field with no operator', () => {
-			expect(dialect.compileFilter(jobFields, { name: {}, disabled: {} })).to.deep.eq({})
+			expect(dialect.compileFilter(jobFields, { name: {}, disabled: {} })).toStrictEqual({})
 		})
 
 		it('should compile in and notIn on one field to both operators', () => {
 			expect(
 				dialect.compileFilter(entryFields, { event: { in: ['a', 'b'], notIn: ['c'] } })
-			).to.deep.eq({ event: { $in: ['a', 'b'], $nin: ['c'] } })
+			).toStrictEqual({ event: { $in: ['a', 'b'], $nin: ['c'] } })
 		})
 	})
 
@@ -119,7 +119,7 @@ describe('query/mongodb.ts', () => {
 					lastValue,
 					lastId,
 				})
-			).to.deep.eq({
+			).toStrictEqual({
 				$or: [
 					{ timestamp: { $lt: new Date(lastValue) } },
 					{ timestamp: new Date(lastValue), _id: { $lt: lastObjectId } },
@@ -135,26 +135,28 @@ describe('query/mongodb.ts', () => {
 					lastValue: 'e',
 					lastId,
 				})
-			).to.deep.eq({
+			).toStrictEqual({
 				$or: [{ event: { $gt: 'e' } }, { event: 'e', _id: { $gt: lastObjectId } }],
 			})
 		})
 
 		// Diverges from the hand-written version, which compiled this to $lt: null and ended the walk
 		it('should reject a null lastValue on a sort field not declared nullable with a 400', () => {
-			expect(() =>
+			const act = () =>
 				dialect.cursorFilter(entryFields, {
 					sortKey: 'event',
 					sortBy: 'desc',
 					lastValue: null,
 					lastId,
 				})
+
+			expect(act).toThrow(HttpException)
+			expect(act).toThrow(
+				expect.objectContaining({
+					message: 'malformed cursor: event is not nullable, so lastValue cannot be null',
+					statusCode: 400,
+				})
 			)
-				.to.throw(
-					HttpException,
-					'malformed cursor: event is not nullable, so lastValue cannot be null'
-				)
-				.with.property('statusCode', 400)
 		})
 
 		it('should cross the null block on a nullable date sort', () => {
@@ -165,7 +167,7 @@ describe('query/mongodb.ts', () => {
 					lastValue: null,
 					lastId,
 				})
-			).to.deep.eq({
+			).toStrictEqual({
 				$or: [
 					{ nextRunAt: null, _id: { $gt: lastObjectId } },
 					{ nextRunAt: { $ne: null } },
@@ -174,16 +176,21 @@ describe('query/mongodb.ts', () => {
 		})
 
 		it('should reject a lastId that is not an ObjectId with a 400', () => {
-			expect(() =>
+			const act = () =>
 				dialect.cursorFilter(entryFields, {
 					sortKey: 'event',
 					sortBy: 'asc',
 					lastValue: 'e',
 					lastId: 'nope',
 				})
+
+			expect(act).toThrow(HttpException)
+			expect(act).toThrow(
+				expect.objectContaining({
+					message: 'malformed cursor: lastId is not a valid ObjectId "nope"',
+					statusCode: 400,
+				})
 			)
-				.to.throw(HttpException, 'malformed cursor: lastId is not a valid ObjectId "nope"')
-				.with.property('statusCode', 400)
 		})
 	})
 
@@ -200,7 +207,7 @@ describe('query/mongodb.ts', () => {
 					lastId: id,
 					nullable: true,
 				})
-			).to.deep.eq({ $or: [{ k: { $gt: date } }, { k: date, _id: { $gt: id } }] })
+			).toStrictEqual({ $or: [{ k: { $gt: date } }, { k: date, _id: { $gt: id } }] })
 			expect(
 				dialect.keysetFilter({
 					field: 'k',
@@ -209,7 +216,7 @@ describe('query/mongodb.ts', () => {
 					lastId: id,
 					nullable: true,
 				})
-			).to.deep.eq({
+			).toStrictEqual({
 				$or: [{ k: { $lt: date } }, { k: date, _id: { $lt: id } }, { k: null }],
 			})
 		})
@@ -223,7 +230,7 @@ describe('query/mongodb.ts', () => {
 					lastId: id,
 					nullable: true,
 				})
-			).to.deep.eq({ $or: [{ k: null, _id: { $gt: id } }, { k: { $ne: null } }] })
+			).toStrictEqual({ $or: [{ k: null, _id: { $gt: id } }, { k: { $ne: null } }] })
 			expect(
 				dialect.keysetFilter({
 					field: 'k',
@@ -232,13 +239,13 @@ describe('query/mongodb.ts', () => {
 					lastId: id,
 					nullable: true,
 				})
-			).to.deep.eq({ k: null, _id: { $lt: id } })
+			).toStrictEqual({ k: null, _id: { $lt: id } })
 		})
 
 		it('should compare only _id on a walk sorted by _id', () => {
 			expect(
 				dialect.keysetFilter({ field: '_id', sortBy: 'asc', lastValue: 'g', lastId: 'g' })
-			).to.deep.eq({ _id: { $gt: 'g' } })
+			).toStrictEqual({ _id: { $gt: 'g' } })
 		})
 
 		// Grouped reads page over $group rows, whose _id is the group key
@@ -250,14 +257,14 @@ describe('query/mongodb.ts', () => {
 					lastValue: 5,
 					lastId: 'app',
 				})
-			).to.deep.eq({ $or: [{ count: { $lt: 5 } }, { count: 5, _id: { $lt: 'app' } }] })
+			).toStrictEqual({ $or: [{ count: { $lt: 5 } }, { count: 5, _id: { $lt: 'app' } }] })
 		})
 	})
 
 	describe('keysetSort', () => {
 		it('should sort by the field, then _id, in one direction', () => {
-			expect(dialect.keysetSort('name', 'asc')).to.deep.eq({ name: 1, _id: 1 })
-			expect(dialect.keysetSort('name', 'desc')).to.deep.eq({ name: -1, _id: -1 })
+			expect(dialect.keysetSort('name', 'asc')).toStrictEqual({ name: 1, _id: 1 })
+			expect(dialect.keysetSort('name', 'desc')).toStrictEqual({ name: -1, _id: -1 })
 		})
 	})
 })

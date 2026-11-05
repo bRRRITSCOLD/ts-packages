@@ -4,7 +4,7 @@
 		"rootDir": ".",
 		"target": "esnext",
 		"lib": ["esnext"],
-		"types": ["node", "mocha"],
+		"types": ["node"],
 		"module": "nodenext",
 		"allowJs": true,
 		"strict": true,

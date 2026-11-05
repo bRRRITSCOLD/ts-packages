@@ -13,6 +13,10 @@
 			"dependsOn": ["^build"],
 			"outputs": []
 		},
+		"test:stories": {
+			"dependsOn": ["^build"],
+			"outputs": []
+		},
 		"test:integration:ci": {
 			"dependsOn": ["^build"],
 			"cache": false,

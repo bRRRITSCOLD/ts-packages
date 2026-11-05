@@ -6,25 +6,24 @@ import {
 	ListObjectsV2Command,
 	PutObjectCommand,
 } from '@aws-sdk/client-s3'
-import { expect } from 'chai'
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { CREDENTIAL_PROVIDERS, S3 } from '../../src/s3.js'
-import { getFlociContainer, setup } from './__utils__/utils.js'
+import { getFlociContainer } from './__utils__/utils.js'
 
 describe('s3.ts', () => {
 	let s3: S3
 	let flociContainer: Awaited<ReturnType<typeof getFlociContainer>>
 
-	before(async () => {
-		await setup()
+	beforeAll(async () => {
 		flociContainer = await getFlociContainer()
 	})
 
-	after(async () => {
+	afterAll(async () => {
 		await s3?.closeClient()
 		await flociContainer?.stop()
 	})
 
-	context('S3 client initialization and operations', () => {
+	describe('S3 client initialization and operations', () => {
 		describe('S3.initClient + S3.getClient + S3 operations + S3.closeClient', () => {
 			it('should initialize S3 client, perform CRUD operations on Floci, and close client', async () => {
 				s3 = new S3()
@@ -39,13 +38,13 @@ describe('s3.ts', () => {
 					},
 				})
 
-				expect(initialized).to.be.true
-				expect(s3.credentials.provider).to.equal(CREDENTIAL_PROVIDERS.ENV)
-				expect(s3.credentials.tokens).to.not.be.undefined
+				expect(initialized).toBe(true)
+				expect(s3.credentials.provider).toBe(CREDENTIAL_PROVIDERS.ENV)
+				expect(s3.credentials.tokens).toBeDefined()
 
 				// Get S3 client
 				const client = await s3.getClient()
-				expect(client).to.not.be.null
+				expect(client).not.toBeNull()
 
 				// Test bucket + object key
 				const testBucket = 'test-bucket'
@@ -77,11 +76,11 @@ describe('s3.ts', () => {
 					})
 				)
 
-				expect(getResult.Body).to.not.be.undefined
+				expect(getResult.Body).toBeDefined()
 				const bodyText = await getResult.Body!.transformToString()
 				const retrieved = JSON.parse(bodyText)
-				expect(retrieved.message).to.equal(testData.message)
-				expect(retrieved.timestamp).to.equal(testData.timestamp)
+				expect(retrieved.message).toBe(testData.message)
+				expect(retrieved.timestamp).toBe(testData.timestamp)
 
 				// ListObjectsV2
 				const listResult = await client!.send(
@@ -90,9 +89,9 @@ describe('s3.ts', () => {
 					})
 				)
 
-				expect(listResult.Contents).to.not.be.undefined
-				expect(listResult.Contents).to.have.lengthOf(1)
-				expect(listResult.Contents![0].Key).to.equal(testKey)
+				expect(listResult.Contents).toBeDefined()
+				expect(listResult.Contents).toHaveLength(1)
+				expect(listResult.Contents![0].Key).toBe(testKey)
 
 				// DeleteObject
 				await client!.send(
@@ -109,13 +108,13 @@ describe('s3.ts', () => {
 					})
 				)
 
-				expect(listAfterDelete.Contents).to.satisfy(
+				expect(listAfterDelete.Contents).toSatisfy(
 					(contents: _Object[] | undefined) => !contents || contents.length === 0
 				)
 
 				// Close client
 				const closed = s3.closeClient()
-				expect(closed).to.be.true
+				expect(closed).toBe(true)
 			})
 		})
 
@@ -137,8 +136,8 @@ describe('s3.ts', () => {
 				const client2 = await s3.getClient()
 
 				// Both clients should be valid S3Client instances
-				expect(client1).to.not.be.null
-				expect(client2).to.not.be.null
+				expect(client1).not.toBeNull()
+				expect(client2).not.toBeNull()
 
 				s3.closeClient()
 			})

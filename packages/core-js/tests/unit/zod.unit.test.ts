@@ -1,17 +1,9 @@
-import { expect } from 'chai'
+import { describe, expect, it } from 'vitest'
 import { ExceptionCodes, ExceptionFaults, HttpException } from '../../src/error.js'
 // application/testee
 import { validateSchemaAsync, ZodError, z } from '../../src/zod.js'
 
 describe('obj.ts', () => {
-	before(async () => {})
-
-	after(async () => {})
-
-	beforeEach(async () => {})
-
-	afterEach(async () => {})
-
 	it('should asynchronously validate data against a schema', async () => {
 		const schema = z.object({ firstName: z.string(), age: z.number() })
 
@@ -25,10 +17,10 @@ describe('obj.ts', () => {
 			error = err
 		}
 
-		expect(error).to.be.undefined
-		expect(result).to.be.not.undefined
-		expect(result?.firstName).to.eq(value.firstName)
-		expect(result?.age).to.eq(value.age)
+		expect(error).toBeUndefined()
+		expect(result).toBeDefined()
+		expect(result?.firstName).toBe(value.firstName)
+		expect(result?.age).toBe(value.age)
 
 		value = { firstName: 100, age: 'Fred' }
 
@@ -40,13 +32,13 @@ describe('obj.ts', () => {
 			error = err
 		}
 
-		expect(result).to.be.undefined
-		expect(error).to.be.not.undefined
-		expect((error as HttpException)?.statusCode).to.eq(400)
-		expect((error as HttpException)?.code).to.eq(ExceptionCodes.INTERNAL)
-		expect((error as HttpException)?.fault).to.eq(ExceptionFaults.CLIENT)
-		expect(
-			((error as HttpException)?.cause as ZodError).issues
-		).to.have.length.greaterThanOrEqual(2)
+		expect(result).toBeUndefined()
+		expect(error).toBeDefined()
+		expect((error as HttpException)?.statusCode).toBe(400)
+		expect((error as HttpException)?.code).toBe(ExceptionCodes.INTERNAL)
+		expect((error as HttpException)?.fault).toBe(ExceptionFaults.CLIENT)
+		expect(((error as HttpException)?.cause as ZodError).issues.length).toBeGreaterThanOrEqual(
+			2
+		)
 	})
 })

@@ -9,6 +9,11 @@
  * - every subpath in `exports` is built by tsup and documented by TypeDoc, and
  *   nothing is built or documented that is not exported
  *
+ * `core-react` is the one allowlisted exception (ROOT_ENTRY_ALLOWED): an ESM-only,
+ * unbundled `tsc` build with a pure `src/index.ts` barrel as its `.` entry. For it the
+ * check is that the barrel holds only named re-exports, and that every JavaScript
+ * subpath has its source file. Its `.css` and `.json` exports are build output.
+ *
  * Run with `pnpm check:entries`; CI runs it in the `check` job.
  */
 
@@ -34,10 +39,59 @@ const tsupEntries = (config) => {
 
 const sameSet = (a, b) => a.length === b.length && a.every((x) => b.includes(x))
 
+/** Packages allowed a root `.` entry: a pure barrel, built unbundled by `tsc`. */
+const ROOT_ENTRY_ALLOWED = new Set(['core-react'])
+
+/** `./dist/icons.js` → `src/icons.ts` or `src/icons.tsx`, whichever exists. */
+const tscSourceOf = (dir, built) => {
+	const stem = built.replace(/^\.\/dist\//, 'src/').replace(/\.js$/, '')
+	return [`${stem}.ts`, `${stem}.tsx`].find((src) => existsSync(join(dir, src))) ?? `${stem}.ts`
+}
+
+/** A pure barrel: nothing but `export { … } from '…'` (and `export type`), no logic, no `export *`. */
+const NAMED_RE_EXPORT = /^export (type )?\{[^}]*\} from '[^']+'$/
+
+const checkRootEntryPackage = (dir, pkg, where) => {
+	for (const field of ['main', 'module', 'types'])
+		if (field in pkg) problems.push(`${where}: package.json has "${field}"; use "exports"`)
+
+	for (const file of walk(join(dir, 'src')))
+		if (/[/\\]index\.tsx?$/.test(file) && relative(dir, file) !== join('src', 'index.ts'))
+			problems.push(
+				`${where}: ${relative(dir, file)} is a barrel; only src/index.ts may be one`
+			)
+
+	const barrel = join(dir, 'src', 'index.ts')
+	if (existsSync(barrel)) {
+		const statements = readFileSync(barrel, 'utf8')
+			.replace(/\/\/.*$/gm, '')
+			.split(/;|\n(?=export)/)
+			.map((s) => s.replace(/\s+/g, ' ').trim())
+			.filter(Boolean)
+		for (const statement of statements)
+			if (!NAMED_RE_EXPORT.test(statement))
+				problems.push(
+					`${where}: src/index.ts must only re-export by name, found: ${statement}`
+				)
+	}
+
+	for (const [subpath, target] of Object.entries(pkg.exports ?? {})) {
+		if (typeof target === 'string') continue // ./styles.css, ./tokens.json: build output
+		const src = tscSourceOf(dir, target.default)
+		if (!existsSync(join(dir, src)))
+			problems.push(`${where}: ${subpath} maps to missing ${src}`)
+	}
+}
+
 for (const name of readdirSync(join(ROOT, 'packages'))) {
 	const dir = join(ROOT, 'packages', name)
 	const pkg = JSON.parse(readFileSync(join(dir, 'package.json'), 'utf8'))
 	const where = `packages/${name}`
+
+	if (ROOT_ENTRY_ALLOWED.has(name)) {
+		checkRootEntryPackage(dir, pkg, where)
+		continue
+	}
 
 	if ('.' in (pkg.exports ?? {})) problems.push(`${where}: exports has a "." root entry`)
 	for (const field of ['main', 'module', 'types'])

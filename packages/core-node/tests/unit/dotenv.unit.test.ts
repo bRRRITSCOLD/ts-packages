@@ -1,18 +1,10 @@
-import { expect } from 'chai'
+import { describe, expect, it } from 'vitest'
 
 // application/testee
 import { load } from '../../src/dotenv.js'
 
 describe('dotenv.ts', () => {
-	before(async () => {})
-
-	after(async () => {})
-
-	beforeEach(async () => {})
-
-	afterEach(async () => {})
-
-	context('load', () => {
+	describe('load', () => {
 		it('should verify missing env vars and then load env vars + verify no missing vars', async () => {
 			let response = load({
 				example: '.env.example',
@@ -20,11 +12,10 @@ describe('dotenv.ts', () => {
 				quiet: true,
 			})
 
-			expect(response).to.be.not.undefined
-			expect(response.data).to.be.undefined
-			expect(response.error).to.be.not.undefined
-			expect(process.env.SUPER_SECRET === undefined || process.env.SUPER_SECRET === 'NA').to
-				.be.true
+			expect(response).toBeDefined()
+			expect(response.data).toBeUndefined()
+			expect(response.error).toBeDefined()
+			expect([undefined, 'NA']).toContain(process.env.SUPER_SECRET)
 
 			response = load({
 				example: '.env.example',
@@ -33,12 +24,10 @@ describe('dotenv.ts', () => {
 				quiet: true,
 			})
 
-			expect(response).to.be.not.undefined
-			expect(response.error).to.be.undefined
-			expect(response.data).to.be.not.undefined
-			expect(process.env.SUPER_SECRET !== undefined || process.env.SUPER_SECRET !== '').to.be
-				.true
-			expect(process.env.SUPER_SECRET).to.eq('NUN_YA!')
+			expect(response).toBeDefined()
+			expect(response.error).toBeUndefined()
+			expect(response.data).toBeDefined()
+			expect(process.env.SUPER_SECRET).toBe('NUN_YA!')
 		})
 	})
 })

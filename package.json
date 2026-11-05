@@ -19,6 +19,7 @@
 		"prepare": "husky",
 		"release": "turbo run build && changeset publish",
 		"test:integration": "turbo run test:integration:ci --concurrency=1",
+		"test:stories": "turbo run test:stories",
 		"test:unit": "turbo run test:unit",
 		"typecheck": "turbo run typecheck",
 		"version-packages": "changeset version"
@@ -27,19 +28,15 @@
 		"@biomejs/biome": "^2.4.8",
 		"@changesets/changelog-github": "^1.0.1",
 		"@changesets/cli": "^2.29.7",
-		"@types/chai": "^5.2.2",
-		"@types/mocha": "^10.0.10",
 		"@types/node": "^22.15.19",
-		"chai": "^5.2.0",
 		"husky": "^9.1.7",
 		"lint-staged": "^16.0.0",
-		"mocha": "^11.3.0",
-		"nodemon": "^3.1.9",
 		"tsup": "^8.5.0",
 		"tsx": "^4.19.4",
 		"turbo": "^2.5.8",
 		"typedoc": "^0.28.5",
-		"typescript": "^5.8.3"
+		"typescript": "^5.8.3",
+		"vitest": "^4.1.12"
 	},
 	"lint-staged": {
 		"*.{js,ts,json}": "biome check --write --no-errors-on-unmatched"

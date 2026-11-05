@@ -1,7 +1,7 @@
 import { execFileSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
 
-import { expect } from 'chai'
+import { describe, expect, it } from 'vitest'
 
 // Importing nock patches node's http module for the whole process. That patch
 // breaks testcontainers' hijacked `docker exec` readiness checks (`write EPIPE`),
@@ -28,10 +28,10 @@ const isHttpPatchedAfterImporting = (entry: string): boolean => {
 
 describe('entry isolation', () => {
 	it('should not patch http when importing the docker entry', () => {
-		expect(isHttpPatchedAfterImporting('docker.ts')).to.equal(false)
+		expect(isHttpPatchedAfterImporting('docker.ts')).toBe(false)
 	})
 
 	it('should patch http when importing the nock entry (probe sanity check)', () => {
-		expect(isHttpPatchedAfterImporting('nock.ts')).to.equal(true)
+		expect(isHttpPatchedAfterImporting('nock.ts')).toBe(true)
 	})
 })

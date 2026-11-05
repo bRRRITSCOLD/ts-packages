@@ -15,7 +15,7 @@
 		"allowSyntheticDefaultImports": true,
 		"sourceMap": true,
 		"noEmit": true,
-		"types": ["node", "mocha"]
+		"types": ["node"]
 	},
 	"include": ["src", "tests"]
 }

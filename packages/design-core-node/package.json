@@ -1,0 +1,66 @@
+{
+	"name": "@brrritscold/design-core-node",
+	"version": "0.1.0",
+	"private": true,
+	"description": "The drift check's node side: the code manifest generator (TS compiler API over core-react's .d.ts) and the drift-check CLI.",
+	"license": "MIT",
+	"author": "Blaine Richardson",
+	"homepage": "https://brrritscold.github.io/ts-packages/modules/_brrritscold_design-core-node.html",
+	"type": "module",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/bRRRITSCOLD/ts-packages.git",
+		"directory": "packages/design-core-node"
+	},
+	"files": [
+		"bin",
+		"dist",
+		"README.md",
+		"LICENSE"
+	],
+	"bin": {
+		"design-drift": "./bin/design-drift.mjs"
+	},
+	"exports": {
+		"./code-manifest": {
+			"import": {
+				"types": "./dist/code-manifest.d.ts",
+				"default": "./dist/code-manifest.mjs"
+			},
+			"require": {
+				"types": "./dist/code-manifest.d.cts",
+				"default": "./dist/code-manifest.cjs"
+			},
+			"default": "./dist/code-manifest.mjs"
+		},
+		"./drift-check": {
+			"import": {
+				"types": "./dist/drift-check.d.ts",
+				"default": "./dist/drift-check.mjs"
+			},
+			"require": {
+				"types": "./dist/drift-check.d.cts",
+				"default": "./dist/drift-check.cjs"
+			},
+			"default": "./dist/drift-check.mjs"
+		}
+	},
+	"scripts": {
+		"build": "tsup",
+		"clean": "rm -rf dist .turbo",
+		"lint": "biome check --write",
+		"lint:check": "biome check",
+		"test:unit": "vitest run --project unit",
+		"test:unit:watch": "vitest --project unit",
+		"typecheck": "tsc -p ./tsconfig.json"
+	},
+	"dependencies": {
+		"@brrritscold/core-js": "workspace:^",
+		"@brrritscold/design-core-js": "workspace:^",
+		"typescript": "^5.8.3"
+	},
+	"keywords": [
+		"brrritscold",
+		"typescript"
+	]
+}

@@ -6,6 +6,9 @@
 			"!**/node_modules/**",
 			"!**/site/**",
 			"!**/.turbo/**",
+			"!**/storybook-static/**",
+			"!**/test-results/**",
+			"!**/playwright-report/**",
 			"!**/*.d.ts",
 			"!.changeset/**"
 		]
@@ -17,6 +20,11 @@
 		"lineEnding": "lf",
 		"lineWidth": 100,
 		"includes": ["**", "!**/*.d.ts"]
+	},
+	"css": {
+		"parser": {
+			"tailwindDirectives": true
+		}
 	},
 	"javascript": {
 		"formatter": {

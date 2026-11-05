@@ -24,6 +24,9 @@ jobs:
             - run: pnpm build
             - run: pnpm typecheck
             - run: pnpm test:unit
+            # core-react's stories run as tests in Chromium (play functions + a11y)
+            - run: pnpm --filter @brrritscold/core-react exec playwright install --with-deps chromium
+            - run: pnpm test:stories
             # TypeDoc with warnings-as-errors + README API sections up to date + every export has a summary
             - run: pnpm docs:check
 
@@ -39,6 +42,8 @@ jobs:
                   cache: pnpm
             - run: pnpm install --frozen-lockfile
             - run: pnpm build
+            # core-react's integration tier is Playwright against a static Storybook build
+            - run: pnpm --filter @brrritscold/core-react exec playwright install --with-deps chromium
             - run: pnpm test:integration
 
     # Runs only on pushes to main, after check + integration pass. Exactly ONE of

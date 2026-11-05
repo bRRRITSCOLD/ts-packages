@@ -1,24 +1,20 @@
-import { expect } from 'chai'
+import { afterAll, describe, expect, it } from 'vitest'
 import {
 	createMongoCollectionClient,
 	MongoConnectionConfig,
 	MongoConnections,
 	MongoStrictMatchKeysAndValues,
 } from '../../src/mongodb.js'
-import { getMongoDbContainer, setup } from './__utils__/utils.js'
+import { getMongoDbContainer } from './__utils__/utils.js'
 
 const mongoConnections = new MongoConnections()
 
 describe('mongodb.ts', () => {
-	before(async () => {
-		await setup()
-	})
-
-	after(async () => {
+	afterAll(async () => {
 		await mongoConnections.closeConnections()
 	})
 
-	context('MongoConnections + createMongoCollectionClient', () => {
+	describe('MongoConnections + createMongoCollectionClient', () => {
 		describe('MongoConnections.initConnections + MongoConnections.getConnection + createMongoCollectionClient + MongoConnections.closeConnection + MongoConnections.closeConnections', () => {
 			it('should connect 1...N mongo connection configuration, get a mongo connection, create a mongo collection client (insert document, find document, delete documents), close a mongo connection, and then close all connections', async () => {
 				const container = await getMongoDbContainer()
@@ -61,29 +57,29 @@ describe('mongodb.ts', () => {
 					error = err
 				}
 
-				expect(result).to.be.undefined
-				expect(error).to.be.undefined
+				expect(result).toBeUndefined()
+				expect(error).toBeUndefined()
 
 				let connectionOne = mongoConnections.getConnection(mongoConnectionConfigs[0].name)
 
-				expect(connectionOne).to.be.not.undefined
-				expect(connectionOne?.client).to.be.not.undefined
-				expect(connectionOne?.db).to.be.not.undefined
-				expect(connectionOne?.config).to.be.not.undefined
+				expect(connectionOne).toBeDefined()
+				expect(connectionOne?.client).toBeDefined()
+				expect(connectionOne?.db).toBeDefined()
+				expect(connectionOne?.config).toBeDefined()
 
 				let connectionTwo = mongoConnections.getConnection(mongoConnectionConfigs[1].name)
 
-				expect(connectionTwo).to.be.not.undefined
-				expect(connectionTwo?.client).to.be.not.undefined
-				expect(connectionTwo?.db).to.be.not.undefined
-				expect(connectionTwo?.config).to.be.not.undefined
+				expect(connectionTwo).toBeDefined()
+				expect(connectionTwo?.client).toBeDefined()
+				expect(connectionTwo?.db).toBeDefined()
+				expect(connectionTwo?.config).toBeDefined()
 
 				let connectionThree = mongoConnections.getConnection(mongoConnectionConfigs[2].name)
 
-				expect(connectionThree).to.be.not.undefined
-				expect(connectionThree?.client).to.be.not.undefined
-				expect(connectionThree?.db).to.be.not.undefined
-				expect(connectionThree?.config).to.be.not.undefined
+				expect(connectionThree).toBeDefined()
+				expect(connectionThree?.client).toBeDefined()
+				expect(connectionThree?.db).toBeDefined()
+				expect(connectionThree?.config).toBeDefined()
 
 				const todosCollectionClient = createMongoCollectionClient<{
 					id: 1
@@ -96,9 +92,9 @@ describe('mongodb.ts', () => {
 
 				let deleteManyResponse = await todosCollectionClient.deleteMany({})
 
-				expect(deleteManyResponse).to.be.not.undefined
-				expect(deleteManyResponse.deletedCount).to.be.not.undefined
-				expect(deleteManyResponse.acknowledged).to.be.true
+				expect(deleteManyResponse).toBeDefined()
+				expect(deleteManyResponse.deletedCount).toBeDefined()
+				expect(deleteManyResponse.acknowledged).toBe(true)
 
 				const insertOneResponse = await todosCollectionClient.insertOne({
 					id: 1,
@@ -106,9 +102,9 @@ describe('mongodb.ts', () => {
 					completed: false,
 				})
 
-				expect(insertOneResponse).to.be.not.undefined
-				expect(insertOneResponse.insertedId).to.be.not.undefined
-				expect(insertOneResponse.acknowledged).to.be.true
+				expect(insertOneResponse).toBeDefined()
+				expect(insertOneResponse.insertedId).toBeDefined()
+				expect(insertOneResponse.acknowledged).toBe(true)
 
 				const findQuery: MongoStrictMatchKeysAndValues<{
 					id: 1
@@ -118,45 +114,45 @@ describe('mongodb.ts', () => {
 
 				const findResponse = await todosCollectionClient.find(findQuery).toArray()
 
-				expect(findResponse).to.be.not.undefined
-				expect(findResponse.length).to.eq(1)
-				expect(findResponse[0].id).to.eq(findQuery.id)
+				expect(findResponse).toBeDefined()
+				expect(findResponse.length).toBe(1)
+				expect(findResponse[0].id).toBe(findQuery.id)
 
 				deleteManyResponse = await todosCollectionClient.deleteMany({})
 
-				expect(deleteManyResponse).to.be.not.undefined
-				expect(deleteManyResponse.deletedCount).to.eq(1)
-				expect(deleteManyResponse.acknowledged).to.be.true
+				expect(deleteManyResponse).toBeDefined()
+				expect(deleteManyResponse.deletedCount).toBe(1)
+				expect(deleteManyResponse.acknowledged).toBe(true)
 
 				await mongoConnections.closeConnection(mongoConnectionConfigs[0].name)
 
 				connectionOne = mongoConnections.getConnection(mongoConnectionConfigs[0].name)
 
-				expect(connectionOne).to.be.undefined
+				expect(connectionOne).toBeUndefined()
 
 				connectionTwo = mongoConnections.getConnection(mongoConnectionConfigs[1].name)
 
-				expect(connectionTwo).to.be.not.undefined
-				expect(connectionTwo?.client).to.be.not.undefined
-				expect(connectionTwo?.db).to.be.not.undefined
-				expect(connectionTwo?.config).to.be.not.undefined
+				expect(connectionTwo).toBeDefined()
+				expect(connectionTwo?.client).toBeDefined()
+				expect(connectionTwo?.db).toBeDefined()
+				expect(connectionTwo?.config).toBeDefined()
 
 				connectionThree = mongoConnections.getConnection(mongoConnectionConfigs[2].name)
 
-				expect(connectionThree).to.be.not.undefined
-				expect(connectionThree?.client).to.be.not.undefined
-				expect(connectionThree?.db).to.be.not.undefined
-				expect(connectionThree?.config).to.be.not.undefined
+				expect(connectionThree).toBeDefined()
+				expect(connectionThree?.client).toBeDefined()
+				expect(connectionThree?.db).toBeDefined()
+				expect(connectionThree?.config).toBeDefined()
 
 				await mongoConnections.closeConnections()
 
 				connectionTwo = mongoConnections.getConnection(mongoConnectionConfigs[1].name)
 
-				expect(connectionTwo).to.be.undefined
+				expect(connectionTwo).toBeUndefined()
 
 				connectionThree = mongoConnections.getConnection(mongoConnectionConfigs[2].name)
 
-				expect(connectionThree).to.be.undefined
+				expect(connectionThree).toBeUndefined()
 			})
 		})
 	})

@@ -1,7 +1,8 @@
 // node_modules
-import { expect } from 'chai'
+
 import express, { type NextFunction, type Request, type Response, Router } from 'express'
 import request from 'supertest'
+import { describe, expect, it } from 'vitest'
 
 // src
 import { createOpenApiRouter, replacePath } from '../../src/openapi.js'
@@ -75,17 +76,15 @@ const appWith = (router: Router) => {
 describe('lib/openapi/index.ts', () => {
 	describe('replacePath', () => {
 		it('should rewrite an OpenAPI path param into the express form.', () => {
-			expect(replacePath('/todos/{id}')).to.equal('/todos/:id')
+			expect(replacePath('/todos/{id}')).toBe('/todos/:id')
 		})
 
 		it('should rewrite every param, not only the first.', () => {
-			expect(replacePath('/owners/{ownerId}/todos/{id}')).to.equal(
-				'/owners/:ownerId/todos/:id'
-			)
+			expect(replacePath('/owners/{ownerId}/todos/{id}')).toBe('/owners/:ownerId/todos/:id')
 		})
 
 		it('should leave a path with no params alone.', () => {
-			expect(replacePath('/health-check')).to.equal('/health-check')
+			expect(replacePath('/health-check')).toBe('/health-check')
 		})
 	})
 
@@ -93,7 +92,7 @@ describe('lib/openapi/index.ts', () => {
 		it('should expose the router it wraps so it can still be mounted.', () => {
 			const router = Router()
 
-			expect(createOpenApiRouter<TestPaths>(router)._router).to.equal(router)
+			expect(createOpenApiRouter<TestPaths>(router)._router).toBe(router)
 		})
 
 		it('should serve a get route declared with the spec path template.', async () => {
@@ -107,8 +106,8 @@ describe('lib/openapi/index.ts', () => {
 
 			const response = await request(appWith(openApiRouter._router)).get('/todos/abc')
 
-			expect(response.status).to.equal(200)
-			expect(response.body).to.deep.equal({ id: 'abc' })
+			expect(response.status).toBe(200)
+			expect(response.body).toStrictEqual({ id: 'abc' })
 		})
 
 		it('should type the query params off the operation.', async () => {
@@ -124,7 +123,7 @@ describe('lib/openapi/index.ts', () => {
 				'/todos?completed=true'
 			)
 
-			expect(response.body).to.deep.equal({ ids: ['true'] })
+			expect(response.body).toStrictEqual({ ids: ['true'] })
 		})
 
 		it('should serve post, patch, put and delete on the same path.', async () => {
@@ -153,16 +152,16 @@ describe('lib/openapi/index.ts', () => {
 
 			const agent = request(appWith(openApiRouter._router))
 
-			expect((await agent.post('/todos').send({ title: 'x' })).body).to.deep.equal({
+			expect((await agent.post('/todos').send({ title: 'x' })).body).toStrictEqual({
 				id: 'post:x',
 			})
-			expect((await agent.patch('/todos/1').send({ title: 'x' })).body).to.deep.equal({
+			expect((await agent.patch('/todos/1').send({ title: 'x' })).body).toStrictEqual({
 				id: 'patch:1',
 			})
-			expect((await agent.put('/todos/2').send({ title: 'x' })).body).to.deep.equal({
+			expect((await agent.put('/todos/2').send({ title: 'x' })).body).toStrictEqual({
 				id: 'put:2',
 			})
-			expect((await agent.delete('/todos/3')).body).to.deep.equal({
+			expect((await agent.delete('/todos/3')).body).toStrictEqual({
 				id: 'delete:3',
 			})
 		})
@@ -190,7 +189,7 @@ describe('lib/openapi/index.ts', () => {
 
 			await request(appWith(openApiRouter._router)).get('/todos/abc')
 
-			expect(calls).to.deep.equal(['first', 'second', 'handler'])
+			expect(calls).toStrictEqual(['first', 'second', 'handler'])
 		})
 
 		it('should serve a route configured without middlewares.', async () => {
@@ -202,9 +201,9 @@ describe('lib/openapi/index.ts', () => {
 				},
 			})
 
-			expect(
-				(await request(appWith(openApiRouter._router)).get('/todos/abc')).status
-			).to.equal(200)
+			expect((await request(appWith(openApiRouter._router)).get('/todos/abc')).status).toBe(
+				200
+			)
 		})
 
 		it('should forward a rejected handler to the error middleware.', async () => {
@@ -218,8 +217,8 @@ describe('lib/openapi/index.ts', () => {
 
 			const response = await request(appWith(openApiRouter._router)).get('/todos/abc')
 
-			expect(response.status).to.equal(500)
-			expect(response.body).to.deep.equal({ message: 'async boom' })
+			expect(response.status).toBe(500)
+			expect(response.body).toStrictEqual({ message: 'async boom' })
 		})
 
 		it('should forward a synchronous throw to the error middleware.', async () => {
@@ -233,8 +232,8 @@ describe('lib/openapi/index.ts', () => {
 
 			const response = await request(appWith(openApiRouter._router)).get('/todos/abc')
 
-			expect(response.status).to.equal(500)
-			expect(response.body).to.deep.equal({ message: 'sync boom' })
+			expect(response.status).toBe(500)
+			expect(response.body).toStrictEqual({ message: 'sync boom' })
 		})
 	})
 })

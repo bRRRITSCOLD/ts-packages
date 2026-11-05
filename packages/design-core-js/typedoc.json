@@ -1,0 +1,11 @@
+{
+	"$schema": "https://typedoc.org/schema.json",
+	"entryPoints": [
+		"src/code-manifest.ts",
+		"src/component-link.ts",
+		"src/drift-check.ts",
+		"src/library-snapshot.ts"
+	],
+	"readme": "README.md",
+	"includeVersion": true
+}
