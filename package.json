@@ -39,7 +39,8 @@
 		"tsx": "^4.19.4",
 		"turbo": "^2.5.8",
 		"typedoc": "^0.28.5",
-		"typescript": "^5.8.3"
+		"typescript": "^5.8.3",
+		"vitest": "^4.1.12"
 	},
 	"lint-staged": {
 		"*.{js,ts,json}": "biome check --write --no-errors-on-unmatched"
