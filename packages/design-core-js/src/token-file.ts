@@ -78,3 +78,40 @@ export const flattenTokens = (group: DesignTokenGroup, prefix = ''): Record<stri
 				: Object.entries(flattenTokens(node, fullName))
 		})
 	)
+
+/**
+ * Whether two tokens are equal: type, description and value, the value compared in one form
+ * whichever side wrote it. Penpot's plugin API stores numbers as strings, font families as a
+ * list and every shadow as a list of layers with `inset`, where tokens.json keeps a number, a
+ * comma-separated string and a bare object; object keys compare in any order.
+ *
+ * Drift rule 6 and the token sync script share this one function, so they can't disagree. It
+ * references nothing outside its own body, because token sync embeds its source text in the
+ * script it generates.
+ */
+export const sameToken = (a: DesignToken, b: DesignToken): boolean => {
+	if (a.$type !== b.$type || (a.$description ?? '') !== (b.$description ?? '')) return false
+	const [first, second] = [a, b].map(({ $type, $value }) =>
+		JSON.stringify(
+			$type === 'fontFamilies'
+				? (Array.isArray($value) ? $value : String($value).split(',')).map((family) =>
+						String(family).trim()
+					)
+				: $type === 'shadow'
+					? (Array.isArray($value) ? $value : [$value]).map((layer) => ({
+							inset: false,
+							...(layer as object),
+						}))
+					: typeof $value === 'number'
+						? String($value)
+						: $value,
+			(_, nested) =>
+				nested && typeof nested === 'object' && !Array.isArray(nested)
+					? Object.fromEntries(
+							Object.entries(nested).sort(([x], [y]) => (x < y ? -1 : x > y ? 1 : 0))
+						)
+					: nested
+		)
+	)
+	return first === second
+}

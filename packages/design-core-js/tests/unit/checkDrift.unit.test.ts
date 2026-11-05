@@ -610,6 +610,34 @@ describe('checkDrift', () => {
 		})
 	})
 
+	describe('rules 7–9 on _internal/ components', () => {
+		/** A raw fill, an unknown token and a primitive colour on one layer. */
+		const layers = {
+			board: createLibraryLayer({
+				namePath: ['Slot'],
+				unbound: ['fill'],
+				appliedTokens: { 'stroke-color': 'color.white', shadow: 'shadow.huge' },
+			}),
+		}
+
+		it('should skip an _internal/ component, such as the slot placeholder with its raw fill', () => {
+			const library = {
+				...createInStepLibrary(),
+				slot: createLibraryComponent({ path: '_internal', name: 'Slot', layers }),
+			}
+
+			expect(checkDrift(createDriftCheckInput(library)).errors).toEqual([])
+		})
+
+		it('should still check a component outside _internal/ with the same layers', () => {
+			const library = { card: createLibraryComponent({ name: 'Card', layers }) }
+
+			expect(
+				checkDrift(createDriftCheckInput(library)).errors.map(({ rule }) => rule)
+			).toEqual([7, 8, 9])
+		})
+	})
+
 	describe('coverage report: code → library', () => {
 		it('should report an export no library component links to as a coverage gap, not an error', () => {
 			const manifest = createCodeManifest()

@@ -5,7 +5,8 @@
 		"src/component-link.ts",
 		"src/drift-check.ts",
 		"src/library-snapshot.ts",
-		"src/token-file.ts"
+		"src/token-file.ts",
+		"src/token-sync.ts"
 	],
 	"readme": "README.md",
 	"includeVersion": true

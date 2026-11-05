@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
-
+// node_modules
+import { buildTokenSyncScript } from '@brrritscold/design-core-js/token-sync'
 import { describe, expect, it } from 'vitest'
 
 // testee
@@ -12,6 +13,7 @@ const DESIGN_FIXTURES = [
 	'library.snapshot.json',
 	'library.drifted.snapshot.json',
 	'tokens.json',
+	'token-migrations.json',
 	'drift.config.json',
 ]
 const MANIFEST = 'code-manifest.json'
@@ -190,6 +192,67 @@ describe('design-drift CLI', () => {
 		})
 	})
 
+	describe('token-sync', () => {
+		const tokens = () => JSON.parse(readFileSync(fixture('design/tokens.json'), 'utf8'))
+		const AsyncFunction = (async () => {}).constructor as new (...args: string[]) => unknown
+
+		it('should print the token sync script for the token file and migrations (exit 0)', () => {
+			const { run, stdout } = cli()
+
+			const exitCode = run(
+				'token-sync',
+				'--tokens',
+				fixture('design/tokens.json'),
+				'--migrations',
+				fixture('design/token-migrations.json')
+			)
+
+			expect(exitCode).toBe(0)
+			expect(stdout).toEqual([
+				buildTokenSyncScript({
+					tokens: tokens(),
+					migrations: [{ version: '2.0.0', from: 'brand', to: 'primary' }],
+				}),
+			])
+			expect(
+				() => new AsyncFunction('penpot', 'penpotUtils', 'storage', stdout[0])
+			).not.toThrow()
+		})
+
+		it('should print the script with no migrations when --migrations is left out (exit 0)', () => {
+			const { run, stdout } = cli()
+
+			const exitCode = run('token-sync', '--tokens', fixture('design/tokens.json'))
+
+			expect(exitCode).toBe(0)
+			expect(stdout).toEqual([buildTokenSyncScript({ tokens: tokens() })])
+		})
+
+		it('should fail loudly on a token Penpot cannot hold (exit 2)', () => {
+			const { files, run, stderr, stdout } = cli()
+			const negative = tokens()
+			negative.primitive.shadow = {
+				inner: {
+					$type: 'shadow',
+					$value: {
+						color: '#000',
+						offsetX: '0px',
+						offsetY: '0px',
+						blur: '1px',
+						spread: '-1px',
+					},
+				},
+			}
+			files.set('negative.json', JSON.stringify(negative))
+
+			const exitCode = run('token-sync', '--tokens', 'negative.json')
+
+			expect(exitCode).toBe(2)
+			expect(stdout).toEqual([])
+			expect(stderr.join('\n')).toContain('a negative shadow spread, which Penpot rejects')
+		})
+	})
+
 	describe('invalid input', () => {
 		it('should fail loudly on a snapshot that does not match its schema (exit 2)', () => {
 			const { files, run, stderr } = cliWithManifest()
@@ -248,6 +311,24 @@ describe('design-drift CLI', () => {
 
 			expect(exitCode).toBe(2)
 			expect(stderr.join('\n')).toContain('Missing --tokens')
+		})
+
+		it('should fail loudly on token migrations that do not match their schema (exit 2)', () => {
+			const { files, run, stderr } = cli()
+			files.set('bad-migrations.json', JSON.stringify([{ from: 'brand' }]))
+
+			const exitCode = run(
+				'token-sync',
+				'--tokens',
+				fixture('design/tokens.json'),
+				'--migrations',
+				'bad-migrations.json'
+			)
+
+			expect(exitCode).toBe(2)
+			expect(stderr.join('\n')).toContain(
+				'bad-migrations.json does not match the token migrations schema:'
+			)
 		})
 
 		it('should print usage for an unknown command (exit 2)', () => {
