@@ -221,6 +221,30 @@ const canonicalJson = (value: unknown): string =>
 			: nested
 	)
 
+/**
+ * A token's value in one form whichever side wrote it. Penpot's plugin API stores numbers as
+ * strings, font families as a list and every shadow as a list of layers with `inset`, where
+ * tokens.json keeps a number, a comma-separated string and a bare object.
+ */
+const canonicalTokenValue = ({ $type, $value }: DesignToken): unknown => {
+	if ($type === 'fontFamilies')
+		return (Array.isArray($value) ? $value : String($value).split(',')).map((family) =>
+			String(family).trim()
+		)
+	if ($type === 'shadow')
+		return (Array.isArray($value) ? $value : [$value]).map((layer) => ({
+			inset: false,
+			...(layer as object),
+		}))
+	return typeof $value === 'number' ? String($value) : $value
+}
+
+/** Two tokens are equal when type, value (in canonical form) and description are. */
+const sameToken = (a: DesignToken, b: DesignToken) =>
+	a.$type === b.$type &&
+	(a.$description ?? '') === (b.$description ?? '') &&
+	canonicalJson(canonicalTokenValue(a)) === canonicalJson(canonicalTokenValue(b))
+
 const describeToken = ({ $type, $value, $description }: DesignToken) =>
 	`${$type} ${canonicalJson($value)}${$description ? ` (${JSON.stringify($description)})` : ''}`
 
@@ -256,7 +280,7 @@ const checkTokenCatalog = (snapshot: LibrarySnapshot, tokenFile: TokenFile): Mis
 					expected: `no \`${set}\` token \`${name}\`, as in tokens.json ${RESYNC}`,
 					found: describeToken(foundToken),
 				})
-			else if (!foundToken || canonicalJson(expectedToken) !== canonicalJson(foundToken))
+			else if (!foundToken || !sameToken(expectedToken, foundToken))
 				mismatches.push({
 					expected: `\`${set}\` token \`${name}\` = ${describeToken(expectedToken)} ${RESYNC}`,
 					found: foundToken ? describeToken(foundToken) : 'no such token',
