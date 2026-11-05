@@ -368,6 +368,67 @@ describe('checkDrift', () => {
 			expect(checkDrift(input).errors).toEqual([])
 		})
 
+		it("should pass Penpot's form of a value: numbers as strings, font families as a list, shadows as a list with inset", () => {
+			const input = createDriftCheckInput()
+			Object.assign(input.tokens.primitive, {
+				opacity: { 50: { $type: 'opacity', $value: 0.5 } },
+				'font-family': {
+					sans: { $type: 'fontFamilies', $value: 'ui-sans-serif, system-ui, sans-serif' },
+				},
+			})
+			Object.assign(input.snapshot.tokens.primitive, {
+				opacity: { 50: { $type: 'opacity', $value: '0.5' } },
+				'font-family': {
+					sans: {
+						$type: 'fontFamilies',
+						$value: ['ui-sans-serif', 'system-ui', 'sans-serif'],
+					},
+				},
+				shadow: {
+					xs: {
+						$type: 'shadow',
+						$value: [
+							{
+								color: '#0000000d',
+								offsetX: '0px',
+								offsetY: '1px',
+								blur: '2px',
+								spread: '0px',
+								inset: false,
+							},
+						],
+					},
+				},
+			})
+
+			expect(checkDrift(input).errors).toEqual([])
+		})
+
+		it('should fail an inset shadow where tokens.json has none', () => {
+			const input = createDriftCheckInput()
+			Object.assign(input.snapshot.tokens.primitive, {
+				shadow: {
+					xs: {
+						$type: 'shadow',
+						$value: [
+							{
+								color: '#0000000d',
+								offsetX: '0px',
+								offsetY: '1px',
+								blur: '2px',
+								spread: '0px',
+								inset: true,
+							},
+						],
+					},
+				},
+			})
+
+			expect(checkDrift(input).errors).toMatchObject([
+				{ rule: 6, component: 'Token catalog' },
+			])
+		})
+
 		it('should fail a token whose value differs', () => {
 			const input = createDriftCheckInput()
 			input.snapshot.tokens.light.primary = { $type: 'color', $value: '{color.neutral.100}' }
