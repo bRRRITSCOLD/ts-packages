@@ -166,6 +166,12 @@ importers:
         specifier: ^8.23.0
         version: 8.23.1
 
+  packages/design-core-js:
+    dependencies:
+      '@brrritscold/core-js':
+        specifier: workspace:^
+        version: link:../core-js
+
   packages/testing-core-js:
     dependencies:
       lodash:

@@ -1,0 +1,81 @@
+{
+	"name": "@brrritscold/design-core-js",
+	"version": "0.1.0",
+	"private": true,
+	"description": "The component link between the design system library and core-react: resolver, exceptions-record and library-snapshot schemas, drift-check rule engine and coverage report.",
+	"license": "MIT",
+	"author": "Blaine Richardson",
+	"type": "module",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/bRRRITSCOLD/ts-packages.git",
+		"directory": "packages/design-core-js"
+	},
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE"
+	],
+	"exports": {
+		"./code-manifest": {
+			"import": {
+				"types": "./dist/code-manifest.d.ts",
+				"default": "./dist/code-manifest.mjs"
+			},
+			"require": {
+				"types": "./dist/code-manifest.d.cts",
+				"default": "./dist/code-manifest.cjs"
+			},
+			"default": "./dist/code-manifest.mjs"
+		},
+		"./component-link": {
+			"import": {
+				"types": "./dist/component-link.d.ts",
+				"default": "./dist/component-link.mjs"
+			},
+			"require": {
+				"types": "./dist/component-link.d.cts",
+				"default": "./dist/component-link.cjs"
+			},
+			"default": "./dist/component-link.mjs"
+		},
+		"./drift-check": {
+			"import": {
+				"types": "./dist/drift-check.d.ts",
+				"default": "./dist/drift-check.mjs"
+			},
+			"require": {
+				"types": "./dist/drift-check.d.cts",
+				"default": "./dist/drift-check.cjs"
+			},
+			"default": "./dist/drift-check.mjs"
+		},
+		"./library-snapshot": {
+			"import": {
+				"types": "./dist/library-snapshot.d.ts",
+				"default": "./dist/library-snapshot.mjs"
+			},
+			"require": {
+				"types": "./dist/library-snapshot.d.cts",
+				"default": "./dist/library-snapshot.cjs"
+			},
+			"default": "./dist/library-snapshot.mjs"
+		}
+	},
+	"scripts": {
+		"build": "tsup",
+		"clean": "rm -rf dist .turbo",
+		"lint": "biome check --write",
+		"lint:check": "biome check",
+		"test:unit": "vitest run --project unit",
+		"test:unit:watch": "vitest --project unit",
+		"typecheck": "tsc -p ./tsconfig.json"
+	},
+	"dependencies": {
+		"@brrritscold/core-js": "workspace:^"
+	},
+	"keywords": [
+		"brrritscold",
+		"typescript"
+	]
+}
