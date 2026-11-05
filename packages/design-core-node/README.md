@@ -53,11 +53,11 @@ import { … } from '@brrritscold/design-core-node/code-manifest'
 import { … } from '@brrritscold/design-core-node/drift-check'
 ```
 
-| Export              | Kind     | Summary                                                                                                                                                                                 |
-| ------------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `DriftCliIo`        | type     | What the drift-check CLI writes to and reads its environment from; the process by default.                                                                                              |
-| `formatAnnotations` | function | Renders the drift report as GitHub Actions job annotations: an error per mismatch, a warning per unchecked component, and one warning for all coverage gaps.                            |
-| `formatStepSummary` | function | Renders the drift report as a GitHub step summary: a table of errors (component → rule → expected vs found), the unchecked components, and the coverage gaps in a collapsed section.    |
-| `runDriftCli`       | function | Runs the `design-drift` CLI and resolves to its exit code: `manifest` writes the code manifest, `check` runs the drift check (1 on drift); 2 on a usage error or an invalid input file. |
+| Export              | Kind     | Summary                                                                                                                                                                              |
+| ------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `DriftCliIo`        | type     | What the drift-check CLI reads and writes: the process and the file system by default.                                                                                               |
+| `formatAnnotations` | function | Renders the drift report as GitHub Actions job annotations: an error per mismatch, a warning per unchecked component, and one warning for all coverage gaps.                         |
+| `formatStepSummary` | function | Renders the drift report as a GitHub step summary: a table of errors (component → rule → expected vs found), the unchecked components, and the coverage gaps in a collapsed section. |
+| `runDriftCli`       | function | Runs the `design-drift` CLI and returns its exit code: `manifest` writes the code manifest, `check` runs the drift check (1 on drift); 2 on a usage error or an invalid input file.  |
 
 <!-- api:end -->
