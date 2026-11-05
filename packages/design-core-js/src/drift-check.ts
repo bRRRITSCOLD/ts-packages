@@ -37,6 +37,15 @@ export type DriftCheckInput = {
  */
 export type DriftRule = 1 | 2 | 3 | 4 | 5
 
+/** A short name per drift rule, for reports: `1` is `export`. */
+export const DRIFT_RULE_NAMES: Record<DriftRule, string> = {
+	1: 'export',
+	2: 'variant',
+	3: 'part',
+	4: 'icon',
+	5: 'exceptions record',
+}
+
 /** A library → code mismatch: the drift check fails on any. */
 export type DriftError = {
 	rule: DriftRule
@@ -55,7 +64,10 @@ export type UncheckedComponent = { component: string; package: string }
  */
 export type CoverageGap = { export: string; prop?: string; value?: string }
 
-/** The drift check's result: errors fail it; unchecked components and coverage gaps warn. */
+/**
+ * The drift check's result: errors (sorted by component, then rule) fail it; unchecked
+ * components and coverage gaps warn.
+ */
 export type DriftReport = {
 	errors: DriftError[]
 	unchecked: UncheckedComponent[]
@@ -195,6 +207,10 @@ const reportCoverage = (
 		})
 	})
 
+/** Errors by component, then rule, so a report reads component by component. */
+const byComponentThenRule = (a: DriftError, b: DriftError) =>
+	a.component < b.component ? -1 : a.component > b.component ? 1 : a.rule - b.rule
+
 /** Variants of one component share most mismatches; each is reported once. */
 const uniqueBy = <T>(items: T[]): T[] => [
 	...new Map(items.map((item) => [JSON.stringify(item), item])).values(),
@@ -278,7 +294,7 @@ export const checkDrift = ({ snapshot, manifest, config }: DriftCheckInput): Dri
 			})
 	}
 	return {
-		errors: uniqueBy(errors),
+		errors: uniqueBy(errors).sort(byComponentThenRule),
 		unchecked: uniqueBy(unchecked),
 		coverageGaps: reportCoverage(manifest, config.allowlist, linked),
 	}
