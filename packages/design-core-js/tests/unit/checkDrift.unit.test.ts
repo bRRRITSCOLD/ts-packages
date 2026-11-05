@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 // testee
 import { checkDrift } from '../../src/drift-check.js'
+import type { LibraryComponent } from '../../src/library-snapshot.js'
 // fixtures
 import {
 	createCodeManifest,
@@ -73,12 +74,7 @@ describe('checkDrift', () => {
 			createLibraryComponent({ name: 'Button', variantProperties, exceptionsRecord })
 
 		it('should pass literal values, `default` on an optional prop and values the exceptions record maps', () => {
-			const library = {
-				'button-outline': button({ variant: 'outline', size: 'default' }),
-				'button-disabled': button({ state: 'Disabled' }, mapsStateToDisabled),
-			}
-
-			expect(checkDrift(createDriftCheckInput(library)).errors).toEqual([])
+			expect(checkDrift(createDriftCheckInput(createInStepLibrary())).errors).toEqual([])
 		})
 
 		it('should fail a value that is not a literal of the prop', () => {
@@ -147,7 +143,13 @@ describe('checkDrift', () => {
 		})
 
 		it('should fail a value the exceptions record maps the property of but not the value', () => {
-			const library = { button: button({ state: 'Loading' }, mapsStateToDisabled) }
+			const library = {
+				...createInStepLibrary(),
+				'button-loading': button(
+					{ variant: 'default', size: 'default', state: 'Loading' },
+					mapsStateToDisabled
+				),
+			}
 
 			expect(checkDrift(createDriftCheckInput(library)).errors).toEqual([
 				{
@@ -172,6 +174,176 @@ describe('checkDrift', () => {
 			}
 
 			expect(checkDrift(createDriftCheckInput(library)).errors).toHaveLength(1)
+		})
+	})
+
+	describe('rule 3: compound parts are library component copies', () => {
+		const card = (parts: LibraryComponent['parts']) => ({
+			...createInStepLibrary(),
+			card: createLibraryComponent({ name: 'Card', parts }),
+		})
+
+		it('should pass a part that is a copy of a library component', () => {
+			const library = card({ Header: { componentId: 'card-header' } })
+
+			expect(checkDrift(createDriftCheckInput(library)).errors).toEqual([])
+		})
+
+		it('should fail a part that is a plain layer', () => {
+			const library = card({ Footer: { componentId: null } })
+
+			expect(checkDrift(createDriftCheckInput(library)).errors).toEqual([
+				{
+					rule: 3,
+					component: 'Components/Card',
+					expected: 'part `Footer` a copy of a library component',
+					found: 'a plain layer',
+				},
+			])
+		})
+
+		it('should fail a part that is a copy of a component outside the library', () => {
+			const library = card({ Footer: { componentId: 'local-footer' } })
+
+			expect(checkDrift(createDriftCheckInput(library)).errors).toEqual([
+				{
+					rule: 3,
+					component: 'Components/Card',
+					expected: 'part `Footer` a copy of a library component',
+					found: 'a copy of `local-footer`, not in the library',
+				},
+			])
+		})
+	})
+
+	describe('rule 5: exceptions record valid, keys point at real props, values and roles', () => {
+		const withButtonRecord = (exceptionsRecord: unknown) => {
+			const library = createInStepLibrary()
+			for (const id of ['button-default', 'button-outline-sm-disabled'])
+				library[id] = { ...library[id], exceptionsRecord }
+			return library
+		}
+
+		it('should pass value maps, slots and a package that point at real things', () => {
+			const library = {
+				...createInStepLibrary(),
+				'date-picker': createLibraryComponent({
+					name: 'DatePicker',
+					exceptionsRecord: { v: 1, package: '@brrritscold/other-react' },
+				}),
+			}
+
+			expect(checkDrift(createDriftCheckInput(library)).errors).toEqual([])
+		})
+
+		it('should fail a record that does not match the schema', () => {
+			const library = {
+				...createInStepLibrary(),
+				'card-content': createLibraryComponent({
+					path: 'Components/Card',
+					name: 'Content',
+					parts: { Body: { componentId: 'slot' } },
+					exceptionsRecord: { v: 1, slot: ['Body'] },
+				}),
+			}
+
+			expect(checkDrift(createDriftCheckInput(library)).errors).toEqual([
+				{
+					rule: 5,
+					component: 'Components/Card/Content',
+					expected: 'an exceptions record matching its schema',
+					found: 'Unrecognized key: "slot"',
+				},
+			])
+		})
+
+		it('should fail a value map keyed by a prop the export does not have', () => {
+			const library = withButtonRecord({
+				v: 1,
+				props: { disabld: { from: 'state', map: { Default: false, Disabled: true } } },
+			})
+
+			expect(checkDrift(createDriftCheckInput(library)).errors).toEqual([
+				{
+					rule: 5,
+					component: 'Components/Button',
+					expected: '`props` keys → props of `Button`',
+					found: '`disabld`: no such prop',
+				},
+			])
+		})
+
+		it('should fail a value map from a variant property the component does not have', () => {
+			const library = withButtonRecord({
+				v: 1,
+				props: { disabled: { from: 'status', map: { Default: false, Disabled: true } } },
+			})
+
+			expect(checkDrift(createDriftCheckInput(library)).errors).toContainEqual({
+				rule: 5,
+				component: 'Components/Button',
+				expected: '`props.disabled.from` → a variant property of `Components/Button`',
+				found: '`status`: no such variant property',
+			})
+		})
+
+		it('should fail a value map keyed by a value the variant property never takes', () => {
+			const library = withButtonRecord({
+				v: 1,
+				props: {
+					disabled: {
+						from: 'state',
+						map: { Default: false, Disabled: true, Busy: true },
+					},
+				},
+			})
+
+			expect(checkDrift(createDriftCheckInput(library)).errors).toEqual([
+				{
+					rule: 5,
+					component: 'Components/Button',
+					expected: '`props.disabled.map` keys → values of `state`',
+					found: '`Busy`: no such value',
+				},
+			])
+		})
+
+		it('should fail a slot naming a role the component has no part for', () => {
+			const library = {
+				...createInStepLibrary(),
+				'card-content': createLibraryComponent({
+					path: 'Components/Card',
+					name: 'Content',
+					parts: { Body: { componentId: 'slot' } },
+					exceptionsRecord: { v: 1, slots: ['Footer'] },
+				}),
+			}
+
+			expect(checkDrift(createDriftCheckInput(library)).errors).toEqual([
+				{
+					rule: 5,
+					component: 'Components/Card/Content',
+					expected: '`slots` → roles of the parts',
+					found: '`Footer`: no such role',
+				},
+			])
+		})
+
+		it('should report a component whose record names another package as unchecked, not as drift', () => {
+			const library = {
+				'date-picker': createLibraryComponent({
+					name: 'DatePicker',
+					variantProperties: { mode: 'range' },
+					exceptionsRecord: { v: 1, package: '@brrritscold/other-react' },
+				}),
+			}
+
+			expect(checkDrift(createDriftCheckInput(library))).toMatchObject({
+				errors: [],
+				unchecked: [
+					{ component: 'Components/DatePicker', package: '@brrritscold/other-react' },
+				],
+			})
 		})
 	})
 })

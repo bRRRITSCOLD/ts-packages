@@ -3,6 +3,7 @@ import { z } from '@brrritscold/core-js/zod'
 import type { CodeManifest } from './code-manifest.js'
 import {
 	COMPONENT_PACKAGE,
+	type ExceptionsRecord,
 	exceptionsRecordSchema,
 	type LinkedProp,
 	resolveComponentLink,
@@ -62,15 +63,18 @@ export type DriftReport = {
 }
 
 type Mismatch = Pick<DriftError, 'expected' | 'found'>
+type CodeProps = CodeManifest['exports'][string]['props']
 
 /** Rule 2 on one variant: each resolved prop exists in the code and takes the resolved value. */
 const checkProps = (
 	exportName: string,
 	linkedProps: Record<string, LinkedProp>,
-	codeProps: CodeManifest['exports'][string]['props']
+	codeProps: CodeProps
 ): Mismatch[] =>
-	Object.entries(linkedProps).flatMap(([prop, { value }]): Mismatch[] => {
+	Object.entries(linkedProps).flatMap(([prop, { value, source }]): Mismatch[] => {
 		const codeProp = codeProps[prop]
+		// A prop the exceptions record names but the code lacks is rule 5's to report.
+		if (!codeProp && source === 'exceptions-record') return []
 		if (!codeProp)
 			return [
 				{
@@ -101,12 +105,85 @@ const checkProps = (
 				]
 	})
 
+/** Rule 3: every part is a copy of a component in the library snapshot. */
+const checkParts = (component: LibraryComponent, snapshot: LibrarySnapshot): Mismatch[] =>
+	Object.entries(component.parts).flatMap(([role, { componentId }]): Mismatch[] => {
+		const expected = `part \`${role}\` a copy of a library component`
+		if (componentId === null) return [{ expected, found: 'a plain layer' }]
+		if (!(componentId in snapshot.components))
+			return [{ expected, found: `a copy of \`${componentId}\`, not in the library` }]
+		return []
+	})
+
+/**
+ * Rule 5 beyond the schema: every key of the record points at something real. `codeProps` is
+ * `undefined` when the export can't be checked (another package, or rule 1 already failed).
+ */
+const checkRecordKeys = (
+	component: LibraryComponent,
+	record: ExceptionsRecord,
+	variantValues: Record<string, Set<string>>,
+	exportName: string,
+	codeProps: CodeProps | undefined
+): Mismatch[] => {
+	const label = componentLabel(component)
+	const mismatches: Mismatch[] = []
+	for (const [prop, { from, map }] of Object.entries(record.props ?? {})) {
+		if (codeProps && !(prop in codeProps))
+			mismatches.push({
+				expected: `\`props\` keys → props of \`${exportName}\``,
+				found: `\`${prop}\`: no such prop`,
+			})
+		const values = variantValues[from]
+		if (!values) {
+			mismatches.push({
+				expected: `\`props.${prop}.from\` → a variant property of \`${label}\``,
+				found: `\`${from}\`: no such variant property`,
+			})
+			continue
+		}
+		for (const value of Object.keys(map))
+			if (!values.has(value))
+				mismatches.push({
+					expected: `\`props.${prop}.map\` keys → values of \`${from}\``,
+					found: `\`${value}\`: no such value`,
+				})
+	}
+	for (const role of record.slots ?? [])
+		if (!(role in component.parts))
+			mismatches.push({
+				expected: '`slots` → roles of the parts',
+				found: `\`${role}\`: no such role`,
+			})
+	return mismatches
+}
+
+/** The values each variant property takes across every variant of each component, by label. */
+const collectVariantValues = (
+	snapshot: LibrarySnapshot
+): Map<string, Record<string, Set<string>>> => {
+	const byComponent = new Map<string, Record<string, Set<string>>>()
+	for (const component of Object.values(snapshot.components)) {
+		const label = componentLabel(component)
+		const values = byComponent.get(label) ?? {}
+		for (const [property, value] of Object.entries(component.variantProperties))
+			(values[property] ??= new Set()).add(value)
+		byComponent.set(label, values)
+	}
+	return byComponent
+}
+
 /** Variants of one component share most mismatches; each is reported once. */
-const uniqueErrors = (errors: DriftError[]): DriftError[] => [
-	...new Map(errors.map((error) => [JSON.stringify(error), error])).values(),
+const uniqueBy = <T>(items: T[]): T[] => [
+	...new Map(items.map((item) => [JSON.stringify(item), item])).values(),
 ]
 
 const componentLabel = ({ path, name }: LibraryComponent) => (path ? `${path}/${name}` : name)
+
+const schemaIssues = (error: z.ZodError) =>
+	error.issues
+		.map(({ path, message }) => (path.length ? `${path.join('.')}: ${message}` : message))
+		.join('; ')
 
 /**
  * Checks the library snapshot against the code manifest: library → code mismatches are errors
@@ -114,41 +191,68 @@ const componentLabel = ({ path, name }: LibraryComponent) => (path ? `${path}/${
  */
 export const checkDrift = ({ snapshot, manifest }: DriftCheckInput): DriftReport => {
 	const errors: DriftError[] = []
+	const unchecked: UncheckedComponent[] = []
+	const variantValues = collectVariantValues(snapshot)
+
 	for (const component of Object.values(snapshot.components)) {
-		const record = exceptionsRecordSchema.safeParse(component.exceptionsRecord)
-		const link = resolveComponentLink(component, record.data)
 		const label = componentLabel(component)
+		const report = (rule: DriftRule) => (mismatch: Mismatch) =>
+			errors.push({ rule, component: label, ...mismatch })
+
+		const parsed =
+			component.exceptionsRecord === undefined
+				? undefined
+				: exceptionsRecordSchema.safeParse(component.exceptionsRecord)
+		if (parsed && !parsed.success)
+			report(5)({
+				expected: 'an exceptions record matching its schema',
+				found: schemaIssues(parsed.error),
+			})
+		const record = parsed?.data
+		const link = resolveComponentLink(component, record)
+		checkParts(component, snapshot).forEach(report(3))
+
 		if (link.kind === 'icon' && !manifest.icons.includes(link.export))
-			errors.push({
-				rule: 4,
-				component: label,
+			report(4)({
 				expected: `export \`${link.export}\` in ${link.package}`,
 				found: 'no such icon',
 			})
 		if (link.kind !== 'component') continue
+
+		if (link.package !== COMPONENT_PACKAGE) {
+			unchecked.push({ component: label, package: link.package })
+			if (record)
+				checkRecordKeys(
+					component,
+					record,
+					variantValues.get(label) ?? {},
+					link.export,
+					undefined
+				).forEach(report(5))
+			continue
+		}
 		const codeExport = manifest.exports[link.export]
-		if (!codeExport) {
-			errors.push({
-				rule: 1,
-				component: label,
+		if (!codeExport)
+			report(1)({
 				expected: `export \`${link.export}\` in ${COMPONENT_PACKAGE}`,
 				found: 'no such export',
 			})
-			continue
-		}
-		errors.push(
-			...checkProps(link.export, link.props, codeExport.props).map((mismatch) => ({
-				rule: 2 as const,
-				component: label,
-				...mismatch,
-			})),
-			...link.unresolved.map(({ variantProperty, value }) => ({
-				rule: 2 as const,
-				component: label,
+		if (record)
+			checkRecordKeys(
+				component,
+				record,
+				variantValues.get(label) ?? {},
+				link.export,
+				codeExport?.props
+			).forEach(report(5))
+		// An invalid record would make every mapped property look like a missing prop.
+		if (!codeExport || (parsed && !parsed.success)) continue
+		checkProps(link.export, link.props, codeExport.props).forEach(report(2))
+		for (const { variantProperty, value } of link.unresolved)
+			report(2)({
 				expected: `an exceptions record value for \`${variantProperty}\` = \`${value}\``,
 				found: 'no such value in the map',
-			}))
-		)
+			})
 	}
-	return { errors: uniqueErrors(errors), unchecked: [], coverageGaps: [] }
+	return { errors: uniqueBy(errors), unchecked: uniqueBy(unchecked), coverageGaps: [] }
 }
