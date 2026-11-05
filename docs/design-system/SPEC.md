@@ -2,33 +2,33 @@
 
 A self-hosted replacement for Figma + Code Connect: **Penpot** on this machine's k3s, a design system library in Penpot that mirrors **`@brrritscold/core-react`**, a component link Claude reads over MCP, a drift check that keeps the two honest, and the personal-ai skills that tell agents how to work in all of it.
 
-This spec is the destination of the map [Wayfinder: self-hosted design system linked to core-react][map]. It says **what to build and in what order**. The reasons behind each choice live in the decision tickets, linked from every phase as *Decided in*. Read a ticket when you need to know why or need the full rule text; you shouldn't need it to know what to build. Terms are defined in [`GLOSSARY.md`](GLOSSARY.md).
+This spec is the destination of the map [Wayfinder: self-hosted design system linked to core-react][map]. It says **what to build and in what order**. The reasons behind each choice live in the decision tickets, linked from every phase as _Decided in_. Read a ticket when you need to know why or need the full rule text; you shouldn't need it to know what to build. Terms are defined in [`GLOSSARY.md`](GLOSSARY.md).
 
 Where a later ticket amended an earlier one, this spec states the amended result and links both.
 
 ## Repos
 
-| Repo | Visibility | Holds |
-|---|---|---|
-| `bRRRITSCOLD/ts-packages` | public | `core-react`, the four private `design-*` packages, the side-image sources and their GHCR workflow, this spec, the glossary |
-| `personal-ai` | public plugin | the testing skills, the three new skills, router/README/naming/layout edits |
-| `personal-infra` | **private, new** | `penpot/` (kustomize manifests, backup, runbooks), `tailscale/policy.hujson` |
+| Repo                      | Visibility       | Holds                                                                                                                       |
+| ------------------------- | ---------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `bRRRITSCOLD/ts-packages` | public           | `core-react`, the four private `design-*` packages, the side-image sources and their GHCR workflow, this spec, the glossary |
+| `personal-ai`             | public plugin    | the testing skills, the three new skills, router/README/naming/layout edits                                                 |
+| `personal-infra`          | **private, new** | `penpot/` (kustomize manifests, backup, runbooks), `tailscale/policy.hujson`                                                |
 
 No employer references in any of them.
 
 ## Pins
 
-| Thing | Pin |
-|---|---|
-| Penpot | **2.18.6**, chart `penpot-1.11.7`, image tags from the chart (no per-image overrides) |
-| Postgres / Valkey | 16 (exact patch tag pinned at build) / 8.1 |
-| k3s (as found) | v1.34.6, one node, 16 cores, 29 Gi RAM |
-| Vitest | one root `vitest@^4` in ts-packages, never a second version |
-| React / Tailwind | `react`, `react-dom` ^19 / `tailwindcss` ^4 |
-| Base UI | `@base-ui/react`; the traps below were verified against 1.9.0 |
-| Storybook | current major at build time |
-| Style Dictionary | v4+ (native DTCG) |
-| `core-react` first publish | `1.0.0` |
+| Thing                      | Pin                                                                                   |
+| -------------------------- | ------------------------------------------------------------------------------------- |
+| Penpot                     | **2.18.6**, chart `penpot-1.11.7`, image tags from the chart (no per-image overrides) |
+| Postgres / Valkey          | 16 (exact patch tag pinned at build) / 8.1                                            |
+| k3s (as found)             | v1.34.6, one node, 16 cores, 29 Gi RAM                                                |
+| Vitest                     | one root `vitest@^4` in ts-packages, never a second version                           |
+| React / Tailwind           | `react`, `react-dom` ^19 / `tailwindcss` ^4                                           |
+| Base UI                    | `@base-ui/react`; the traps below were verified against 1.9.0                         |
+| Storybook                  | current major at build time                                                           |
+| Style Dictionary           | v4+ (native DTCG)                                                                     |
+| `core-react` first publish | `1.0.0`                                                                               |
 
 ## Build order
 
@@ -68,7 +68,7 @@ One **test-only PR** migrating `core-js`, `core-node`, `core-express`, `testing-
 
 **Acceptance:** the CI `check` and `integration` jobs pass **unchanged**; no mocha, chai, sinon or nodemon in the lockfile; no chai-style `expect(...).to`.
 
-*Decided in:* [How do ts-packages and the testing skills move from mocha + chai to Vitest?][t15]
+_Decided in:_ [How do ts-packages and the testing skills move from mocha + chai to Vitest?][t15]
 
 ## A2 — personal-ai: backend testing skills
 
@@ -79,7 +79,7 @@ One personal-ai PR, merged right after A1, so the skills never describe a repo s
 - **`ts-backend-testing` also gains the `design-*` Node conventions:** `design-core-js` and `design-core-node` are unit-tested (the latter on fixture `.d.ts` and snapshot files); `design-penpot-sdk-node` has integration tests against **nock-replayed `get-file` recordings**, committed and pinned to a Penpot version, plus an opt-in `e2e` tier against the k3s Penpot that never runs in hosted CI.
 - **`ts-package-layout`:** root tooling list as in A1; skeleton `nodemon.{unit,integration,e2e}.test.json` → `vitest.config.ts`; script-contract rows; `vitest.shared.ts` listed with the root configs.
 
-*Decided in:* [How do ts-packages and the testing skills move from mocha + chai to Vitest?][t15], [What changes does ts-frontend-testing need for core-react and Penpot?][t16]
+_Decided in:_ [How do ts-packages and the testing skills move from mocha + chai to Vitest?][t15], [What changes does ts-frontend-testing need for core-react and Penpot?][t16]
 
 ## A3 — personal-ai: rewrite `ts-frontend-testing`
 
@@ -98,11 +98,11 @@ Its own personal-ai PR, after A2, before `core-react`. **Rewritten from scratch*
 
 **Component library half (`core-react`):**
 
-| Tier | Files | Runner | Gates PR |
-|---|---|---|---|
-| `stories` | `*.stories.tsx` (the story is the test) | Vitest browser mode via `@storybook/addon-vitest`; `@storybook/addon-a11y` fails on violations (per-story opt-out needs a written reason) | yes |
-| `unit` | `tests/unit/*.unit.test.ts(x)` | Vitest, jsdom; utils and hooks via `renderHook` | yes |
-| `integration` | `tests/integration/*.integration.spec.ts` | Playwright against a static `storybook build` | yes |
+| Tier          | Files                                     | Runner                                                                                                                                    | Gates PR |
+| ------------- | ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| `stories`     | `*.stories.tsx` (the story is the test)   | Vitest browser mode via `@storybook/addon-vitest`; `@storybook/addon-a11y` fails on violations (per-story opt-out needs a written reason) | yes      |
+| `unit`        | `tests/unit/*.unit.test.ts(x)`            | Vitest, jsdom; utils and hooks via `renderHook`                                                                                           | yes      |
+| `integration` | `tests/integration/*.integration.spec.ts` | Playwright against a static `storybook build`                                                                                             | yes      |
 
 - Anything with visible output is a story with a `play` function. `core-react` has no capture runner; Storybook is its visual surface.
 - **Component objects** at `@brrritscold/core-react/testing`: plain factories taking a root `Locator` (`dialog(root)`, `combobox(trigger)`, `toast(page)`, …), no Playwright fixtures; apps register them through their own `test.extend`. Day one: Dialog (+ Alert Dialog), Combobox (incl. `multiple`), Select, Popover, Toast, the data table. Others are added when a trap is paid for.
@@ -117,13 +117,14 @@ Its own personal-ai PR, after A2, before `core-react`. **Rewritten from scratch*
   7. `data-testid` reaches parts, not Root.
 - **`design-penpot-ui`** (the Penpot plugin): main code unit-tested against a fake `penpot` global built from the library snapshot; iframe UI tested in jsdom; live check is a manual smoke test installing the plugin by URL.
 
-*Decided in:* [What changes does ts-frontend-testing need for core-react and Penpot?][t16] (amends [What shape does @brrritscold/core-react take?][t10-testing] with `./testing`)
+_Decided in:_ [What changes does ts-frontend-testing need for core-react and Penpot?][t16] (amends [What shape does @brrritscold/core-react take?][t10-testing] with `./testing`)
 
 ## A4 — personal-ai: three new skills
 
 One personal-ai PR, after A3, before `core-react` is built. It also carries the router, README and sibling-skill edits. The skills describe `core-react` and the `design-*` tooling as specified here, ahead of their existence; that is intended.
 
 ### `ts-frontend-app`
+
 Description:
 > Use when building or changing a Next.js frontend app (`<platform>-ui`): laying out `app/` routes, choosing server vs client components, calling a platform API through its `-sdk-js` client, wiring env config, consuming `@brrritscold/core-react` (styles, icons, forms, data tables, theming), or turning a Penpot screen into app code. For tests load ts-frontend-testing; to add a component to core-react see ts-component-library.
 
@@ -139,6 +140,7 @@ Sections:
 9. **Not covered** — auth and deployment (no decision exists; say so).
 
 ### `ts-component-library`
+
 Description:
 > Use when building or changing `@brrritscold/core-react`: vendoring a shadcn (Base UI) component, keying cva variants to Penpot variant properties, exporting compound parts, adding an icon, story or component object, editing the token file and its Style Dictionary build, or releasing it. Covers where core-react departs from ts-package-layout. For using it in an app see ts-frontend-app; for the Penpot side see design-system.
 
@@ -154,6 +156,7 @@ Sections:
 9. **Testing** — pointer to the Component library half of `ts-frontend-testing`.
 
 ### `design-system` (SKILL.md + `penpot.md`)
+
 Description:
 > Use when reading or changing the shared design library in Penpot: implementing a screen from a design, reading component links, filling slot placeholders, syncing tokens, promoting a page-design part into the library, refreshing the library snapshot, fixing a red drift check, or comparing captures with the design. Covers the component-link naming convention and every exception key, the promotion workflow and Penpot's limits. For the code side see ts-component-library.
 
@@ -171,12 +174,13 @@ No `ts-` prefix (it isn't TypeScript) but routed through `/ts design`. An **oper
 10. **`penpot.md`** (reference) — MCP works only through an open tab; one key drives one tab, so the agent switches files one at a time; the pinned Penpot version; the plugin API writes only to the open file (no `openFile`); no move-to-library (pasting a main across files mints a new id); `swapComponent` works on copies only; library updates are accepted by hand in the UI, token changes apply immediately; plugin data refreshes on file load, not live; the link inspector is installed by URL; how access tokens and the automation profile are handled.
 
 ### Edits to existing personal-ai files (same PR)
+
 - **`/ts` router** (`commands/ts.md`): add `app` → `ts-frontend-app`, `component-library` → `ts-component-library`, `design` → `design-system`; drop "frontend is out of scope".
 - **README:** the two `ts-` skills in the TypeScript table; a new **Design** section for `design-system`; drop "Other frontend work is out of scope".
 - **`ts-package-naming`:** drop "frontend is out of scope" from the description; add the optional **tool** segment `@brrritscold/[<platform>-][<tool>-][testing-]<kind>-<runtime>`; add `react` as a runtime and a `core-react` row (shared, browser + SSR, React peer; follows the `core-express` precedent).
 - **`ts-package-layout`:** a one-line pointer to `ts-component-library` for `core-react`'s deviations, and the note that `core-react` is the **only** package allowed a root `.` entry (allowlisted in `scripts/check-entries.mjs`).
 
-*Decided in:* [What do the new personal-ai frontend-app and design skills cover?][t12] (amended by [credentials][t30-amend-skill]); rule text from [How do library components get bound to tokens?][t20] and [How does a design library change relate to a core-react release, and how do apps pin both?][t28]; promotion from [How does promotion work end to end?][t11]; naming segment from [Should the component link ship as a reusable open-source Penpot Code Connect?][t14]; root-entry exception from [the core-react follow-up][t10-root].
+_Decided in:_ [What do the new personal-ai frontend-app and design skills cover?][t12] (amended by [credentials][t30-amend-skill]); rule text from [How do library components get bound to tokens?][t20] and [How does a design library change relate to a core-react release, and how do apps pin both?][t28]; promotion from [How does promotion work end to end?][t11]; naming segment from [Should the component link ship as a reusable open-source Penpot Code Connect?][t14]; root-entry exception from [the core-react follow-up][t10-root].
 
 ---
 
@@ -221,13 +225,13 @@ penpot/
 - **Resources** (requests + memory limits, no CPU limits; recheck after the first real promotion):
 
   | workload | req mem | limit mem | req cpu |
-  |---|---|---|---|
-  | backend | 1.5Gi | 3Gi | 250m |
-  | frontend | 256Mi | 768Mi | 50m |
-  | exporter | 256Mi | 1.5Gi | 100m |
-  | mcp | 128Mi | 512Mi | 50m |
-  | postgres | 256Mi | 1Gi | 100m |
-  | valkey | 32Mi | 128Mi | 25m |
+  | -------- | ------- | --------- | ------- |
+  | backend  | 1.5Gi   | 3Gi       | 250m    |
+  | frontend | 256Mi   | 768Mi     | 50m     |
+  | exporter | 256Mi   | 1.5Gi     | 100m    |
+  | mcp      | 128Mi   | 512Mi     | 50m     |
+  | postgres | 256Mi   | 1Gi       | 100m    |
+  | valkey   | 32Mi    | 128Mi     | 25m     |
 
   If the chart still deploys the Admin Console workload with the flag off, disable it in `values.yaml`.
 - **Ingress:** standard `Ingress`, `className: traefik`, host `penpot.localhost` → the frontend Service (`penpot`), which proxies the UI, `/api`, `/mcp/stream` (streamable HTTP) and `/mcp/ws` (plugin websocket). Plain HTTP; `*.localhost` is a secure context in browsers.
@@ -244,7 +248,7 @@ penpot/
 6. Deleting the `penpot` namespace leaves the PVs `Released`, not deleted (then re-apply).
 7. `penpot-proto` is removed.
 
-*Decided in:* [How is Penpot deployed on k3s?][t29] with amendments from [credentials][t29-amend-creds], [backups][t29-amend-backup] and [outside access][t29-amend-outside]
+_Decided in:_ [How is Penpot deployed on k3s?][t29] with amendments from [credentials][t29-amend-creds], [backups][t29-amend-backup] and [outside access][t29-amend-outside]
 
 ## B3 — Profiles and credentials
 
@@ -255,16 +259,16 @@ penpot/
 
 **Credentials and their interface.**
 
-| Credential | Minted by / on | Expiry | Consumer | Interface |
-|---|---|---|---|---|
-| MCP key | you, Integrations → MCP Server | never | Claude Code | env `PENPOT_MCP_KEY` |
-| Access token `snapshot-refresh` | automation profile | never | snapshot refresh CronJob | Secret `snapshot-refresh` key `penpotToken` |
-| Fine-grained PAT `snapshot-refresh (ts-packages)` | you, GitHub | **1 year** | snapshot refresh CronJob | Secret `snapshot-refresh` key `githubToken` |
-| Automation password | `manage.py create-profile` | never | design comparison | env `PENPOT_AUTOMATION_PASSWORD` (+ `PENPOT_AUTOMATION_EMAIL`) |
-| `apiSecretKey` | generated | never | backend | Secret `penpot-secrets` key `apiSecretKey` |
-| Postgres password | generated | never | Postgres, backend | Secret `postgres-credentials` keys `user`, `password` |
-| Backup keys | you (restic, B2, healthchecks.io) | never | backup CronJobs | Secret `penpot-backup` keys `RESTIC_PASSWORD`, `B2_ACCOUNT_ID`, `B2_ACCOUNT_KEY`, `HC_PING_URL` (B4) |
-| Tailscale operator OAuth | you, Tailscale | — | Tailscale operator | Secret `tailscale/operator-oauth` keys `client_id`, `client_secret` (only with outside access) |
+| Credential                                        | Minted by / on                    | Expiry     | Consumer                 | Interface                                                                                            |
+| ------------------------------------------------- | --------------------------------- | ---------- | ------------------------ | ---------------------------------------------------------------------------------------------------- |
+| MCP key                                           | you, Integrations → MCP Server    | never      | Claude Code              | env `PENPOT_MCP_KEY`                                                                                 |
+| Access token `snapshot-refresh`                   | automation profile                | never      | snapshot refresh CronJob | Secret `snapshot-refresh` key `penpotToken`                                                          |
+| Fine-grained PAT `snapshot-refresh (ts-packages)` | you, GitHub                       | **1 year** | snapshot refresh CronJob | Secret `snapshot-refresh` key `githubToken`                                                          |
+| Automation password                               | `manage.py create-profile`        | never      | design comparison        | env `PENPOT_AUTOMATION_PASSWORD` (+ `PENPOT_AUTOMATION_EMAIL`)                                       |
+| `apiSecretKey`                                    | generated                         | never      | backend                  | Secret `penpot-secrets` key `apiSecretKey`                                                           |
+| Postgres password                                 | generated                         | never      | Postgres, backend        | Secret `postgres-credentials` keys `user`, `password`                                                |
+| Backup keys                                       | you (restic, B2, healthchecks.io) | never      | backup CronJobs          | Secret `penpot-backup` keys `RESTIC_PASSWORD`, `B2_ACCOUNT_ID`, `B2_ACCOUNT_KEY`, `HC_PING_URL` (B4) |
+| Tailscale operator OAuth                          | you, Tailscale                    | —          | Tailscale operator       | Secret `tailscale/operator-oauth` keys `client_id`, `client_secret` (only with outside access)       |
 
 - One Penpot access token **per consumer**, named after it.
 - **PAT scope:** repository `ts-packages` only; Contents: write, Pull requests: write; **no Workflows**.
@@ -273,12 +277,13 @@ penpot/
 - Pods read Secrets as env vars and never talk to a secret store, so a future store (OpenBao + ESO, a separate `personal-infra` effort) can fill the same Secrets without touching manifests or images.
 - **Local:** tools read `PENPOT_URL`, `PENPOT_MCP_KEY`, `PENPOT_AUTOMATION_EMAIL`, `PENPOT_AUTOMATION_PASSWORD` from the process env and fail naming the missing variable. Interim source: `~/.config/penpot/env`, `chmod 600`, sourced by `~/.zshrc`. Each repo with Penpot tooling commits a `.env.example` (names only). **No repo `.env`.**
 - **Claude Code:** user-scope `~/.claude.json`, never a project `.mcp.json`:
+
   ```json
   "penpot": { "type": "http", "url": "http://penpot.localhost/mcp/stream?userToken=${PENPOT_MCP_KEY}" }
   ```
 - Password manager also holds: `apiSecretKey`, the restic password, the B2 key.
 
-*Decided in:* [How do agents and CI get Penpot credentials?][t30] with amendments from [backups][t30-amend-backup] and [outside access][t30-amend-outside]
+_Decided in:_ [How do agents and CI get Penpot credentials?][t30] with amendments from [backups][t30-amend-backup] and [outside access][t30-amend-outside]
 
 ---
 
@@ -286,22 +291,25 @@ penpot/
 
 Four **private** (`"private": true`) workspace packages, ignored by Changesets. Penpot lives only at the edges; the resolver and rule engine take **normalized shapes** (component path, variant properties, parts by role, exceptions record), never raw Penpot objects. The link inspector, link reader and drift check share **one pure resolver**, so they can't disagree.
 
-| Package | Holds | Runtime |
-|---|---|---|
-| `design-core-js` | resolver; exceptions-record schema; library-snapshot schema; rule engine; coverage report | browser + node |
-| `design-core-node` | code manifest generator (TS compiler API over `.d.ts`); drift-check CLI over the two JSON files | node |
-| `design-penpot-sdk-node` | Penpot backend RPC client; snapshot normalizer; snapshot refresh (writes the snapshot, opens/updates the PR) | node |
-| `design-penpot-ui` | link inspector plugin (manifest, plugin code, iframe UI); the Penpot-shape → normalized-shape adapter; the `read-links.js` build | browser |
+| Package                  | Holds                                                                                                                            | Runtime        |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| `design-core-js`         | resolver; exceptions-record schema; library-snapshot schema; rule engine; coverage report                                        | browser + node |
+| `design-core-node`       | code manifest generator (TS compiler API over `.d.ts`); drift-check CLI over the two JSON files                                  | node           |
+| `design-penpot-sdk-node` | Penpot backend RPC client; snapshot normalizer; snapshot refresh (writes the snapshot, opens/updates the PR)                     | node           |
+| `design-penpot-ui`       | link inspector plugin (manifest, plugin code, iframe UI); the Penpot-shape → normalized-shape adapter; the `read-links.js` build | browser        |
 
 ### The component link (what the resolver implements)
+
 - **Naming convention:** component name = export; variant property / value = prop / value (`default` = prop omitted; booleans `true`/`false`); **compound parts are copies of library components** (e.g. `Card/Header` → `CardHeader`), never plain layers; text layer = children; components under `icon/` named `<Name>` → `<Name>Icon` from `@brrritscold/core-react/icons`.
 - **Exceptions record:** `sharedPluginData` namespace `brrritscold.core-react`, key `link`, **only** where naming can't say it: value maps that don't match (e.g. `state` → `disabled`), `slots`, a non-default package. Referenced by role, never by layer name.
 - **Slot placeholders:** a compound component holds an `_internal/Slot` placeholder copy (loud magenta, labelled by part) that a designer swaps for a local component. Penpot has no slots and copies can't take children.
 
 ### Code manifest
+
 Generated at `core-react` build time from its `.d.ts`: every export, each prop's literal union or boolean, icon names. A **CI artifact only**, never published.
 
 ### Library snapshot
+
 `packages/core-react/design/library.snapshot.json`, written by the normalizer from `get-file`, schema-validated, sorted:
 - header: Penpot version pin, library file id, schema version (no library version);
 - components keyed by **Penpot component id**, each with path, name, variant properties, parts by role, exceptions record;
@@ -312,6 +320,7 @@ Generated at `core-react` build time from its `.d.ts`: every export, each prop's
 Read path: RPC **`get-file` without a `features` param** (the backend resolves pointer/object maps itself). Gotcha: JSON `get-file` camel-cases keyword keys, so `shared/brrritscold.core-react` arrives as `brrritscoldCoreReact` (`export-binfile` keeps the exact key). Formats are unversioned: pin Penpot, validate with the schema, fail loudly on change.
 
 ### Drift rules (library → code is an error; code → library is a coverage gap)
+
 1. Component name (path stripped) → named export in `.` (or the package the exceptions record names; such components are reported **unchecked**).
 2. Variant property → prop; value → literal in that prop's union; `default` → omitted; an exceptions value map overrides.
 3. Compound parts must be library component copies, so rule 1 covers them.
@@ -322,23 +331,26 @@ Read path: RPC **`get-file` without a `features` param** (the backend resolves p
 8. **unknown token** — an applied token name isn't in `tokens.json`.
 9. **primitive colour** — fill or stroke colour applied from a `primitive` token.
 
-Checked attributes (rules 7–9), on every layer of every main component including nested part copies, each only when set to a non-default value: fill, stroke colour, radius r1–r4, padding, row/column gap, font family/size/weight, letter spacing, shadow, opacity ≠ 1. Exempt: x/y, width/height, stroke width, rotation, margin. Whether a layer has the *right* semantic token is left to review.
+Checked attributes (rules 7–9), on every layer of every main component including nested part copies, each only when set to a non-default value: fill, stroke colour, radius r1–r4, padding, row/column gap, font family/size/weight, letter spacing, shadow, opacity ≠ 1. Exempt: x/y, width/height, stroke width, rotation, margin. Whether a layer has the _right_ semantic token is left to review.
 
 Code → library: exports with no library counterpart are a coverage gap; those that should never be in the library (`useDataTable`, `Toaster`, `cn`, …) are on the allowlist `design/drift.config.json`; anything else is a warning.
 
 **Output:** a GitHub step summary table (component → rule → expected vs found) plus job annotations; coverage gaps in a collapsed section; no auto-filed issues. `design-core-js`'s README carries a tripwire: a rule change updates the `design-system` skill.
 
 ### Snapshot refresh
+
 - Reads Penpot as the automation profile (`penpotToken`), writes the snapshot, and if it changed opens a PR with the GitHub PAT (a `GITHUB_TOKEN` PR wouldn't trigger CI). Unchanged → no PR. A refresh PR already open → update it.
 - In the cluster it calls the backend through the frontend Service, not the ingress.
 - Same script runs on demand: by an agent after an MCP edit, or locally during lockstep.
 - A refresh PR that fails the drift check never merges and is labelled `drift`.
 
 ### Link inspector and link reader
+
 - **Link inspector:** a Penpot plugin that **shows** and **never edits** the link. On a selected library component or an instance on a page design: the `import` line and a JSX snippet (props resolved from variant values, parts as nested part exports), which values came from the exceptions record vs the convention, and an "unresolved" marker wherever the convention can't name something. It doesn't check against `core-react`.
 - **Link reader `read-links.js`:** the MCP script (prototyped as `read-screen.js`) that returns every link on a page design in one `execute_code` call, in visual order. Built by `design-penpot-ui`, served at `<inspector-url>/read-links.js`; the skill fetches it at use time.
 
 ### Side images
+
 A ts-packages GitHub Actions workflow builds public GHCR images on pushes to `main` touching their sources (plus `workflow_dispatch`), tagged with the **short git SHA**, never `latest`:
 - `ghcr.io/brrritscold/design-penpot-static` — nginx-unprivileged serving `/link-inspector/manifest.json` (+ bundle) and `/read-links.js`, with `Access-Control-Allow-Origin: http://penpot.localhost`.
 - `ghcr.io/brrritscold/design-snapshot-refresh` — Node, running the snapshot refresh.
@@ -348,25 +360,26 @@ Rolling out a new tag is a `personal-infra` PR bumping the kustomize `images:` e
 
 **Tests:** as specified in A2 (Node packages) and A3 (`design-penpot-ui`).
 
-*Decided in:* [Should the component link ship as a reusable open-source Penpot Code Connect?][t14], [How does the drift check between the design library and core-react work?][t19], [How do library components get bound to tokens?][t20], [Can CI read a Penpot library file without a browser tab?][t18], [Does a component link let Claude build correct core-react code from a design?][t9] (amended for [icons][t9-icons] and [parts][t9-parts]); side images from [Penpot on k3s][t29] and [backups][t31]
+_Decided in:_ [Should the component link ship as a reusable open-source Penpot Code Connect?][t14], [How does the drift check between the design library and core-react work?][t19], [How do library components get bound to tokens?][t20], [Can CI read a Penpot library file without a browser tab?][t18], [Does a component link let Claude build correct core-react code from a design?][t9] (amended for [icons][t9-icons] and [parts][t9-parts]); side images from [Penpot on k3s][t29] and [backups][t31]
 
 ---
 
 ## D1 — `core-react` scaffold, empty library, drift check wired
 
 ### Package `@brrritscold/core-react` (`packages/core-react`)
+
 - **ESM only, unbundled:** `tsc -p tsconfig.build.json` emits one `.js` + `.d.ts` per source file so each keeps its own `"use client"`. No tsup, no CJS. `"sideEffects": ["*.css"]`. Framework-agnostic: no `next/*` imports.
 - **`build`:** Style Dictionary (`tokens/tokens.json` → `dist/styles.css`) → copy `tokens.json` to `dist/` → `tsc`. Script names stay on the contract.
 - **Exports:**
 
-  | Subpath | Holds |
-  |---|---|
-  | `.` | one pure file of named component and part exports plus `cn`; no logic, no `export * as` |
-  | `./icons` | `export * from "lucide-react"`; apps use the `<Name>Icon` aliases |
-  | `./data-table` | `useDataTable` only |
-  | `./styles.css` | built theme, carrying its own `@source "./**/*.js"` so apps need only the one `@import` |
-  | `./tokens.json` | raw token file |
-  | `./testing` | component objects; `@playwright/test` optional peer |
+  | Subpath         | Holds                                                                                   |
+  | --------------- | --------------------------------------------------------------------------------------- |
+  | `.`             | one pure file of named component and part exports plus `cn`; no logic, no `export * as` |
+  | `./icons`       | `export * from "lucide-react"`; apps use the `<Name>Icon` aliases                       |
+  | `./data-table`  | `useDataTable` only                                                                     |
+  | `./styles.css`  | built theme, carrying its own `@source "./**/*.js"` so apps need only the one `@import` |
+  | `./tokens.json` | raw token file                                                                          |
+  | `./testing`     | component objects; `@playwright/test` optional peer                                     |
 
   No per-component subpaths. Add `core-react` to the allowlist in `scripts/check-entries.mjs` (it is the only package with a root entry).
 - **Source layout:** `components.json` kept (shadcn CLI vendors more later); `src/components/<kebab>.tsx` one per shadcn component with its part exports; `src/lib/utils.ts` (`cn`); `src/icons.ts`; `src/data-table.ts`; `src/index.ts` (re-exports only). Vendored files stay close to upstream so a re-pull diffs cleanly; upstream `"use client"` kept verbatim. Every deviation from `ts-package-layout` is documented in the package README.
@@ -374,6 +387,7 @@ Rolling out a new tag is a `personal-infra` PR bumping the kustomize `images:` e
 - **Nothing tagged in code:** the code side of the link is export names, exported cva configs (`buttonVariants`) and prop types. cva variant keys/values are literal unions named like the Penpot variant properties.
 
 ### Tokens
+
 - `packages/core-react/tokens/tokens.json`, one W3C DTCG file with top-level sets **`primitive`**, **`light`**, **`dark`** (no `$themes`/`$metadata`).
 - Two tiers: primitives (`color.slate.500`, `space.4`) and semantics named exactly as shadcn's CSS variables (`background`, `foreground`, `primary`, `primary-foreground`, `muted`, `border`, `ring`, `radius`, …). No component tier.
 - Types: color, spacing, sizing, border radius, font family, font size, font weight, line height, letter spacing, shadow, opacity. Breakpoints, motion, z-index stay Tailwind defaults.
@@ -381,6 +395,7 @@ Rolling out a new tag is a `personal-infra` PR bumping the kustomize `images:` e
 - Components consume tokens only through `@theme inline` utilities. **Forbidden:** arbitrary values (`bg-[#…]`, `p-[13px]`) and default-palette utilities (`bg-slate-500`).
 
 ### Tests and checks in `core-react`'s `check`
+
 - Tiers `stories`, `unit`, `integration` as in A3 (`test:stories`, `test:unit`, `test:integration`). This supersedes the two-project `test:unit` from the shape ticket.
 - `unit`: every semantic name the components use exists in both `light` and `dark`; a **source scan** rejecting arbitrary values and default-palette utilities.
 - Style Dictionary build fails on broken references.
@@ -388,21 +403,24 @@ Rolling out a new tag is a `personal-infra` PR bumping the kustomize `images:` e
 - **Drift check** job, offline on hosted CI: build the code manifest, run the drift CLI against `design/library.snapshot.json`.
 
 ### `design/` in `core-react`
+
 `library.snapshot.json`, `drift.config.json` (allowlist), `token-migrations.json` (append-only `[{ "version", "from", "to" }]`, starts empty).
 
 ### Repo plumbing
+
 - `.github/ISSUE_TEMPLATE/promotion.yml` (links the page design, names the layers to promote) and labels `promotion`, `approved`, `drift`.
 - Storybook in `core-react` (react-vite). Story `title` = the library component's Penpot path (`Components/Button`); the design parameter holds the Penpot URL. Stories sit next to components and are excluded from the build. `core-react` opts out of the typedoc site and README API generation.
 - **Not published yet.** Keep it unpublishable until D3 (e.g. `"private": true`) so pre-release churn never reaches npm.
 
 ### Penpot side
+
 1. In the design-system team, create the **design system library** file and publish it as a shared library.
 2. **Token sync** `tokens.json` into it (sets `primitive`/`light`/`dark`, theme group `Mode` with Light / Dark). A re-run makes 0 changes.
 3. Run the snapshot refresh; commit the first `library.snapshot.json`.
 
 **Acceptance:** `check` green including the drift check against the near-empty snapshot; the snapshot's token catalog equals `tokens.json`.
 
-*Decided in:* [What shape does @brrritscold/core-react take?][t10] (+ [root-entry follow-up][t10-root], [testing amendment][t10-testing]), [Which frontend stack do core-react and the apps use?][t7], [How do design tokens flow between the token file, the design tool and core-react?][t8], [How do library components get bound to tokens?][t20], [How does a design library change relate to a core-react release, and how do apps pin both?][t28], [How does promotion work end to end?][t11]
+_Decided in:_ [What shape does @brrritscold/core-react take?][t10] (+ [root-entry follow-up][t10-root], [testing amendment][t10-testing]), [Which frontend stack do core-react and the apps use?][t7], [How do design tokens flow between the token file, the design tool and core-react?][t8], [How do library components get bound to tokens?][t20], [How does a design library change relate to a core-react release, and how do apps pin both?][t28], [How does promotion work end to end?][t11]
 
 ## B4 — Side workloads, backup and full acceptance
 
@@ -424,7 +442,7 @@ Needs the C images and the D1 snapshot path.
 3. A backup run succeeds, pings healthchecks.io and passes `check`; the restore-check job passes.
 4. One **full restore drill** into `penpot-drill`: open the library in a browser.
 
-*Decided in:* [How is Penpot deployed on k3s?][t29], [How is Penpot backed up and restored?][t31], [How does an outside designer get access?][t32]
+_Decided in:_ [How is Penpot deployed on k3s?][t29], [How is Penpot backed up and restored?][t31], [How does an outside designer get access?][t32]
 
 ## D2 — The day-one component set
 
@@ -443,18 +461,18 @@ Every component lands **code first, in lockstep with its library twin**, in one 
 
 **Acceptance:** every day-one component has a library twin; drift check green with no unexpected coverage gaps; the "Combobox / Popover in Dialog" stories settle trap 1's open question and the component objects encode the answer; Dark switches the library components in Penpot.
 
-*Decided in:* [What shape does @brrritscold/core-react take?][t10], [How do library components get bound to tokens?][t20], [What changes does ts-frontend-testing need for core-react and Penpot?][t16], [How does the drift check between the design library and core-react work?][t19]
+_Decided in:_ [What shape does @brrritscold/core-react take?][t10], [How do library components get bound to tokens?][t20], [What changes does ts-frontend-testing need for core-react and Penpot?][t16], [How does the drift check between the design library and core-react work?][t19]
 
 ## D3 — First release
 
 - Make `core-react` publishable; add a **`1.0.0`** changeset; merge the Version Packages PR.
 - From now on every `core-react` PR touching `src/`, `tokens.json` or `styles.css` **requires a changeset** (CI fails without one). Library-only changes with no published file (annotation, a snapshot-only refresh) get none.
-- **Bumps:** minor = new component, icon, variant value, optional prop, semantic token. Major = renamed/removed prop, removed variant value, removed component/icon, renamed/removed token, changed default. Patch = token *value* change, or a visual/behaviour fix with the same API. Every major changeset has a `### Migration` section with exact before → after pairs and a pointer to the matching token migrations; review rejects one without it.
+- **Bumps:** minor = new component, icon, variant value, optional prop, semantic token. Major = renamed/removed prop, removed variant value, removed component/icon, renamed/removed token, changed default. Patch = token _value_ change, or a visual/behaviour fix with the same API. Every major changeset has a `### Migration` section with exact before → after pairs and a pointer to the matching token migrations; review rejects one without it.
 - **No library version.** The snapshot at tag `@brrritscold/core-react@x.y.z` is the library state that release matches. No named Penpot versions.
 - Storybook deploys to GitHub Pages at `/ts-packages/core-react/`, next to typedoc; the README links it.
 - One-time check with a throwaway Next app: with `@brrritscold/core-react` and `/icons` in `optimizePackageImports`, a dev compile doesn't load all of lucide.
 
-*Decided in:* [How does a design library change relate to a core-react release, and how do apps pin both?][t28], [What shape does @brrritscold/core-react take?][t10]
+_Decided in:_ [How does a design library change relate to a core-react release, and how do apps pin both?][t28], [What shape does @brrritscold/core-react take?][t10]
 
 ---
 
@@ -463,6 +481,7 @@ Every component lands **code first, in lockstep with its library twin**, in one 
 These are standing procedures. The skills (A4) carry them for agents; the `personal-infra` runbooks carry the cluster ones.
 
 ### Promotion
+
 1. **Propose:** anyone opens a `promotion` issue from the template, linking the page design and naming the layers; a Penpot comment on the page design links back. The issue is the record.
 2. **Decide:** only the library owner approves, with the `approved` label. Agents never approve.
 3. **Scope:** additions only — a new component (with parts), a new icon, a new variant property or value. Changing what exists is a normal `core-react` PR under lockstep. A new token is a prerequisite step. Every library component is a `core-react` export; a composition used by one app stays local in its page design.
@@ -473,17 +492,20 @@ These are standing procedures. The skills (A4) carry them for agents; the `perso
 8. **After merge, re-point:** open the page file over MCP; `shape.swapComponent(libraryComponent)` on each local copy (a local main or plain layers are replaced by a library copy in the same position and size; a promoted variant uses `switchVariant`); delete the local main; re-point other page designs that used the draft and list them on the issue; post before/after screenshots; close the issue. It closes at re-point, not at release.
 
 ### Drift
+
 - **A code PR breaks the library:** lockstep — the PR stays red until an agent fixes the library over MCP and commits a refreshed snapshot into the same PR.
 - **A library edit breaks the code:** the refresh PR goes red and is labelled `drift`; revert the library edit over MCP and refresh into the same PR. If the change is wanted, it becomes a normal `core-react` PR first and the library follows under lockstep.
 - An applied-token edit in Penpot is drift too.
 
 ### Token sync
+
 - Writes **`main`'s `tokens.json`** into the design system library **and every page design file** (idempotent, one run per file), until Penpot 2.19's "tokens source" replaces per-file sync. Page design files accept library updates whenever Penpot offers them, independent of any app's bump.
 - For each `design/token-migrations.json` entry whose `from` is still in the file: add `to`; `applyToken` it to every shape whose `shape.tokens` names `from`, on the same attributes; remove `from` **only when no shape in that file still applies it** (otherwise report those shapes and leave it); if `to` is `null`, flag each affected shape for a human.
 - Timing: the library is synced inside the `core-react` PR (lockstep); page design files only after merge.
 - Penpot changes to tokens come back only as a reviewed PR to `tokens.json` (agent exports over MCP, human reviews); the next sync overwrites anything that never became a merged PR.
 
 ### Rotate credentials
+
 Each: trigger → mint → destination → verify. Everything except the PAT rotates only on suspicion of a leak or when someone loses access.
 - **GitHub PAT:** on GitHub's expiry email → Regenerate token (same permissions) → re-apply Secret `snapshot-refresh` → `kubectl create job --from=cronjob/snapshot-refresh rotate-check` succeeds.
 - **`snapshot-refresh` Penpot token:** new token on the automation profile → re-apply the Secret → manual job succeeds → delete the old token.
@@ -495,6 +517,7 @@ Each: trigger → mint → destination → verify. Everything except the PAT rot
 - **Tailscale operator OAuth** (only with outside access): new OAuth client → re-apply `tailscale/operator-oauth` → restart the operator.
 
 ### Pin bump to Penpot 2.19 (a reviewed `personal-infra` PR)
+
 1. Diff chart values and default flags against the new chart; carry over every decision above.
 2. Take a `pre-upgrade`-tagged restic backup (kept until the next bump is accepted), record the rollback (previous chart version + restore), and run a full restore drill into `penpot-drill`.
 3. Re-run `get-file`; the library-snapshot schema must still validate (bump the pin and schema together in one ts-packages PR).
@@ -508,6 +531,7 @@ Each: trigger → mint → destination → verify. Everything except the PAT rot
 Also on 2.19: `annotation` becomes available in the plugin API for a one-line human hint on library components.
 
 ### Outside designer (dormant until one exists)
+
 `personal-infra/penpot/overlays/outside-access` + `OUTSIDE-ACCESS.md`:
 - **Network:** the Tailscale Kubernetes operator (Secret `tailscale/operator-oauth`) serves Ingresses `penpot.<tailnet>.ts.net` (UI, `/api`, `/mcp/stream`, `/mcp/ws`) and `penpot-plugins.<tailnet>.ts.net` (inspector, `read-links.js`) with automatic TLS; proxies tagged `tag:penpot`. Tailnet HTTPS + MagicDNS enabled first. Policy in `personal-infra/tailscale/policy.hujson`, applied by hand; the designer is a **tailnet user** with an ACL grant to `tag:penpot:443` only (not node sharing: tagged machines can't be shared).
 - **One canonical host:** `publicUri: https://penpot.<tailnet>.ts.net` for **everyone**; drop `disable-secure-session-cookies`; inspector CORS follows the new origin; `penpot.localhost` is retired while the overlay is on. **Host-move checklist:** update `PENPOT_URL` and your Claude MCP URL; reinstall the link inspector from the new URL; in-cluster jobs keep internal URLs. Removing the overlay reverses it.
@@ -523,27 +547,27 @@ See the map's [Out of scope][map] section. In short: migrating Figma work; the c
 
 ## Decision index
 
-| Ticket | Phases |
-|---|---|
-| [Which self-hostable design tool replaces Figma?][t5] | all |
-| [What stands in for Code Connect on the chosen tool?][t6] (superseded in part by #9) | C |
-| [Which frontend stack do core-react and the apps use?][t7] | A1, D1 |
-| [How do design tokens flow between the token file, the design tool and core-react?][t8] | D1, Operating |
-| [Does a component link let Claude build correct core-react code from a design?][t9] | C, D2 |
-| [Can CI read a Penpot library file without a browser tab?][t18] | C |
-| [What shape does @brrritscold/core-react take?][t10] | D1, D2, D3 |
-| [How does the drift check between the design library and core-react work?][t19] | C, D1, Operating |
-| [How does promotion work end to end?][t11] | D1, Operating |
-| [Should the component link ship as a reusable open-source Penpot Code Connect?][t14] | C, A4 |
-| [How do ts-packages and the testing skills move from mocha + chai to Vitest?][t15] | A1, A2 |
-| [What changes does ts-frontend-testing need for core-react and Penpot?][t16] | A2, A3, D1, D2 |
-| [What do the new personal-ai frontend-app and design skills cover?][t12] | A4 |
-| [How do library components get bound to tokens?][t20] | C, D1, D2, Operating |
+| Ticket                                                                                            | Phases                |
+| ------------------------------------------------------------------------------------------------- | --------------------- |
+| [Which self-hostable design tool replaces Figma?][t5]                                             | all                   |
+| [What stands in for Code Connect on the chosen tool?][t6] (superseded in part by #9)              | C                     |
+| [Which frontend stack do core-react and the apps use?][t7]                                        | A1, D1                |
+| [How do design tokens flow between the token file, the design tool and core-react?][t8]           | D1, Operating         |
+| [Does a component link let Claude build correct core-react code from a design?][t9]               | C, D2                 |
+| [Can CI read a Penpot library file without a browser tab?][t18]                                   | C                     |
+| [What shape does @brrritscold/core-react take?][t10]                                              | D1, D2, D3            |
+| [How does the drift check between the design library and core-react work?][t19]                   | C, D1, Operating      |
+| [How does promotion work end to end?][t11]                                                        | D1, Operating         |
+| [Should the component link ship as a reusable open-source Penpot Code Connect?][t14]              | C, A4                 |
+| [How do ts-packages and the testing skills move from mocha + chai to Vitest?][t15]                | A1, A2                |
+| [What changes does ts-frontend-testing need for core-react and Penpot?][t16]                      | A2, A3, D1, D2        |
+| [What do the new personal-ai frontend-app and design skills cover?][t12]                          | A4                    |
+| [How do library components get bound to tokens?][t20]                                             | C, D1, D2, Operating  |
 | [How does a design library change relate to a core-react release, and how do apps pin both?][t28] | A4, D1, D3, Operating |
-| [How is Penpot deployed on k3s?][t29] | B1, B2, B4, Operating |
-| [How do agents and CI get Penpot credentials?][t30] | B3, Operating |
-| [How is Penpot backed up and restored?][t31] | B4, Operating |
-| [How does an outside designer get access?][t32] | B4, Operating |
+| [How is Penpot deployed on k3s?][t29]                                                             | B1, B2, B4, Operating |
+| [How do agents and CI get Penpot credentials?][t30]                                               | B3, Operating         |
+| [How is Penpot backed up and restored?][t31]                                                      | B4, Operating         |
+| [How does an outside designer get access?][t32]                                                   | B4, Operating         |
 
 [map]: https://github.com/bRRRITSCOLD/ts-packages/issues/4
 [t5]: https://github.com/bRRRITSCOLD/ts-packages/issues/5#issuecomment-6617946569
