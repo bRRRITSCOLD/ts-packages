@@ -2,7 +2,7 @@ import { defineConfig } from 'tsup'
 
 export default defineConfig([
 	{
-		entryPoints: ['src/library-snapshot.ts', 'src/rpc.ts'],
+		entryPoints: ['src/library-snapshot.ts', 'src/rpc.ts', 'src/snapshot-refresh.ts'],
 		format: ['cjs', 'esm'],
 		dts: true,
 		minify: false,
