@@ -33,3 +33,9 @@ export const codeManifestSchema = z.strictObject({
 
 /** The code manifest; see {@link codeManifestSchema}. */
 export type CodeManifest = z.infer<typeof codeManifestSchema>
+
+/**
+ * Compares two strings in code-unit order, for `Array.prototype.sort`: the code manifest and
+ * the drift report sort this way, so they come out the same on every machine and in every locale.
+ */
+export const compareCodeUnits = (a: string, b: string): number => (a < b ? -1 : a > b ? 1 : 0)
