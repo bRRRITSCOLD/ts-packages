@@ -1,0 +1,19 @@
+{
+	"compilerOptions": {
+		"outDir": "./dist",
+		"rootDir": ".",
+		"target": "es2022",
+		"lib": ["es2023", "dom", "dom.iterable"],
+		"types": ["node"],
+		"module": "nodenext",
+		"moduleResolution": "nodenext",
+		"jsx": "react-jsx",
+		"strict": true,
+		"skipLibCheck": true,
+		"declaration": true,
+		"verbatimModuleSyntax": true,
+		"resolveJsonModule": true,
+		"noEmit": true
+	},
+	"include": ["src", "tests", "scripts", ".storybook", "vitest.config.ts"]
+}
