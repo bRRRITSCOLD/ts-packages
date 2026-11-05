@@ -1,11 +1,11 @@
 // node_modules
-import { expect } from 'chai'
+import { describe, expect, it } from 'vitest'
 
 // src
 import * as common from '../../src/common.js'
 
 describe('e2e', () => {
-	it('exposes common off the package root', () => {
-		expect(common.deepCopy({ a: 1 })).to.deep.equal({ a: 1 })
+	it('should expose deepCopy from the common entry', () => {
+		expect(common.deepCopy({ a: 1 })).toEqual({ a: 1 })
 	})
 })

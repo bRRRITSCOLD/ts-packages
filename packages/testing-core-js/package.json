@@ -37,10 +37,10 @@
 		"clean": "rm -rf dist .turbo",
 		"lint": "biome check --write",
 		"lint:check": "biome check",
-		"test:e2e": "mocha --require tsx tests/**/*.e2e.test.ts --recursive --timeout 99999999  --exit",
-		"test:e2e:watch": "nodemon --config ./nodemon.e2e.test.json",
-		"test:unit": "mocha --require tsx tests/**/*.unit.test.ts --recursive --timeout 99999999  --exit",
-		"test:unit:watch": "nodemon --config ./nodemon.unit.test.json",
+		"test:e2e": "vitest run --project e2e",
+		"test:e2e:watch": "vitest --project e2e",
+		"test:unit": "vitest run --project unit",
+		"test:unit:watch": "vitest --project unit",
 		"typecheck": "tsc -p ./tsconfig.json"
 	},
 	"dependencies": {
