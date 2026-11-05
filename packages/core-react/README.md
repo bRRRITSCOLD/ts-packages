@@ -48,7 +48,7 @@ Everything not listed here follows the shared layout (script names, strict pnpm 
 | `tsconfig.json` with `lib: ["esnext"]`                   | adds `dom` and `jsx: "react-jsx"`; typechecks `src`, `tests`, `scripts`, `.storybook`                                                                                                              | React components and their stories                                                                                            |
 | one `turbo.json` at the root                             | `turbo.json` here extends it so `build` also hashes `tokens/` and `scripts/`                                                                                                                       | the token build is part of `build`                                                                                            |
 
-Scripts beyond the contract: `build:styles` (the token half of `build`), `test:stories` / `test:stories:watch`, `storybook`, `storybook:build`. Each Storybook and stories script runs `build:styles` first, since the preview imports `dist/styles.css`. `test:integration` builds Storybook itself and has no containers, so there is no `test:integration:setup` / `:teardown`; `test:integration:ci` is `test:integration`.
+Scripts beyond the contract: `build:styles` (the token half of `build`), `test:stories` / `test:stories:watch`, `storybook`, `storybook:build`. Each Storybook and stories script runs `build:styles` first, since the preview imports `dist/styles.css`. `test:integration` builds Storybook itself and has no containers, so `test:integration:setup` / `:teardown` run empty scripts; they are kept so `test:integration:ci` has the same setup → run → teardown shape as every other package.
 
 ## Tokens
 
