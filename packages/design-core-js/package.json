@@ -2,7 +2,7 @@
 	"name": "@brrritscold/design-core-js",
 	"version": "0.1.0",
 	"private": true,
-	"description": "The component link between the design system library and core-react: resolver, exceptions-record and library-snapshot schemas, drift-check rule engine and coverage report.",
+	"description": "The component link between the design system library and core-react: resolver, exceptions-record and library-snapshot schemas, drift-check rule engine and coverage report; the token sync script builder.",
 	"license": "MIT",
 	"author": "Blaine Richardson",
 	"homepage": "https://brrritscold.github.io/ts-packages/modules/_brrritscold_design-core-js.html",
@@ -72,6 +72,17 @@
 				"default": "./dist/token-file.cjs"
 			},
 			"default": "./dist/token-file.mjs"
+		},
+		"./token-sync": {
+			"import": {
+				"types": "./dist/token-sync.d.ts",
+				"default": "./dist/token-sync.mjs"
+			},
+			"require": {
+				"types": "./dist/token-sync.d.cts",
+				"default": "./dist/token-sync.cjs"
+			},
+			"default": "./dist/token-sync.mjs"
 		}
 	},
 	"scripts": {

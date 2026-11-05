@@ -8,6 +8,7 @@ export default defineConfig([
 			'src/drift-check.ts',
 			'src/library-snapshot.ts',
 			'src/token-file.ts',
+			'src/token-sync.ts',
 		],
 		format: ['cjs', 'esm'],
 		dts: true,
