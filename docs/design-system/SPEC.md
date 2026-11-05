@@ -237,7 +237,7 @@ penpot/
 - **Ingress:** standard `Ingress`, `className: traefik`, host `penpot.localhost` → the frontend Service (`penpot`), which proxies the UI, `/api`, `/mcp/stream` (streamable HTTP) and `/mcp/ws` (plugin websocket). Plain HTTP; `*.localhost` is a secure context in browsers.
 - **Traefik `HelmChartConfig`:** `web` entrypoint `respondingTimeouts.readTimeout: 0` and a matching idle timeout, so MCP streams and the plugin websocket aren't cut at 60 s.
 - **`overlays/local`:** patches **only the Postgres pod** with `securityContext.appArmorProfile.type: Unconfined`. Symptom without it: `gosu` spins and Postgres dies with `could not signal for checkpoint: Permission denied`; cause: this host's containerd AppArmor profile. Other hosts apply the base (or their own overlay) without it.
-- **Secrets** (never committed; each created by `kubectl create secret generic … --dry-run=client -o yaml | kubectl apply -f -`): `penpot-secrets` (`apiSecretKey`), `postgres-credentials` (`user`, `password`). Store `apiSecretKey` in the password manager too.
+- **Secrets** (never committed; each created by `kubectl create secret generic … --dry-run=client -o yaml | kubectl apply -f -`): `penpot-secrets` (`apiSecretKey`), `postgres-credentials` (`user`, `password`). Their values live in `~/.config/penpot/env` (interim source, see B3).
 
 **Acceptance (this phase):**
 1. All pods Ready.
@@ -281,7 +281,7 @@ _Decided in:_ [How is Penpot deployed on k3s?][t29] with amendments from [creden
   ```json
   "penpot": { "type": "http", "url": "http://penpot.localhost/mcp/stream?userToken=${PENPOT_MCP_KEY}" }
   ```
-- Password manager also holds: `apiSecretKey`, the restic password, the B2 key.
+- `~/.config/penpot/env` also holds the cluster Secret values (`PENPOT_API_SECRET_KEY`, `PENPOT_POSTGRES_PASSWORD`, and in B4 the restic password and B2 key), so Secrets can be recreated after a namespace delete or restore.
 
 _Decided in:_ [How do agents and CI get Penpot credentials?][t30] with amendments from [backups][t30-amend-backup] and [outside access][t30-amend-outside]
 
@@ -433,7 +433,7 @@ Needs the C images and the D1 snapshot path.
   - `overlays/local` adds a hostPath repo at `/var/backups/penpot` and `restic copy` local → B2.
   - A **weekly restore-check CronJob** restores the latest dump into a throwaway Postgres pod and checks: file count > 0, the design system library file id present, newest `modified_at` < 26 h, and every live `storage_object` exists in the restored assets tree; then tears down.
   - Not backed up: Valkey, PVC block snapshots, secrets. `.penpot` exports are a manual escape hatch, not a backup.
-- **`RESTORE.md`:** (1) get the restic password, B2 key and `apiSecretKey` from the password manager; (2) scale backend, exporter, MCP to 0; (3) `restic restore` the chosen snapshot (local repo if present, else B2); (4) drop and recreate the DB, `pg_restore`; (5) **replace** the assets dir with the restored tree, never merge; (6) restore with the same `apiSecretKey`, scale up; (7) run the deploy acceptance checks; (8) re-apply the **offboarded list** (remove from team, hard-delete profile). The **restore drill** runs the same steps into namespace `penpot-drill`, reached by port-forward only.
+- **`RESTORE.md`:** (1) get the restic password, B2 key and `apiSecretKey` from `~/.config/penpot/env`; (2) scale backend, exporter, MCP to 0; (3) `restic restore` the chosen snapshot (local repo if present, else B2); (4) drop and recreate the DB, `pg_restore`; (5) **replace** the assets dir with the restored tree, never merge; (6) restore with the same `apiSecretKey`, scale up; (7) run the deploy acceptance checks; (8) re-apply the **offboarded list** (remove from team, hard-delete profile). The **restore drill** runs the same steps into namespace `penpot-drill`, reached by port-forward only.
 - **`overlays/outside-access` + `OUTSIDE-ACCESS.md`:** written now, **not applied** (see Operating → Outside designer).
 
 **Acceptance (completes B2's list):**
@@ -511,9 +511,9 @@ Each: trigger → mint → destination → verify. Everything except the PAT rot
 - **`snapshot-refresh` Penpot token:** new token on the automation profile → re-apply the Secret → manual job succeeds → delete the old token.
 - **MCP key:** regenerate (revokes the old) → update `PENPOT_MCP_KEY` → restart Claude Code → reload the Penpot tab.
 - **Automation password:** `manage.py update-profile -e automation@penpot.localhost -p …` → update the local env.
-- **`apiSecretKey`:** rotate → restart backend → re-mint the MCP key and the `snapshot-refresh` token (it signs sessions, access tokens, MCP keys and invites; verify at build). Update the password manager.
+- **`apiSecretKey`:** rotate → restart backend → re-mint the MCP key and the `snapshot-refresh` token (it signs sessions, access tokens, MCP keys and invites; verify at build). Update `~/.config/penpot/env`.
 - **Postgres password:** `ALTER ROLE` → update `postgres-credentials` → restart backend.
-- **Backup keys** (`RESTIC_PASSWORD` via `restic key add`/`remove`, B2 key, `HC_PING_URL`): re-apply `penpot-backup`, run a manual backup, update the password manager.
+- **Backup keys** (`RESTIC_PASSWORD` via `restic key add`/`remove`, B2 key, `HC_PING_URL`): re-apply `penpot-backup`, run a manual backup, update `~/.config/penpot/env`.
 - **Tailscale operator OAuth** (only with outside access): new OAuth client → re-apply `tailscale/operator-oauth` → restart the operator.
 
 ### Pin bump to Penpot 2.19 (a reviewed `personal-infra` PR)
@@ -535,7 +535,7 @@ Also on 2.19: `annotation` becomes available in the plugin API for a one-line hu
 `personal-infra/penpot/overlays/outside-access` + `OUTSIDE-ACCESS.md`:
 - **Network:** the Tailscale Kubernetes operator (Secret `tailscale/operator-oauth`) serves Ingresses `penpot.<tailnet>.ts.net` (UI, `/api`, `/mcp/stream`, `/mcp/ws`) and `penpot-plugins.<tailnet>.ts.net` (inspector, `read-links.js`) with automatic TLS; proxies tagged `tag:penpot`. Tailnet HTTPS + MagicDNS enabled first. Policy in `personal-infra/tailscale/policy.hujson`, applied by hand; the designer is a **tailnet user** with an ACL grant to `tag:penpot:443` only (not node sharing: tagged machines can't be shared).
 - **One canonical host:** `publicUri: https://penpot.<tailnet>.ts.net` for **everyone**; drop `disable-secure-session-cookies`; inspector CORS follows the new origin; `penpot.localhost` is retired while the overlay is on. **Host-move checklist:** update `PENPOT_URL` and your Claude MCP URL; reinstall the link inspector from the new URL; in-cluster jobs keep internal URLs. Removing the overlay reverses it.
-- **Onboarding:** apply the overlay + host move → invite to the tailnet → `manage.py create-profile` with a temporary password via the password manager → team **Copy invitation link** as **editor** in the one design-system team → they install the inspector from the tailnet URL and add Penpot MCP with their own `?userToken=` → they get a scrubbed copy of the `design-system` skill and the rule "library changes only through promotion". Own profile and MCP key; no access token; never the automation profile. Library updates accepted by hand in their page files before building from a design.
+- **Onboarding:** apply the overlay + host move → invite to the tailnet → `manage.py create-profile` with a temporary password shared out of band → team **Copy invitation link** as **editor** in the one design-system team → they install the inspector from the tailnet URL and add Penpot MCP with their own `?userToken=` → they get a scrubbed copy of the `design-system` skill and the rule "library changes only through promotion". Own profile and MCP key; no access token; never the automation profile. Library updates accepted by hand in their page files before building from a design.
 - **Offboarding:** remove from the team → `manage.py delete-profile` (hard) → remove from the tailnet (or drop the overlay) → add to the offboarded list in `RESTORE.md`. Don't rely on `mark-profile-as-blocked!`.
 - "Penpot credentials never expire" holds while Penpot is tailnet-only.
 
