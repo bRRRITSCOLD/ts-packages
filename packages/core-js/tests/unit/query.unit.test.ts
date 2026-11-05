@@ -1,4 +1,4 @@
-import { expect } from 'chai'
+import { describe, expect, it } from 'vitest'
 import { ExceptionFaults, HttpException } from '../../src/error.js'
 // application/testee
 import {
@@ -38,15 +38,15 @@ function catchError(fn: () => unknown): HttpException {
 
 function expectBadRequest(fn: () => unknown, message: string) {
 	const error = catchError(fn)
-	expect(error).to.be.instanceOf(HttpException)
-	expect(error.statusCode).to.eq(400)
-	expect(error.fault).to.eq(ExceptionFaults.CLIENT)
-	expect(error.message).to.eq(message)
+	expect(error).toBeInstanceOf(HttpException)
+	expect(error.statusCode).toBe(400)
+	expect(error.fault).toBe(ExceptionFaults.CLIENT)
+	expect(error.message).toBe(message)
 }
 
 function issueMessages(schema: z.ZodType, value: unknown): string[] {
 	const result = schema.safeParse(value)
-	expect(result.success).to.eq(false)
+	expect(result.success).toBe(false)
 	return result.error?.issues.map((issue) => issue.message) ?? []
 }
 
@@ -55,32 +55,32 @@ describe('query.ts', () => {
 		const schema = filterSchema(fields)
 
 		it('should default an omitted filter to {}', () => {
-			expect(schema.parse(undefined)).to.deep.eq({})
+			expect(schema.parse(undefined)).toStrictEqual({})
 		})
 
 		it('should accept in and notIn on a string field', () => {
 			const filter = { event: { in: ['a', 'b'] }, correlationId: { notIn: ['c'] } }
-			expect(schema.parse(filter)).to.deep.eq(filter)
+			expect(schema.parse(filter)).toStrictEqual(filter)
 		})
 
 		it('should reject in and notIn that overlap', () => {
-			expect(issueMessages(schema, { event: { in: ['a'], notIn: ['a'] } })).to.include(
+			expect(issueMessages(schema, { event: { in: ['a'], notIn: ['a'] } })).toContain(
 				'in and notIn must not overlap'
 			)
 		})
 
 		it('should reject an empty or oversized value list', () => {
-			expect(schema.safeParse({ event: { in: [] } }).success).to.eq(false)
+			expect(schema.safeParse({ event: { in: [] } }).success).toBe(false)
 			const tooMany = Array.from({ length: MAX_FILTER_VALUES + 1 }, (_, i) => `v${i}`)
-			expect(schema.safeParse({ event: { in: tooMany } }).success).to.eq(false)
+			expect(schema.safeParse({ event: { in: tooMany } }).success).toBe(false)
 		})
 
 		it('should parse date bounds to Dates', () => {
 			const parsed = schema.parse({
 				timestamp: { gte: '2026-01-01T00:00:00Z', lte: '2026-01-02T00:00:00+01:00' },
 			})
-			expect(parsed.timestamp?.gte).to.deep.eq(new Date('2026-01-01T00:00:00Z'))
-			expect(parsed.timestamp?.lte).to.deep.eq(new Date('2026-01-01T23:00:00Z'))
+			expect(parsed.timestamp?.gte).toStrictEqual(new Date('2026-01-01T00:00:00Z'))
+			expect(parsed.timestamp?.lte).toStrictEqual(new Date('2026-01-01T23:00:00Z'))
 		})
 
 		it('should reject gte after lte', () => {
@@ -88,28 +88,28 @@ describe('query.ts', () => {
 				issueMessages(schema, {
 					timestamp: { gte: '2026-01-02T00:00:00Z', lte: '2026-01-01T00:00:00Z' },
 				})
-			).to.include('gte must not be after lte')
+			).toContain('gte must not be after lte')
 		})
 
 		it('should reject a date that is not an ISO date-time', () => {
-			expect(schema.safeParse({ timestamp: { gte: '2026-01-01' } }).success).to.eq(false)
+			expect(schema.safeParse({ timestamp: { gte: '2026-01-01' } }).success).toBe(false)
 		})
 
 		it('should accept eq on a boolean field and nothing else', () => {
-			expect(schema.parse({ disabled: { eq: false } })).to.deep.eq({
+			expect(schema.parse({ disabled: { eq: false } })).toStrictEqual({
 				disabled: { eq: false },
 			})
-			expect(schema.safeParse({ disabled: { in: ['true'] } }).success).to.eq(false)
+			expect(schema.safeParse({ disabled: { in: ['true'] } }).success).toBe(false)
 		})
 
 		it('should allow only the listed operators when filter is a list', () => {
 			const narrow = filterSchema({
 				nextRunAt: { type: 'date', nullable: true, filter: ['gte'] },
 			})
-			expect(narrow.safeParse({ nextRunAt: { gte: '2026-01-01T00:00:00Z' } }).success).to.eq(
+			expect(narrow.safeParse({ nextRunAt: { gte: '2026-01-01T00:00:00Z' } }).success).toBe(
 				true
 			)
-			expect(narrow.safeParse({ nextRunAt: { lte: '2026-01-01T00:00:00Z' } }).success).to.eq(
+			expect(narrow.safeParse({ nextRunAt: { lte: '2026-01-01T00:00:00Z' } }).success).toBe(
 				false
 			)
 		})
@@ -125,14 +125,14 @@ describe('query.ts', () => {
 			}
 			// @ts-expect-error lte is not in nextRunAt's filter list
 			const disallowed: Filter<typeof narrowFields> = { nextRunAt: { lte: new Date() } }
-			expect(allowed).to.be.an('object')
-			expect(disallowed).to.be.an('object')
+			expect(allowed).toBeTypeOf('object')
+			expect(disallowed).toBeTypeOf('object')
 		})
 
 		it('should reject unknown fields, unfilterable fields and operators', () => {
-			expect(schema.safeParse({ nope: { in: ['a'] } }).success).to.eq(false)
-			expect(schema.safeParse({ notes: { in: ['a'] } }).success).to.eq(false)
-			expect(schema.safeParse({ event: { $in: ['a'] } }).success).to.eq(false)
+			expect(schema.safeParse({ nope: { in: ['a'] } }).success).toBe(false)
+			expect(schema.safeParse({ notes: { in: ['a'] } }).success).toBe(false)
+			expect(schema.safeParse({ event: { $in: ['a'] } }).success).toBe(false)
 		})
 	})
 
@@ -140,17 +140,20 @@ describe('query.ts', () => {
 		const schema = sortSchema({ fields, defaultKey: 'timestamp', defaultDirection: 'desc' })
 
 		it('should default an omitted sort and its omitted members', () => {
-			expect(schema.parse(undefined)).to.deep.eq({ key: 'timestamp', direction: 'desc' })
-			expect(schema.parse({ key: 'event' })).to.deep.eq({ key: 'event', direction: 'desc' })
+			expect(schema.parse(undefined)).toStrictEqual({ key: 'timestamp', direction: 'desc' })
+			expect(schema.parse({ key: 'event' })).toStrictEqual({
+				key: 'event',
+				direction: 'desc',
+			})
 		})
 
 		it('should accept only sortable fields', () => {
-			expect(schema.parse({ key: 'nextRunAt', direction: 'asc' })).to.deep.eq({
+			expect(schema.parse({ key: 'nextRunAt', direction: 'asc' })).toStrictEqual({
 				key: 'nextRunAt',
 				direction: 'asc',
 			})
-			expect(schema.safeParse({ key: 'correlationId' }).success).to.eq(false)
-			expect(schema.safeParse({ key: 'disabled' }).success).to.eq(false)
+			expect(schema.safeParse({ key: 'correlationId' }).success).toBe(false)
+			expect(schema.safeParse({ key: 'disabled' }).success).toBe(false)
 		})
 	})
 
@@ -158,14 +161,14 @@ describe('query.ts', () => {
 		const schema = pageSchema({ defaultLimit: 50, maxLimit: 200 })
 
 		it('should default an omitted page and limit', () => {
-			expect(schema.parse(undefined)).to.deep.eq({ limit: 50 })
-			expect(schema.parse({ cursor: 'abc' })).to.deep.eq({ limit: 50, cursor: 'abc' })
+			expect(schema.parse(undefined)).toStrictEqual({ limit: 50 })
+			expect(schema.parse({ cursor: 'abc' })).toStrictEqual({ limit: 50, cursor: 'abc' })
 		})
 
 		it('should cap the limit at maxLimit', () => {
-			expect(schema.parse({ limit: 200 })).to.deep.eq({ limit: 200 })
-			expect(schema.safeParse({ limit: 201 }).success).to.eq(false)
-			expect(schema.safeParse({ limit: 0 }).success).to.eq(false)
+			expect(schema.parse({ limit: 200 })).toStrictEqual({ limit: 200 })
+			expect(schema.safeParse({ limit: 201 }).success).toBe(false)
+			expect(schema.safeParse({ limit: 0 }).success).toBe(false)
 		})
 	})
 
@@ -177,7 +180,7 @@ describe('query.ts', () => {
 		})
 
 		it('should default an empty body to the whole envelope', () => {
-			expect(schema.parse({})).to.deep.eq({
+			expect(schema.parse({})).toStrictEqual({
 				filter: {},
 				sort: { key: 'timestamp', direction: 'desc' },
 				page: { limit: 50 },
@@ -185,9 +188,9 @@ describe('query.ts', () => {
 		})
 
 		it('should reject unknown members unless extended', () => {
-			expect(schema.safeParse({ search: 'x' }).success).to.eq(false)
+			expect(schema.safeParse({ search: 'x' }).success).toBe(false)
 			const extended = schema.extend({ search: z.string().min(1).optional() })
-			expect(extended.parse({ search: 'x' }).search).to.eq('x')
+			expect(extended.parse({ search: 'x' }).search).toBe('x')
 		})
 	})
 
@@ -203,19 +206,19 @@ describe('query.ts', () => {
 
 		it('should encode exactly as hand-built cursors did', () => {
 			const withUnicode = { ...payload, lastValue: 'événement ✓', sortKey: 'event' }
-			expect(codec.encode(payload)).to.eq(legacyToken(payload))
-			expect(codec.encode(withUnicode)).to.eq(legacyToken(withUnicode))
-			expect(codec.decode(legacyToken(withUnicode))).to.deep.eq(withUnicode)
+			expect(codec.encode(payload)).toBe(legacyToken(payload))
+			expect(codec.encode(withUnicode)).toBe(legacyToken(withUnicode))
+			expect(codec.decode(legacyToken(withUnicode))).toStrictEqual(withUnicode)
 		})
 
 		it('should round-trip a payload', () => {
-			expect(codec.decode(codec.encode(payload))).to.deep.eq(payload)
+			expect(codec.decode(codec.encode(payload))).toStrictEqual(payload)
 		})
 
 		it('should encode a payload too large to spread into one call', () => {
 			const large = { ...payload, sortKey: 'event', lastValue: 'x'.repeat(300_000) }
-			expect(codec.encode(large)).to.eq(legacyToken(large))
-			expect(codec.decode(codec.encode(large))).to.deep.eq(large)
+			expect(codec.encode(large)).toBe(legacyToken(large))
+			expect(codec.decode(codec.encode(large))).toStrictEqual(large)
 		})
 
 		it('should reject a token that is not base64 JSON of an object', () => {
@@ -272,17 +275,15 @@ describe('query.ts', () => {
 
 		it('should allow a null lastValue on a nullable date and a string field', () => {
 			const inNullBlock = { ...payload, sortKey: 'nextRunAt', lastValue: null }
-			expect(codec.parseLastValue(codec.decode(legacyToken(inNullBlock)))).to.eq(null)
+			expect(codec.parseLastValue(codec.decode(legacyToken(inNullBlock)))).toBe(null)
 
 			const nullString = { ...payload, sortKey: 'event', lastValue: null }
-			expect(codec.parseLastValue(codec.decode(legacyToken(nullString)))).to.eq(null)
+			expect(codec.parseLastValue(codec.decode(legacyToken(nullString)))).toBe(null)
 		})
 
 		it('should parse a date lastValue to a Date and leave a string as it is', () => {
-			expect(codec.parseLastValue(payload)).to.deep.eq(new Date(payload.lastValue))
-			expect(codec.parseLastValue({ ...payload, sortKey: 'event', lastValue: 'x' })).to.eq(
-				'x'
-			)
+			expect(codec.parseLastValue(payload)).toStrictEqual(new Date(payload.lastValue))
+			expect(codec.parseLastValue({ ...payload, sortKey: 'event', lastValue: 'x' })).toBe('x')
 		})
 
 		it('should decode fields an extended schema adds', () => {
@@ -291,23 +292,25 @@ describe('query.ts', () => {
 			})
 			const extended = createCursorCodec({ fields, schema })
 			const window = { gte: '2026-01-01T00:00:00Z', lte: '2026-01-02T00:00:00Z' }
-			expect(extended.decode(legacyToken({ ...payload, window })).window).to.deep.eq(window)
+			expect(extended.decode(legacyToken({ ...payload, window })).window).toStrictEqual(
+				window
+			)
 		})
 
 		it('should resolve a cursor that continues the same read', () => {
 			const cursor = codec.encode(payload)
 			expect(
 				codec.resolve({ cursor, sortKey: 'timestamp', sortBy: 'desc', filterHash: 'hash' })
-			).to.deep.eq(payload)
+			).toStrictEqual(payload)
 		})
 
 		it('should accept only a sortable sortKey on resolve', () => {
 			const cursor = codec.encode(payload)
 			const sortBy = 'desc'
 			// @ts-expect-error correlationId is filterable but not sortable
-			expect(() => codec.resolve({ cursor, sortKey: 'correlationId', sortBy })).to.throw()
+			expect(() => codec.resolve({ cursor, sortKey: 'correlationId', sortBy })).toThrow()
 			// @ts-expect-error typo is not a field
-			expect(() => codec.resolve({ cursor, sortKey: 'typo', sortBy })).to.throw()
+			expect(() => codec.resolve({ cursor, sortKey: 'typo', sortBy })).toThrow()
 		})
 
 		it('should reject a cursor sent with another sort or filter', () => {
@@ -350,10 +353,10 @@ describe('query.ts', () => {
 	describe('serializeCursorValue', () => {
 		it('should serialize a row value as a cursor carries it', () => {
 			const date = new Date('2026-01-01T00:00:00Z')
-			expect(serializeCursorValue('timestamp', { timestamp: date })).to.eq(date.toISOString())
-			expect(serializeCursorValue('event', { event: 'x' })).to.eq('x')
-			expect(serializeCursorValue('nextRunAt', { nextRunAt: null })).to.eq(null)
-			expect(serializeCursorValue('nextRunAt', {})).to.eq(null)
+			expect(serializeCursorValue('timestamp', { timestamp: date })).toBe(date.toISOString())
+			expect(serializeCursorValue('event', { event: 'x' })).toBe('x')
+			expect(serializeCursorValue('nextRunAt', { nextRunAt: null })).toBe(null)
+			expect(serializeCursorValue('nextRunAt', {})).toBe(null)
 		})
 	})
 })

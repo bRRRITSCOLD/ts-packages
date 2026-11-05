@@ -1,23 +1,15 @@
-import { expect } from 'chai'
+import { describe, expect, it } from 'vitest'
 
 // application/testee
 import { getTime } from '../../src/date.js'
 
 describe('date.ts', () => {
-	before(async () => {})
-
-	after(async () => {})
-
-	beforeEach(async () => {})
-
-	afterEach(async () => {})
-
 	it('should get the current epoch time', async () => {
 		const time = getTime()
 
-		expect(time).to.be.not.undefined
-		expect(typeof time === 'number').to.be.true
-		expect(time).to.be.lte(new Date().getTime())
-		expect(time).to.be.gt(new Date('01/01/2025').getTime())
+		expect(time).toBeDefined()
+		expect(time).toBeTypeOf('number')
+		expect(time).toBeLessThanOrEqual(new Date().getTime())
+		expect(time).toBeGreaterThan(new Date('01/01/2025').getTime())
 	})
 })
