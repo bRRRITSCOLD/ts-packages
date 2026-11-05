@@ -12,6 +12,7 @@ import type { LibraryComponent, LibraryLayer, LibrarySnapshot } from './library-
 import {
 	type DesignToken,
 	flattenTokens,
+	sameToken,
 	TOKEN_THEMES,
 	type TokenFile,
 	type TokenTheme,
@@ -221,30 +222,6 @@ const canonicalJson = (value: unknown): string =>
 			? Object.fromEntries(Object.entries(nested).sort(([a], [b]) => compareCodeUnits(a, b)))
 			: nested
 	)
-
-/**
- * A token's value in one form whichever side wrote it. Penpot's plugin API stores numbers as
- * strings, font families as a list and every shadow as a list of layers with `inset`, where
- * tokens.json keeps a number, a comma-separated string and a bare object.
- */
-const canonicalTokenValue = ({ $type, $value }: DesignToken): unknown => {
-	if ($type === 'fontFamilies')
-		return (Array.isArray($value) ? $value : String($value).split(',')).map((family) =>
-			String(family).trim()
-		)
-	if ($type === 'shadow')
-		return (Array.isArray($value) ? $value : [$value]).map((layer) => ({
-			inset: false,
-			...(layer as object),
-		}))
-	return typeof $value === 'number' ? String($value) : $value
-}
-
-/** Two tokens are equal when type, value (in canonical form) and description are. */
-const sameToken = (a: DesignToken, b: DesignToken) =>
-	a.$type === b.$type &&
-	(a.$description ?? '') === (b.$description ?? '') &&
-	canonicalJson(canonicalTokenValue(a)) === canonicalJson(canonicalTokenValue(b))
 
 const describeToken = ({ $type, $value, $description }: DesignToken) =>
 	`${$type} ${canonicalJson($value)}${$description ? ` (${JSON.stringify($description)})` : ''}`
