@@ -2,7 +2,7 @@
 
 The component library: shadcn (Base UI) React components on Tailwind v4, themed from one design token file, and the code side of every component link to the design system library in Penpot. **Code wins**: the library mirrors this package.
 
-**Private, not published yet.** `"private": true` until the day-one component set is done; the first publish is `1.0.0`, so no changeset until then. Spec: [`docs/design-system/SPEC.md` § D](https://github.com/bRRRITSCOLD/ts-packages/blob/main/docs/design-system/SPEC.md); terms: [`GLOSSARY.md`](https://github.com/bRRRITSCOLD/ts-packages/blob/main/docs/design-system/GLOSSARY.md). Its docs are Storybook: `pnpm storybook`.
+**Private, not published yet.** `"private": true` until the day-one component set is done; the first publish is `1.0.0`, which brings its first changeset. From `1.0.0` on, every PR touching `src/`, `tokens/tokens.json` or `styles.css` needs a changeset and CI fails without one; until then none is added. Spec: [`docs/design-system/SPEC.md` § D](https://github.com/bRRRITSCOLD/ts-packages/blob/main/docs/design-system/SPEC.md); terms: [`GLOSSARY.md`](https://github.com/bRRRITSCOLD/ts-packages/blob/main/docs/design-system/GLOSSARY.md). Its docs are Storybook: `pnpm storybook`.
 
 ## Using it
 
@@ -98,7 +98,7 @@ Naming is the component link: export name = library component name, cva variant 
 | `unit`        | `tests/unit/**/*.unit.test.ts(x)`            | Vitest on jsdom, `fetch` throwing: `cn`, the token build, the token checks, the source scan, the story-title and tier-placement checks |
 | `integration` | `tests/integration/**/*.integration.spec.ts` | Playwright against `storybook build`, served by `vite preview`; proves the component objects and the Base UI traps                     |
 
-A story's `title` is its library component's Penpot path (`Components/Button`), one story per variant value, each with a `play` function. The component name in that path is the export, so a two-word component is `Components/AlertDialog`, never `Alert Dialog`; the unit tier's story-title check fails a title whose last segment isn't a `.` export. A story that opts out of a11y (`parameters: { a11y: { test: 'off' } }`) says why in a comment beside it. The token checks: light and dark define the same semantic tokens, every class a component applies compiles to a utility of the built theme, and each of those utilities reads a token for every token-typed property it sets.
+A story's `title` is its library component's Penpot path (`Components/Button`), one story per variant value, each with a `play` function. The component name in that path is the export, so a two-word component is `Components/AlertDialog`, never `Alert Dialog`; the unit tier's story-title check fails a title whose last segment isn't a `.` export. The `design` parameter holds the library component's Penpot URL; no story sets it yet, because the design system library and its component URLs arrive with [ts-packages#51](https://github.com/bRRRITSCOLD/ts-packages/issues/51). A story that opts out of a11y (`parameters: { a11y: { test: 'off' } }`) says why in a comment beside it. The token checks: light and dark define the same semantic tokens, every class a component applies compiles to a utility of the built theme, and each of those utilities reads a token for every token-typed property it sets.
 
 An integration spec opens a story by id (`openStory(page, 'components-dialog--nested')`, from `tests/integration/__utils__/story.ts`), which waits until Storybook has run the story's `play` function: the spec starts from the state `play` leaves. `retries` is 0. The tier-placement check fails a file whose suffix doesn't match its tier directory, and any skipped test or suite in a tier or a stories file (`test.fixme` is allowed).
 
@@ -119,9 +119,9 @@ export const test = base.extend<{ profileDialog: ReturnType<typeof dialog> }>({
 })
 ```
 
-`dialog(root)` drives a Dialog or an Alert Dialog: `root` is the popup (role `dialog` or `alertdialog`), `button(name)` and `field(label)` look inside it, and `dismiss()` presses Escape. Its methods wait; specs assert. The Base UI traps it carries, each proven in `tests/integration/dialog.integration.spec.ts`:
+`dialog(root)` drives a Dialog or an Alert Dialog: `root` is the popup (role `dialog` or `alertdialog`), `button(name)` and `field(label)` look inside it, and `dismiss()` presses Escape. Its methods wait; specs assert. The Base UI traps it carries, numbered as in the spec and each proven in `tests/integration/dialog.integration.spec.ts` (traps 3, 4 and 6 belong to Toast, Combobox and Select):
 
-1. **Escape closes only the top layer.** `dismiss()` waits for its dialog to be on top: a dialog under a nested one is `aria-hidden`, so a root found by role is hidden until the layers above close.
-2. **The page under a dialog is `aria-hidden`, not `inert`**, so an unscoped `getByLabel` or `getByText` still hits a twin on the page. Every lookup goes through `root`.
-3. **An exit animation keeps a closing popup mounted** (`data-ending-style`). `dismiss()` returns once the dialog is hidden; a spec asserts closed with auto-waiting `toBeHidden()`, never an immediate count.
-4. **`data-testid` reaches parts, not Root.** `Dialog` renders no DOM, so a testid on it reaches nothing; put it on `DialogContent` or `DialogTrigger`.
+- **Trap 1: Escape closes only the top layer.** `dismiss()` waits for its dialog to be on top: a dialog under a nested one is `aria-hidden`, so a root found by role is hidden until the layers above close.
+- **Trap 2: the page under a dialog is `aria-hidden`, not `inert`**, so an unscoped `getByLabel` or `getByText` still hits a twin on the page. Every lookup goes through `root`.
+- **Trap 5: an exit animation keeps a closing popup mounted** (`data-ending-style`). `dismiss()` returns once the dialog is hidden; a spec asserts closed with auto-waiting `toBeHidden()`, never an immediate count.
+- **Trap 7: `data-testid` reaches parts, not Root.** `Dialog` renders no DOM, so a testid on it reaches nothing; put it on `DialogContent` or `DialogTrigger`.
