@@ -4,13 +4,15 @@ Turborepo + pnpm monorepo for shared TypeScript libraries, published to npm unde
 
 **API reference:** https://brrritscold.github.io/ts-packages/
 
-| Package                                                          | Runtime        | What                                                                      |
-| ---------------------------------------------------------------- | -------------- | ------------------------------------------------------------------------- |
-| [`@brrritscold/core-js`](./packages/core-js)                     | browser + node | `date`, `error`, `obj`, `query`, `zod`                                    |
-| [`@brrritscold/core-node`](./packages/core-node)                 | node           | `dotenv`, `jwt`, `mongodb`, `postgres`, `s3`, `secrets-manager`, `query`  |
-| [`@brrritscold/core-express`](./packages/core-express)           | node           | `error`, `middlewares/jwt`, `openapi`, `utils/create-server`, `utils/jwt` |
-| [`@brrritscold/testing-core-js`](./packages/testing-core-js)     | browser + node | test helpers (`deepCopy`)                                                 |
-| [`@brrritscold/testing-core-node`](./packages/testing-core-node) | node           | testcontainers wrappers, nock interceptors                                |
+| Package                                                                  | Runtime        | What                                                                      |
+| ------------------------------------------------------------------------ | -------------- | ------------------------------------------------------------------------- |
+| [`@brrritscold/core-js`](./packages/core-js)                             | browser + node | `date`, `error`, `obj`, `query`, `zod`                                    |
+| [`@brrritscold/core-node`](./packages/core-node)                         | node           | `dotenv`, `jwt`, `mongodb`, `postgres`, `s3`, `secrets-manager`, `query`  |
+| [`@brrritscold/core-express`](./packages/core-express)                   | node           | `error`, `middlewares/jwt`, `openapi`, `utils/create-server`, `utils/jwt` |
+| [`@brrritscold/testing-core-js`](./packages/testing-core-js)             | browser + node | test helpers (`deepCopy`)                                                 |
+| [`@brrritscold/testing-core-node`](./packages/testing-core-node)         | node           | testcontainers wrappers, nock interceptors                                |
+| [`@brrritscold/design-core-js`](./packages/design-core-js) (private)     | browser + node | component-link resolver, snapshot schemas, drift rules, coverage report   |
+| [`@brrritscold/design-core-node`](./packages/design-core-node) (private) | node           | code manifest generator, `design-drift` CLI                               |
 
 ## Develop
 
