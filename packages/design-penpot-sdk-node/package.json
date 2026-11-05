@@ -1,0 +1,74 @@
+{
+	"name": "@brrritscold/design-penpot-sdk-node",
+	"version": "0.1.0",
+	"private": true,
+	"description": "The design system's Penpot edge: a backend RPC client and the normalizer that turns a library file's get-file response into a library snapshot.",
+	"license": "MIT",
+	"author": "Blaine Richardson",
+	"homepage": "https://brrritscold.github.io/ts-packages/modules/_brrritscold_design-penpot-sdk-node.html",
+	"type": "module",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/bRRRITSCOLD/ts-packages.git",
+		"directory": "packages/design-penpot-sdk-node"
+	},
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE"
+	],
+	"exports": {
+		"./library-snapshot": {
+			"import": {
+				"types": "./dist/library-snapshot.d.ts",
+				"default": "./dist/library-snapshot.mjs"
+			},
+			"require": {
+				"types": "./dist/library-snapshot.d.cts",
+				"default": "./dist/library-snapshot.cjs"
+			},
+			"default": "./dist/library-snapshot.mjs"
+		},
+		"./rpc": {
+			"import": {
+				"types": "./dist/rpc.d.ts",
+				"default": "./dist/rpc.mjs"
+			},
+			"require": {
+				"types": "./dist/rpc.d.cts",
+				"default": "./dist/rpc.cjs"
+			},
+			"default": "./dist/rpc.mjs"
+		}
+	},
+	"scripts": {
+		"build": "tsup",
+		"clean": "rm -rf dist .turbo",
+		"lint": "biome check --write",
+		"lint:check": "biome check",
+		"record:penpot": "tsx ./tests/__recordings__/record.ts",
+		"test:e2e": "vitest run --project e2e",
+		"test:e2e:watch": "vitest --project e2e",
+		"test:integration": "vitest run --project integration",
+		"test:integration:ci": "npm run test:integration:setup && npm run test:integration && npm run test:integration:teardown",
+		"test:integration:setup": "tsx ./tests/integration/__utils__/setup.ts",
+		"test:integration:teardown": "tsx ./tests/integration/__utils__/teardown.ts",
+		"test:integration:watch": "vitest --project integration",
+		"test:unit": "vitest run --project unit",
+		"test:unit:watch": "vitest --project unit",
+		"typecheck": "tsc -p ./tsconfig.json"
+	},
+	"dependencies": {
+		"@brrritscold/core-js": "workspace:^",
+		"@brrritscold/design-core-js": "workspace:^"
+	},
+	"devDependencies": {
+		"@brrritscold/testing-core-js": "workspace:^",
+		"@brrritscold/testing-core-node": "workspace:^",
+		"nock": "^14.0.10"
+	},
+	"keywords": [
+		"brrritscold",
+		"typescript"
+	]
+}

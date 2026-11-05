@@ -1,0 +1,1084 @@
+{
+	"penpotVersion": "2.18.6",
+	"fileId": "de716cff-f170-81a2-8008-e6426b9882fe",
+	"interactions": [
+		{
+			"method": "GET",
+			"path": "/version.txt",
+			"status": 200,
+			"responseText": "2.18.6\n"
+		},
+		{
+			"method": "POST",
+			"path": "/api/rpc/command/get-file",
+			"requestBody": {
+				"id": "de716cff-f170-81a2-8008-e6426b9882fe"
+			},
+			"status": 200,
+			"responseBody": {
+				"features": [
+					"fdata/path-data",
+					"plugins/runtime",
+					"design-tokens/v1",
+					"variants/v1",
+					"layout/grid",
+					"styles/v2",
+					"fdata/objects-map",
+					"tokens/numeric-input",
+					"render-wasm/v1",
+					"components/v2",
+					"fdata/shape-data-type"
+				],
+				"teamId": "90351bb9-226b-8199-8008-e62e755cd128",
+				"permissions": {
+					"type": "membership",
+					"isOwner": true,
+					"isAdmin": true,
+					"canEdit": true,
+					"canRead": true,
+					"isLogged": true
+				},
+				"hasMediaTrimmed": false,
+				"commentThreadSeqn": 0,
+				"name": "snapshot-fixture",
+				"revn": 1,
+				"modifiedAt": "2026-11-05T13:50:03.894661Z",
+				"vern": 0,
+				"id": "de716cff-f170-81a2-8008-e6426b9882fe",
+				"isShared": true,
+				"migrations": [
+					"legacy-2",
+					"legacy-3",
+					"legacy-5",
+					"legacy-6",
+					"legacy-7",
+					"legacy-8",
+					"legacy-9",
+					"legacy-10",
+					"legacy-11",
+					"legacy-12",
+					"legacy-13",
+					"legacy-14",
+					"legacy-16",
+					"legacy-17",
+					"legacy-18",
+					"legacy-19",
+					"legacy-25",
+					"legacy-26",
+					"legacy-27",
+					"legacy-28",
+					"legacy-29",
+					"legacy-31",
+					"legacy-32",
+					"legacy-33",
+					"legacy-34",
+					"legacy-36",
+					"legacy-37",
+					"legacy-38",
+					"legacy-39",
+					"legacy-40",
+					"legacy-41",
+					"legacy-42",
+					"legacy-43",
+					"legacy-44",
+					"legacy-45",
+					"legacy-46",
+					"legacy-47",
+					"legacy-48",
+					"legacy-49",
+					"legacy-50",
+					"legacy-51",
+					"legacy-52",
+					"legacy-53",
+					"legacy-54",
+					"legacy-55",
+					"legacy-56",
+					"legacy-57",
+					"legacy-59",
+					"legacy-62",
+					"legacy-65",
+					"legacy-66",
+					"legacy-67",
+					"0001-remove-tokens-from-groups",
+					"0002-normalize-bool-content-v2",
+					"0002-clean-shape-interactions",
+					"0003-fix-root-shape",
+					"0003-convert-path-content-v2",
+					"0005-deprecate-image-type",
+					"0006-fix-old-texts-fills",
+					"0008-fix-library-colors-v4",
+					"0009-clean-library-colors",
+					"0009-add-partial-text-touched-flags",
+					"0010-fix-swap-slots-pointing-non-existent-shapes",
+					"0011-fix-invalid-text-touched-flags",
+					"0012-fix-position-data",
+					"0013-fix-component-path",
+					"0013-clear-invalid-strokes-and-fills",
+					"0014-fix-tokens-lib-duplicate-ids",
+					"0014-clear-components-nil-objects",
+					"0015-fix-text-attrs-blank-strings",
+					"0015-clean-shadow-color",
+					"0016-copy-fills-from-position-data-to-text-node",
+					"0017-fix-layout-flex-dir",
+					"0018-remove-unneeded-objects-from-components",
+					"0019-fix-missing-swap-slots",
+					"0020-sync-component-id-with-near-main",
+					"0021-fix-shape-svg-attrs",
+					"0022-normalize-component-root-and-resync",
+					"0023-repair-token-themes-with-inexistent-sets",
+					"0024b-fix-stroke-cap-placement",
+					"0025-repair-empty-text-content",
+					"0026-fix-svg-raw-shapes-uuids"
+				],
+				"version": 67,
+				"projectId": "90351bb9-226b-8199-8008-e62e755dfffc",
+				"createdAt": "2026-11-05T13:50:03.874465Z",
+				"backend": "db",
+				"data": {
+					"pages": ["de716cff-f170-81a2-8008-e6426b9882ff"],
+					"pagesIndex": {
+						"de716cff-f170-81a2-8008-e6426b9882ff": {
+							"objects": {
+								"00000000-0000-0000-0000-000000000000": {
+									"id": "00000000-0000-0000-0000-000000000000",
+									"name": "Root Frame",
+									"type": "frame",
+									"x": 0,
+									"y": 0,
+									"width": 0.01,
+									"height": 0.01,
+									"rotation": 0,
+									"selrect": {
+										"x": 0,
+										"y": 0,
+										"width": 0.01,
+										"height": 0.01,
+										"x1": 0,
+										"y1": 0,
+										"x2": 0.01,
+										"y2": 0.01
+									},
+									"points": [
+										{
+											"x": 0,
+											"y": 0
+										},
+										{
+											"x": 0.01,
+											"y": 0
+										},
+										{
+											"x": 0.01,
+											"y": 0.01
+										},
+										{
+											"x": 0,
+											"y": 0.01
+										}
+									],
+									"transform": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"transformInverse": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"parentId": "00000000-0000-0000-0000-000000000000",
+									"frameId": "00000000-0000-0000-0000-000000000000",
+									"flipX": null,
+									"flipY": null,
+									"hideFillOnExport": false,
+									"r2": 0,
+									"proportionLock": false,
+									"r3": 0,
+									"r1": 0,
+									"strokes": [],
+									"proportion": 1,
+									"r4": 0,
+									"fills": [
+										{
+											"fillColor": "#FFFFFF",
+											"fillOpacity": 1
+										}
+									],
+									"shapes": [
+										"5efbf399-2422-49a3-af19-5ac424e59d71",
+										"313525be-56c3-499e-9925-81a4894f996f",
+										"2eddef2e-7701-4b2f-8444-d5490a7af878",
+										"a0cb393a-2f9f-4cc3-ae3e-918138ce9c22",
+										"114118b8-3384-4281-93a7-bd31f42f9f58",
+										"114af3c7-09a6-4b11-ad8b-c3de2a55b23d"
+									]
+								},
+								"1312bc1e-ebc9-4b0d-a32b-948f2eacd6dc": {
+									"id": "1312bc1e-ebc9-4b0d-a32b-948f2eacd6dc",
+									"name": "Body",
+									"type": "frame",
+									"x": 480,
+									"y": 20,
+									"width": 120,
+									"height": 40,
+									"rotation": 0,
+									"selrect": {
+										"x": 480,
+										"y": 20,
+										"width": 120,
+										"height": 40,
+										"x1": 480,
+										"y1": 20,
+										"x2": 600,
+										"y2": 60
+									},
+									"points": [
+										{
+											"x": 480,
+											"y": 20
+										},
+										{
+											"x": 600,
+											"y": 20
+										},
+										{
+											"x": 600,
+											"y": 60
+										},
+										{
+											"x": 480,
+											"y": 60
+										}
+									],
+									"transform": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"transformInverse": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"parentId": "a0cb393a-2f9f-4cc3-ae3e-918138ce9c22",
+									"frameId": "a0cb393a-2f9f-4cc3-ae3e-918138ce9c22",
+									"flipX": null,
+									"flipY": null,
+									"shapeRef": "5efbf399-2422-49a3-af19-5ac424e59d71",
+									"componentId": "b640ba70-e41e-4ef5-b90d-4fadcb3fdf0a",
+									"strokes": [],
+									"fills": [
+										{
+											"fillColor": "#FFFFFF",
+											"fillOpacity": 1
+										}
+									],
+									"componentFile": "de716cff-f170-81a2-8008-e6426b9882fe",
+									"shapes": []
+								},
+								"313525be-56c3-499e-9925-81a4894f996f": {
+									"id": "313525be-56c3-499e-9925-81a4894f996f",
+									"name": "Trash2",
+									"type": "frame",
+									"x": 160,
+									"y": 0,
+									"width": 24,
+									"height": 24,
+									"rotation": 0,
+									"selrect": {
+										"x": 160,
+										"y": 0,
+										"width": 24,
+										"height": 24,
+										"x1": 160,
+										"y1": 0,
+										"x2": 184,
+										"y2": 24
+									},
+									"points": [
+										{
+											"x": 160,
+											"y": 0
+										},
+										{
+											"x": 184,
+											"y": 0
+										},
+										{
+											"x": 184,
+											"y": 24
+										},
+										{
+											"x": 160,
+											"y": 24
+										}
+									],
+									"transform": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"transformInverse": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"parentId": "00000000-0000-0000-0000-000000000000",
+									"frameId": "00000000-0000-0000-0000-000000000000",
+									"flipX": null,
+									"flipY": null,
+									"componentRoot": true,
+									"componentId": "73745204-2a2a-42a6-8f70-1fbf8289dc55",
+									"strokes": [],
+									"mainInstance": true,
+									"fills": [
+										{
+											"fillColor": "#FFFFFF",
+											"fillOpacity": 1
+										}
+									],
+									"componentFile": "de716cff-f170-81a2-8008-e6426b9882fe",
+									"shapes": []
+								},
+								"3162a554-75a9-4269-beed-91dc940220ea": {
+									"id": "3162a554-75a9-4269-beed-91dc940220ea",
+									"name": "Footer",
+									"type": "frame",
+									"x": 720,
+									"y": 80,
+									"width": 200,
+									"height": 40,
+									"rotation": 0,
+									"selrect": {
+										"x": 720,
+										"y": 80,
+										"width": 200,
+										"height": 40,
+										"x1": 720,
+										"y1": 80,
+										"x2": 920,
+										"y2": 120
+									},
+									"points": [
+										{
+											"x": 720,
+											"y": 80
+										},
+										{
+											"x": 920,
+											"y": 80
+										},
+										{
+											"x": 920,
+											"y": 120
+										},
+										{
+											"x": 720,
+											"y": 120
+										}
+									],
+									"transform": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"transformInverse": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"parentId": "114118b8-3384-4281-93a7-bd31f42f9f58",
+									"frameId": "114118b8-3384-4281-93a7-bd31f42f9f58",
+									"flipX": null,
+									"flipY": null,
+									"strokes": [],
+									"fills": [
+										{
+											"fillColor": "#FFFFFF",
+											"fillOpacity": 1
+										}
+									],
+									"shapes": []
+								},
+								"5efbf399-2422-49a3-af19-5ac424e59d71": {
+									"id": "5efbf399-2422-49a3-af19-5ac424e59d71",
+									"name": "Slot",
+									"type": "frame",
+									"x": 0,
+									"y": 0,
+									"width": 120,
+									"height": 40,
+									"rotation": 0,
+									"selrect": {
+										"x": 0,
+										"y": 0,
+										"width": 120,
+										"height": 40,
+										"x1": 0,
+										"y1": 0,
+										"x2": 120,
+										"y2": 40
+									},
+									"points": [
+										{
+											"x": 0,
+											"y": 0
+										},
+										{
+											"x": 120,
+											"y": 0
+										},
+										{
+											"x": 120,
+											"y": 40
+										},
+										{
+											"x": 0,
+											"y": 40
+										}
+									],
+									"transform": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"transformInverse": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"parentId": "00000000-0000-0000-0000-000000000000",
+									"frameId": "00000000-0000-0000-0000-000000000000",
+									"flipX": null,
+									"flipY": null,
+									"componentRoot": true,
+									"componentId": "b640ba70-e41e-4ef5-b90d-4fadcb3fdf0a",
+									"strokes": [],
+									"mainInstance": true,
+									"fills": [
+										{
+											"fillColor": "#FF00FF",
+											"fillOpacity": 1
+										}
+									],
+									"componentFile": "de716cff-f170-81a2-8008-e6426b9882fe",
+									"shapes": []
+								},
+								"114118b8-3384-4281-93a7-bd31f42f9f58": {
+									"id": "114118b8-3384-4281-93a7-bd31f42f9f58",
+									"name": "Card",
+									"type": "frame",
+									"x": 720,
+									"y": 0,
+									"width": 200,
+									"height": 120,
+									"rotation": 0,
+									"selrect": {
+										"x": 720,
+										"y": 0,
+										"width": 200,
+										"height": 120,
+										"x1": 720,
+										"y1": 0,
+										"x2": 920,
+										"y2": 120
+									},
+									"points": [
+										{
+											"x": 720,
+											"y": 0
+										},
+										{
+											"x": 920,
+											"y": 0
+										},
+										{
+											"x": 920,
+											"y": 120
+										},
+										{
+											"x": 720,
+											"y": 120
+										}
+									],
+									"transform": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"transformInverse": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"parentId": "00000000-0000-0000-0000-000000000000",
+									"frameId": "00000000-0000-0000-0000-000000000000",
+									"flipX": null,
+									"flipY": null,
+									"componentRoot": true,
+									"componentId": "1e45bec9-dd4f-4780-bf18-d867d1f3be39",
+									"strokes": [],
+									"mainInstance": true,
+									"fills": [
+										{
+											"fillColor": "#FFFFFF",
+											"fillOpacity": 1
+										}
+									],
+									"componentFile": "de716cff-f170-81a2-8008-e6426b9882fe",
+									"shapes": [
+										"da6a2c69-3b7a-4d5a-a409-161479e7d171",
+										"3162a554-75a9-4269-beed-91dc940220ea"
+									]
+								},
+								"2eddef2e-7701-4b2f-8444-d5490a7af878": {
+									"id": "2eddef2e-7701-4b2f-8444-d5490a7af878",
+									"name": "Header",
+									"type": "frame",
+									"x": 240,
+									"y": 0,
+									"width": 200,
+									"height": 40,
+									"rotation": 0,
+									"selrect": {
+										"x": 240,
+										"y": 0,
+										"width": 200,
+										"height": 40,
+										"x1": 240,
+										"y1": 0,
+										"x2": 440,
+										"y2": 40
+									},
+									"points": [
+										{
+											"x": 240,
+											"y": 0
+										},
+										{
+											"x": 440,
+											"y": 0
+										},
+										{
+											"x": 440,
+											"y": 40
+										},
+										{
+											"x": 240,
+											"y": 40
+										}
+									],
+									"transform": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"transformInverse": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"parentId": "00000000-0000-0000-0000-000000000000",
+									"frameId": "00000000-0000-0000-0000-000000000000",
+									"flipX": null,
+									"flipY": null,
+									"componentRoot": true,
+									"componentId": "5dcadb80-4a70-48c8-b43f-9d44737c0d71",
+									"strokes": [],
+									"mainInstance": true,
+									"fills": [
+										{
+											"fillColor": "#FFFFFF",
+											"fillOpacity": 1
+										}
+									],
+									"componentFile": "de716cff-f170-81a2-8008-e6426b9882fe",
+									"shapes": []
+								},
+								"ec1f191a-16a7-4603-bd51-a4abf7763980": {
+									"id": "ec1f191a-16a7-4603-bd51-a4abf7763980",
+									"name": "Components / Button",
+									"type": "frame",
+									"x": 20,
+									"y": 220,
+									"width": 90,
+									"height": 40,
+									"rotation": 0,
+									"selrect": {
+										"x": 20,
+										"y": 220,
+										"width": 90,
+										"height": 40,
+										"x1": 20,
+										"y1": 220,
+										"x2": 110,
+										"y2": 260
+									},
+									"points": [
+										{
+											"x": 20,
+											"y": 220
+										},
+										{
+											"x": 110,
+											"y": 220
+										},
+										{
+											"x": 110,
+											"y": 260
+										},
+										{
+											"x": 20,
+											"y": 260
+										}
+									],
+									"transform": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"transformInverse": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"parentId": "114af3c7-09a6-4b11-ad8b-c3de2a55b23d",
+									"frameId": "114af3c7-09a6-4b11-ad8b-c3de2a55b23d",
+									"flipX": null,
+									"flipY": null,
+									"variantName": "default",
+									"componentRoot": true,
+									"componentId": "73cfb88a-535e-469a-9552-a46495d5fefc",
+									"strokes": [],
+									"mainInstance": true,
+									"fills": [
+										{
+											"fillColor": "#FFFFFF",
+											"fillOpacity": 1
+										}
+									],
+									"variantId": "114af3c7-09a6-4b11-ad8b-c3de2a55b23d",
+									"componentFile": "de716cff-f170-81a2-8008-e6426b9882fe",
+									"shapes": []
+								},
+								"114af3c7-09a6-4b11-ad8b-c3de2a55b23d": {
+									"id": "114af3c7-09a6-4b11-ad8b-c3de2a55b23d",
+									"name": "Components / Button",
+									"type": "frame",
+									"x": 0,
+									"y": 200,
+									"width": 240,
+									"height": 80,
+									"rotation": 0,
+									"selrect": {
+										"x": 0,
+										"y": 200,
+										"width": 240,
+										"height": 80,
+										"x1": 0,
+										"y1": 200,
+										"x2": 240,
+										"y2": 280
+									},
+									"points": [
+										{
+											"x": 0,
+											"y": 200
+										},
+										{
+											"x": 240,
+											"y": 200
+										},
+										{
+											"x": 240,
+											"y": 280
+										},
+										{
+											"x": 0,
+											"y": 280
+										}
+									],
+									"transform": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"transformInverse": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"parentId": "00000000-0000-0000-0000-000000000000",
+									"frameId": "00000000-0000-0000-0000-000000000000",
+									"flipX": null,
+									"flipY": null,
+									"isVariantContainer": true,
+									"strokes": [],
+									"fills": [
+										{
+											"fillColor": "#FFFFFF",
+											"fillOpacity": 1
+										}
+									],
+									"shapes": [
+										"ec1f191a-16a7-4603-bd51-a4abf7763980",
+										"592e27aa-0751-41d7-9291-b5a73281bfe7"
+									]
+								},
+								"da6a2c69-3b7a-4d5a-a409-161479e7d171": {
+									"id": "da6a2c69-3b7a-4d5a-a409-161479e7d171",
+									"name": "Header",
+									"type": "frame",
+									"x": 720,
+									"y": 0,
+									"width": 200,
+									"height": 40,
+									"rotation": 0,
+									"selrect": {
+										"x": 720,
+										"y": 0,
+										"width": 200,
+										"height": 40,
+										"x1": 720,
+										"y1": 0,
+										"x2": 920,
+										"y2": 40
+									},
+									"points": [
+										{
+											"x": 720,
+											"y": 0
+										},
+										{
+											"x": 920,
+											"y": 0
+										},
+										{
+											"x": 920,
+											"y": 40
+										},
+										{
+											"x": 720,
+											"y": 40
+										}
+									],
+									"transform": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"transformInverse": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"parentId": "114118b8-3384-4281-93a7-bd31f42f9f58",
+									"frameId": "114118b8-3384-4281-93a7-bd31f42f9f58",
+									"flipX": null,
+									"flipY": null,
+									"shapeRef": "2eddef2e-7701-4b2f-8444-d5490a7af878",
+									"componentId": "5dcadb80-4a70-48c8-b43f-9d44737c0d71",
+									"strokes": [],
+									"fills": [
+										{
+											"fillColor": "#FFFFFF",
+											"fillOpacity": 1
+										}
+									],
+									"componentFile": "de716cff-f170-81a2-8008-e6426b9882fe",
+									"shapes": []
+								},
+								"a0cb393a-2f9f-4cc3-ae3e-918138ce9c22": {
+									"id": "a0cb393a-2f9f-4cc3-ae3e-918138ce9c22",
+									"name": "Content",
+									"type": "frame",
+									"x": 480,
+									"y": 0,
+									"width": 200,
+									"height": 80,
+									"rotation": 0,
+									"selrect": {
+										"x": 480,
+										"y": 0,
+										"width": 200,
+										"height": 80,
+										"x1": 480,
+										"y1": 0,
+										"x2": 680,
+										"y2": 80
+									},
+									"points": [
+										{
+											"x": 480,
+											"y": 0
+										},
+										{
+											"x": 680,
+											"y": 0
+										},
+										{
+											"x": 680,
+											"y": 80
+										},
+										{
+											"x": 480,
+											"y": 80
+										}
+									],
+									"transform": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"transformInverse": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"parentId": "00000000-0000-0000-0000-000000000000",
+									"frameId": "00000000-0000-0000-0000-000000000000",
+									"flipX": null,
+									"flipY": null,
+									"componentRoot": true,
+									"componentId": "248c6dc1-8a3c-4615-81ef-6143142a1123",
+									"strokes": [],
+									"mainInstance": true,
+									"fills": [
+										{
+											"fillColor": "#FFFFFF",
+											"fillOpacity": 1
+										}
+									],
+									"componentFile": "de716cff-f170-81a2-8008-e6426b9882fe",
+									"shapes": ["1312bc1e-ebc9-4b0d-a32b-948f2eacd6dc"]
+								},
+								"592e27aa-0751-41d7-9291-b5a73281bfe7": {
+									"id": "592e27aa-0751-41d7-9291-b5a73281bfe7",
+									"name": "Components / Button",
+									"type": "frame",
+									"x": 130,
+									"y": 220,
+									"width": 90,
+									"height": 40,
+									"rotation": 0,
+									"selrect": {
+										"x": 130,
+										"y": 220,
+										"width": 90,
+										"height": 40,
+										"x1": 130,
+										"y1": 220,
+										"x2": 220,
+										"y2": 260
+									},
+									"points": [
+										{
+											"x": 130,
+											"y": 220
+										},
+										{
+											"x": 220,
+											"y": 220
+										},
+										{
+											"x": 220,
+											"y": 260
+										},
+										{
+											"x": 130,
+											"y": 260
+										}
+									],
+									"transform": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"transformInverse": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"parentId": "114af3c7-09a6-4b11-ad8b-c3de2a55b23d",
+									"frameId": "114af3c7-09a6-4b11-ad8b-c3de2a55b23d",
+									"flipX": null,
+									"flipY": null,
+									"variantName": "sm",
+									"componentRoot": true,
+									"componentId": "27d1f7d6-45f6-47eb-9cdb-80104f417845",
+									"strokes": [],
+									"mainInstance": true,
+									"fills": [
+										{
+											"fillColor": "#FFFFFF",
+											"fillOpacity": 1
+										}
+									],
+									"variantId": "114af3c7-09a6-4b11-ad8b-c3de2a55b23d",
+									"componentFile": "de716cff-f170-81a2-8008-e6426b9882fe",
+									"shapes": []
+								}
+							},
+							"id": "de716cff-f170-81a2-8008-e6426b9882ff",
+							"name": "Page 1"
+						}
+					},
+					"id": "de716cff-f170-81a2-8008-e6426b9882fe",
+					"options": {
+						"componentsV2": true,
+						"baseFontSize": "16px"
+					},
+					"components": {
+						"b640ba70-e41e-4ef5-b90d-4fadcb3fdf0a": {
+							"id": "b640ba70-e41e-4ef5-b90d-4fadcb3fdf0a",
+							"name": "Slot",
+							"path": "_internal",
+							"modifiedAt": "2026-11-05T13:50:03.895Z",
+							"mainInstanceId": "5efbf399-2422-49a3-af19-5ac424e59d71",
+							"mainInstancePage": "de716cff-f170-81a2-8008-e6426b9882ff"
+						},
+						"73745204-2a2a-42a6-8f70-1fbf8289dc55": {
+							"id": "73745204-2a2a-42a6-8f70-1fbf8289dc55",
+							"name": "Trash2",
+							"path": "icon",
+							"modifiedAt": "2026-11-05T13:50:03.896Z",
+							"mainInstanceId": "313525be-56c3-499e-9925-81a4894f996f",
+							"mainInstancePage": "de716cff-f170-81a2-8008-e6426b9882ff"
+						},
+						"5dcadb80-4a70-48c8-b43f-9d44737c0d71": {
+							"id": "5dcadb80-4a70-48c8-b43f-9d44737c0d71",
+							"name": "Header",
+							"path": "Components / Card",
+							"modifiedAt": "2026-11-05T13:50:03.896Z",
+							"mainInstanceId": "2eddef2e-7701-4b2f-8444-d5490a7af878",
+							"mainInstancePage": "de716cff-f170-81a2-8008-e6426b9882ff"
+						},
+						"248c6dc1-8a3c-4615-81ef-6143142a1123": {
+							"id": "248c6dc1-8a3c-4615-81ef-6143142a1123",
+							"name": "Content",
+							"path": "Components / Card",
+							"modifiedAt": "2026-11-05T13:50:03.896Z",
+							"mainInstanceId": "a0cb393a-2f9f-4cc3-ae3e-918138ce9c22",
+							"mainInstancePage": "de716cff-f170-81a2-8008-e6426b9882ff",
+							"pluginData": {
+								"brrritscoldCoreReact": {
+									"link": "{\"v\":1,\"slots\":[\"Body\"]}"
+								}
+							}
+						},
+						"1e45bec9-dd4f-4780-bf18-d867d1f3be39": {
+							"id": "1e45bec9-dd4f-4780-bf18-d867d1f3be39",
+							"name": "Card",
+							"path": "Components",
+							"modifiedAt": "2026-11-05T13:50:03.896Z",
+							"mainInstanceId": "114118b8-3384-4281-93a7-bd31f42f9f58",
+							"mainInstancePage": "de716cff-f170-81a2-8008-e6426b9882ff"
+						},
+						"73cfb88a-535e-469a-9552-a46495d5fefc": {
+							"path": "Components",
+							"mainInstanceId": "ec1f191a-16a7-4603-bd51-a4abf7763980",
+							"name": "Button",
+							"variantProperties": [
+								{
+									"name": "size",
+									"value": "default"
+								}
+							],
+							"modifiedAt": "2026-11-05T13:50:03.896Z",
+							"mainInstancePage": "de716cff-f170-81a2-8008-e6426b9882ff",
+							"id": "73cfb88a-535e-469a-9552-a46495d5fefc",
+							"variantId": "114af3c7-09a6-4b11-ad8b-c3de2a55b23d"
+						},
+						"27d1f7d6-45f6-47eb-9cdb-80104f417845": {
+							"path": "Components",
+							"mainInstanceId": "592e27aa-0751-41d7-9291-b5a73281bfe7",
+							"name": "Button",
+							"variantProperties": [
+								{
+									"name": "size",
+									"value": "sm"
+								}
+							],
+							"modifiedAt": "2026-11-05T13:50:03.896Z",
+							"mainInstancePage": "de716cff-f170-81a2-8008-e6426b9882ff",
+							"id": "27d1f7d6-45f6-47eb-9cdb-80104f417845",
+							"variantId": "114af3c7-09a6-4b11-ad8b-c3de2a55b23d"
+						}
+					}
+				}
+			}
+		}
+	]
+}

@@ -13,6 +13,7 @@ Turborepo + pnpm monorepo for shared TypeScript libraries, published to npm unde
 | [`@brrritscold/testing-core-node`](./packages/testing-core-node)                                                | node           | testcontainers wrappers, nock interceptors                                |
 | [`@brrritscold/design-core-js`](./packages/design-core-js) (private)                                            | browser + node | component-link resolver, snapshot schemas, drift rules, coverage report   |
 | [`@brrritscold/design-core-node`](./packages/design-core-node) (private)                                        | node           | code manifest generator, `design-drift` CLI                               |
+| [`@brrritscold/design-penpot-sdk-node`](./packages/design-penpot-sdk-node) (private)                            | node           | Penpot RPC client, library-snapshot normalizer                            |
 | [`@brrritscold/core-react`](https://github.com/bRRRITSCOLD/ts-packages/tree/main/packages/core-react) (private) | browser + SSR  | React components, design tokens, `styles.css` (Storybook is its docs)     |
 
 ## Develop

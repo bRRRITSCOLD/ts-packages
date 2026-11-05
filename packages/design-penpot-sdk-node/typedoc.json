@@ -1,0 +1,6 @@
+{
+	"$schema": "https://typedoc.org/schema.json",
+	"entryPoints": ["src/library-snapshot.ts", "src/rpc.ts"],
+	"readme": "README.md",
+	"includeVersion": true
+}
