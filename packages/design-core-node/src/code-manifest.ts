@@ -1,7 +1,11 @@
 import { resolve } from 'node:path'
 
 // node_modules
-import type { CodeManifest, CodeProp } from '@brrritscold/design-core-js/code-manifest'
+import {
+	type CodeManifest,
+	type CodeProp,
+	compareCodeUnits,
+} from '@brrritscold/design-core-js/code-manifest'
 import ts from 'typescript'
 
 /** Where core-react's built declarations are: the `.` entry and the `./icons` entry. */
@@ -13,8 +17,7 @@ export type CodeManifestSources = {
 }
 
 /** Sorts by name in code-unit order, so the manifest is the same on every machine. */
-const byName = (a: { name: string }, b: { name: string }) =>
-	a.name < b.name ? -1 : a.name > b.name ? 1 : 0
+const byName = (a: { name: string }, b: { name: string }) => compareCodeUnits(a.name, b.name)
 
 /** An icon export: `<Name>Icon`, the alias the component link uses for an icon component. */
 const ICON_EXPORT = /^[A-Z][A-Za-z0-9]*Icon$/

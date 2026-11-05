@@ -2,4 +2,4 @@
 // The design-drift CLI; see `runDriftCli` in src/drift-check.ts.
 import { runDriftCli } from '../dist/drift-check.mjs'
 
-process.exitCode = await runDriftCli(process.argv.slice(2))
+process.exitCode = runDriftCli(process.argv.slice(2))

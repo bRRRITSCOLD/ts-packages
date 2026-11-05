@@ -1,68 +1,90 @@
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
-import { tmpdir } from 'node:os'
-import { join } from 'node:path'
+import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 
-import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 // testee
 import { type DriftCliIo, runDriftCli } from '../../src/drift-check.js'
 
 const fixture = (file: string) => fileURLToPath(new URL(`./__fixtures__/${file}`, import.meta.url))
 
-/** Runs the CLI with its output captured, and the step summary written to a file in `dir`. */
-const run = async (dir: string, ...argv: string[]) => {
+const DESIGN_FIXTURES = [
+	'library.snapshot.json',
+	'library.drifted.snapshot.json',
+	'drift.config.json',
+]
+const MANIFEST = 'code-manifest.json'
+const STEP_SUMMARY = 'step-summary.md'
+
+/**
+ * The CLI over an in-memory file system preloaded with the design fixtures: what it writes
+ * stays in `files`, and its output is captured. The code manifest generator reads the fixture
+ * `.d.ts` itself.
+ */
+const cli = () => {
+	const files = new Map(
+		DESIGN_FIXTURES.map((file) => [
+			fixture(`design/${file}`),
+			readFileSync(fixture(`design/${file}`), 'utf8'),
+		])
+	)
 	const stdout: string[] = []
 	const stderr: string[] = []
-	const stepSummary = join(dir, `step-summary-${Math.random()}.md`)
-	writeFileSync(stepSummary, '')
 	const io: DriftCliIo = {
 		stdout: (line) => stdout.push(line),
 		stderr: (line) => stderr.push(line),
-		env: { GITHUB_STEP_SUMMARY: stepSummary },
+		env: { GITHUB_STEP_SUMMARY: STEP_SUMMARY },
+		readFile: (path) => {
+			const text = files.get(path)
+			if (text === undefined) throw new Error(`ENOENT: no such file, open '${path}'`)
+			return text
+		},
+		writeFile: (path, text) => {
+			files.set(path, text)
+		},
+		appendFile: (path, text) => {
+			files.set(path, (files.get(path) ?? '') + text)
+		},
 	}
-	const exitCode = await runDriftCli(argv, io)
-	return { exitCode, stdout, stderr, summary: readFileSync(stepSummary, 'utf8') }
+	const run = (...argv: string[]) => runDriftCli(argv, io)
+	return { files, stdout, stderr, run }
+}
+
+/** The CLI with the code manifest of the fixture `.d.ts` already written to `code-manifest.json`. */
+const cliWithManifest = () => {
+	const drift = cli()
+	const exitCode = drift.run(
+		'manifest',
+		'--entry',
+		fixture('core-react/index.d.ts'),
+		'--icons',
+		fixture('core-react/icons.d.ts'),
+		'--out',
+		MANIFEST
+	)
+	expect(exitCode).toBe(0)
+	return drift
+}
+
+/** Runs `check` on a snapshot fixture against the fixture manifest and config. */
+const check = (snapshot: string) => {
+	const drift = cliWithManifest()
+	const exitCode = drift.run(
+		'check',
+		'--manifest',
+		MANIFEST,
+		'--snapshot',
+		fixture(`design/${snapshot}`),
+		'--config',
+		fixture('design/drift.config.json')
+	)
+	return { ...drift, exitCode, summary: drift.files.get(STEP_SUMMARY) }
 }
 
 describe('design-drift CLI', () => {
-	let dir: string
-	let manifest: string
-	const check = (snapshot: string) =>
-		run(
-			dir,
-			'check',
-			'--manifest',
-			manifest,
-			'--snapshot',
-			fixture(`design/${snapshot}`),
-			'--config',
-			fixture('design/drift.config.json')
-		)
-
-	beforeAll(async () => {
-		dir = mkdtempSync(join(tmpdir(), 'design-drift-'))
-		manifest = join(dir, 'code-manifest.json')
-		const { exitCode } = await run(
-			dir,
-			'manifest',
-			'--entry',
-			fixture('core-react/index.d.ts'),
-			'--icons',
-			fixture('core-react/icons.d.ts'),
-			'--out',
-			manifest
-		)
-		expect(exitCode).toBe(0)
-	})
-
-	afterAll(() => {
-		rmSync(dir, { recursive: true, force: true })
-	})
-
 	describe('manifest', () => {
 		it('should write the code manifest of the .d.ts as JSON', () => {
-			const written = JSON.parse(readFileSync(manifest, 'utf8'))
+			const written = JSON.parse(cliWithManifest().files.get(MANIFEST) ?? '')
 
 			expect(Object.keys(written.exports)).toContain('Button')
 			expect(written.icons).toEqual(['BellIcon', 'Trash2Icon'])
@@ -70,8 +92,8 @@ describe('design-drift CLI', () => {
 	})
 
 	describe('check, library in step with the code', () => {
-		it('should pass, with no annotation but the coverage-gap warning (exit 0)', async () => {
-			const { exitCode, stdout } = await check('library.snapshot.json')
+		it('should pass, with no annotation but the coverage-gap warning (exit 0)', () => {
+			const { exitCode, stdout } = check('library.snapshot.json')
 
 			expect(exitCode).toBe(0)
 			expect(stdout).toEqual([
@@ -79,8 +101,8 @@ describe('design-drift CLI', () => {
 			])
 		})
 
-		it('should say there is no drift, with the coverage gaps collapsed', async () => {
-			const { summary } = await check('library.snapshot.json')
+		it('should say there is no drift, with the coverage gaps collapsed', () => {
+			const { summary } = check('library.snapshot.json')
 
 			expect(summary).toBe(
 				[
@@ -103,8 +125,8 @@ describe('design-drift CLI', () => {
 	})
 
 	describe('check, library drifted from the code', () => {
-		it('should fail with one error annotation per mismatch and a warning per unchecked component (exit 1)', async () => {
-			const { exitCode, stdout } = await check('library.drifted.snapshot.json')
+		it('should fail with one error annotation per mismatch and a warning per unchecked component (exit 1)', () => {
+			const { exitCode, stdout } = check('library.drifted.snapshot.json')
 
 			expect(exitCode).toBe(1)
 			expect(stdout).toEqual([
@@ -118,8 +140,8 @@ describe('design-drift CLI', () => {
 			])
 		})
 
-		it('should write a step summary table of component → rule → expected vs found', async () => {
-			const { summary } = await check('library.drifted.snapshot.json')
+		it('should write a step summary table of component → rule → expected vs found', () => {
+			const { summary } = check('library.drifted.snapshot.json')
 
 			expect(summary).toBe(
 				[
@@ -158,29 +180,30 @@ describe('design-drift CLI', () => {
 	})
 
 	describe('invalid input', () => {
-		it('should fail loudly on a snapshot that does not match its schema (exit 2)', async () => {
-			const snapshot = join(dir, 'bad.snapshot.json')
-			writeFileSync(snapshot, JSON.stringify({ schemaVersion: 1, components: {} }))
+		it('should fail loudly on a snapshot that does not match its schema (exit 2)', () => {
+			const { files, run, stderr } = cliWithManifest()
+			files.set('bad.snapshot.json', JSON.stringify({ schemaVersion: 1, components: {} }))
 
-			const { exitCode, stderr } = await run(
-				dir,
+			const exitCode = run(
 				'check',
 				'--manifest',
-				manifest,
+				MANIFEST,
 				'--snapshot',
-				snapshot,
+				'bad.snapshot.json',
 				'--config',
 				fixture('design/drift.config.json')
 			)
 
 			expect(exitCode).toBe(2)
 			expect(stderr.join('\n')).toContain(
-				`${snapshot} does not match the library snapshot schema`
+				'bad.snapshot.json does not match the library snapshot schema'
 			)
 		})
 
-		it('should print usage for an unknown command (exit 2)', async () => {
-			const { exitCode, stderr } = await run(dir, 'sync')
+		it('should print usage for an unknown command (exit 2)', () => {
+			const { run, stderr } = cli()
+
+			const exitCode = run('sync')
 
 			expect(exitCode).toBe(2)
 			expect(stderr.join('\n')).toContain('Usage: design-drift')
