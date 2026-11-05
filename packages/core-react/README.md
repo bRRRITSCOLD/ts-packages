@@ -92,11 +92,11 @@ Naming is the component link: export name = library component name, cva variant 
 
 ## Tests
 
-| Tier          | Files                                        | Runner                                                                                                               |
-| ------------- | -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| `stories`     | `src/components/*.stories.tsx`               | Vitest browser mode (Chromium) via `@storybook/addon-vitest`; `@storybook/addon-a11y` fails on violations            |
-| `unit`        | `tests/unit/**/*.unit.test.ts(x)`            | Vitest on jsdom: `cn`, the token build, the token checks, the source scan, the story-title and tier-placement checks |
-| `integration` | `tests/integration/**/*.integration.spec.ts` | Playwright against `storybook build`, served by `vite preview`; proves the component objects and the Base UI traps   |
+| Tier          | Files                                        | Runner                                                                                                                                 |
+| ------------- | -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `stories`     | `src/components/*.stories.tsx`               | Vitest browser mode (Chromium) via `@storybook/addon-vitest`; `@storybook/addon-a11y` fails on violations                              |
+| `unit`        | `tests/unit/**/*.unit.test.ts(x)`            | Vitest on jsdom, `fetch` throwing: `cn`, the token build, the token checks, the source scan, the story-title and tier-placement checks |
+| `integration` | `tests/integration/**/*.integration.spec.ts` | Playwright against `storybook build`, served by `vite preview`; proves the component objects and the Base UI traps                     |
 
 A story's `title` is its library component's Penpot path (`Components/Button`), one story per variant value, each with a `play` function. The component name in that path is the export, so a two-word component is `Components/AlertDialog`, never `Alert Dialog`; the unit tier's story-title check fails a title whose last segment isn't a `.` export. A story that opts out of a11y (`parameters: { a11y: { test: 'off' } }`) says why in a comment beside it. The token checks: light and dark define the same semantic tokens, every class a component applies compiles to a utility of the built theme, and each of those utilities reads a token for every token-typed property it sets.
 

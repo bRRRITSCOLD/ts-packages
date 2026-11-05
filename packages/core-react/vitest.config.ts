@@ -1,6 +1,6 @@
 // core-react's tiers depart from ../../vitest.shared.ts (see README → Tests): `unit` runs on
-// jsdom and takes .tsx; `stories` runs every story, play function and a11y check in Chromium;
-// `integration` is Playwright against a static Storybook build.
+// jsdom, takes .tsx and makes fetch throw; `stories` runs every story, play function and a11y
+// check in Chromium; `integration` is Playwright against a static Storybook build.
 import { join } from 'node:path'
 
 // node_modules
@@ -16,6 +16,7 @@ export default defineConfig({
 					name: 'unit',
 					include: ['tests/unit/**/*.unit.test.{ts,tsx}'],
 					environment: 'jsdom',
+					setupFiles: ['tests/unit/__utils__/setup.ts'],
 				},
 			},
 			{
