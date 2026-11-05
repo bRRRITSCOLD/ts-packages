@@ -47,7 +47,8 @@ export type DriftCheckInput = {
  * `exceptionsRecord` (5) the exceptions record is valid and points at real props, values and
  * roles, `tokenCatalog` (6) the token catalog equals the token file, `unbound` (7) no checked
  * attribute holds a raw value, `unknownToken` (8) every applied token is in the token file,
- * `primitiveColour` (9) no fill or stroke colour comes from a `primitive` token.
+ * `primitiveColour` (9) no fill or stroke colour comes from a `primitive` token. Rules 7–9 skip
+ * `_internal/` components, as rules 1–5 do.
  */
 export const DRIFT_RULE = {
 	export: 1,
@@ -440,7 +441,9 @@ export const checkDrift = ({
 		const record = parsed?.data
 		const link = resolveComponentLink(component, record)
 		checkParts(component, snapshot).forEach(report(DRIFT_RULE.part))
-		checkLayers(component, tokenNames, report)
+		// An `_internal/` component links to no code, so no core-react styling binds its layers:
+		// the slot placeholder keeps its raw magenta fill.
+		if (link.kind !== 'internal') checkLayers(component, tokenNames, report)
 
 		if (link.kind === 'icon' && !manifest.icons.includes(link.export))
 			report(DRIFT_RULE.icon)({
