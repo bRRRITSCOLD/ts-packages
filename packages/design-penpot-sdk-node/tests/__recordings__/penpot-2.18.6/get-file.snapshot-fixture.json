@@ -1,6 +1,6 @@
 {
 	"penpotVersion": "2.18.6",
-	"fileId": "de716cff-f170-81a2-8008-e6426b9882fe",
+	"fileId": "de716cff-f170-81a2-8008-e6482008d970",
 	"interactions": [
 		{
 			"method": "GET",
@@ -12,7 +12,7 @@
 			"method": "POST",
 			"path": "/api/rpc/command/get-file",
 			"requestBody": {
-				"id": "de716cff-f170-81a2-8008-e6426b9882fe"
+				"id": "de716cff-f170-81a2-8008-e6482008d970"
 			},
 			"status": 200,
 			"responseBody": {
@@ -42,9 +42,9 @@
 				"commentThreadSeqn": 0,
 				"name": "snapshot-fixture",
 				"revn": 1,
-				"modifiedAt": "2026-11-05T13:50:03.894661Z",
+				"modifiedAt": "2026-11-05T14:14:59.378003Z",
 				"vern": 0,
-				"id": "de716cff-f170-81a2-8008-e6426b9882fe",
+				"id": "de716cff-f170-81a2-8008-e6482008d970",
 				"isShared": true,
 				"migrations": [
 					"legacy-2",
@@ -132,12 +132,12 @@
 				],
 				"version": 67,
 				"projectId": "90351bb9-226b-8199-8008-e62e755dfffc",
-				"createdAt": "2026-11-05T13:50:03.874465Z",
+				"createdAt": "2026-11-05T14:14:59.363606Z",
 				"backend": "db",
 				"data": {
-					"pages": ["de716cff-f170-81a2-8008-e6426b9882ff"],
+					"pages": ["de716cff-f170-81a2-8008-e6482008d971"],
 					"pagesIndex": {
-						"de716cff-f170-81a2-8008-e6426b9882ff": {
+						"de716cff-f170-81a2-8008-e6482008d971": {
 							"objects": {
 								"00000000-0000-0000-0000-000000000000": {
 									"id": "00000000-0000-0000-0000-000000000000",
@@ -211,506 +211,16 @@
 										}
 									],
 									"shapes": [
-										"5efbf399-2422-49a3-af19-5ac424e59d71",
-										"313525be-56c3-499e-9925-81a4894f996f",
-										"2eddef2e-7701-4b2f-8444-d5490a7af878",
-										"a0cb393a-2f9f-4cc3-ae3e-918138ce9c22",
-										"114118b8-3384-4281-93a7-bd31f42f9f58",
-										"114af3c7-09a6-4b11-ad8b-c3de2a55b23d"
+										"dd8c2127-ddd0-472e-b2b1-a0c787c884db",
+										"0695930d-c9fe-4048-9931-dd8e19a5c61f",
+										"9229ce07-71b8-43f6-8934-1b34219ceeba",
+										"b954bfa2-696b-4184-8853-5d6db0c8b020",
+										"ddf1f9c4-3aa4-4ebe-9dca-e47ac3885ab1",
+										"3c807937-dfba-4a07-93a3-9e9a29ea9d8a"
 									]
 								},
-								"1312bc1e-ebc9-4b0d-a32b-948f2eacd6dc": {
-									"id": "1312bc1e-ebc9-4b0d-a32b-948f2eacd6dc",
-									"name": "Body",
-									"type": "frame",
-									"x": 480,
-									"y": 20,
-									"width": 120,
-									"height": 40,
-									"rotation": 0,
-									"selrect": {
-										"x": 480,
-										"y": 20,
-										"width": 120,
-										"height": 40,
-										"x1": 480,
-										"y1": 20,
-										"x2": 600,
-										"y2": 60
-									},
-									"points": [
-										{
-											"x": 480,
-											"y": 20
-										},
-										{
-											"x": 600,
-											"y": 20
-										},
-										{
-											"x": 600,
-											"y": 60
-										},
-										{
-											"x": 480,
-											"y": 60
-										}
-									],
-									"transform": {
-										"a": 1,
-										"b": 0,
-										"c": 0,
-										"d": 1,
-										"e": 0,
-										"f": 0
-									},
-									"transformInverse": {
-										"a": 1,
-										"b": 0,
-										"c": 0,
-										"d": 1,
-										"e": 0,
-										"f": 0
-									},
-									"parentId": "a0cb393a-2f9f-4cc3-ae3e-918138ce9c22",
-									"frameId": "a0cb393a-2f9f-4cc3-ae3e-918138ce9c22",
-									"flipX": null,
-									"flipY": null,
-									"shapeRef": "5efbf399-2422-49a3-af19-5ac424e59d71",
-									"componentId": "b640ba70-e41e-4ef5-b90d-4fadcb3fdf0a",
-									"strokes": [],
-									"fills": [
-										{
-											"fillColor": "#FFFFFF",
-											"fillOpacity": 1
-										}
-									],
-									"componentFile": "de716cff-f170-81a2-8008-e6426b9882fe",
-									"shapes": []
-								},
-								"313525be-56c3-499e-9925-81a4894f996f": {
-									"id": "313525be-56c3-499e-9925-81a4894f996f",
-									"name": "Trash2",
-									"type": "frame",
-									"x": 160,
-									"y": 0,
-									"width": 24,
-									"height": 24,
-									"rotation": 0,
-									"selrect": {
-										"x": 160,
-										"y": 0,
-										"width": 24,
-										"height": 24,
-										"x1": 160,
-										"y1": 0,
-										"x2": 184,
-										"y2": 24
-									},
-									"points": [
-										{
-											"x": 160,
-											"y": 0
-										},
-										{
-											"x": 184,
-											"y": 0
-										},
-										{
-											"x": 184,
-											"y": 24
-										},
-										{
-											"x": 160,
-											"y": 24
-										}
-									],
-									"transform": {
-										"a": 1,
-										"b": 0,
-										"c": 0,
-										"d": 1,
-										"e": 0,
-										"f": 0
-									},
-									"transformInverse": {
-										"a": 1,
-										"b": 0,
-										"c": 0,
-										"d": 1,
-										"e": 0,
-										"f": 0
-									},
-									"parentId": "00000000-0000-0000-0000-000000000000",
-									"frameId": "00000000-0000-0000-0000-000000000000",
-									"flipX": null,
-									"flipY": null,
-									"componentRoot": true,
-									"componentId": "73745204-2a2a-42a6-8f70-1fbf8289dc55",
-									"strokes": [],
-									"mainInstance": true,
-									"fills": [
-										{
-											"fillColor": "#FFFFFF",
-											"fillOpacity": 1
-										}
-									],
-									"componentFile": "de716cff-f170-81a2-8008-e6426b9882fe",
-									"shapes": []
-								},
-								"3162a554-75a9-4269-beed-91dc940220ea": {
-									"id": "3162a554-75a9-4269-beed-91dc940220ea",
-									"name": "Footer",
-									"type": "frame",
-									"x": 720,
-									"y": 80,
-									"width": 200,
-									"height": 40,
-									"rotation": 0,
-									"selrect": {
-										"x": 720,
-										"y": 80,
-										"width": 200,
-										"height": 40,
-										"x1": 720,
-										"y1": 80,
-										"x2": 920,
-										"y2": 120
-									},
-									"points": [
-										{
-											"x": 720,
-											"y": 80
-										},
-										{
-											"x": 920,
-											"y": 80
-										},
-										{
-											"x": 920,
-											"y": 120
-										},
-										{
-											"x": 720,
-											"y": 120
-										}
-									],
-									"transform": {
-										"a": 1,
-										"b": 0,
-										"c": 0,
-										"d": 1,
-										"e": 0,
-										"f": 0
-									},
-									"transformInverse": {
-										"a": 1,
-										"b": 0,
-										"c": 0,
-										"d": 1,
-										"e": 0,
-										"f": 0
-									},
-									"parentId": "114118b8-3384-4281-93a7-bd31f42f9f58",
-									"frameId": "114118b8-3384-4281-93a7-bd31f42f9f58",
-									"flipX": null,
-									"flipY": null,
-									"strokes": [],
-									"fills": [
-										{
-											"fillColor": "#FFFFFF",
-											"fillOpacity": 1
-										}
-									],
-									"shapes": []
-								},
-								"5efbf399-2422-49a3-af19-5ac424e59d71": {
-									"id": "5efbf399-2422-49a3-af19-5ac424e59d71",
-									"name": "Slot",
-									"type": "frame",
-									"x": 0,
-									"y": 0,
-									"width": 120,
-									"height": 40,
-									"rotation": 0,
-									"selrect": {
-										"x": 0,
-										"y": 0,
-										"width": 120,
-										"height": 40,
-										"x1": 0,
-										"y1": 0,
-										"x2": 120,
-										"y2": 40
-									},
-									"points": [
-										{
-											"x": 0,
-											"y": 0
-										},
-										{
-											"x": 120,
-											"y": 0
-										},
-										{
-											"x": 120,
-											"y": 40
-										},
-										{
-											"x": 0,
-											"y": 40
-										}
-									],
-									"transform": {
-										"a": 1,
-										"b": 0,
-										"c": 0,
-										"d": 1,
-										"e": 0,
-										"f": 0
-									},
-									"transformInverse": {
-										"a": 1,
-										"b": 0,
-										"c": 0,
-										"d": 1,
-										"e": 0,
-										"f": 0
-									},
-									"parentId": "00000000-0000-0000-0000-000000000000",
-									"frameId": "00000000-0000-0000-0000-000000000000",
-									"flipX": null,
-									"flipY": null,
-									"componentRoot": true,
-									"componentId": "b640ba70-e41e-4ef5-b90d-4fadcb3fdf0a",
-									"strokes": [],
-									"mainInstance": true,
-									"fills": [
-										{
-											"fillColor": "#FF00FF",
-											"fillOpacity": 1
-										}
-									],
-									"componentFile": "de716cff-f170-81a2-8008-e6426b9882fe",
-									"shapes": []
-								},
-								"114118b8-3384-4281-93a7-bd31f42f9f58": {
-									"id": "114118b8-3384-4281-93a7-bd31f42f9f58",
-									"name": "Card",
-									"type": "frame",
-									"x": 720,
-									"y": 0,
-									"width": 200,
-									"height": 120,
-									"rotation": 0,
-									"selrect": {
-										"x": 720,
-										"y": 0,
-										"width": 200,
-										"height": 120,
-										"x1": 720,
-										"y1": 0,
-										"x2": 920,
-										"y2": 120
-									},
-									"points": [
-										{
-											"x": 720,
-											"y": 0
-										},
-										{
-											"x": 920,
-											"y": 0
-										},
-										{
-											"x": 920,
-											"y": 120
-										},
-										{
-											"x": 720,
-											"y": 120
-										}
-									],
-									"transform": {
-										"a": 1,
-										"b": 0,
-										"c": 0,
-										"d": 1,
-										"e": 0,
-										"f": 0
-									},
-									"transformInverse": {
-										"a": 1,
-										"b": 0,
-										"c": 0,
-										"d": 1,
-										"e": 0,
-										"f": 0
-									},
-									"parentId": "00000000-0000-0000-0000-000000000000",
-									"frameId": "00000000-0000-0000-0000-000000000000",
-									"flipX": null,
-									"flipY": null,
-									"componentRoot": true,
-									"componentId": "1e45bec9-dd4f-4780-bf18-d867d1f3be39",
-									"strokes": [],
-									"mainInstance": true,
-									"fills": [
-										{
-											"fillColor": "#FFFFFF",
-											"fillOpacity": 1
-										}
-									],
-									"componentFile": "de716cff-f170-81a2-8008-e6426b9882fe",
-									"shapes": [
-										"da6a2c69-3b7a-4d5a-a409-161479e7d171",
-										"3162a554-75a9-4269-beed-91dc940220ea"
-									]
-								},
-								"2eddef2e-7701-4b2f-8444-d5490a7af878": {
-									"id": "2eddef2e-7701-4b2f-8444-d5490a7af878",
-									"name": "Header",
-									"type": "frame",
-									"x": 240,
-									"y": 0,
-									"width": 200,
-									"height": 40,
-									"rotation": 0,
-									"selrect": {
-										"x": 240,
-										"y": 0,
-										"width": 200,
-										"height": 40,
-										"x1": 240,
-										"y1": 0,
-										"x2": 440,
-										"y2": 40
-									},
-									"points": [
-										{
-											"x": 240,
-											"y": 0
-										},
-										{
-											"x": 440,
-											"y": 0
-										},
-										{
-											"x": 440,
-											"y": 40
-										},
-										{
-											"x": 240,
-											"y": 40
-										}
-									],
-									"transform": {
-										"a": 1,
-										"b": 0,
-										"c": 0,
-										"d": 1,
-										"e": 0,
-										"f": 0
-									},
-									"transformInverse": {
-										"a": 1,
-										"b": 0,
-										"c": 0,
-										"d": 1,
-										"e": 0,
-										"f": 0
-									},
-									"parentId": "00000000-0000-0000-0000-000000000000",
-									"frameId": "00000000-0000-0000-0000-000000000000",
-									"flipX": null,
-									"flipY": null,
-									"componentRoot": true,
-									"componentId": "5dcadb80-4a70-48c8-b43f-9d44737c0d71",
-									"strokes": [],
-									"mainInstance": true,
-									"fills": [
-										{
-											"fillColor": "#FFFFFF",
-											"fillOpacity": 1
-										}
-									],
-									"componentFile": "de716cff-f170-81a2-8008-e6426b9882fe",
-									"shapes": []
-								},
-								"ec1f191a-16a7-4603-bd51-a4abf7763980": {
-									"id": "ec1f191a-16a7-4603-bd51-a4abf7763980",
-									"name": "Components / Button",
-									"type": "frame",
-									"x": 20,
-									"y": 220,
-									"width": 90,
-									"height": 40,
-									"rotation": 0,
-									"selrect": {
-										"x": 20,
-										"y": 220,
-										"width": 90,
-										"height": 40,
-										"x1": 20,
-										"y1": 220,
-										"x2": 110,
-										"y2": 260
-									},
-									"points": [
-										{
-											"x": 20,
-											"y": 220
-										},
-										{
-											"x": 110,
-											"y": 220
-										},
-										{
-											"x": 110,
-											"y": 260
-										},
-										{
-											"x": 20,
-											"y": 260
-										}
-									],
-									"transform": {
-										"a": 1,
-										"b": 0,
-										"c": 0,
-										"d": 1,
-										"e": 0,
-										"f": 0
-									},
-									"transformInverse": {
-										"a": 1,
-										"b": 0,
-										"c": 0,
-										"d": 1,
-										"e": 0,
-										"f": 0
-									},
-									"parentId": "114af3c7-09a6-4b11-ad8b-c3de2a55b23d",
-									"frameId": "114af3c7-09a6-4b11-ad8b-c3de2a55b23d",
-									"flipX": null,
-									"flipY": null,
-									"variantName": "default",
-									"componentRoot": true,
-									"componentId": "73cfb88a-535e-469a-9552-a46495d5fefc",
-									"strokes": [],
-									"mainInstance": true,
-									"fills": [
-										{
-											"fillColor": "#FFFFFF",
-											"fillOpacity": 1
-										}
-									],
-									"variantId": "114af3c7-09a6-4b11-ad8b-c3de2a55b23d",
-									"componentFile": "de716cff-f170-81a2-8008-e6426b9882fe",
-									"shapes": []
-								},
-								"114af3c7-09a6-4b11-ad8b-c3de2a55b23d": {
-									"id": "114af3c7-09a6-4b11-ad8b-c3de2a55b23d",
+								"3c807937-dfba-4a07-93a3-9e9a29ea9d8a": {
+									"id": "3c807937-dfba-4a07-93a3-9e9a29ea9d8a",
 									"name": "Components / Button",
 									"type": "frame",
 									"x": 0,
@@ -768,19 +278,14 @@
 									"flipY": null,
 									"isVariantContainer": true,
 									"strokes": [],
-									"fills": [
-										{
-											"fillColor": "#FFFFFF",
-											"fillOpacity": 1
-										}
-									],
+									"fills": [],
 									"shapes": [
-										"ec1f191a-16a7-4603-bd51-a4abf7763980",
-										"592e27aa-0751-41d7-9291-b5a73281bfe7"
+										"5c49c5b4-603f-401f-8d7e-e400f1477618",
+										"ee243c79-578c-47de-a442-adf51a46367c"
 									]
 								},
-								"da6a2c69-3b7a-4d5a-a409-161479e7d171": {
-									"id": "da6a2c69-3b7a-4d5a-a409-161479e7d171",
+								"e563c236-a6df-48d1-91f9-65b12f9b7f35": {
+									"id": "e563c236-a6df-48d1-91f9-65b12f9b7f35",
 									"name": "Header",
 									"type": "frame",
 									"x": 720,
@@ -832,24 +337,121 @@
 										"e": 0,
 										"f": 0
 									},
-									"parentId": "114118b8-3384-4281-93a7-bd31f42f9f58",
-									"frameId": "114118b8-3384-4281-93a7-bd31f42f9f58",
+									"parentId": "ddf1f9c4-3aa4-4ebe-9dca-e47ac3885ab1",
+									"frameId": "ddf1f9c4-3aa4-4ebe-9dca-e47ac3885ab1",
 									"flipX": null,
 									"flipY": null,
-									"shapeRef": "2eddef2e-7701-4b2f-8444-d5490a7af878",
-									"componentId": "5dcadb80-4a70-48c8-b43f-9d44737c0d71",
+									"shapeRef": "9229ce07-71b8-43f6-8934-1b34219ceeba",
+									"appliedTokens": {
+										"fill": "color.neutral.100"
+									},
+									"componentId": "b834c0d3-027b-4b00-8bac-50f6ecb40b48",
 									"strokes": [],
 									"fills": [
 										{
-											"fillColor": "#FFFFFF",
+											"fillColor": "#f5f5f5",
 											"fillOpacity": 1
 										}
 									],
-									"componentFile": "de716cff-f170-81a2-8008-e6426b9882fe",
+									"componentFile": "de716cff-f170-81a2-8008-e6482008d970",
 									"shapes": []
 								},
-								"a0cb393a-2f9f-4cc3-ae3e-918138ce9c22": {
-									"id": "a0cb393a-2f9f-4cc3-ae3e-918138ce9c22",
+								"584ae1da-3866-4e7e-85c7-a872a357075c": {
+									"id": "584ae1da-3866-4e7e-85c7-a872a357075c",
+									"name": "Label",
+									"type": "text",
+									"x": 36,
+									"y": 230,
+									"width": 40,
+									"height": 20,
+									"rotation": 0,
+									"selrect": {
+										"x": 36,
+										"y": 230,
+										"width": 40,
+										"height": 20,
+										"x1": 36,
+										"y1": 230,
+										"x2": 76,
+										"y2": 250
+									},
+									"points": [
+										{
+											"x": 36,
+											"y": 230
+										},
+										{
+											"x": 76,
+											"y": 230
+										},
+										{
+											"x": 76,
+											"y": 250
+										},
+										{
+											"x": 36,
+											"y": 250
+										}
+									],
+									"transform": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"transformInverse": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"parentId": "5c49c5b4-603f-401f-8d7e-e400f1477618",
+									"frameId": "5c49c5b4-603f-401f-8d7e-e400f1477618",
+									"flipX": null,
+									"flipY": null,
+									"growType": "auto-width",
+									"content": {
+										"type": "root",
+										"children": [
+											{
+												"type": "paragraph-set",
+												"children": [
+													{
+														"type": "paragraph",
+														"children": [
+															{
+																"fontStyle": "normal",
+																"fontId": "sourcesanspro",
+																"fontSize": "14",
+																"fontWeight": "500",
+																"fontVariantId": "regular",
+																"letterSpacing": "0",
+																"fills": [
+																	{
+																		"fillColor": "#fafafa",
+																		"fillOpacity": 1
+																	}
+																],
+																"fontFamily": "sourcesanspro",
+																"text": "Label"
+															}
+														]
+													}
+												]
+											}
+										]
+									},
+									"appliedTokens": {
+										"fill": "primary-foreground",
+										"fontWeight": "font-weight.medium"
+									}
+								},
+								"b954bfa2-696b-4184-8853-5d6db0c8b020": {
+									"id": "b954bfa2-696b-4184-8853-5d6db0c8b020",
 									"name": "Content",
 									"type": "frame",
 									"x": 480,
@@ -905,21 +507,31 @@
 									"frameId": "00000000-0000-0000-0000-000000000000",
 									"flipX": null,
 									"flipY": null,
+									"layoutPadding": {
+										"p1": 16,
+										"p2": 16,
+										"p3": 16,
+										"p4": 16
+									},
+									"layout": "flex",
+									"layoutPaddingType": "multiple",
 									"componentRoot": true,
-									"componentId": "248c6dc1-8a3c-4615-81ef-6143142a1123",
+									"layoutFlexDir": "column",
+									"appliedTokens": {
+										"p1": "space.4",
+										"p2": "space.4",
+										"p3": "space.4",
+										"p4": "space.4"
+									},
+									"componentId": "2daa109c-39bc-4b80-bac5-419db576b885",
 									"strokes": [],
 									"mainInstance": true,
-									"fills": [
-										{
-											"fillColor": "#FFFFFF",
-											"fillOpacity": 1
-										}
-									],
-									"componentFile": "de716cff-f170-81a2-8008-e6426b9882fe",
-									"shapes": ["1312bc1e-ebc9-4b0d-a32b-948f2eacd6dc"]
+									"fills": [],
+									"componentFile": "de716cff-f170-81a2-8008-e6482008d970",
+									"shapes": ["4e66bbb4-1d7a-4015-ba56-94f10491fa81"]
 								},
-								"592e27aa-0751-41d7-9291-b5a73281bfe7": {
-									"id": "592e27aa-0751-41d7-9291-b5a73281bfe7",
+								"ee243c79-578c-47de-a442-adf51a46367c": {
+									"id": "ee243c79-578c-47de-a442-adf51a46367c",
 									"name": "Components / Button",
 									"type": "frame",
 									"x": 130,
@@ -971,84 +583,919 @@
 										"e": 0,
 										"f": 0
 									},
-									"parentId": "114af3c7-09a6-4b11-ad8b-c3de2a55b23d",
-									"frameId": "114af3c7-09a6-4b11-ad8b-c3de2a55b23d",
+									"parentId": "3c807937-dfba-4a07-93a3-9e9a29ea9d8a",
+									"frameId": "3c807937-dfba-4a07-93a3-9e9a29ea9d8a",
 									"flipX": null,
 									"flipY": null,
-									"variantName": "sm",
+									"layoutGapType": "multiple",
+									"layout": "flex",
+									"r2": 10,
 									"componentRoot": true,
-									"componentId": "27d1f7d6-45f6-47eb-9cdb-80104f417845",
+									"layoutGap": {
+										"rowGap": 0,
+										"columnGap": 8
+									},
+									"r3": 10,
+									"r1": 10,
+									"layoutFlexDir": "row",
+									"appliedTokens": {
+										"fill": "primary",
+										"r1": "radius",
+										"r2": "radius",
+										"r3": "radius",
+										"r4": "radius",
+										"columnGap": "space.2"
+									},
+									"componentId": "d68f0a16-90c8-4ab9-90d7-f8958d25cf0d",
+									"strokes": [],
+									"mainInstance": true,
+									"r4": 10,
+									"fills": [
+										{
+											"fillColor": "#171717",
+											"fillOpacity": 1
+										}
+									],
+									"variantId": "3c807937-dfba-4a07-93a3-9e9a29ea9d8a",
+									"componentFile": "de716cff-f170-81a2-8008-e6482008d970",
+									"shapes": ["aa9990a3-347f-41c0-88fe-2a272d8bf719"]
+								},
+								"ddf1f9c4-3aa4-4ebe-9dca-e47ac3885ab1": {
+									"id": "ddf1f9c4-3aa4-4ebe-9dca-e47ac3885ab1",
+									"name": "Card",
+									"type": "frame",
+									"x": 720,
+									"y": 0,
+									"width": 200,
+									"height": 120,
+									"rotation": 0,
+									"selrect": {
+										"x": 720,
+										"y": 0,
+										"width": 200,
+										"height": 120,
+										"x1": 720,
+										"y1": 0,
+										"x2": 920,
+										"y2": 120
+									},
+									"points": [
+										{
+											"x": 720,
+											"y": 0
+										},
+										{
+											"x": 920,
+											"y": 0
+										},
+										{
+											"x": 920,
+											"y": 120
+										},
+										{
+											"x": 720,
+											"y": 120
+										}
+									],
+									"transform": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"transformInverse": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"parentId": "00000000-0000-0000-0000-000000000000",
+									"frameId": "00000000-0000-0000-0000-000000000000",
+									"flipX": null,
+									"flipY": null,
+									"r2": 10,
+									"componentRoot": true,
+									"r3": 10,
+									"r1": 10,
+									"appliedTokens": {
+										"fill": "background",
+										"strokeColor": "border",
+										"r1": "radius",
+										"r2": "radius",
+										"r3": "radius",
+										"r4": "radius",
+										"shadow": "shadow.xs"
+									},
+									"componentId": "5eff257b-0ea5-445b-96eb-93da0c4ba459",
+									"strokes": [
+										{
+											"strokeColor": "#e5e5e5",
+											"strokeOpacity": 1,
+											"strokeWidth": 1,
+											"strokeStyle": "solid",
+											"strokeAlignment": "inner"
+										}
+									],
+									"mainInstance": true,
+									"shadow": [
+										{
+											"id": "45cf35f5-4234-47a1-bfff-501b19fd9db8",
+											"style": "drop-shadow",
+											"offsetX": 0,
+											"offsetY": 1,
+											"blur": 2,
+											"spread": 0,
+											"hidden": false,
+											"color": {
+												"color": "#000000",
+												"opacity": 0.05
+											}
+										}
+									],
+									"r4": 10,
+									"fills": [
+										{
+											"fillColor": "#ffffff",
+											"fillOpacity": 1
+										}
+									],
+									"componentFile": "de716cff-f170-81a2-8008-e6482008d970",
+									"shapes": [
+										"e563c236-a6df-48d1-91f9-65b12f9b7f35",
+										"c7f5f33c-2a72-45b6-a874-d5293fa40d7d"
+									]
+								},
+								"4e66bbb4-1d7a-4015-ba56-94f10491fa81": {
+									"id": "4e66bbb4-1d7a-4015-ba56-94f10491fa81",
+									"name": "Body",
+									"type": "frame",
+									"x": 496,
+									"y": 16,
+									"width": 120,
+									"height": 40,
+									"rotation": 0,
+									"selrect": {
+										"x": 496,
+										"y": 16,
+										"width": 120,
+										"height": 40,
+										"x1": 496,
+										"y1": 16,
+										"x2": 616,
+										"y2": 56
+									},
+									"points": [
+										{
+											"x": 496,
+											"y": 16
+										},
+										{
+											"x": 616,
+											"y": 16
+										},
+										{
+											"x": 616,
+											"y": 56
+										},
+										{
+											"x": 496,
+											"y": 56
+										}
+									],
+									"transform": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"transformInverse": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"parentId": "b954bfa2-696b-4184-8853-5d6db0c8b020",
+									"frameId": "b954bfa2-696b-4184-8853-5d6db0c8b020",
+									"flipX": null,
+									"flipY": null,
+									"shapeRef": "dd8c2127-ddd0-472e-b2b1-a0c787c884db",
+									"componentId": "e2560207-2305-4c65-af69-15c6ba16fdab",
+									"strokes": [],
+									"fills": [
+										{
+											"fillColor": "#FF00FF",
+											"fillOpacity": 1
+										}
+									],
+									"componentFile": "de716cff-f170-81a2-8008-e6482008d970",
+									"shapes": []
+								},
+								"5c49c5b4-603f-401f-8d7e-e400f1477618": {
+									"id": "5c49c5b4-603f-401f-8d7e-e400f1477618",
+									"name": "Components / Button",
+									"type": "frame",
+									"x": 20,
+									"y": 220,
+									"width": 90,
+									"height": 40,
+									"rotation": 0,
+									"selrect": {
+										"x": 20,
+										"y": 220,
+										"width": 90,
+										"height": 40,
+										"x1": 20,
+										"y1": 220,
+										"x2": 110,
+										"y2": 260
+									},
+									"points": [
+										{
+											"x": 20,
+											"y": 220
+										},
+										{
+											"x": 110,
+											"y": 220
+										},
+										{
+											"x": 110,
+											"y": 260
+										},
+										{
+											"x": 20,
+											"y": 260
+										}
+									],
+									"transform": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"transformInverse": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"parentId": "3c807937-dfba-4a07-93a3-9e9a29ea9d8a",
+									"frameId": "3c807937-dfba-4a07-93a3-9e9a29ea9d8a",
+									"flipX": null,
+									"flipY": null,
+									"layoutGapType": "multiple",
+									"layout": "flex",
+									"r2": 10,
+									"componentRoot": true,
+									"layoutGap": {
+										"rowGap": 0,
+										"columnGap": 8
+									},
+									"r3": 10,
+									"r1": 10,
+									"layoutFlexDir": "row",
+									"appliedTokens": {
+										"fill": "primary",
+										"r1": "radius",
+										"r2": "radius",
+										"r3": "radius",
+										"r4": "radius",
+										"columnGap": "space.2"
+									},
+									"componentId": "794866af-bd24-476b-9352-bffdea0853ff",
+									"strokes": [],
+									"mainInstance": true,
+									"r4": 10,
+									"fills": [
+										{
+											"fillColor": "#171717",
+											"fillOpacity": 1
+										}
+									],
+									"variantId": "3c807937-dfba-4a07-93a3-9e9a29ea9d8a",
+									"componentFile": "de716cff-f170-81a2-8008-e6482008d970",
+									"shapes": ["584ae1da-3866-4e7e-85c7-a872a357075c"]
+								},
+								"0695930d-c9fe-4048-9931-dd8e19a5c61f": {
+									"id": "0695930d-c9fe-4048-9931-dd8e19a5c61f",
+									"name": "Trash2",
+									"type": "frame",
+									"x": 160,
+									"y": 0,
+									"width": 24,
+									"height": 24,
+									"rotation": 0,
+									"selrect": {
+										"x": 160,
+										"y": 0,
+										"width": 24,
+										"height": 24,
+										"x1": 160,
+										"y1": 0,
+										"x2": 184,
+										"y2": 24
+									},
+									"points": [
+										{
+											"x": 160,
+											"y": 0
+										},
+										{
+											"x": 184,
+											"y": 0
+										},
+										{
+											"x": 184,
+											"y": 24
+										},
+										{
+											"x": 160,
+											"y": 24
+										}
+									],
+									"transform": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"transformInverse": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"parentId": "00000000-0000-0000-0000-000000000000",
+									"frameId": "00000000-0000-0000-0000-000000000000",
+									"flipX": null,
+									"flipY": null,
+									"componentRoot": true,
+									"appliedTokens": {
+										"strokeColor": "foreground"
+									},
+									"componentId": "493897ef-7157-41f9-b33d-b70e766f9a07",
+									"strokes": [
+										{
+											"strokeColor": "#0a0a0a",
+											"strokeOpacity": 1,
+											"strokeWidth": 1,
+											"strokeStyle": "solid",
+											"strokeAlignment": "inner"
+										}
+									],
+									"mainInstance": true,
+									"fills": [],
+									"componentFile": "de716cff-f170-81a2-8008-e6482008d970",
+									"shapes": []
+								},
+								"dd8c2127-ddd0-472e-b2b1-a0c787c884db": {
+									"id": "dd8c2127-ddd0-472e-b2b1-a0c787c884db",
+									"name": "Slot",
+									"type": "frame",
+									"x": 0,
+									"y": 0,
+									"width": 120,
+									"height": 40,
+									"rotation": 0,
+									"selrect": {
+										"x": 0,
+										"y": 0,
+										"width": 120,
+										"height": 40,
+										"x1": 0,
+										"y1": 0,
+										"x2": 120,
+										"y2": 40
+									},
+									"points": [
+										{
+											"x": 0,
+											"y": 0
+										},
+										{
+											"x": 120,
+											"y": 0
+										},
+										{
+											"x": 120,
+											"y": 40
+										},
+										{
+											"x": 0,
+											"y": 40
+										}
+									],
+									"transform": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"transformInverse": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"parentId": "00000000-0000-0000-0000-000000000000",
+									"frameId": "00000000-0000-0000-0000-000000000000",
+									"flipX": null,
+									"flipY": null,
+									"componentRoot": true,
+									"componentId": "e2560207-2305-4c65-af69-15c6ba16fdab",
 									"strokes": [],
 									"mainInstance": true,
 									"fills": [
 										{
-											"fillColor": "#FFFFFF",
+											"fillColor": "#FF00FF",
 											"fillOpacity": 1
 										}
 									],
-									"variantId": "114af3c7-09a6-4b11-ad8b-c3de2a55b23d",
-									"componentFile": "de716cff-f170-81a2-8008-e6426b9882fe",
+									"componentFile": "de716cff-f170-81a2-8008-e6482008d970",
+									"shapes": []
+								},
+								"aa9990a3-347f-41c0-88fe-2a272d8bf719": {
+									"id": "aa9990a3-347f-41c0-88fe-2a272d8bf719",
+									"name": "Label",
+									"type": "text",
+									"x": 146,
+									"y": 230,
+									"width": 40,
+									"height": 20,
+									"rotation": 0,
+									"selrect": {
+										"x": 146,
+										"y": 230,
+										"width": 40,
+										"height": 20,
+										"x1": 146,
+										"y1": 230,
+										"x2": 186,
+										"y2": 250
+									},
+									"points": [
+										{
+											"x": 146,
+											"y": 230
+										},
+										{
+											"x": 186,
+											"y": 230
+										},
+										{
+											"x": 186,
+											"y": 250
+										},
+										{
+											"x": 146,
+											"y": 250
+										}
+									],
+									"transform": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"transformInverse": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"parentId": "ee243c79-578c-47de-a442-adf51a46367c",
+									"frameId": "ee243c79-578c-47de-a442-adf51a46367c",
+									"flipX": null,
+									"flipY": null,
+									"growType": "auto-width",
+									"content": {
+										"type": "root",
+										"children": [
+											{
+												"type": "paragraph-set",
+												"children": [
+													{
+														"type": "paragraph",
+														"children": [
+															{
+																"fontStyle": "normal",
+																"fontId": "sourcesanspro",
+																"fontSize": "14",
+																"fontWeight": "500",
+																"fontVariantId": "regular",
+																"letterSpacing": "0",
+																"fills": [
+																	{
+																		"fillColor": "#fafafa",
+																		"fillOpacity": 1
+																	}
+																],
+																"fontFamily": "sourcesanspro",
+																"text": "Label"
+															}
+														]
+													}
+												]
+											}
+										]
+									},
+									"appliedTokens": {
+										"fill": "primary-foreground",
+										"fontWeight": "font-weight.medium"
+									}
+								},
+								"c7f5f33c-2a72-45b6-a874-d5293fa40d7d": {
+									"id": "c7f5f33c-2a72-45b6-a874-d5293fa40d7d",
+									"name": "Footer",
+									"type": "frame",
+									"x": 720,
+									"y": 80,
+									"width": 200,
+									"height": 40,
+									"rotation": 0,
+									"selrect": {
+										"x": 720,
+										"y": 80,
+										"width": 200,
+										"height": 40,
+										"x1": 720,
+										"y1": 80,
+										"x2": 920,
+										"y2": 120
+									},
+									"points": [
+										{
+											"x": 720,
+											"y": 80
+										},
+										{
+											"x": 920,
+											"y": 80
+										},
+										{
+											"x": 920,
+											"y": 120
+										},
+										{
+											"x": 720,
+											"y": 120
+										}
+									],
+									"transform": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"transformInverse": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"parentId": "ddf1f9c4-3aa4-4ebe-9dca-e47ac3885ab1",
+									"frameId": "ddf1f9c4-3aa4-4ebe-9dca-e47ac3885ab1",
+									"flipX": null,
+									"flipY": null,
+									"strokes": [],
+									"fills": [],
+									"shapes": []
+								},
+								"9229ce07-71b8-43f6-8934-1b34219ceeba": {
+									"id": "9229ce07-71b8-43f6-8934-1b34219ceeba",
+									"name": "Header",
+									"type": "frame",
+									"x": 240,
+									"y": 0,
+									"width": 200,
+									"height": 40,
+									"rotation": 0,
+									"selrect": {
+										"x": 240,
+										"y": 0,
+										"width": 200,
+										"height": 40,
+										"x1": 240,
+										"y1": 0,
+										"x2": 440,
+										"y2": 40
+									},
+									"points": [
+										{
+											"x": 240,
+											"y": 0
+										},
+										{
+											"x": 440,
+											"y": 0
+										},
+										{
+											"x": 440,
+											"y": 40
+										},
+										{
+											"x": 240,
+											"y": 40
+										}
+									],
+									"transform": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"transformInverse": {
+										"a": 1,
+										"b": 0,
+										"c": 0,
+										"d": 1,
+										"e": 0,
+										"f": 0
+									},
+									"parentId": "00000000-0000-0000-0000-000000000000",
+									"frameId": "00000000-0000-0000-0000-000000000000",
+									"flipX": null,
+									"flipY": null,
+									"componentRoot": true,
+									"appliedTokens": {
+										"fill": "color.neutral.100"
+									},
+									"componentId": "b834c0d3-027b-4b00-8bac-50f6ecb40b48",
+									"strokes": [],
+									"mainInstance": true,
+									"fills": [
+										{
+											"fillColor": "#f5f5f5",
+											"fillOpacity": 1
+										}
+									],
+									"componentFile": "de716cff-f170-81a2-8008-e6482008d970",
 									"shapes": []
 								}
 							},
-							"id": "de716cff-f170-81a2-8008-e6426b9882ff",
+							"id": "de716cff-f170-81a2-8008-e6482008d971",
 							"name": "Page 1"
 						}
 					},
-					"id": "de716cff-f170-81a2-8008-e6426b9882fe",
+					"id": "de716cff-f170-81a2-8008-e6482008d970",
 					"options": {
 						"componentsV2": true,
 						"baseFontSize": "16px"
 					},
+					"tokensLib": {
+						"primitive": {
+							"color": {
+								"white": {
+									"$value": "#ffffff",
+									"$type": "color",
+									"$description": ""
+								},
+								"neutral": {
+									"50": {
+										"$value": "#fafafa",
+										"$type": "color",
+										"$description": ""
+									},
+									"100": {
+										"$value": "#f5f5f5",
+										"$type": "color",
+										"$description": ""
+									},
+									"200": {
+										"$value": "#e5e5e5",
+										"$type": "color",
+										"$description": ""
+									},
+									"800": {
+										"$value": "#262626",
+										"$type": "color",
+										"$description": ""
+									},
+									"900": {
+										"$value": "#171717",
+										"$type": "color",
+										"$description": ""
+									},
+									"950": {
+										"$value": "#0a0a0a",
+										"$type": "color",
+										"$description": ""
+									}
+								}
+							},
+							"space": {
+								"2": {
+									"$value": "8px",
+									"$type": "spacing",
+									"$description": ""
+								},
+								"4": {
+									"$value": "16px",
+									"$type": "spacing",
+									"$description": ""
+								}
+							},
+							"border-radius": {
+								"lg": {
+									"$value": "10px",
+									"$type": "borderRadius",
+									"$description": ""
+								}
+							},
+							"font-weight": {
+								"medium": {
+									"$value": 500,
+									"$type": "fontWeights",
+									"$description": ""
+								}
+							},
+							"shadow": {
+								"xs": {
+									"$value": {
+										"color": "#0000000d",
+										"offsetX": "0px",
+										"offsetY": "1px",
+										"blur": "2px",
+										"spread": "0px"
+									},
+									"$type": "shadow",
+									"$description": ""
+								}
+							}
+						},
+						"light": {
+							"background": {
+								"$value": "{color.white}",
+								"$type": "color",
+								"$description": ""
+							},
+							"foreground": {
+								"$value": "{color.neutral.950}",
+								"$type": "color",
+								"$description": ""
+							},
+							"primary": {
+								"$value": "{color.neutral.900}",
+								"$type": "color",
+								"$description": ""
+							},
+							"primary-foreground": {
+								"$value": "{color.neutral.50}",
+								"$type": "color",
+								"$description": ""
+							},
+							"border": {
+								"$value": "{color.neutral.200}",
+								"$type": "color",
+								"$description": ""
+							},
+							"radius": {
+								"$value": "{border-radius.lg}",
+								"$type": "borderRadius",
+								"$description": ""
+							}
+						},
+						"dark": {
+							"background": {
+								"$value": "{color.neutral.950}",
+								"$type": "color",
+								"$description": ""
+							},
+							"foreground": {
+								"$value": "{color.neutral.50}",
+								"$type": "color",
+								"$description": ""
+							},
+							"primary": {
+								"$value": "{color.neutral.200}",
+								"$type": "color",
+								"$description": ""
+							},
+							"primary-foreground": {
+								"$value": "{color.neutral.900}",
+								"$type": "color",
+								"$description": ""
+							},
+							"border": {
+								"$value": "{color.neutral.800}",
+								"$type": "color",
+								"$description": ""
+							},
+							"radius": {
+								"$value": "{border-radius.lg}",
+								"$type": "borderRadius",
+								"$description": ""
+							}
+						},
+						"$themes": [
+							{
+								"id": "de716cff-f170-81a2-8008-e648200cfea9",
+								"name": "Light",
+								"group": "Mode",
+								"description": "",
+								"isSource": false,
+								"selectedTokenSets": {
+									"light": "enabled",
+									"primitive": "enabled"
+								}
+							},
+							{
+								"id": "de716cff-f170-81a2-8008-e648200cfeaa",
+								"name": "Dark",
+								"group": "Mode",
+								"description": "",
+								"isSource": false,
+								"selectedTokenSets": {
+									"primitive": "enabled",
+									"dark": "enabled"
+								}
+							}
+						],
+						"$metadata": {
+							"tokenSetOrder": ["primitive", "light", "dark"],
+							"activeThemes": ["Mode/Light"],
+							"activeSets": ["light", "primitive"]
+						}
+					},
 					"components": {
-						"b640ba70-e41e-4ef5-b90d-4fadcb3fdf0a": {
-							"id": "b640ba70-e41e-4ef5-b90d-4fadcb3fdf0a",
+						"e2560207-2305-4c65-af69-15c6ba16fdab": {
+							"id": "e2560207-2305-4c65-af69-15c6ba16fdab",
 							"name": "Slot",
 							"path": "_internal",
-							"modifiedAt": "2026-11-05T13:50:03.895Z",
-							"mainInstanceId": "5efbf399-2422-49a3-af19-5ac424e59d71",
-							"mainInstancePage": "de716cff-f170-81a2-8008-e6426b9882ff"
+							"modifiedAt": "2026-11-05T14:14:59.379Z",
+							"mainInstanceId": "dd8c2127-ddd0-472e-b2b1-a0c787c884db",
+							"mainInstancePage": "de716cff-f170-81a2-8008-e6482008d971"
 						},
-						"73745204-2a2a-42a6-8f70-1fbf8289dc55": {
-							"id": "73745204-2a2a-42a6-8f70-1fbf8289dc55",
+						"493897ef-7157-41f9-b33d-b70e766f9a07": {
+							"id": "493897ef-7157-41f9-b33d-b70e766f9a07",
 							"name": "Trash2",
 							"path": "icon",
-							"modifiedAt": "2026-11-05T13:50:03.896Z",
-							"mainInstanceId": "313525be-56c3-499e-9925-81a4894f996f",
-							"mainInstancePage": "de716cff-f170-81a2-8008-e6426b9882ff"
+							"modifiedAt": "2026-11-05T14:14:59.379Z",
+							"mainInstanceId": "0695930d-c9fe-4048-9931-dd8e19a5c61f",
+							"mainInstancePage": "de716cff-f170-81a2-8008-e6482008d971"
 						},
-						"5dcadb80-4a70-48c8-b43f-9d44737c0d71": {
-							"id": "5dcadb80-4a70-48c8-b43f-9d44737c0d71",
+						"b834c0d3-027b-4b00-8bac-50f6ecb40b48": {
+							"id": "b834c0d3-027b-4b00-8bac-50f6ecb40b48",
 							"name": "Header",
 							"path": "Components / Card",
-							"modifiedAt": "2026-11-05T13:50:03.896Z",
-							"mainInstanceId": "2eddef2e-7701-4b2f-8444-d5490a7af878",
-							"mainInstancePage": "de716cff-f170-81a2-8008-e6426b9882ff"
+							"modifiedAt": "2026-11-05T14:14:59.379Z",
+							"mainInstanceId": "9229ce07-71b8-43f6-8934-1b34219ceeba",
+							"mainInstancePage": "de716cff-f170-81a2-8008-e6482008d971"
 						},
-						"248c6dc1-8a3c-4615-81ef-6143142a1123": {
-							"id": "248c6dc1-8a3c-4615-81ef-6143142a1123",
+						"2daa109c-39bc-4b80-bac5-419db576b885": {
+							"id": "2daa109c-39bc-4b80-bac5-419db576b885",
 							"name": "Content",
 							"path": "Components / Card",
-							"modifiedAt": "2026-11-05T13:50:03.896Z",
-							"mainInstanceId": "a0cb393a-2f9f-4cc3-ae3e-918138ce9c22",
-							"mainInstancePage": "de716cff-f170-81a2-8008-e6426b9882ff",
+							"modifiedAt": "2026-11-05T14:14:59.379Z",
+							"mainInstanceId": "b954bfa2-696b-4184-8853-5d6db0c8b020",
+							"mainInstancePage": "de716cff-f170-81a2-8008-e6482008d971",
 							"pluginData": {
 								"brrritscoldCoreReact": {
 									"link": "{\"v\":1,\"slots\":[\"Body\"]}"
 								}
 							}
 						},
-						"1e45bec9-dd4f-4780-bf18-d867d1f3be39": {
-							"id": "1e45bec9-dd4f-4780-bf18-d867d1f3be39",
+						"5eff257b-0ea5-445b-96eb-93da0c4ba459": {
+							"id": "5eff257b-0ea5-445b-96eb-93da0c4ba459",
 							"name": "Card",
 							"path": "Components",
-							"modifiedAt": "2026-11-05T13:50:03.896Z",
-							"mainInstanceId": "114118b8-3384-4281-93a7-bd31f42f9f58",
-							"mainInstancePage": "de716cff-f170-81a2-8008-e6426b9882ff"
+							"modifiedAt": "2026-11-05T14:14:59.379Z",
+							"mainInstanceId": "ddf1f9c4-3aa4-4ebe-9dca-e47ac3885ab1",
+							"mainInstancePage": "de716cff-f170-81a2-8008-e6482008d971"
 						},
-						"73cfb88a-535e-469a-9552-a46495d5fefc": {
+						"794866af-bd24-476b-9352-bffdea0853ff": {
 							"path": "Components",
-							"mainInstanceId": "ec1f191a-16a7-4603-bd51-a4abf7763980",
+							"mainInstanceId": "5c49c5b4-603f-401f-8d7e-e400f1477618",
 							"name": "Button",
 							"variantProperties": [
 								{
@@ -1056,14 +1503,14 @@
 									"value": "default"
 								}
 							],
-							"modifiedAt": "2026-11-05T13:50:03.896Z",
-							"mainInstancePage": "de716cff-f170-81a2-8008-e6426b9882ff",
-							"id": "73cfb88a-535e-469a-9552-a46495d5fefc",
-							"variantId": "114af3c7-09a6-4b11-ad8b-c3de2a55b23d"
+							"modifiedAt": "2026-11-05T14:14:59.379Z",
+							"mainInstancePage": "de716cff-f170-81a2-8008-e6482008d971",
+							"id": "794866af-bd24-476b-9352-bffdea0853ff",
+							"variantId": "3c807937-dfba-4a07-93a3-9e9a29ea9d8a"
 						},
-						"27d1f7d6-45f6-47eb-9cdb-80104f417845": {
+						"d68f0a16-90c8-4ab9-90d7-f8958d25cf0d": {
 							"path": "Components",
-							"mainInstanceId": "592e27aa-0751-41d7-9291-b5a73281bfe7",
+							"mainInstanceId": "ee243c79-578c-47de-a442-adf51a46367c",
 							"name": "Button",
 							"variantProperties": [
 								{
@@ -1071,10 +1518,10 @@
 									"value": "sm"
 								}
 							],
-							"modifiedAt": "2026-11-05T13:50:03.896Z",
-							"mainInstancePage": "de716cff-f170-81a2-8008-e6426b9882ff",
-							"id": "27d1f7d6-45f6-47eb-9cdb-80104f417845",
-							"variantId": "114af3c7-09a6-4b11-ad8b-c3de2a55b23d"
+							"modifiedAt": "2026-11-05T14:14:59.379Z",
+							"mainInstancePage": "de716cff-f170-81a2-8008-e6482008d971",
+							"id": "d68f0a16-90c8-4ab9-90d7-f8958d25cf0d",
+							"variantId": "3c807937-dfba-4a07-93a3-9e9a29ea9d8a"
 						}
 					}
 				}

@@ -1,10 +1,12 @@
 import { describe, expect, it } from 'vitest'
 
 // testee
-import { librarySnapshotSchema } from '../../src/library-snapshot.js'
+import { type LibraryLayer, librarySnapshotSchema } from '../../src/library-snapshot.js'
 // fixtures
 import {
 	createInStepLibrary,
+	createLibraryComponent,
+	createLibraryLayer,
 	createLibrarySnapshot,
 } from './__fixtures__/checkDrift.unit.fixtures.js'
 
@@ -22,7 +24,33 @@ describe('librarySnapshotSchema', () => {
 	})
 
 	it('should reject another schema version', () => {
-		const snapshot = { ...createLibrarySnapshot({}), schemaVersion: 2 }
+		const snapshot = { ...createLibrarySnapshot({}), schemaVersion: 1 }
+
+		expect(librarySnapshotSchema.safeParse(snapshot).success).toBe(false)
+	})
+
+	it('should reject an applied token or unbound attribute the drift check does not check', () => {
+		const layer = (overrides: Partial<LibraryLayer>) =>
+			createLibrarySnapshot({
+				card: createLibraryComponent({
+					name: 'Card',
+					layers: { board: createLibraryLayer(overrides) },
+				}),
+			})
+
+		expect(
+			librarySnapshotSchema.safeParse(
+				layer({ appliedTokens: { width: 'size.sm' } as LibraryLayer['appliedTokens'] })
+			).success
+		).toBe(false)
+		expect(
+			librarySnapshotSchema.safeParse(layer({ unbound: ['rotation' as 'fill'] })).success
+		).toBe(false)
+	})
+
+	it('should reject a token catalog entry that is neither a token nor a group', () => {
+		const snapshot = createLibrarySnapshot({})
+		;(snapshot.tokens.light as Record<string, unknown>).primary = { $value: '#000000' }
 
 		expect(librarySnapshotSchema.safeParse(snapshot).success).toBe(false)
 	})

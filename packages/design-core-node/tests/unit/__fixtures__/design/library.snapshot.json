@@ -1,7 +1,79 @@
 {
-	"schemaVersion": 1,
+	"schemaVersion": 2,
 	"penpotVersion": "2.18.6",
 	"libraryFileId": "fixture-library",
+	"tokens": {
+		"primitive": {
+			"color": {
+				"white": {
+					"$type": "color",
+					"$value": "#ffffff"
+				},
+				"neutral": {
+					"100": {
+						"$type": "color",
+						"$value": "#f5f5f5"
+					},
+					"900": {
+						"$type": "color",
+						"$value": "#171717"
+					}
+				}
+			},
+			"border-radius": {
+				"lg": {
+					"$type": "borderRadius",
+					"$value": "10px"
+				}
+			}
+		},
+		"light": {
+			"primary": {
+				"$type": "color",
+				"$value": "{color.neutral.900}"
+			},
+			"primary-foreground": {
+				"$type": "color",
+				"$value": "{color.white}"
+			},
+			"radius": {
+				"$type": "borderRadius",
+				"$value": "{border-radius.lg}"
+			}
+		},
+		"dark": {
+			"primary": {
+				"$type": "color",
+				"$value": "{color.neutral.100}"
+			},
+			"primary-foreground": {
+				"$type": "color",
+				"$value": "{color.neutral.900}"
+			},
+			"radius": {
+				"$type": "borderRadius",
+				"$value": "{border-radius.lg}"
+			}
+		}
+	},
+	"tokenThemes": [
+		{
+			"group": "Mode",
+			"name": "Dark",
+			"sets": [
+				"dark",
+				"primitive"
+			]
+		},
+		{
+			"group": "Mode",
+			"name": "Light",
+			"sets": [
+				"light",
+				"primitive"
+			]
+		}
+	],
 	"components": {
 		"badge-default": {
 			"path": "Components",
@@ -9,7 +81,8 @@
 			"variantProperties": {
 				"variant": "default"
 			},
-			"parts": {}
+			"parts": {},
+			"layers": {}
 		},
 		"badge-secondary": {
 			"path": "Components",
@@ -17,7 +90,8 @@
 			"variantProperties": {
 				"variant": "secondary"
 			},
-			"parts": {}
+			"parts": {},
+			"layers": {}
 		},
 		"button-default": {
 			"path": "Components",
@@ -38,6 +112,31 @@
 							"Disabled": true
 						}
 					}
+				}
+			},
+			"layers": {
+				"button-board": {
+					"namePath": [
+						"Button"
+					],
+					"appliedTokens": {
+						"fill": "primary",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"button-label": {
+					"namePath": [
+						"Button",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "primary-foreground"
+					},
+					"unbound": []
 				}
 			}
 		},
@@ -61,6 +160,31 @@
 						}
 					}
 				}
+			},
+			"layers": {
+				"button-board": {
+					"namePath": [
+						"Button"
+					],
+					"appliedTokens": {
+						"fill": "primary",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"button-label": {
+					"namePath": [
+						"Button",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "primary-foreground"
+					},
+					"unbound": []
+				}
 			}
 		},
 		"card": {
@@ -74,7 +198,8 @@
 				"Header": {
 					"componentId": "card-header"
 				}
-			}
+			},
+			"layers": {}
 		},
 		"card-content": {
 			"path": "Components/Card",
@@ -87,26 +212,32 @@
 			},
 			"exceptionsRecord": {
 				"v": 1,
-				"slots": ["Body"]
-			}
+				"slots": [
+					"Body"
+				]
+			},
+			"layers": {}
 		},
 		"card-header": {
 			"path": "Components/Card",
 			"name": "Header",
 			"variantProperties": {},
-			"parts": {}
+			"parts": {},
+			"layers": {}
 		},
 		"icon-trash-2": {
 			"path": "icon",
 			"name": "Trash2",
 			"variantProperties": {},
-			"parts": {}
+			"parts": {},
+			"layers": {}
 		},
 		"slot": {
 			"path": "_internal",
 			"name": "Slot",
 			"variantProperties": {},
-			"parts": {}
+			"parts": {},
+			"layers": {}
 		}
 	}
 }

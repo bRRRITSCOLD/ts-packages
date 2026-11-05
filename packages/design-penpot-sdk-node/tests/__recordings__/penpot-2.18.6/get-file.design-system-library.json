@@ -41,8 +41,8 @@
 				"hasMediaTrimmed": false,
 				"commentThreadSeqn": 0,
 				"name": "Design System Library",
-				"revn": 3,
-				"modifiedAt": "2026-11-05T13:26:41.727990Z",
+				"revn": 4,
+				"modifiedAt": "2026-11-05T14:12:48.719003Z",
 				"vern": 0,
 				"id": "de716cff-f170-81a2-8008-e63b04772bf6",
 				"isShared": true,
@@ -277,6 +277,7 @@
 									"r1": 0,
 									"strokes": [],
 									"proportion": 1,
+									"grids": [],
 									"r4": 0,
 									"fills": [
 										{

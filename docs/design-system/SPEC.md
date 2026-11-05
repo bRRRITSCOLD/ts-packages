@@ -314,7 +314,7 @@ Generated at `core-react` build time from its `.d.ts`: every export, each prop's
 - header: Penpot version pin, library file id, schema version (no library version);
 - components keyed by **Penpot component id**, each with path, name, variant properties, parts by role, exceptions record;
 - per layer: `appliedTokens: {attr → tokenName}` and `unbound: [attr…]` (computed by the refresh, so the check stays offline; layers identified by id + name path, used only in messages);
-- the token catalog as DTCG, same shape as `tokens.json`.
+- the token catalog as DTCG, same shape as `tokens.json` (sets only), with the library's token themes beside it as `tokenThemes` (`{ group, name, sets }`), since `tokens.json` carries no `$themes`.
 - No geometry or other styling.
 
 Read path: RPC **`get-file` without a `features` param** (the backend resolves pointer/object maps itself). Gotcha: JSON `get-file` camel-cases keyword keys, so `shared/brrritscold.core-react` arrives as `brrritscoldCoreReact` (`export-binfile` keeps the exact key). Formats are unversioned: pin Penpot, validate with the schema, fail loudly on change.

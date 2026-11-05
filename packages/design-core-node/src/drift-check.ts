@@ -10,6 +10,7 @@ import {
 	formatSchemaIssues,
 } from '@brrritscold/design-core-js/drift-check'
 import { librarySnapshotSchema } from '@brrritscold/design-core-js/library-snapshot'
+import { tokenFileSchema } from '@brrritscold/design-core-js/token-file'
 
 import { generateCodeManifest } from './code-manifest.js'
 import { formatAnnotations, formatStepSummary } from './drift-report.js'
@@ -46,8 +47,10 @@ const USAGE = `Usage: design-drift <command> [options]
   manifest --entry <index.d.ts> --icons <icons.d.ts> --out <code-manifest.json>
       Generate the code manifest from core-react's built declarations.
 
-  check --manifest <code-manifest.json> --snapshot <library.snapshot.json> --config <drift.config.json>
-      Check the library snapshot against the code manifest. Writes job annotations to stdout
+  check --manifest <code-manifest.json> --snapshot <library.snapshot.json> --tokens <tokens.json>
+        --config <drift.config.json>
+      Check the library snapshot against the code manifest and the token file (rules 1-9).
+      Writes job annotations to stdout
       and the step summary to $GITHUB_STEP_SUMMARY (stdout when unset).
       Exit 1 on drift; coverage gaps and unchecked components only warn.
 
@@ -91,10 +94,11 @@ const runManifest = (argv: string[], io: DriftCliIo) => {
 }
 
 const runCheck = (argv: string[], io: DriftCliIo) => {
-	const paths = options(argv, ['manifest', 'snapshot', 'config'])
+	const paths = options(argv, ['manifest', 'snapshot', 'tokens', 'config'])
 	const report = checkDrift({
 		manifest: readJson(io, paths.manifest, 'code manifest', codeManifestSchema),
 		snapshot: readJson(io, paths.snapshot, 'library snapshot', librarySnapshotSchema),
+		tokens: readJson(io, paths.tokens, 'token file', tokenFileSchema),
 		config: readJson(io, paths.config, 'drift config', driftConfigSchema),
 	})
 	for (const line of formatAnnotations(report)) io.stdout(line)

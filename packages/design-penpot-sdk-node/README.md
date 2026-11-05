@@ -23,7 +23,14 @@ const snapshot = await readLibrarySnapshot({
 
 ## What the snapshot holds
 
-Main components keyed by Penpot component id, sorted, deleted ones left out:
+The header (`schemaVersion` 2, the Penpot pin, the library file id), the token catalog, the token themes, and the main components keyed by Penpot component id, sorted, deleted ones left out.
+
+| Field         | From `get-file`                                                                                                                                                                                |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tokens`      | `data.tokensLib`, Penpot's own DTCG export: every set but `$themes` / `$metadata`, as `{ set: DTCG tree }` in the shape of `tokens.json`; groups sorted, Penpot's empty `$description` dropped |
+| `tokenThemes` | `data.tokensLib.$themes`, as `{ group, name, sets }` (the sets each enables), sorted; `$metadata` (active themes and set order) is not read                                                    |
+
+No `tokensLib` (a file that never had a token) gives `tokens: {}` and `tokenThemes: []`. Per component:
 
 | Field               | From `get-file`                                                                                                                                              |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -32,10 +39,27 @@ Main components keyed by Penpot component id, sorted, deleted ones left out:
 | `variantProperties` | a variant's `variantProperties` list, as `{ property: value }`                                                                                               |
 | `parts`             | direct children of the main instance that are a component copy (`componentId`) or a plain board or group (`componentId: null`); the role is the child's name |
 | `exceptionsRecord`  | the plugin-data JSON, parsed but not validated (drift rule 5 does that); a value that isn't JSON is kept as the raw string                                   |
+| `layers`            | every layer of the main instance's tree (nested part copies included) with an applied token or an unbound attribute, by layer id; see below                  |
 
 Text and other leaf layers inside a main component are content, not parts.
 
-**A format change fails loudly.** Only the fields above are validated, but strictly: a renamed, removed or retyped field throws `Penpot get-file changed shape at <where> …`, as do a main instance missing from its page, a variant without `variantProperties` and two parts with one role.
+### Layers: applied tokens and unbound attributes
+
+Drift rules 7–9 check these attributes only, named as Penpot names the attribute a token is applied to. A layer's `appliedTokens` maps each to the token on it (the shape's `appliedTokens`, camel-cased in JSON: `strokeColor` → `stroke-color`); `unbound` lists those set to a non-default value with no token. `namePath` (the layer names from the main instance down) is only for drift messages.
+
+| Attribute                                                   | Non-default when                                                                                |
+| ----------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `fill`                                                      | the shape has any `fills`, or (a text) any node of its `content` has                            |
+| `stroke-color`                                              | the shape has any `strokes`                                                                     |
+| `r1`–`r4`                                                   | the radius isn't 0                                                                              |
+| `p1`–`p4`, `row-gap`, `column-gap`                          | the board has a `layout` (flex or grid) and that `layoutPadding` / `layoutGap` value isn't 0    |
+| `font-family`, `font-size`, `font-weight`, `letter-spacing` | any node of a text's `content` differs from Penpot's text default (`sourcesanspro`, 14, 400, 0) |
+| `shadow`                                                    | the shape has any `shadow`                                                                      |
+| `opacity`                                                   | the layer opacity isn't 1                                                                       |
+
+Exempt, never recorded: position, width/height and the layout-item sizes, stroke width, rotation, margin, line height, text case and decoration, typography. A token on any attribute Penpot 2.18.6 doesn't know throws.
+
+**A format change fails loudly.** Only the fields above are validated, but strictly: a renamed, removed or retyped field throws `Penpot get-file changed shape at <where> …`, as do a main instance missing from its page, a variant without `variantProperties`, two parts with one role, a token that isn't DTCG, a theme set not marked `enabled` and an unknown `$` key beside the token sets.
 
 ## Snapshot refresh
 
@@ -105,7 +129,7 @@ docker run --rm -e PENPOT_URL -e SNAPSHOT_REFRESH_PENPOT_TOKEN -e SNAPSHOT_REFRE
 
 `tests/__recordings__/penpot-<version>/get-file.*.json` are real Penpot answers, each with the requests behind one `readLibrarySnapshot` call and no headers:
 
-- **`snapshot-fixture`**: a file in the automation profile's own Drafts holding one of everything the normalizer reads (a variant set, a compound component whose part is a copy, a plain-board part, an `icon/` component, `_internal/Slot`, an exceptions record). The real library may be empty, so this is what exercises the normalizer.
+- **`snapshot-fixture`**: a file in the automation profile's own Drafts holding one of everything the normalizer reads (a variant set, a compound component whose part is a copy, a plain-board part, an `icon/` component, `_internal/Slot`, an exceptions record, a token catalog of a few `primitive` and `light` / `dark` tokens with the `Mode` themes, tokens applied to fill, stroke, radius, padding, gap, font weight and shadow, an unbound fill on the slot and a primitive colour on `Card/Header`'s fill). The real library may be empty, so this is what exercises the normalizer.
 - **`design-system-library`**: the design system library itself, read only.
 
 **At a Penpot pin bump**, bump `PENPOT_VERSION` and re-record in the same PR; review the recording diff like code:
@@ -114,7 +138,13 @@ docker run --rm -e PENPOT_URL -e SNAPSHOT_REFRESH_PENPOT_TOKEN -e SNAPSHOT_REFRE
 pnpm --filter @brrritscold/design-penpot-sdk-node record:penpot
 ```
 
-It needs the same two env vars. When `snapshot-fixture` is missing from the automation profile's Drafts (a fresh Penpot), it creates it there through `create-file` + `update-file`; that file is the only thing it ever writes, and an existing one is left as it is.
+It needs the same two env vars. When `snapshot-fixture` is missing from the automation profile's Drafts (a fresh Penpot), it creates it there through `create-file` + `update-file` (tokens through `set-token-set`, `set-token`, `set-token-theme` and `set-active-token-themes`, applied tokens as each layer's `appliedTokens`); an existing one is left as it is. After changing what the fixture holds (`fixtureChanges` in `record.ts`), pass `--recreate` to delete the existing one and create it again:
+
+```bash
+pnpm --filter @brrritscold/design-penpot-sdk-node record:penpot --recreate
+```
+
+That file is the only thing it ever writes or deletes.
 
 <!-- api:start -->
 <!-- Generated by scripts/readme-api.mjs from the TSDoc comments. Do not edit by hand. -->
@@ -129,11 +159,11 @@ Full reference: [brrritscold.github.io/ts-packages](https://brrritscold.github.i
 import { … } from '@brrritscold/design-penpot-sdk-node/library-snapshot'
 ```
 
-| Export                          | Kind     | Summary                                                                                                                                                                                                                                                                      |
-| ------------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `normalizeLibrarySnapshot`      | function | Normalizes a raw `get-file` result into a library snapshot: the design system library's main components keyed by Penpot component id, each with its path, name, variant properties, parts by role and exceptions record, sorted so the same file always serializes the same. |
-| `readLibrarySnapshot`           | function | Reads a library file from Penpot and returns its library snapshot: checks the server runs the pinned Penpot version (throwing if not), calls `get-file` without `features`, and normalizes the result with normalizeLibrarySnapshot.                                         |
-| `ReadLibrarySnapshotParameters` | type     | What readLibrarySnapshot needs: the client parameters and the library file's id.                                                                                                                                                                                             |
+| Export                          | Kind     | Summary                                                                                                                                                                                                                                                                                                                |
+| ------------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `normalizeLibrarySnapshot`      | function | Normalizes a raw `get-file` result into a library snapshot: the design system library's token catalog and themes, and its main components keyed by Penpot component id, each with its path, name, variant properties, parts by role, exceptions record and layers, sorted so the same file always serializes the same. |
+| `readLibrarySnapshot`           | function | Reads a library file from Penpot and returns its library snapshot: checks the server runs the pinned Penpot version (throwing if not), calls `get-file` without `features`, and normalizes the result with normalizeLibrarySnapshot.                                                                                   |
+| `ReadLibrarySnapshotParameters` | type     | What readLibrarySnapshot needs: the client parameters and the library file's id.                                                                                                                                                                                                                                       |
 
 ### [`@brrritscold/design-penpot-sdk-node/rpc`](https://brrritscold.github.io/ts-packages/modules/_brrritscold_design-penpot-sdk-node.rpc.html)
 

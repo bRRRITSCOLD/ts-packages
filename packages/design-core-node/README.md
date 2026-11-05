@@ -10,10 +10,13 @@ The drift check's node side: the code manifest generator (the TypeScript compile
 # Build the code manifest from core-react's declarations (a CI artifact, never published)
 design-drift manifest --entry dist/index.d.ts --icons dist/icons.d.ts --out code-manifest.json
 
-# Check the library snapshot against it, offline
+# Check the library snapshot against it and the token file, offline
 design-drift check --manifest code-manifest.json \
-  --snapshot design/library.snapshot.json --config design/drift.config.json
+  --snapshot design/library.snapshot.json --tokens tokens/tokens.json \
+  --config design/drift.config.json
 ```
+
+`--tokens` is `core-react`'s token file: rule 6 compares the snapshot's token catalog with it, rules 8 and 9 look applied tokens up in it.
 
 `check` writes one job annotation per error to stdout (plus a warning per unchecked component and one for all coverage gaps) and appends the step summary to `$GITHUB_STEP_SUMMARY`: a table of component → rule → expected vs found, the unchecked components, and the coverage gaps in a collapsed section. Without `$GITHUB_STEP_SUMMARY` the summary goes to stdout.
 

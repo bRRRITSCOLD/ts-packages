@@ -8,7 +8,14 @@ import {
 	type LinkedProp,
 	resolveComponentLink,
 } from './component-link.js'
-import type { LibraryComponent, LibrarySnapshot } from './library-snapshot.js'
+import type { LibraryComponent, LibraryLayer, LibrarySnapshot } from './library-snapshot.js'
+import {
+	type DesignToken,
+	flattenTokens,
+	TOKEN_THEMES,
+	type TokenFile,
+	type TokenTheme,
+} from './token-file.js'
 
 /**
  * The drift-check config, `design/drift.config.json` beside the library snapshot.
@@ -23,17 +30,24 @@ export const driftConfigSchema = z.strictObject({
 /** The drift-check config; see {@link driftConfigSchema}. */
 export type DriftConfig = z.infer<typeof driftConfigSchema>
 
-/** What the drift check compares: the library snapshot, the code manifest, and the config. */
+/**
+ * What the drift check compares: the library snapshot, the code manifest, the token file
+ * (`tokens.json`) and the config.
+ */
 export type DriftCheckInput = {
 	snapshot: LibrarySnapshot
 	manifest: CodeManifest
+	tokens: TokenFile
 	config: DriftConfig
 }
 
 /**
  * The drift rules, numbered as in the spec: `export` (1) component → export, `variant` (2)
  * variant property → prop, `part` (3) parts are copies, `icon` (4) icon → `<Name>Icon`,
- * `exceptionsRecord` (5) the exceptions record is valid and points at real props, values and roles.
+ * `exceptionsRecord` (5) the exceptions record is valid and points at real props, values and
+ * roles, `tokenCatalog` (6) the token catalog equals the token file, `unbound` (7) no checked
+ * attribute holds a raw value, `unknownToken` (8) every applied token is in the token file,
+ * `primitiveColour` (9) no fill or stroke colour comes from a `primitive` token.
  */
 export const DRIFT_RULE = {
 	export: 1,
@@ -41,6 +55,10 @@ export const DRIFT_RULE = {
 	part: 3,
 	icon: 4,
 	exceptionsRecord: 5,
+	tokenCatalog: 6,
+	unbound: 7,
+	unknownToken: 8,
+	primitiveColour: 9,
 } as const
 
 /** A drift rule's number; see {@link DRIFT_RULE}. */
@@ -53,12 +71,22 @@ export const DRIFT_RULE_NAMES: Record<DriftRule, string> = {
 	[DRIFT_RULE.part]: 'part',
 	[DRIFT_RULE.icon]: 'icon',
 	[DRIFT_RULE.exceptionsRecord]: 'exceptions record',
+	[DRIFT_RULE.tokenCatalog]: 'token catalog',
+	[DRIFT_RULE.unbound]: 'unbound',
+	[DRIFT_RULE.unknownToken]: 'unknown token',
+	[DRIFT_RULE.primitiveColour]: 'primitive colour',
 }
+
+/** The `component` of a rule-6 error: the token catalog belongs to no one component. */
+export const TOKEN_CATALOG_LABEL = 'Token catalog'
 
 /** A library → code mismatch: the drift check fails on any. */
 export type DriftError = {
 	rule: DriftRule
-	/** The library component's Penpot path and name, `Components/Button`. */
+	/**
+	 * The library component's Penpot path and name, `Components/Button`, or
+	 * {@link TOKEN_CATALOG_LABEL} for rule 6.
+	 */
 	component: string
 	expected: string
 	found: string
@@ -182,6 +210,122 @@ const checkRecordKeys = (
 	return mismatches
 }
 
+/** Rule 6's hint: the catalog is only ever fixed by writing the token file into Penpot again. */
+const RESYNC = '(re-run token sync)'
+
+/** JSON with object keys sorted at every depth, so equal values compare equal whatever their order. */
+const canonicalJson = (value: unknown): string =>
+	JSON.stringify(value, (_, nested) =>
+		nested && typeof nested === 'object' && !Array.isArray(nested)
+			? Object.fromEntries(Object.entries(nested).sort(([a], [b]) => compareCodeUnits(a, b)))
+			: nested
+	)
+
+const describeToken = ({ $type, $value, $description }: DesignToken) =>
+	`${$type} ${canonicalJson($value)}${$description ? ` (${JSON.stringify($description)})` : ''}`
+
+const sorted = (values: Iterable<string>) => [...values].sort(compareCodeUnits)
+
+const themePath = ({ group, name }: TokenTheme) => `${group}/${name}`
+
+/** Rule 6: the catalog's sets, their tokens and the themes are exactly the token file's. */
+const checkTokenCatalog = (snapshot: LibrarySnapshot, tokenFile: TokenFile): Mismatch[] => {
+	const mismatches: Mismatch[] = []
+	const expectedSets: Record<string, TokenFile[keyof TokenFile]> = tokenFile
+	const extraSets = sorted(Object.keys(snapshot.tokens)).filter((set) => !(set in expectedSets))
+	for (const set of extraSets)
+		mismatches.push({
+			expected: `only the sets of tokens.json (${sorted(Object.keys(expectedSets)).join(', ')}) ${RESYNC}`,
+			found: `set \`${set}\``,
+		})
+	for (const set of sorted(Object.keys(expectedSets))) {
+		const found = snapshot.tokens[set]
+		if (!found) {
+			mismatches.push({ expected: `set \`${set}\` ${RESYNC}`, found: 'no such set' })
+			continue
+		}
+		const expectedTokens = flattenTokens(expectedSets[set])
+		const foundTokens = flattenTokens(found)
+		for (const name of sorted(
+			new Set([...Object.keys(expectedTokens), ...Object.keys(foundTokens)])
+		)) {
+			const expectedToken = expectedTokens[name]
+			const foundToken = foundTokens[name]
+			if (!expectedToken)
+				mismatches.push({
+					expected: `no \`${set}\` token \`${name}\`, as in tokens.json ${RESYNC}`,
+					found: describeToken(foundToken),
+				})
+			else if (!foundToken || canonicalJson(expectedToken) !== canonicalJson(foundToken))
+				mismatches.push({
+					expected: `\`${set}\` token \`${name}\` = ${describeToken(expectedToken)} ${RESYNC}`,
+					found: foundToken ? describeToken(foundToken) : 'no such token',
+				})
+		}
+	}
+
+	const expectedThemes = new Map(TOKEN_THEMES.map((theme) => [themePath(theme), theme]))
+	const foundThemes = new Map(snapshot.tokenThemes.map((theme) => [themePath(theme), theme]))
+	for (const path of sorted(foundThemes.keys()))
+		if (!expectedThemes.has(path))
+			mismatches.push({
+				expected: `only the themes ${sorted(expectedThemes.keys()).join(', ')} ${RESYNC}`,
+				found: `theme \`${path}\``,
+			})
+	for (const [path, theme] of expectedThemes) {
+		const found = foundThemes.get(path)
+		const expectedSetList = sorted(theme.sets).join(', ')
+		if (found && sorted(found.sets).join(', ') === expectedSetList) continue
+		mismatches.push({
+			expected: `theme \`${path}\` enabling ${expectedSetList} ${RESYNC}`,
+			found: found
+				? `enabling ${sorted(found.sets).join(', ') || 'no set'}`
+				: 'no such theme',
+		})
+	}
+	return mismatches
+}
+
+/** The token names of the token file: every token's, and the `primitive` set's alone. */
+const collectTokenNames = (tokenFile: TokenFile) => ({
+	all: new Set(Object.values(tokenFile).flatMap((set) => Object.keys(flattenTokens(set)))),
+	primitive: new Set(Object.keys(flattenTokens(tokenFile.primitive))),
+})
+
+/** The colour attributes rule 9 keeps primitive tokens off. */
+const COLOUR_ATTRIBUTES = new Set<string>(['fill', 'stroke-color'])
+
+const layerLabel = (id: string, { namePath }: LibraryLayer) =>
+	`layer \`${namePath.join(' / ')}\` (${id})`
+
+/** Rules 7–9 on one component's layers: no raw values, no unknown tokens, no primitive colours. */
+const checkLayers = (
+	component: LibraryComponent,
+	tokenNames: ReturnType<typeof collectTokenNames>,
+	report: (rule: DriftRule) => (mismatch: Mismatch) => void
+) => {
+	for (const [id, layer] of Object.entries(component.layers)) {
+		const label = layerLabel(id, layer)
+		if (layer.unbound.length)
+			report(DRIFT_RULE.unbound)({
+				expected: `a token on ${layer.unbound.map((attr) => `\`${attr}\``).join(', ')} of ${label}`,
+				found: 'a raw value',
+			})
+		for (const [attribute, token] of Object.entries(layer.appliedTokens)) {
+			if (!tokenNames.all.has(token))
+				report(DRIFT_RULE.unknownToken)({
+					expected: `a token of tokens.json on \`${attribute}\` of ${label}`,
+					found: `\`${token}\`: no such token`,
+				})
+			else if (COLOUR_ATTRIBUTES.has(attribute) && tokenNames.primitive.has(token))
+				report(DRIFT_RULE.primitiveColour)({
+					expected: `a semantic colour on \`${attribute}\` of ${label}`,
+					found: `the primitive \`${token}\``,
+				})
+		}
+	}
+}
+
 /** The values each variant property takes across every variant of each component, by label. */
 const collectVariantValues = (snapshot: LibrarySnapshot): Map<string, ValuesByProperty> => {
 	const byComponent = new Map<string, ValuesByProperty>()
@@ -237,11 +381,19 @@ export const formatSchemaIssues = (error: z.ZodError): string[] =>
 	)
 
 /**
- * Checks the library snapshot against the code manifest: library → code mismatches are errors
- * (rules 1–5), code → library mismatches are coverage gaps.
+ * Checks the library snapshot against the code manifest and the token file: library → code
+ * mismatches are errors (rules 1–9), code → library mismatches are coverage gaps.
  */
-export const checkDrift = ({ snapshot, manifest, config }: DriftCheckInput): DriftReport => {
+export const checkDrift = ({
+	snapshot,
+	manifest,
+	tokens,
+	config,
+}: DriftCheckInput): DriftReport => {
 	const errors: DriftError[] = []
+	for (const mismatch of checkTokenCatalog(snapshot, tokens))
+		errors.push({ rule: DRIFT_RULE.tokenCatalog, component: TOKEN_CATALOG_LABEL, ...mismatch })
+	const tokenNames = collectTokenNames(tokens)
 	const unchecked: UncheckedComponent[] = []
 	/** Per core-react export a library component links to: the values it gives each prop. */
 	const linked = new Map<string, ValuesByProperty>()
@@ -264,6 +416,7 @@ export const checkDrift = ({ snapshot, manifest, config }: DriftCheckInput): Dri
 		const record = parsed?.data
 		const link = resolveComponentLink(component, record)
 		checkParts(component, snapshot).forEach(report(DRIFT_RULE.part))
+		checkLayers(component, tokenNames, report)
 
 		if (link.kind === 'icon' && !manifest.icons.includes(link.export))
 			report(DRIFT_RULE.icon)({

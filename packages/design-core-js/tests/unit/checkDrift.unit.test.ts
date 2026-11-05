@@ -9,6 +9,7 @@ import {
 	createDriftCheckInput,
 	createInStepLibrary,
 	createLibraryComponent,
+	createLibraryLayer,
 	mapsStateToDisabled,
 } from './__fixtures__/checkDrift.unit.fixtures.js'
 
@@ -344,6 +345,207 @@ describe('checkDrift', () => {
 					{ component: 'Components/DatePicker', package: '@brrritscold/other-react' },
 				],
 			})
+		})
+	})
+
+	describe('rule 6: token catalog equals tokens.json', () => {
+		const RESYNC = '(re-run token sync)'
+
+		it('should pass a catalog with the sets, themes and values of tokens.json, whatever its key order', () => {
+			const input = createDriftCheckInput()
+			const shadow = input.snapshot.tokens.primitive.shadow as Record<string, unknown>
+			shadow.xs = {
+				$value: {
+					spread: '0px',
+					blur: '2px',
+					offsetY: '1px',
+					offsetX: '0px',
+					color: '#0000000d',
+				},
+				$type: 'shadow',
+			}
+
+			expect(checkDrift(input).errors).toEqual([])
+		})
+
+		it('should fail a token whose value differs', () => {
+			const input = createDriftCheckInput()
+			input.snapshot.tokens.light.primary = { $type: 'color', $value: '{color.neutral.100}' }
+
+			expect(checkDrift(input).errors).toEqual([
+				{
+					rule: 6,
+					component: 'Token catalog',
+					expected: `\`light\` token \`primary\` = color "{color.neutral.900}" ${RESYNC}`,
+					found: 'color "{color.neutral.100}"',
+				},
+			])
+		})
+
+		it('should fail a token tokens.json has and the catalog lacks, and one it has extra', () => {
+			const input = createDriftCheckInput()
+			delete input.snapshot.tokens.dark['primary-foreground']
+			input.snapshot.tokens.dark.secondary = { $type: 'color', $value: '#ffffff' }
+
+			expect(checkDrift(input).errors).toEqual([
+				{
+					rule: 6,
+					component: 'Token catalog',
+					expected: `\`dark\` token \`primary-foreground\` = color "{color.neutral.900}" ${RESYNC}`,
+					found: 'no such token',
+				},
+				{
+					rule: 6,
+					component: 'Token catalog',
+					expected: `no \`dark\` token \`secondary\`, as in tokens.json ${RESYNC}`,
+					found: 'color "#ffffff"',
+				},
+			])
+		})
+
+		it('should fail a missing set and an extra one', () => {
+			const input = createDriftCheckInput()
+			delete (input.snapshot.tokens as Record<string, unknown>).dark
+			input.snapshot.tokens.brand = {}
+
+			expect(checkDrift(input).errors).toEqual([
+				{
+					rule: 6,
+					component: 'Token catalog',
+					expected: `only the sets of tokens.json (dark, light, primitive) ${RESYNC}`,
+					found: 'set `brand`',
+				},
+				{
+					rule: 6,
+					component: 'Token catalog',
+					expected: `set \`dark\` ${RESYNC}`,
+					found: 'no such set',
+				},
+			])
+		})
+
+		it('should fail a missing theme, an extra one and one enabling other sets', () => {
+			const input = createDriftCheckInput()
+			input.snapshot.tokenThemes = [
+				{ group: 'Brand', name: 'Loud', sets: ['primitive'] },
+				{ group: 'Mode', name: 'Light', sets: ['light'] },
+			]
+
+			expect(checkDrift(input).errors).toEqual([
+				{
+					rule: 6,
+					component: 'Token catalog',
+					expected: `only the themes Mode/Dark, Mode/Light ${RESYNC}`,
+					found: 'theme `Brand/Loud`',
+				},
+				{
+					rule: 6,
+					component: 'Token catalog',
+					expected: `theme \`Mode/Dark\` enabling dark, primitive ${RESYNC}`,
+					found: 'no such theme',
+				},
+				{
+					rule: 6,
+					component: 'Token catalog',
+					expected: `theme \`Mode/Light\` enabling light, primitive ${RESYNC}`,
+					found: 'enabling light',
+				},
+			])
+		})
+	})
+
+	describe('rule 7: unbound', () => {
+		it('should pass layers whose checked attributes all carry a token', () => {
+			expect(checkDrift(createDriftCheckInput()).errors).toEqual([])
+		})
+
+		it('should fail a layer with an unbound attribute, naming it by name path and id', () => {
+			const library = {
+				badge: createLibraryComponent({
+					name: 'Card',
+					layers: {
+						'card-title': createLibraryLayer({
+							namePath: ['Card', 'Title'],
+							unbound: ['fill', 'font-size'],
+						}),
+					},
+				}),
+			}
+
+			expect(checkDrift(createDriftCheckInput(library)).errors).toEqual([
+				{
+					rule: 7,
+					component: 'Components/Card',
+					expected: 'a token on `fill`, `font-size` of layer `Card / Title` (card-title)',
+					found: 'a raw value',
+				},
+			])
+		})
+	})
+
+	describe('rule 8: unknown token', () => {
+		const card = (appliedTokens: Record<string, string>) => ({
+			card: createLibraryComponent({
+				name: 'Card',
+				layers: { 'card-board': createLibraryLayer({ namePath: ['Card'], appliedTokens }) },
+			}),
+		})
+
+		it('should pass applied tokens from any set of tokens.json', () => {
+			const library = card({ fill: 'primary', shadow: 'shadow.xs' })
+
+			expect(checkDrift(createDriftCheckInput(library)).errors).toEqual([])
+		})
+
+		it('should fail an applied token tokens.json does not have', () => {
+			const library = card({ fill: 'brand.primary' })
+
+			expect(checkDrift(createDriftCheckInput(library)).errors).toEqual([
+				{
+					rule: 8,
+					component: 'Components/Card',
+					expected: 'a token of tokens.json on `fill` of layer `Card` (card-board)',
+					found: '`brand.primary`: no such token',
+				},
+			])
+		})
+	})
+
+	describe('rule 9: primitive colour on fill or stroke', () => {
+		const card = (appliedTokens: Record<string, string>) => ({
+			card: createLibraryComponent({
+				name: 'Card',
+				layers: { 'card-board': createLibraryLayer({ namePath: ['Card'], appliedTokens }) },
+			}),
+		})
+
+		it('should pass a semantic colour on fill and stroke, and a primitive on other attributes', () => {
+			const library = card({
+				fill: 'primary',
+				'stroke-color': 'primary-foreground',
+				r1: 'border-radius.lg',
+			})
+
+			expect(checkDrift(createDriftCheckInput(library)).errors).toEqual([])
+		})
+
+		it('should fail a primitive colour on fill and on stroke colour', () => {
+			const library = card({ fill: 'color.neutral.100', 'stroke-color': 'color.white' })
+
+			expect(checkDrift(createDriftCheckInput(library)).errors).toEqual([
+				{
+					rule: 9,
+					component: 'Components/Card',
+					expected: 'a semantic colour on `fill` of layer `Card` (card-board)',
+					found: 'the primitive `color.neutral.100`',
+				},
+				{
+					rule: 9,
+					component: 'Components/Card',
+					expected: 'a semantic colour on `stroke-color` of layer `Card` (card-board)',
+					found: 'the primitive `color.white`',
+				},
+			])
 		})
 	})
 

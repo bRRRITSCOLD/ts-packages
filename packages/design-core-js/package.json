@@ -61,6 +61,17 @@
 				"default": "./dist/library-snapshot.cjs"
 			},
 			"default": "./dist/library-snapshot.mjs"
+		},
+		"./token-file": {
+			"import": {
+				"types": "./dist/token-file.d.ts",
+				"default": "./dist/token-file.mjs"
+			},
+			"require": {
+				"types": "./dist/token-file.d.cts",
+				"default": "./dist/token-file.cjs"
+			},
+			"default": "./dist/token-file.mjs"
 		}
 	},
 	"scripts": {
