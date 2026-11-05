@@ -54,11 +54,28 @@ Scripts beyond the contract: `build:styles` (the token half of `build`), `test:s
 
 `tokens/tokens.json` is the **token file**, one W3C DTCG tree with the top-level sets `primitive`, `light` and `dark` (no `$themes` or `$metadata`).
 
-- **Primitives** hold raw values: `color.neutral.500`, `space.4`, `border-radius.lg`, `font-size.sm`, … A half step is written with a dash, since a token name can't hold a dot: `px-2.5` is `space.2-5`.
+- **Primitives** hold raw values: `color.neutral.500`, `space.4`, `size.md`, `font-size.sm`, … A half step is written with a dash, since a token name can't hold a dot: `px-2.5` is `space.2-5`. Each class has one token: `h-9` and `size-9` read `space.9`; `size.*` holds only the container widths `max-w-*` reads.
 - **Semantics** are named exactly as shadcn's CSS variables (`background`, `primary-foreground`, `border`, `ring`, `radius`, …), point at primitives, and are defined in both `light` and `dark`. Colours are only ever semantic in components.
 - **`$type`s** follow Penpot's token types, so token sync writes them as they are: `color`, `spacing`, `sizing`, `borderRadius`, `fontFamilies`, `fontSizes`, `fontWeights`, `number` (line height), `letterSpacing`, `shadow`, `opacity`.
-- **`styles.css`**: primitives and light semantics on `:root`, dark semantics on `.dark`, an `@theme inline` block mapping each colour semantic to a utility (`bg-primary`) and `radius` to the `rounded-*` scale. Font sizes are stored in px and emitted as rem. Style Dictionary fails the build on a broken reference.
-- Components use tokens only through those utilities. **Arbitrary values (`bg-[#…]`, `p-[13px]`) and default-palette utilities (`bg-slate-500`, `text-white`) are rejected** by the unit tier's source scan.
+- **`styles.css`**: primitives and light semantics on `:root`, dark semantics on `.dark`, then the `@theme inline` block. It clears Tailwind's default scale for every token type and maps the tokens in their place, so a utility reads its token's variable (`p-4` → `var(--space-4)`) and changing a token changes every class that uses it:
+
+  | Token              | Utilities                                                                                                             |
+  | ------------------ | --------------------------------------------------------------------------------------------------------------------- |
+  | colour semantics   | `bg-primary`, `text-muted-foreground`, `border-input`, …                                                              |
+  | `radius`           | `rounded-sm` … `rounded-xl`, shadcn's derived scale                                                                   |
+  | `space.*`          | spacing and sizing: `p-4`, `gap-1.5`, `h-9`, `size-4`, `inset-x-4`                                                    |
+  | `size.*`           | `max-w-xs` … `max-w-2xl`                                                                                              |
+  | `font-family.*`    | `font-sans`, `font-mono`                                                                                              |
+  | `font-size.*`      | `text-xs` … `text-2xl` (font size only; line height comes from `leading-*`, inherited from `body`'s `leading-normal`) |
+  | `font-weight.*`    | `font-normal` … `font-bold`                                                                                           |
+  | `line-height.*`    | `leading-tight`, `leading-normal`, `leading-relaxed`                                                                  |
+  | `letter-spacing.*` | `tracking-tight`, `tracking-normal`, `tracking-wide`                                                                  |
+  | `shadow.*`         | `shadow-xs`, `shadow-sm`                                                                                              |
+  | `opacity.*`        | `opacity-0`, `opacity-50`, `opacity-100`, and a colour's `/50` modifier                                               |
+
+  A token already named as its theme variable (`--font-weight-medium`, `--shadow-xs`, `--opacity-50`) sits in a second `@theme inline reference` block, so Tailwind doesn't emit it again as a variable pointing at itself. Breakpoints, motion and z-index keep Tailwind's defaults. Font sizes are stored in px and emitted as rem; opacities are stored as fractions and emitted as percentages, the form a colour modifier's `color-mix()` takes. Style Dictionary fails the build on a broken reference.
+
+- Components use tokens only through those utilities. **Arbitrary values (`bg-[#…]`, `p-[13px]`) and default-palette utilities (`bg-slate-500`, `text-white`) are rejected** by the unit tier's source scan, and the token checks fail a component class that sets a spacing, sizing, typography, shadow, opacity, radius or colour property without reading a token.
 
 ## Vendoring a shadcn component
 
@@ -81,7 +98,7 @@ Naming is the component link: export name = library component name, cva variant 
 | `unit`        | `tests/unit/**/*.unit.test.ts(x)`            | Vitest on jsdom: `cn`, the token build, the token checks, the source scan and the tier-placement check             |
 | `integration` | `tests/integration/**/*.integration.spec.ts` | Playwright against `storybook build`, served by `vite preview`; proves the component objects and the Base UI traps |
 
-A story's `title` is its library component's Penpot path (`Components/Button`), one story per variant value, each with a `play` function. A story that opts out of a11y (`parameters: { a11y: { test: 'off' } }`) says why in a comment beside it. The token checks: light and dark define the same semantic tokens, and every class a component applies compiles to a utility of the built theme.
+A story's `title` is its library component's Penpot path (`Components/Button`), one story per variant value, each with a `play` function. A story that opts out of a11y (`parameters: { a11y: { test: 'off' } }`) says why in a comment beside it. The token checks: light and dark define the same semantic tokens, every class a component applies compiles to a utility of the built theme, and each of those utilities reads a token for every token-typed property it sets.
 
 An integration spec opens a story by id (`openStory(page, 'components-dialog--nested')`, from `tests/integration/__utils__/story.ts`), which waits until Storybook has run the story's `play` function: the spec starts from the state `play` leaves. `retries` is 0. The tier-placement check fails a file whose suffix doesn't match its tier directory, and any skipped test or suite (`test.fixme` is allowed).
 

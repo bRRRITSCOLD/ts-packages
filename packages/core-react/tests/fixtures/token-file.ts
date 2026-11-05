@@ -10,8 +10,14 @@ export const tokenFile = (): TokenFile => ({
 				'900': { $type: 'color', $value: '#171717' },
 			},
 		},
+		space: {
+			'4': { $type: 'spacing', $value: '16px' },
+			'1-5': { $type: 'spacing', $value: '6px' },
+		},
 		'border-radius': { lg: { $type: 'borderRadius', $value: '10px' } },
 		'font-size': { sm: { $type: 'fontSizes', $value: '14px' } },
+		'font-weight': { medium: { $type: 'fontWeights', $value: 500 } },
+		opacity: { '50': { $type: 'opacity', $value: 0.5 } },
 	},
 	light: {
 		background: { $type: 'color', $value: '{color.white}' },

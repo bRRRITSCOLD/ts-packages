@@ -1,8 +1,9 @@
 /**
  * Builds `dist/styles.css` from the token file with Style Dictionary: Tailwind and tw-animate-css
  * (the `animate-in` / `fade-in-0` / `zoom-in-95` utilities shadcn components open and close with),
- * the primitives and light semantics on `:root`, the dark semantics on `.dark`, and a
- * `@theme inline` block that turns each semantic into a Tailwind utility.
+ * the primitives and light semantics on `:root`, the dark semantics on `.dark`, and the Tailwind
+ * theme: Tailwind's default scales cleared for every token type, and each token mapped to the
+ * utilities that read it, so `p-4` is `padding: var(--space-4)`.
  */
 import StyleDictionary from 'style-dictionary'
 import type { DesignTokens, TransformedToken } from 'style-dictionary/types'
@@ -32,15 +33,38 @@ const pxToRem = {
 	},
 }
 
-/** Dotted names of every token in a set, such as `color.neutral.500` or `primary-foreground`. */
-const tokenNames = (tree: DesignTokens, prefix: string[] = []): string[] =>
+/**
+ * Opacities are stored as a fraction (Penpot's form) and emitted as a percentage, the one form
+ * both `opacity-50` and a colour modifier (`bg-muted/50`, a `color-mix()` percentage) accept.
+ */
+const fractionToPercent = {
+	type: 'value' as const,
+	filter: (token: TransformedToken) => token.$type === 'opacity',
+	transform: (token: TransformedToken) => `${Number(token.$value) * 100}%`,
+}
+
+/** A token in a set: its dotted name, such as `color.neutral.500` or `primary-foreground`, and type. */
+type Token = { name: string; type: string | undefined }
+
+/** Every token in a set, in file order. */
+const tokensIn = (tree: DesignTokens, prefix: string[] = []): Token[] =>
 	Object.entries(tree).flatMap(([key, node]) => {
 		if (key.startsWith('$')) return []
 		const path = [...prefix, key]
 		return node && typeof node === 'object' && '$value' in node
-			? [path.join('.')]
-			: tokenNames(node as DesignTokens, path)
+			? [{ name: path.join('.'), type: (node as { $type?: string }).$type }]
+			: tokensIn(node as DesignTokens, path)
 	})
+
+/** A token's CSS variable, as Style Dictionary names it: `space.1-5` is `--space-1-5`. */
+const cssVar = (name: string) => `--${name.replaceAll('.', '-')}`
+
+/** The CSS variable of every token in the file, `--space-4` or `--primary-foreground`. */
+export const tokenVars = ({ primitive, light, dark }: TokenFile): string[] => [
+	...new Set(
+		[primitive, light, dark].flatMap((set) => tokensIn(set).map(({ name }) => cssVar(name)))
+	),
+]
 
 /** Runs Style Dictionary over the primitives plus one mode, returning `selector { … }` for `only`. */
 const declarations = async (
@@ -52,10 +76,20 @@ const declarations = async (
 		tokens,
 		usesDtcg: true,
 		log: { verbosity: 'verbose', warnings: 'disabled', errors: { brokenReferences: 'throw' } },
-		hooks: { transforms: { 'core-react/px-to-rem': pxToRem } },
+		hooks: {
+			transforms: {
+				'core-react/px-to-rem': pxToRem,
+				'core-react/fraction-to-percent': fractionToPercent,
+			},
+		},
 		platforms: {
 			css: {
-				transforms: ['name/kebab', 'shadow/css/shorthand', 'core-react/px-to-rem'],
+				transforms: [
+					'name/kebab',
+					'shadow/css/shorthand',
+					'core-react/px-to-rem',
+					'core-react/fraction-to-percent',
+				],
 				files: [
 					{
 						destination: 'styles.css',
@@ -71,20 +105,77 @@ const declarations = async (
 	return String(file?.output).trim()
 }
 
-/** The Tailwind `@theme inline` block: a colour utility per colour semantic, and the radius scale. */
-const theme = (semantics: DesignTokens) => {
-	const lines = tokenNames(semantics).flatMap((name) => {
-		const token = semantics[name] as { $type?: string }
-		if (token.$type === 'color') return [`--color-${name}: var(--${name});`]
-		if (name === 'radius') return RADIUS_SCALE
-		return []
-	})
-	return ['@theme inline {', ...lines.map((line) => `  ${line}`), '}'].join('\n')
+/**
+ * The Tailwind theme namespace each primitive token type fills: `space.4` is `--spacing-4`
+ * (`p-4`), `font-size.sm` is `--text-sm` (`text-sm`). Colours and radius come from semantics.
+ */
+const THEME_NAMESPACE: Partial<Record<string, string>> = {
+	spacing: 'spacing',
+	sizing: 'container',
+	fontFamilies: 'font',
+	fontSizes: 'text',
+	fontWeights: 'font-weight',
+	number: 'leading',
+	letterSpacing: 'tracking',
+	shadow: 'shadow',
+	opacity: 'opacity',
+}
+
+/**
+ * Tailwind's default scales for every namespace a token type fills, cleared so that only tokens
+ * make utilities there. Breakpoints, motion and z-index keep Tailwind's defaults.
+ */
+const DEFAULT_SCALES = [
+	'--color-*',
+	'--spacing-*',
+	'--container-*',
+	'--font-*',
+	'--font-weight-*',
+	'--text-*',
+	'--leading-*',
+	'--tracking-*',
+	'--shadow-*',
+	'--radius-*',
+].map((namespace) => `${namespace}: initial;`)
+
+/** A theme variable reading a token: `--spacing-1\.5: var(--space-1-5);` makes `p-1.5`. */
+const themeVar = (namespace: string, group: string, name: string) => {
+	const step = name.slice(group.length + 1).replaceAll('.', '-')
+	// A half step is written with a dash in a token name and with a dot in a class.
+	const key = step.replace(/^(\d+)-(\d+)$/, '$1\\.$2')
+	return { name: `--${namespace}-${key}`, value: `var(${cssVar(name)})` }
+}
+
+const block = (at: string, lines: string[]) =>
+	[`${at} {`, ...lines.map((line) => `  ${line}`), '}'].join('\n')
+
+/**
+ * The Tailwind theme: every default scale a token type replaces is cleared, then each primitive
+ * scale, each colour semantic and the radius scale is mapped to the utilities that read it. A
+ * token already named as its theme variable (`--font-weight-medium`, `--shadow-xs`) is declared
+ * `reference`, so Tailwind doesn't also emit it as `--font-weight-medium: var(--font-weight-medium)`.
+ */
+const theme = (primitive: DesignTokens, semantics: DesignTokens) => {
+	const inline: string[] = [...DEFAULT_SCALES]
+	const reference: string[] = []
+	for (const { name, type } of tokensIn(primitive)) {
+		const namespace = type && THEME_NAMESPACE[type]
+		if (!namespace) continue
+		const { name: variable, value } = themeVar(namespace, name.split('.')[0] ?? '', name)
+		;(variable === cssVar(name) ? reference : inline).push(`${variable}: ${value};`)
+	}
+	for (const { name, type } of tokensIn(semantics)) {
+		if (type === 'color') inline.push(`--color-${name}: var(--${name});`)
+		if (name === 'radius') inline.push(...RADIUS_SCALE)
+	}
+	return [block('@theme inline', inline), block('@theme inline reference', reference)].join(
+		'\n\n'
+	)
 }
 
 /** Builds the theme stylesheet `dist/styles.css` from the token file. */
 export const buildStyles = async ({ primitive, light, dark }: TokenFile): Promise<string> => {
-	const darkNames = new Set(tokenNames(dark))
+	const darkNames = new Set(tokensIn(dark).map(({ name }) => name))
 	const root = await declarations({ ...primitive, ...light }, ':root', () => true)
 	const darkBlock = await declarations({ ...primitive, ...dark }, '.dark', (name) =>
 		darkNames.has(name)
@@ -101,14 +192,14 @@ export const buildStyles = async ({ primitive, light, dark }: TokenFile): Promis
 		'',
 		darkBlock,
 		'',
-		theme(light),
+		theme(primitive, light),
 		'',
 		'@layer base {',
 		'  * {',
 		'    @apply border-border outline-ring/50;',
 		'  }',
 		'  body {',
-		'    @apply bg-background text-foreground;',
+		'    @apply bg-background text-foreground leading-normal;',
 		'  }',
 		'}',
 		'',

@@ -55,6 +55,34 @@ describe('buildStyles', () => {
 		expect(theme).toContain('--color-primary-foreground: var(--primary-foreground);')
 	})
 
+	it('should clear the Tailwind default scales a token type replaces', async () => {
+		const theme = block(await buildStyles(tokenFile()), '@theme inline')
+
+		expect(theme).toContain('--spacing-*: initial;')
+		expect(theme).toContain('--text-*: initial;')
+		expect(theme).toContain('--color-*: initial;')
+		expect(theme.indexOf('--spacing-*: initial;')).toBeLessThan(
+			theme.indexOf('--spacing-4: var(--space-4);')
+		)
+	})
+
+	it('should map each primitive scale to the utilities that read it, a half step with a dot', async () => {
+		const theme = block(await buildStyles(tokenFile()), '@theme inline')
+
+		expect(theme).toContain('--spacing-4: var(--space-4);')
+		expect(theme).toContain('--spacing-1\\.5: var(--space-1-5);')
+		expect(theme).toContain('--text-sm: var(--font-size-sm);')
+	})
+
+	it('should declare a token already named as its theme variable for reference only', async () => {
+		const css = await buildStyles(tokenFile())
+
+		expect(block(css, '@theme inline reference')).toContain(
+			'--font-weight-medium: var(--font-weight-medium);'
+		)
+		expect(block(css, '@theme inline')).not.toContain('--font-weight-medium: var(')
+	})
+
 	it('should derive the rounded-* scale from the radius semantic', async () => {
 		const theme = block(await buildStyles(tokenFile()), '@theme inline')
 
@@ -68,6 +96,12 @@ describe('buildStyles', () => {
 		const root = block(await buildStyles(tokenFile()), ':root')
 
 		expect(root).toContain('--font-size-sm: 0.875rem;')
+	})
+
+	it('should emit an opacity stored as a fraction as a percentage, which a colour modifier can read', async () => {
+		const root = block(await buildStyles(tokenFile()), ':root')
+
+		expect(root).toContain('--opacity-50: 50%;')
 	})
 
 	it('should fail on a reference to a token that does not exist', async () => {

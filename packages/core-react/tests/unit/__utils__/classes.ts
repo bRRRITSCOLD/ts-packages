@@ -5,7 +5,7 @@ import { join, relative } from 'node:path'
 // node_modules
 import ts from 'typescript'
 
-const PACKAGE_DIR = join(import.meta.dirname, '../../..')
+export const PACKAGE_DIR = join(import.meta.dirname, '../../..')
 
 /** Every `.ts` / `.tsx` file under `src/`, stories included, relative to the package. */
 export const sourceFiles = (dir = join(PACKAGE_DIR, 'src')): string[] =>
