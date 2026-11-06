@@ -96,12 +96,13 @@ export const serializeLibrarySnapshot = (snapshot: LibrarySnapshot): string =>
 	`${JSON.stringify(snapshot, null, '\t')}\n`
 
 /**
- * What a refresh did: `unchanged` (the snapshot equals the base branch's, no PR), `up-to-date`
- * (the open refresh PR already holds it), `opened` or `updated` a refresh PR.
+ * What a refresh did: `unchanged` (the snapshot equals the base branch's, no PR open), `closed`
+ * (it equals the base branch's, so the open refresh PR was closed and its branch deleted),
+ * `up-to-date` (the open refresh PR already holds it), `opened` or `updated` a refresh PR.
  */
 export type SnapshotRefreshResult =
 	| { outcome: 'unchanged' }
-	| { outcome: 'up-to-date' | 'opened' | 'updated'; pullRequest: GitHubPullRequest }
+	| { outcome: 'closed' | 'up-to-date' | 'opened' | 'updated'; pullRequest: GitHubPullRequest }
 
 /** What {@link refreshLibrarySnapshot} needs: the configuration, and optionally `fetch` and a logger. */
 export type RefreshLibrarySnapshotParameters = SnapshotRefreshConfig & {
@@ -115,7 +116,8 @@ export type RefreshLibrarySnapshotParameters = SnapshotRefreshConfig & {
  * Runs the snapshot refresh: reads the library snapshot from Penpot, compares it with
  * {@link LIBRARY_SNAPSHOT_PATH} on the base branch and, when it changed, commits it to
  * {@link SNAPSHOT_REFRESH_BRANCH} (rebuilt on top of the base branch) and opens a PR, or
- * updates the refresh PR already open. Unchanged does nothing.
+ * updates the refresh PR already open. Unchanged closes a refresh PR still open (comment, close,
+ * delete the branch) and otherwise does nothing.
  *
  * @example
  * ```ts
@@ -144,12 +146,27 @@ export const refreshLibrarySnapshot = async ({
 	)
 	const github = createGitHubClient({ token: config.githubToken, repo, fetch: fetchImpl })
 
-	if ((await github.readFile(LIBRARY_SNAPSHOT_PATH, base)) === snapshot) {
+	const unchanged = (await github.readFile(LIBRARY_SNAPSHOT_PATH, base)) === snapshot
+	const open = await github.findOpenPullRequest(SNAPSHOT_REFRESH_BRANCH, base)
+
+	if (unchanged && open) {
+		const sha = await github.readBranchSha(base)
+		await github.commentOnPullRequest(
+			open.number,
+			`Library matches ${base} at ${sha}; nothing to merge.`
+		)
+		await github.closePullRequest(open.number)
+		await github.deleteBranch(SNAPSHOT_REFRESH_BRANCH)
+		log(
+			`Library snapshot unchanged from ${repo}@${base} (${sha}); closed refresh PR #${open.number}: ${open.url}`
+		)
+		return { outcome: 'closed', pullRequest: open }
+	}
+	if (unchanged) {
 		log(`Library snapshot unchanged from ${repo}@${base}; no PR opened.`)
 		return { outcome: 'unchanged' }
 	}
 
-	const open = await github.findOpenPullRequest(SNAPSHOT_REFRESH_BRANCH, base)
 	if (
 		open &&
 		(await github.readFile(LIBRARY_SNAPSHOT_PATH, SNAPSHOT_REFRESH_BRANCH)) === snapshot

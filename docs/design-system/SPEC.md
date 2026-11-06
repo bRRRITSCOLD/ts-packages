@@ -340,6 +340,8 @@ Code → library: exports with no library counterpart are a coverage gap; those 
 ### Snapshot refresh
 
 - Reads Penpot as the automation profile (`penpotToken`), writes the snapshot, and if it changed opens a PR with the GitHub PAT (a `GITHUB_TOKEN` PR wouldn't trigger CI). Unchanged → no PR. A refresh PR already open → update it.
+- Unchanged while a refresh PR is open (the library edit was reverted) → comment `Library matches main at <sha>; nothing to merge.`, close the PR and delete `design/snapshot-refresh`; labels stay, so `drift` stays on the closed PR. Only the refresh-PR mode does this: writing a snapshot into a lockstep `core-react` PR never touches the refresh PR.
+- The refresh branch is always rebuilt on the base branch's head and force-pushed, never stacked.
 - In the cluster it calls the backend through the frontend Service, not the ingress.
 - Same script runs on demand: by an agent after an MCP edit, or locally during lockstep.
 - A refresh PR that fails the drift check never merges and is labelled `drift`.
@@ -494,7 +496,7 @@ These are standing procedures. The skills (A4) carry them for agents; the `perso
 ### Drift
 
 - **A code PR breaks the library:** lockstep — the PR stays red until an agent fixes the library over MCP and commits a refreshed snapshot into the same PR.
-- **A library edit breaks the code:** the refresh PR goes red and is labelled `drift`; revert the library edit over MCP and refresh into the same PR. If the change is wanted, it becomes a normal `core-react` PR first and the library follows under lockstep.
+- **A library edit breaks the code:** the refresh PR goes red and is labelled `drift`; revert the library edit over MCP and run the refresh; it closes the PR. If the change is wanted, it becomes a normal `core-react` PR first and the library follows under lockstep.
 - An applied-token edit in Penpot is drift too.
 
 ### Token sync
