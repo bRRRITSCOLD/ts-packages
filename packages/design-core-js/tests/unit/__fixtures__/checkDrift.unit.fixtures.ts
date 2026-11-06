@@ -43,13 +43,17 @@ export const createTokenFile = (): TokenFile => ({
 	},
 })
 
-/** A library component under `Components/` with no variants, parts, exceptions record or layers. */
+/**
+ * A library component under `Components/` with no variants, parts, wrappers, exceptions record
+ * or layers.
+ */
 export const createLibraryComponent = (
 	overrides: Partial<LibraryComponent> & Pick<LibraryComponent, 'name'>
 ): LibraryComponent => ({
 	path: 'Components',
 	variantProperties: {},
 	parts: {},
+	wrappers: [],
 	layers: {},
 	...overrides,
 })
@@ -66,7 +70,7 @@ export const createLibraryLayer = (overrides: Partial<LibraryLayer> = {}): Libra
 export const createLibrarySnapshot = (
 	components: Record<string, LibraryComponent>
 ): LibrarySnapshot => ({
-	schemaVersion: 2,
+	schemaVersion: 3,
 	penpotVersion: '2.18.6',
 	libraryFileId: 'library-file',
 	tokens: createTokenFile(),

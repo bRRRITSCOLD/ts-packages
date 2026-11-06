@@ -165,7 +165,7 @@ No `ts-` prefix (it isn't TypeScript) but routed through `/ts design`. An **oper
 1. **The two sides** — the design system library mirrors the component library; code wins. Page designs vs the library.
 2. **Reading a design** — fetch the link reader from `<inspector-url>/read-links.js` at use time (never vendored), run it in one `execute_code` call in the MCP tab. States the naming convention and defines **every exception key** (value maps, `slots`, package). References by role, never by layer name.
 3. **Slot placeholders** — swap `_internal/Slot` for a local component.
-4. **Editing the library** — only through promotion, token sync or a lockstep fix. Compound parts are copies of library components, never plain named layers. Every MCP edit is followed by a snapshot refresh committed into the `core-react` PR. The **applied-token rule** verbatim.
+4. **Editing the library** — only through promotion, token sync or a lockstep fix. Compound parts are copies of library components, never plain named layers; plain boards and groups may wrap them for layout. Every MCP edit is followed by a snapshot refresh committed into the `core-react` PR. The **applied-token rule** verbatim.
 5. **Token sync** — rule text from [the release ticket][t28] and [the token-binding ticket][t20] (see Operating → Token sync).
 6. **Promotion** — the workflow in Operating → Promotion.
 7. **Drift check** — the rules listed inline so agents can predict failures, naming `design-core-js` as their source of truth. A red drift check on a refresh PR means revert the library edit; code → library gaps are a coverage report.
@@ -300,7 +300,7 @@ Four **private** (`"private": true`) workspace packages, ignored by Changesets. 
 
 ### The component link (what the resolver implements)
 
-- **Naming convention:** component name = export; variant property / value = prop / value (`default` = prop omitted; booleans `true`/`false`); **compound parts are copies of library components** (e.g. `Card/Header` → `CardHeader`), never plain layers; text layer = children; components under `icon/` named `<Name>` → `<Name>Icon` from `@brrritscold/core-react/icons`.
+- **Naming convention:** component name = export; variant property / value = prop / value (`default` = prop omitted; booleans `true`/`false`); **compound parts are copies of library components** (e.g. `Card/Header` → `CardHeader`), never plain layers, found through any plain layout boards or groups; text layer = children; components under `icon/` named `<Name>` → `<Name>Icon` from `@brrritscold/core-react/icons`.
 - **Exceptions record:** `sharedPluginData` namespace `brrritscold.core-react`, key `link`, **only** where naming can't say it: value maps that don't match (e.g. `state` → `disabled`), `slots`, a non-default package. Referenced by role, never by layer name.
 - **Slot placeholders:** a compound component holds an `_internal/Slot` placeholder copy (loud magenta, labelled by part) that a designer swaps for a local component. Penpot has no slots and copies can't take children.
 
@@ -323,7 +323,7 @@ Read path: RPC **`get-file` without a `features` param** (the backend resolves p
 
 1. Component name (path stripped) → named export in `.` (or the package the exceptions record names; such components are reported **unchecked**).
 2. Variant property → prop; value → literal in that prop's union; `default` → omitted; an exceptions value map overrides.
-3. Compound parts must be library component copies, so rule 1 covers them.
+3. Compound parts must be library component copies, so rule 1 covers them. Parts are found through **layout wrappers** (plain boards and groups, any depth; the search stops at a copy), which are never parts but whose styling rules 7–9 still check. A wrapper named like a part export (`Card` + board `Header`, export `CardHeader`) fails, pointing at `Components/Card/Header`; any other wrapper name passes. Two parts with one role fail the refresh, naming the component.
 4. Components under `icon/` → `<Name>Icon` in `./icons`.
 5. Exceptions record valid against its schema; every key points at a real prop, value or role.
 6. Token catalog (sets, themes, values) equals `tokens.json` (fixed by re-running token sync).

@@ -38,8 +38,8 @@ const PLUGIN_DATA_KEY = EXCEPTIONS_RECORD_NAMESPACE.replace(/[.-]+(.)/g, (_, nex
 /** Letters and digits only, lower-cased: how a re-encoded plugin-data key is still recognized. */
 const bare = (key: string) => key.toLowerCase().replace(/[^a-z0-9]/g, '')
 
-/** The layer types that are a compound component's part when they are not a copy. */
-const PLAIN_PART_TYPES = new Set(['frame', 'group'])
+/** The layer types that are a layout wrapper when they are not a copy: parts are found through them. */
+const WRAPPER_TYPES = new Set(['frame', 'group'])
 
 // The raw `get-file` fields the normalizer reads, and nothing else: unknown keys pass, while a
 // field it reads that is renamed, removed or retyped fails the parse.
@@ -367,10 +367,12 @@ const readTokens = (
  *   dropped. `tokenThemes` are its `$themes` as `{ group, name, sets }`.
  * - `path` drops Penpot's spaced separator (`Components / Card` → `Components/Card`).
  * - `variantProperties` come from a variant's `variantProperties` list.
- * - `parts` are the direct children of the component's main instance that are a copy of a
- *   component (`componentId`) or a plain board or group (`componentId: null`, which fails drift
- *   rule 3); text and other leaf layers are content, not parts. The role is the child's name in
- *   the main component; two parts with one role throw.
+ * - `parts` are the copies of a component (`componentId`) among the main instance's children,
+ *   looking through plain boards and groups at any depth; the search stops at a copy. Text and
+ *   other leaf layers are content, not parts. The role is the copy's name in the main component;
+ *   two parts with one role throw, naming the component.
+ * - `wrappers` are the names of those plain boards and groups (layout wrappers), sorted. A
+ *   wrapper is never a part, but its styling is still in `layers`.
  * - `exceptionsRecord` is the component's shared plugin data `brrritscold.core-react` / `link`,
  *   which JSON `get-file` delivers under the camel-cased key `brrritscoldCoreReact`.
  * - `layers` are the layers of the main instance's tree, nested part copies included, that
@@ -390,11 +392,11 @@ const readTokens = (
  * import { normalizeLibrarySnapshot } from '@brrritscold/design-penpot-sdk-node/library-snapshot'
  *
  * normalizeLibrarySnapshot(await penpot.getFile(libraryFileId))
- * // { schemaVersion: 2, penpotVersion: '2.18.6', libraryFileId: 'de716cff-…',
+ * // { schemaVersion: 3, penpotVersion: '2.18.6', libraryFileId: 'de716cff-…',
  * //   tokens: { dark: {…}, light: {…}, primitive: {…} },
  * //   tokenThemes: [{ group: 'Mode', name: 'Dark', sets: ['dark', 'primitive'] }, …],
  * //   components: { '27d1f7d6-…': { path: 'Components', name: 'Button',
- * //     variantProperties: { size: 'sm' }, parts: {},
+ * //     variantProperties: { size: 'sm' }, parts: {}, wrappers: [],
  * //     layers: { '9b0c…': { namePath: ['Button'], appliedTokens: { fill: 'primary' }, unbound: [] } } }, … } }
  * ```
  */
@@ -415,15 +417,24 @@ export const normalizeLibrarySnapshot = (getFile: unknown): LibrarySnapshot => {
 		const main = readPart(page.objects, raw.mainInstanceId, `${where} main instance`)
 
 		const parts: LibraryComponent['parts'] = {}
-		for (const childId of main.shapes ?? []) {
-			const child = readPart(page.objects, childId, `${where} part`)
-			if (child.componentId === undefined && !PLAIN_PART_TYPES.has(child.type)) continue
-			if (child.name in parts)
-				throw new Error(
-					`Component ${raw.path} / ${raw.name} (${raw.id}) has two parts with the role \`${child.name}\``
-				)
-			parts[child.name] = { componentId: child.componentId ?? null }
+		const wrappers = new Set<string>()
+		const findParts = (shape: RawShape) => {
+			for (const childId of shape.shapes ?? []) {
+				const child = readPart(page.objects, childId, `${where} part`)
+				if (child.componentId === undefined) {
+					if (!WRAPPER_TYPES.has(child.type)) continue
+					wrappers.add(child.name)
+					findParts(child)
+					continue
+				}
+				if (child.name in parts)
+					throw new Error(
+						`Component ${raw.path} / ${raw.name} (${raw.id}) has two parts with the role \`${child.name}\``
+					)
+				parts[child.name] = { componentId: child.componentId }
+			}
 		}
+		findParts(main)
 
 		if (raw.variantId !== undefined && raw.variantProperties === undefined)
 			throw shapeChanged(where, 'a variant (`variantId`) without `variantProperties`')
@@ -447,6 +458,7 @@ export const normalizeLibrarySnapshot = (getFile: unknown): LibrarySnapshot => {
 			name: raw.name,
 			variantProperties: sortKeys(variantProperties),
 			parts: sortKeys(parts),
+			wrappers: [...wrappers].sort(compareCodeUnits),
 			...(exceptionsRecord === undefined ? {} : { exceptionsRecord }),
 			layers: sortKeys(layers),
 		}
@@ -493,7 +505,7 @@ export type ReadLibrarySnapshotParameters = CreatePenpotRpcClientParameters & {
  * 	accessToken: process.env.SNAPSHOT_REFRESH_PENPOT_TOKEN,
  * 	fileId: 'de716cff-f170-81a2-8008-e63b04772bf6',
  * })
- * // { schemaVersion: 2, penpotVersion: '2.18.6', libraryFileId: 'de716cff-…', tokens: {…}, tokenThemes: […], components: {…} }
+ * // { schemaVersion: 3, penpotVersion: '2.18.6', libraryFileId: 'de716cff-…', tokens: {…}, tokenThemes: […], components: {…} }
  * ```
  */
 export const readLibrarySnapshot = async ({

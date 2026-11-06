@@ -63,7 +63,7 @@ describe('normalizeLibrarySnapshot', () => {
 		const snapshot = normalizeLibrarySnapshot(file)
 
 		expect(snapshot).toMatchObject({
-			schemaVersion: 2,
+			schemaVersion: 3,
 			penpotVersion: '2.18.6',
 			libraryFileId: file.id,
 		})
@@ -80,38 +80,55 @@ describe('normalizeLibrarySnapshot', () => {
 		)
 
 		expect(withoutLayers).toEqual({
-			[id('Slot')]: { path: '_internal', name: 'Slot', variantProperties: {}, parts: {} },
-			[id('Trash2')]: { path: 'icon', name: 'Trash2', variantProperties: {}, parts: {} },
+			[id('Slot')]: {
+				path: '_internal',
+				name: 'Slot',
+				variantProperties: {},
+				parts: {},
+				wrappers: [],
+			},
+			[id('Trash2')]: {
+				path: 'icon',
+				name: 'Trash2',
+				variantProperties: {},
+				parts: {},
+				wrappers: [],
+			},
 			[id('Header')]: {
 				path: 'Components/Card',
 				name: 'Header',
 				variantProperties: {},
 				parts: {},
+				wrappers: [],
 			},
 			[id('Content')]: {
 				path: 'Components/Card',
 				name: 'Content',
 				variantProperties: {},
 				parts: { Body: { componentId: id('Slot') } },
+				wrappers: [],
 				exceptionsRecord: { v: 1, slots: ['Body'] },
 			},
 			[id('Card')]: {
 				path: 'Components',
 				name: 'Card',
 				variantProperties: {},
-				parts: { Footer: { componentId: null }, Header: { componentId: id('Header') } },
+				parts: { Header: { componentId: id('Header') } },
+				wrappers: ['Footer'],
 			},
 			[id('Button', 'default')]: {
 				path: 'Components',
 				name: 'Button',
 				variantProperties: { size: 'default' },
 				parts: {},
+				wrappers: [],
 			},
 			[id('Button', 'sm')]: {
 				path: 'Components',
 				name: 'Button',
 				variantProperties: { size: 'sm' },
 				parts: {},
+				wrappers: [],
 			},
 		})
 	})
@@ -383,12 +400,120 @@ describe('normalizeLibrarySnapshot', () => {
 		)
 	})
 
+	describe('parts through layout wrappers', () => {
+		/** Moves `childIds` of `parent` into a new plain board named `name`, in their place. */
+		const wrap = (
+			objects: Record<string, RawShape>,
+			parent: RawShape,
+			childIds: string[],
+			name: string
+		): RawShape => {
+			const wrapper: RawShape = {
+				id: `wrapper-${name}-${Object.keys(objects).length}`,
+				name,
+				type: 'frame',
+				shapes: childIds,
+				fills: [],
+			}
+			objects[wrapper.id] = wrapper
+			const shapes = (parent.shapes ?? []).filter((id) => !childIds.includes(id))
+			parent.shapes = [...shapes, wrapper.id]
+			return wrapper
+		}
+		const cardWith = (file: RawFile) => {
+			const card = rawComponent(file, 'Card')
+			const { main, objects } = mainInstance(file, card)
+			const headerId = (main.shapes as string[]).find((id) => objects[id].name === 'Header')
+			if (!headerId) throw new Error('no Header copy in the recorded Card')
+			return { card, main, objects, headerId }
+		}
+
+		it('should find a part through one plain board, and record the board as a wrapper', () => {
+			const file = fixtureFile()
+			const { card, main, objects, headerId } = cardWith(file)
+			wrap(objects, main, [headerId], 'Top')
+
+			const component = normalizeLibrarySnapshot(file).components[card.id]
+
+			expect(component.parts).toEqual({
+				Header: { componentId: rawComponent(file, 'Header').id },
+			})
+			expect(component.wrappers).toEqual(['Footer', 'Top'])
+		})
+
+		it('should find a part through two levels of plain board', () => {
+			const file = fixtureFile()
+			const { card, main, objects, headerId } = cardWith(file)
+			const outer = wrap(objects, main, [headerId], 'Outer')
+			wrap(objects, outer, [headerId], 'Inner')
+
+			const component = normalizeLibrarySnapshot(file).components[card.id]
+
+			expect(component.parts).toEqual({
+				Header: { componentId: rawComponent(file, 'Header').id },
+			})
+			expect(component.wrappers).toEqual(['Footer', 'Inner', 'Outer'])
+		})
+
+		it('should not make a plain board a part', () => {
+			const file = fixtureFile()
+			const card = rawComponent(file, 'Card')
+
+			expect(normalizeLibrarySnapshot(file).components[card.id].parts).not.toHaveProperty(
+				'Footer'
+			)
+		})
+
+		it('should stop at a copy: the layers inside a part are not parts', () => {
+			const file = fixtureFile()
+			const content = rawComponent(file, 'Content')
+			const { main, objects } = mainInstance(file, content)
+			const body = objects[(main.shapes as string[])[0]]
+			wrap(objects, main, [body.id], 'Inside')
+
+			expect(normalizeLibrarySnapshot(file).components[content.id].parts).toEqual({
+				Body: { componentId: rawComponent(file, 'Slot').id },
+			})
+		})
+
+		it('should keep a wrapper fill with no token as an unbound layer, for rule 7', () => {
+			const file = fixtureFile()
+			const { card, main, objects, headerId } = cardWith(file)
+			const wrapper = wrap(objects, main, [headerId], 'Top')
+			wrapper.fills = [{ fillColor: '#ff00ff', fillOpacity: 1 }]
+
+			expect(layersByNamePath(normalizeLibrarySnapshot(file), card.id)['Card / Top']).toEqual(
+				{
+					appliedTokens: {},
+					unbound: ['fill'],
+				}
+			)
+		})
+
+		it('should throw, naming the component, when two wrappers hold parts with one role', () => {
+			const file = fixtureFile()
+			const { main, objects, headerId } = cardWith(file)
+			const copy = { ...objects[headerId], id: 'second-header' }
+			objects[copy.id] = copy
+			main.shapes = [...(main.shapes as string[]), copy.id]
+			wrap(objects, main, [headerId], 'Left')
+			wrap(objects, main, [copy.id], 'Right')
+
+			expect(() => normalizeLibrarySnapshot(file)).toThrow(
+				/Component Components \/ Card \(.+\) has two parts with the role `Header`/
+			)
+		})
+	})
+
 	it('should throw when two parts of one component share a role', () => {
 		const file = fixtureFile()
 		const card = rawComponent(file, 'Card')
-		const objects = file.data.pagesIndex[card.mainInstancePage].objects
-		for (const childId of objects[card.mainInstanceId].shapes as string[])
-			objects[childId].name = 'Header'
+		const { main, objects } = mainInstance(file, card)
+		const header = Object.values(objects).find(
+			({ id, name }) => name === 'Header' && main.shapes?.includes(id)
+		) as RawShape
+		objects['second-header'] = { ...header, id: 'second-header' }
+		main.shapes = [...(main.shapes as string[]), 'second-header']
 
 		expect(() => normalizeLibrarySnapshot(file)).toThrow(/two parts with the role `Header`/)
 	})

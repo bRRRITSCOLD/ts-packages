@@ -1,5 +1,5 @@
 {
-	"schemaVersion": 2,
+	"schemaVersion": 3,
 	"penpotVersion": "2.18.6",
 	"libraryFileId": "fixture-library",
 	"tokens": {
@@ -76,6 +76,7 @@
 				"variant": "default"
 			},
 			"parts": {},
+			"wrappers": [],
 			"layers": {
 				"badge-label": {
 					"namePath": ["Badge", "Label"],
@@ -93,6 +94,7 @@
 				"variant": "ghost"
 			},
 			"parts": {},
+			"wrappers": [],
 			"layers": {}
 		},
 		"badge-secondary": {
@@ -102,6 +104,7 @@
 				"variant": "secondary"
 			},
 			"parts": {},
+			"wrappers": [],
 			"layers": {}
 		},
 		"button-default": {
@@ -113,6 +116,7 @@
 				"variant": "default"
 			},
 			"parts": {},
+			"wrappers": [],
 			"exceptionsRecord": {
 				"v": 1,
 				"props": {
@@ -155,6 +159,7 @@
 				"variant": "outline"
 			},
 			"parts": {},
+			"wrappers": [],
 			"exceptionsRecord": {
 				"v": 1,
 				"props": {
@@ -200,9 +205,10 @@
 					"componentId": "card-header"
 				},
 				"Footer": {
-					"componentId": null
+					"componentId": "local-footer"
 				}
 			},
+			"wrappers": [],
 			"layers": {
 				"card-board": {
 					"namePath": ["Card"],
@@ -220,6 +226,7 @@
 					"componentId": "slot"
 				}
 			},
+			"wrappers": [],
 			"exceptionsRecord": {
 				"v": 1,
 				"slots": ["Footer"]
@@ -231,6 +238,7 @@
 			"name": "Header",
 			"variantProperties": {},
 			"parts": {},
+			"wrappers": [],
 			"layers": {
 				"card-header-board": {
 					"namePath": ["Header"],
@@ -246,6 +254,7 @@
 			"name": "DatePicker",
 			"variantProperties": {},
 			"parts": {},
+			"wrappers": [],
 			"exceptionsRecord": {
 				"v": 1,
 				"package": "@brrritscold/other-react"
@@ -257,6 +266,7 @@
 			"name": "Envelope",
 			"variantProperties": {},
 			"parts": {},
+			"wrappers": [],
 			"layers": {}
 		},
 		"icon-trash-2": {
@@ -264,6 +274,7 @@
 			"name": "Trash2",
 			"variantProperties": {},
 			"parts": {},
+			"wrappers": [],
 			"layers": {}
 		},
 		"slot": {
@@ -271,6 +282,7 @@
 			"name": "Slot",
 			"variantProperties": {},
 			"parts": {},
+			"wrappers": [],
 			"layers": {}
 		},
 		"tag": {
@@ -278,6 +290,7 @@
 			"name": "Tag",
 			"variantProperties": {},
 			"parts": {},
+			"wrappers": [],
 			"layers": {}
 		}
 	}
