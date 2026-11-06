@@ -1,4 +1,9 @@
-import { z } from '@brrritscold/core-js/zod'
+// zod's mini build, not `@brrritscold/core-js/zod`: the link reader (design-penpot-ui) bundles
+// this module into one script sent as an MCP `execute_code` body, and classic zod's namespace
+// can't tree-shake (~790 KB with its locales). Mini plus the English messages is ~20 KB.
+
+import en from 'zod/v4/locales/en.js'
+import * as z from 'zod/v4/mini'
 
 import type { LibraryComponent } from './library-snapshot.js'
 
@@ -7,6 +12,9 @@ export const EXCEPTIONS_RECORD_NAMESPACE = 'brrritscold.core-react'
 
 /** The `sharedPluginData` key a library component's exceptions record is stored under. */
 export const EXCEPTIONS_RECORD_KEY = 'link'
+
+// Mini ships no messages; the same English ones classic zod loads, so issues read the same.
+z.config(en())
 
 /** The package a library component's export is in unless its exceptions record names another. */
 export const COMPONENT_PACKAGE = '@brrritscold/core-react'
@@ -27,17 +35,17 @@ export const ICON_PACKAGE = '@brrritscold/core-react/icons'
  */
 export const exceptionsRecordSchema = z.strictObject({
 	v: z.literal(1),
-	props: z
-		.record(
+	props: z.optional(
+		z.record(
 			z.string(),
 			z.strictObject({
 				from: z.string(),
 				map: z.record(z.string(), z.union([z.string(), z.boolean()])),
 			})
 		)
-		.optional(),
-	slots: z.array(z.string()).optional(),
-	package: z.string().optional(),
+	),
+	slots: z.optional(z.array(z.string())),
+	package: z.optional(z.string()),
 })
 
 /** The exceptions record; see {@link exceptionsRecordSchema}. */

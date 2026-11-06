@@ -4,17 +4,18 @@ Turborepo + pnpm monorepo for shared TypeScript libraries, published to npm unde
 
 **API reference:** https://brrritscold.github.io/ts-packages/
 
-| Package                                                                                                         | Runtime        | What                                                                      |
-| --------------------------------------------------------------------------------------------------------------- | -------------- | ------------------------------------------------------------------------- |
-| [`@brrritscold/core-js`](./packages/core-js)                                                                    | browser + node | `date`, `error`, `obj`, `query`, `zod`                                    |
-| [`@brrritscold/core-node`](./packages/core-node)                                                                | node           | `dotenv`, `jwt`, `mongodb`, `postgres`, `s3`, `secrets-manager`, `query`  |
-| [`@brrritscold/core-express`](./packages/core-express)                                                          | node           | `error`, `middlewares/jwt`, `openapi`, `utils/create-server`, `utils/jwt` |
-| [`@brrritscold/testing-core-js`](./packages/testing-core-js)                                                    | browser + node | test helpers (`deepCopy`)                                                 |
-| [`@brrritscold/testing-core-node`](./packages/testing-core-node)                                                | node           | testcontainers wrappers, nock interceptors                                |
-| [`@brrritscold/design-core-js`](./packages/design-core-js) (private)                                            | browser + node | component-link resolver, snapshot schemas, drift rules, coverage report   |
-| [`@brrritscold/design-core-node`](./packages/design-core-node) (private)                                        | node           | code manifest generator, `design-drift` CLI                               |
-| [`@brrritscold/design-penpot-sdk-node`](./packages/design-penpot-sdk-node) (private)                            | node           | Penpot RPC client, library-snapshot normalizer, `design-snapshot-refresh` |
-| [`@brrritscold/core-react`](https://github.com/bRRRITSCOLD/ts-packages/tree/main/packages/core-react) (private) | browser + SSR  | React components, design tokens, `styles.css` (Storybook is its docs)     |
+| Package                                                                                                                     | Runtime        | What                                                                      |
+| --------------------------------------------------------------------------------------------------------------------------- | -------------- | ------------------------------------------------------------------------- |
+| [`@brrritscold/core-js`](./packages/core-js)                                                                                | browser + node | `date`, `error`, `obj`, `query`, `zod`                                    |
+| [`@brrritscold/core-node`](./packages/core-node)                                                                            | node           | `dotenv`, `jwt`, `mongodb`, `postgres`, `s3`, `secrets-manager`, `query`  |
+| [`@brrritscold/core-express`](./packages/core-express)                                                                      | node           | `error`, `middlewares/jwt`, `openapi`, `utils/create-server`, `utils/jwt` |
+| [`@brrritscold/testing-core-js`](./packages/testing-core-js)                                                                | browser + node | test helpers (`deepCopy`)                                                 |
+| [`@brrritscold/testing-core-node`](./packages/testing-core-node)                                                            | node           | testcontainers wrappers, nock interceptors                                |
+| [`@brrritscold/design-core-js`](./packages/design-core-js) (private)                                                        | browser + node | component-link resolver, snapshot schemas, drift rules, coverage report   |
+| [`@brrritscold/design-core-node`](./packages/design-core-node) (private)                                                    | node           | code manifest generator, `design-drift` CLI                               |
+| [`@brrritscold/design-penpot-sdk-node`](./packages/design-penpot-sdk-node) (private)                                        | node           | Penpot RPC client, library-snapshot normalizer, `design-snapshot-refresh` |
+| [`@brrritscold/design-penpot-ui`](https://github.com/bRRRITSCOLD/ts-packages/tree/main/packages/design-penpot-ui) (private) | browser        | link inspector Penpot plugin, `read-links.js` link reader                 |
+| [`@brrritscold/core-react`](https://github.com/bRRRITSCOLD/ts-packages/tree/main/packages/core-react) (private)             | browser + SSR  | React components, design tokens, `styles.css` (Storybook is its docs)     |
 
 ## Develop
 
@@ -84,9 +85,10 @@ npm uses staged publishing: a `0.0.0-stage` placeholder appears first, and the r
 
 `.github/workflows/side-images.yml` builds the design system's container images from `images/<name>/Dockerfile` and pushes them to GHCR, on pushes to `main` that touch their sources and on manual dispatch. Tags are the **short git SHA** only, never `latest`.
 
-| Image                                         | Runs                                                                                 |
-| --------------------------------------------- | ------------------------------------------------------------------------------------ |
-| `ghcr.io/brrritscold/design-snapshot-refresh` | the snapshot refresh ([`design-penpot-sdk-node`](./packages/design-penpot-sdk-node)) |
+| Image                                         | Runs                                                                                                                                                                                        |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ghcr.io/brrritscold/design-snapshot-refresh` | the snapshot refresh ([`design-penpot-sdk-node`](./packages/design-penpot-sdk-node))                                                                                                        |
+| `ghcr.io/brrritscold/design-penpot-static`    | nginx serving the link inspector and `read-links.js` ([`design-penpot-ui`](https://github.com/bRRRITSCOLD/ts-packages/tree/main/packages/design-penpot-ui)), CORS pinned to `PENPOT_ORIGIN` |
 
 Build one locally from the repo root: `docker build -f images/design-snapshot-refresh/Dockerfile .`. A new image's GHCR package starts private: set it to public in its package settings after the first push.
 

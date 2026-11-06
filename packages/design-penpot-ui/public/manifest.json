@@ -1,0 +1,6 @@
+{
+	"name": "Link inspector",
+	"description": "Shows the core-react component link of the selected library component or instance: import, JSX, prop sources, unresolved markers. Read-only.",
+	"code": "/link-inspector/plugin.js",
+	"permissions": ["content:read", "library:read"]
+}

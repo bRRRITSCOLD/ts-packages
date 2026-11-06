@@ -14,6 +14,9 @@
  * check is that the barrel holds only named re-exports, and that every JavaScript
  * subpath has its source file. Its `.css` and `.json` exports are build output.
  *
+ * Bundle-only packages (BUNDLE_ONLY) build browser scripts, not a library: the check is that
+ * they are private and export nothing.
+ *
  * Run with `pnpm check:entries`; CI runs it in the `check` job.
  */
 
@@ -38,6 +41,12 @@ const tsupEntries = (config) => {
 }
 
 const sameSet = (a, b) => a.length === b.length && a.every((x) => b.includes(x))
+
+/**
+ * Packages that build browser bundles and export nothing (`design-penpot-ui`: the link
+ * inspector plugin and `read-links.js`). The check is that they stay private with no exports.
+ */
+const BUNDLE_ONLY = new Set(['design-penpot-ui'])
 
 /** Packages allowed a root `.` entry: a pure barrel, built unbundled by `tsc`. */
 const ROOT_ENTRY_ALLOWED = new Set(['core-react'])
@@ -90,6 +99,13 @@ for (const name of readdirSync(join(ROOT, 'packages'))) {
 
 	if (ROOT_ENTRY_ALLOWED.has(name)) {
 		checkRootEntryPackage(dir, pkg, where)
+		continue
+	}
+
+	if (BUNDLE_ONLY.has(name)) {
+		if (pkg.private !== true) problems.push(`${where}: a bundle-only package must be private`)
+		for (const field of ['exports', 'main', 'module', 'types'])
+			if (field in pkg) problems.push(`${where}: a bundle-only package has no "${field}"`)
 		continue
 	}
 

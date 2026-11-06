@@ -3,7 +3,7 @@
 	"name": "@brrritscold packages",
 	"entryPointStrategy": "packages",
 	"entryPoints": ["packages/*"],
-	"exclude": ["packages/core-react"],
+	"exclude": ["packages/core-react", "packages/design-penpot-ui"],
 	"packageOptions": {
 		"tsconfig": "tsconfig.build.json",
 		"excludeExternals": true

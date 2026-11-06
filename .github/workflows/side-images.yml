@@ -1,7 +1,7 @@
 # Builds the design system's side images and pushes them to GHCR, tagged with the short git SHA
 # only, never `latest`: rolling one out is a personal-infra PR bumping its kustomize `images:` tag.
 #
-# Adding an image (design-penpot-static, penpot-backup): a Dockerfile under images/<name>/, a
+# Adding an image (penpot-backup): a Dockerfile under images/<name>/, a
 # matrix entry below, and its sources in `paths`. The filter is per workflow, so a push touching
 # any image's sources rebuilds all of them; an unchanged image just gets one more SHA tag.
 name: Side images
@@ -14,7 +14,7 @@ on:
             - images/**
             - pnpm-lock.yaml
             - pnpm-workspace.yaml
-            # design-snapshot-refresh bundles these packages
+            # design-snapshot-refresh and design-penpot-static bundle these packages
             - packages/core-js/src/**
             - packages/core-js/package.json
             - packages/core-js/tsup.config.ts
@@ -25,6 +25,10 @@ on:
             - packages/design-penpot-sdk-node/src/**
             - packages/design-penpot-sdk-node/package.json
             - packages/design-penpot-sdk-node/tsup.config.ts
+            - packages/design-penpot-ui/public/**
+            - packages/design-penpot-ui/src/**
+            - packages/design-penpot-ui/package.json
+            - packages/design-penpot-ui/tsup.config.ts
     workflow_dispatch:
 
 permissions:
@@ -44,6 +48,7 @@ jobs:
             matrix:
                 image:
                     - design-snapshot-refresh
+                    - design-penpot-static
         steps:
             - uses: actions/checkout@v4
             - name: Short SHA

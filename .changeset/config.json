@@ -15,6 +15,7 @@
 	"ignore": [
 		"@brrritscold/design-core-js",
 		"@brrritscold/design-core-node",
-		"@brrritscold/design-penpot-sdk-node"
+		"@brrritscold/design-penpot-sdk-node",
+		"@brrritscold/design-penpot-ui"
 	]
 }
