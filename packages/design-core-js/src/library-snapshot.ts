@@ -6,9 +6,10 @@ import { designTokenGroupSchema, tokenThemeSchema } from './token-file.js'
  * The library-snapshot schema version this package reads and writes.
  *
  * A Penpot upgrade that changes what the snapshot can say bumps this and the schema together.
- * Version 2 added the token catalog, the token themes and each component's layers.
+ * Version 2 added the token catalog, the token themes and each component's layers. Version 3
+ * made parts copies only, found through layout wrappers, and added each component's wrappers.
  */
-export const LIBRARY_SNAPSHOT_SCHEMA_VERSION = 2
+export const LIBRARY_SNAPSHOT_SCHEMA_VERSION = 3
 
 /**
  * The layer attributes drift rules 7–9 check, named as Penpot names the attribute a token is
@@ -62,13 +63,13 @@ export const libraryLayerSchema = z.strictObject({
 export type LibraryLayer = z.infer<typeof libraryLayerSchema>
 
 /**
- * One part of a compound library component, keyed by its role in the parts record.
+ * One part of a compound library component, keyed by its role in the parts record: a copy of a
+ * library component, found among the main instance's children through any layout wrappers.
  *
- * `componentId` is the Penpot component id of the library component the part is a copy of,
- * or `null` when the layer is a plain layer rather than a copy (drift rule 3 fails it).
+ * `componentId` is the Penpot component id of the library component the part is a copy of.
  */
 export const libraryComponentPartSchema = z.strictObject({
-	componentId: z.string().nullable(),
+	componentId: z.string(),
 })
 
 /** One part of a compound library component; see {@link libraryComponentPartSchema}. */
@@ -83,6 +84,8 @@ export type LibraryComponentPart = z.infer<typeof libraryComponentPartSchema>
  *   each variant of a component is its own Penpot component with its own id.
  * - `parts`: the compound parts by role, the role being the part's stable name inside this
  *   component, never the layer name a swap gives it.
+ * - `wrappers`: the names of the layout wrappers, the plain boards and groups the parts are
+ *   found through, sorted and unique; drift rule 3 fails one named like a part export.
  * - `exceptionsRecord`: the raw exceptions record from the component's plugin data, parsed
  *   from JSON but not validated (drift rule 5 validates it), absent when there is none.
  * - `layers`: the layers with applied tokens or unbound attributes, by Penpot layer id.
@@ -92,6 +95,7 @@ export const libraryComponentSchema = z.strictObject({
 	name: z.string(),
 	variantProperties: z.record(z.string(), z.string()),
 	parts: z.record(z.string(), libraryComponentPartSchema),
+	wrappers: z.array(z.string()),
 	exceptionsRecord: z.unknown().optional(),
 	layers: z.record(z.string(), libraryLayerSchema),
 })

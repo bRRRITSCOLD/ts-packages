@@ -190,16 +190,58 @@ describe('checkDrift', () => {
 			expect(checkDrift(createDriftCheckInput(library)).errors).toEqual([])
 		})
 
-		it('should fail a part that is a plain layer', () => {
-			const library = card({ Footer: { componentId: null } })
+		it('should fail a layout wrapper named like a part export, pointing at the part component', () => {
+			const library = {
+				...card({ Content: { componentId: 'card-content' } }),
+				card: createLibraryComponent({
+					name: 'Card',
+					parts: { Content: { componentId: 'card-content' } },
+					wrappers: ['Header'],
+				}),
+			}
 
 			expect(checkDrift(createDriftCheckInput(library)).errors).toEqual([
 				{
 					rule: 3,
 					component: 'Components/Card',
-					expected: 'part `Footer` a copy of a library component',
-					found: 'a plain layer',
+					expected:
+						'part `Header` a copy of `Components/Card/Header` (export `CardHeader`)',
+					found: 'a plain board or group',
 				},
+			])
+		})
+
+		it('should pass a layout wrapper with any other name', () => {
+			const library = {
+				...createInStepLibrary(),
+				card: createLibraryComponent({
+					name: 'Card',
+					parts: { Header: { componentId: 'card-header' } },
+					wrappers: ['Footer', 'Layout'],
+				}),
+			}
+
+			expect(checkDrift(createDriftCheckInput(library)).errors).toEqual([])
+		})
+
+		it('should fail a raw fill on a layout wrapper under rule 7', () => {
+			const library = {
+				...createInStepLibrary(),
+				card: createLibraryComponent({
+					name: 'Card',
+					parts: { Header: { componentId: 'card-header' } },
+					wrappers: ['Layout'],
+					layers: {
+						'card-layout': createLibraryLayer({
+							namePath: ['Card', 'Layout'],
+							unbound: ['fill'],
+						}),
+					},
+				}),
+			}
+
+			expect(checkDrift(createDriftCheckInput(library)).errors).toMatchObject([
+				{ rule: 7, component: 'Components/Card' },
 			])
 		})
 

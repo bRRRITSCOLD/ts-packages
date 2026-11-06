@@ -44,7 +44,7 @@ export type DriftCheckInput = {
 
 /**
  * The drift rules, numbered as in the spec: `export` (1) component → export, `variant` (2)
- * variant property → prop, `part` (3) parts are copies, `icon` (4) icon → `<Name>Icon`,
+ * variant property → prop, `part` (3) parts are copies and no layout wrapper is named like a part export, `icon` (4) icon → `<Name>Icon`,
  * `exceptionsRecord` (5) the exceptions record is valid and points at real props, values and
  * roles, `tokenCatalog` (6) the token catalog equals the token file, `unbound` (7) no checked
  * attribute holds a raw value, `unknownToken` (8) every applied token is in the token file,
@@ -160,12 +160,36 @@ const checkProps = (
 
 /** Rule 3: every part is a copy of a component in the library snapshot. */
 const checkParts = (component: LibraryComponent, snapshot: LibrarySnapshot): Mismatch[] =>
-	Object.entries(component.parts).flatMap(([role, { componentId }]): Mismatch[] => {
-		const expected = `part \`${role}\` a copy of a library component`
-		if (componentId === null) return [{ expected, found: 'a plain layer' }]
-		if (!(componentId in snapshot.components))
-			return [{ expected, found: `a copy of \`${componentId}\`, not in the library` }]
-		return []
+	Object.entries(component.parts).flatMap(([role, { componentId }]): Mismatch[] =>
+		componentId in snapshot.components
+			? []
+			: [
+					{
+						expected: `part \`${role}\` a copy of a library component`,
+						found: `a copy of \`${componentId}\`, not in the library`,
+					},
+				]
+	)
+
+/**
+ * Rule 3 on layout wrappers: a plain board or group named like one of the component's part
+ * exports (`Card` + `Header` → `CardHeader`) was meant to be a copy of that part.
+ */
+const checkWrappers = (
+	component: LibraryComponent,
+	exportName: string,
+	manifest: CodeManifest
+): Mismatch[] =>
+	component.wrappers.flatMap((wrapper): Mismatch[] => {
+		const partExport = `${exportName}${wrapper}`
+		return partExport in manifest.exports
+			? [
+					{
+						expected: `part \`${wrapper}\` a copy of \`${componentLabel(component)}/${wrapper}\` (export \`${partExport}\`)`,
+						found: 'a plain board or group',
+					},
+				]
+			: []
 	})
 
 /**
@@ -434,6 +458,7 @@ export const checkDrift = ({
 		const codeExport = checked ? manifest.exports[link.export] : undefined
 		if (!checked) unchecked.push({ component: label, package: link.package })
 		else {
+			checkWrappers(component, link.export, manifest).forEach(report(DRIFT_RULE.part))
 			const usedValues = linked.get(link.export) ?? {}
 			for (const [prop, { value }] of Object.entries(link.props))
 				(usedValues[prop] ??= new Set()).add(

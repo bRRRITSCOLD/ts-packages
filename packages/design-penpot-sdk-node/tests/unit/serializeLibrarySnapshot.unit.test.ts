@@ -10,7 +10,7 @@ import { getFileBody, loadRecording } from '../__recordings__/recordings.js'
 describe('serializeLibrarySnapshot', () => {
 	it('should write tab-indented JSON ending in a newline', () => {
 		const text = serializeLibrarySnapshot({
-			schemaVersion: 2,
+			schemaVersion: 3,
 			penpotVersion: '2.18.6',
 			libraryFileId: 'file-id',
 			tokens: {},
@@ -19,7 +19,7 @@ describe('serializeLibrarySnapshot', () => {
 		})
 
 		expect(text).toBe(
-			'{\n\t"schemaVersion": 2,\n\t"penpotVersion": "2.18.6",\n\t"libraryFileId": "file-id",\n\t"tokens": {},\n\t"tokenThemes": [],\n\t"components": {}\n}\n'
+			'{\n\t"schemaVersion": 3,\n\t"penpotVersion": "2.18.6",\n\t"libraryFileId": "file-id",\n\t"tokens": {},\n\t"tokenThemes": [],\n\t"components": {}\n}\n'
 		)
 	})
 

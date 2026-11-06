@@ -23,7 +23,7 @@ const snapshot = await readLibrarySnapshot({
 
 ## What the snapshot holds
 
-The header (`schemaVersion` 2, the Penpot pin, the library file id), the token catalog, the token themes, and the main components keyed by Penpot component id, sorted, deleted ones left out.
+The header (`schemaVersion` 3, the Penpot pin, the library file id), the token catalog, the token themes, and the main components keyed by Penpot component id, sorted, deleted ones left out.
 
 | Field         | From `get-file`                                                                                                                                                                                |
 | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -32,14 +32,15 @@ The header (`schemaVersion` 2, the Penpot pin, the library file id), the token c
 
 No `tokensLib` (a file that never had a token) gives `tokens: {}` and `tokenThemes: []`. Per component:
 
-| Field               | From `get-file`                                                                                                                                              |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `path`              | the component's `path`, separator normalized (`Components / Card` → `Components/Card`)                                                                       |
-| `name`              | the component's `name`                                                                                                                                       |
-| `variantProperties` | a variant's `variantProperties` list, as `{ property: value }`                                                                                               |
-| `parts`             | direct children of the main instance that are a component copy (`componentId`) or a plain board or group (`componentId: null`); the role is the child's name |
-| `exceptionsRecord`  | the plugin-data JSON, parsed but not validated (drift rule 5 does that); a value that isn't JSON is kept as the raw string                                   |
-| `layers`            | every layer of the main instance's tree (nested part copies included) with an applied token or an unbound attribute, by layer id; see below                  |
+| Field               | From `get-file`                                                                                                                                                                                                                  |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `path`              | the component's `path`, separator normalized (`Components / Card` → `Components/Card`)                                                                                                                                           |
+| `name`              | the component's `name`                                                                                                                                                                                                           |
+| `variantProperties` | a variant's `variantProperties` list, as `{ property: value }`                                                                                                                                                                   |
+| `parts`             | the component copies (`componentId`) among the main instance's children, looking through plain boards and groups at any depth and stopping at a copy; the role is the copy's name; two with one role throw, naming the component |
+| `wrappers`          | the names of those plain boards and groups (layout wrappers), sorted; never parts, but their styling is in `layers`                                                                                                              |
+| `exceptionsRecord`  | the plugin-data JSON, parsed but not validated (drift rule 5 does that); a value that isn't JSON is kept as the raw string                                                                                                       |
+| `layers`            | every layer of the main instance's tree (nested part copies included) with an applied token or an unbound attribute, by layer id; see below                                                                                      |
 
 Text and other leaf layers inside a main component are content, not parts.
 

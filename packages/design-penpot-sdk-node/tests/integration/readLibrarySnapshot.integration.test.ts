@@ -52,7 +52,7 @@ describe('readLibrarySnapshot (replaying recorded Penpot 2.18.6 answers)', () =>
 		const snapshot = await read(recording)
 
 		expect(snapshot).toEqual({
-			schemaVersion: 2,
+			schemaVersion: 3,
 			penpotVersion: '2.18.6',
 			libraryFileId: recording.fileId,
 			tokens: {},

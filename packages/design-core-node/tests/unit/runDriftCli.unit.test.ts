@@ -137,7 +137,7 @@ describe('design-drift CLI', () => {
 			expect(stdout).toEqual([
 				'::error title=Drift rule 2 (variant)%3A Components/Badge::Expected `variant` one of "default" | "secondary"; found "ghost"',
 				'::error title=Drift rule 8 (unknown token)%3A Components/Badge::Expected a token of tokens.json on `fill` of layer `Badge / Label` (badge-label); found `brand.foreground`: no such token',
-				'::error title=Drift rule 3 (part)%3A Components/Card::Expected part `Footer` a copy of a library component; found a plain layer',
+				'::error title=Drift rule 3 (part)%3A Components/Card::Expected part `Footer` a copy of a library component; found a copy of `local-footer`, not in the library',
 				'::error title=Drift rule 7 (unbound)%3A Components/Card::Expected a token on `fill` of layer `Card` (card-board); found a raw value',
 				'::error title=Drift rule 5 (exceptions record)%3A Components/Card/Content::Expected `slots` → roles of the parts; found `Footer`: no such role',
 				'::error title=Drift rule 9 (primitive colour)%3A Components/Card/Header::Expected a semantic colour on `fill` of layer `Header` (card-header-board); found the primitive `color.neutral.100`',
@@ -162,7 +162,7 @@ describe('design-drift CLI', () => {
 					'| --- | --- | --- | --- |',
 					'| Components/Badge | 2 variant | `variant` one of "default" \\| "secondary" | "ghost" |',
 					'| Components/Badge | 8 unknown token | a token of tokens.json on `fill` of layer `Badge / Label` (badge-label) | `brand.foreground`: no such token |',
-					'| Components/Card | 3 part | part `Footer` a copy of a library component | a plain layer |',
+					'| Components/Card | 3 part | part `Footer` a copy of a library component | a copy of `local-footer`, not in the library |',
 					'| Components/Card | 7 unbound | a token on `fill` of layer `Card` (card-board) | a raw value |',
 					'| Components/Card/Content | 5 exceptions record | `slots` → roles of the parts | `Footer`: no such role |',
 					'| Components/Card/Header | 9 primitive colour | a semantic colour on `fill` of layer `Header` (card-header-board) | the primitive `color.neutral.100` |',

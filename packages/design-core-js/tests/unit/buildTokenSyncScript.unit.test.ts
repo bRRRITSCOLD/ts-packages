@@ -28,7 +28,7 @@ const tokenCatalogErrors = (
 	const { tokens: catalog, tokenThemes } = readCatalog(fake)
 	return checkDrift({
 		snapshot: {
-			schemaVersion: 2,
+			schemaVersion: 3,
 			penpotVersion: '2.18.6',
 			libraryFileId: 'file',
 			tokens: catalog,
