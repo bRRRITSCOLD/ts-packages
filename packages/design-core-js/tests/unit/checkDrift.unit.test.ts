@@ -46,6 +46,98 @@ describe('checkDrift', () => {
 		})
 	})
 
+	describe('rule 1 and 2: near-miss hint', () => {
+		const withAlertDialog = (manifest = createCodeManifest()) => {
+			manifest.exports.AlertDialog = { props: {} }
+			return manifest
+		}
+
+		it.each(['Alert Dialog', 'alertdialog'])(
+			'should fail component `%s` with a hint at `AlertDialog`',
+			(name) => {
+				const library = { dialog: createLibraryComponent({ name }) }
+
+				expect(
+					checkDrift(createDriftCheckInput(library, withAlertDialog())).errors
+				).toEqual([
+					{
+						rule: 1,
+						component: `Components/${name}`,
+						expected: `export \`${name}\` in @brrritscold/core-react`,
+						found: 'no such export; did you mean `AlertDialog`?',
+					},
+				])
+			}
+		)
+
+		it('should fail part `Card/header` with a hint at `CardHeader`', () => {
+			const library = {
+				header: createLibraryComponent({ path: 'Components/Card', name: 'header' }),
+			}
+
+			expect(checkDrift(createDriftCheckInput(library)).errors).toEqual([
+				{
+					rule: 1,
+					component: 'Components/Card/header',
+					expected: 'export `Cardheader` in @brrritscold/core-react',
+					found: 'no such export; did you mean `CardHeader`?',
+				},
+			])
+		})
+
+		it('should give no hint when two exports match loosely', () => {
+			const manifest = withAlertDialog()
+			manifest.exports.Alertdialog = { props: {} }
+			const library = { dialog: createLibraryComponent({ name: 'alert dialog' }) }
+
+			expect(checkDrift(createDriftCheckInput(library, manifest)).errors).toMatchObject([
+				{ rule: 1, found: 'no such export' },
+			])
+		})
+
+		it('should fail variant property `Size` with a hint at `size`', () => {
+			const library = {
+				button: createLibraryComponent({
+					name: 'Button',
+					variantProperties: { Size: 'sm' },
+				}),
+			}
+
+			expect(checkDrift(createDriftCheckInput(library)).errors).toEqual([
+				{
+					rule: 2,
+					component: 'Components/Button',
+					expected: 'prop `Size` (boolean or literal union) on `Button`',
+					found: 'no such prop; did you mean `size`?',
+				},
+			])
+		})
+
+		it('should fail value `Small` listing the prop’s literal union, with no hint', () => {
+			const manifest = createCodeManifest()
+			manifest.exports.Button.props.size = {
+				type: 'literals',
+				values: ['default', 'sm', 'lg', 'icon'],
+				optional: true,
+			}
+			const library = {
+				button: createLibraryComponent({
+					name: 'Button',
+					variantProperties: { size: 'Small' },
+				}),
+			}
+
+			expect(checkDrift(createDriftCheckInput(library, manifest)).errors).toEqual([
+				{
+					rule: 2,
+					component: 'Components/Button',
+					expected: '`size` one of "default" | "sm" | "lg" | "icon"',
+					found: '"Small"',
+				},
+			])
+		})
+	})
+
 	describe('rule 4: icon component → <Name>Icon', () => {
 		it('should pass an icon whose <Name>Icon is in ./icons', () => {
 			const library = { trash: createLibraryComponent({ path: 'icon', name: 'Trash2' }) }

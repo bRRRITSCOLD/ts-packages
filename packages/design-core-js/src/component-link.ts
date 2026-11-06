@@ -141,3 +141,30 @@ export const resolveComponentLink = (
 		unresolved,
 	}
 }
+
+/** Lower-cased with whitespace removed: how {@link findNearMiss} compares names. */
+const loose = (name: string) => name.toLowerCase().replace(/\s+/g, '')
+
+/**
+ * The one candidate spelled like `name` ignoring case and whitespace (`Alert Dialog` →
+ * `AlertDialog`), or `undefined` when none or several are. Names in the component link are
+ * exact: this only suggests a fix for a failing name, it never resolves a link.
+ *
+ * @example
+ * ```ts
+ * // CJS
+ * const { findNearMiss } = require('@brrritscold/design-core-js/component-link')
+ * // ESM
+ * import { findNearMiss } from '@brrritscold/design-core-js/component-link'
+ *
+ * findNearMiss('Alert Dialog', ['AlertDialog', 'Button']) // 'AlertDialog'
+ * findNearMiss('Badge', ['AlertDialog', 'Button']) // undefined
+ * ```
+ */
+export const findNearMiss = (name: string, candidates: Iterable<string>): string | undefined => {
+	const key = loose(name)
+	const matches = [...candidates].filter(
+		(candidate) => candidate !== name && loose(candidate) === key
+	)
+	return matches.length === 1 ? matches[0] : undefined
+}
