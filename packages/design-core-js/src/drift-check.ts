@@ -5,6 +5,7 @@ import {
 	COMPONENT_PACKAGE,
 	type ExceptionsRecord,
 	exceptionsRecordSchema,
+	findNearMiss,
 	type LinkedProp,
 	resolveComponentLink,
 } from './component-link.js'
@@ -118,6 +119,10 @@ type Mismatch = Pick<DriftError, 'expected' | 'found'>
 type ValuesByProperty = Record<string, Set<string>>
 type CodeProps = CodeManifest['exports'][string]['props']
 
+/** Appends a near-miss suggestion to a finding, when there is one. */
+const withHint = (found: string, nearMiss: string | undefined) =>
+	nearMiss === undefined ? found : `${found}; did you mean \`${nearMiss}\`?`
+
 /** Rule 2 on one variant: each resolved prop exists in the code and takes the resolved value. */
 const checkProps = (
 	exportName: string,
@@ -132,7 +137,7 @@ const checkProps = (
 			return [
 				{
 					expected: `prop \`${prop}\` (boolean or literal union) on \`${exportName}\``,
-					found: 'no such prop',
+					found: withHint('no such prop', findNearMiss(prop, Object.keys(codeProps))),
 				},
 			]
 		if (value === undefined)
@@ -468,7 +473,10 @@ export const checkDrift = ({
 			if (!codeExport)
 				report(DRIFT_RULE.export)({
 					expected: `export \`${link.export}\` in ${COMPONENT_PACKAGE}`,
-					found: 'no such export',
+					found: withHint(
+						'no such export',
+						findNearMiss(link.export, Object.keys(manifest.exports))
+					),
 				})
 		}
 		if (record)

@@ -323,6 +323,7 @@ Read path: RPC **`get-file` without a `features` param** (the backend resolves p
 
 1. Component name (path stripped) → named export in `.` (or the package the exceptions record names; such components are reported **unchecked**).
 2. Variant property → prop; value → literal in that prop's union; `default` → omitted; an exceptions value map overrides.
+   Names are exact (no mapping; the exceptions record's value map is never for spelling). A failing name under rule 1 or a failing variant property under rule 2 gets a near-miss hint, `did you mean \`<Export>\`?`, when exactly one export or prop matches ignoring case and whitespace; a failing value lists the prop's literal union. The shared resolver's `findNearMiss` gives the link inspector the same hint.
 3. Compound parts must be library component copies, so rule 1 covers them. Parts are found through **layout wrappers** (plain boards and groups, any depth; the search stops at a copy), which are never parts but whose styling rules 7–9 still check. A wrapper named like a part export (`Card` + board `Header`, export `CardHeader`) fails, pointing at `Components/Card/Header`; any other wrapper name passes. Two parts with one role fail the refresh, naming the component.
 4. Components under `icon/` → `<Name>Icon` in `./icons`.
 5. Exceptions record valid against its schema; every key points at a real prop, value or role.
