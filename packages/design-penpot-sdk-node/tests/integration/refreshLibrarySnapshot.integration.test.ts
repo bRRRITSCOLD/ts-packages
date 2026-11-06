@@ -14,11 +14,14 @@ import {
 import { getFileBody, loadRecording } from '../__recordings__/recordings.js'
 import {
 	BASE,
+	BASE_SHA,
+	closeOpenPull,
 	commitSnapshot,
 	createPull,
 	listOpenPulls,
 	OPEN_PULL,
 	REPO,
+	readBaseRef,
 	readSnapshot,
 	STALE_SNAPSHOT,
 } from './__fixtures__/refreshLibrarySnapshot.integration.fixtures.js'
@@ -63,12 +66,31 @@ describe('refreshLibrarySnapshot (Penpot recordings and GitHub replayed by nock)
 	})
 
 	it('should open no PR, and touch no branch, when the snapshot is unchanged', async () => {
-		const scopes = serve(readSnapshot(BASE, snapshot))
+		const scopes = serve(readSnapshot(BASE, snapshot), listOpenPulls(null))
 		const { result, lines } = refresh()
 
 		await expect(result).resolves.toEqual({ outcome: 'unchanged' })
 		expect(scopes.every((scope) => scope.isDone())).toBe(true)
 		expect(lines).toEqual([`Library snapshot unchanged from ${REPO}@${BASE}; no PR opened.`])
+	})
+
+	it('should comment on, close and delete the branch of an open refresh PR when the snapshot is unchanged', async () => {
+		const scopes = serve(
+			readSnapshot(BASE, snapshot),
+			listOpenPulls(OPEN_PULL),
+			readBaseRef(),
+			...closeOpenPull()
+		)
+		const { result, lines } = refresh()
+
+		await expect(result).resolves.toEqual({
+			outcome: 'closed',
+			pullRequest: { number: OPEN_PULL.number, url: OPEN_PULL.html_url },
+		})
+		expect(scopes.every((scope) => scope.isDone())).toBe(true)
+		expect(lines).toEqual([
+			`Library snapshot unchanged from ${REPO}@${BASE} (${BASE_SHA}); closed refresh PR #${OPEN_PULL.number}: ${OPEN_PULL.html_url}`,
+		])
 	})
 
 	it('should commit the snapshot and open one PR when it changed and no refresh PR is open', async () => {
