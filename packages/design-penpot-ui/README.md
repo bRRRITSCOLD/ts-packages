@@ -32,7 +32,14 @@ A component is a **library component** when it comes from another file (a connec
 
 ## Link reader
 
-`read-links.js` is the body of one MCP `execute_code` call; the `design-system` skill fetches it at use time, never vendors it. It returns every link on the open page:
+`read-links.js` runs as the body of one MCP `execute_code` call; the `design-system` skill never vendors it. Don't paste the file into the call: let the call fetch it from the static host and run it, so the code always matches the served build (verified live on Penpot 2.18.6):
+
+```js
+const code = await (await fetch('http://plugins.penpot.localhost/read-links.js')).text()
+return new Function('penpot', code)(penpot)
+```
+
+The sandbox's `fetch` sends a CORS preflight, which the side image answers. It returns every link on the open page:
 
 ```ts
 type ReadLinksResult = {
@@ -46,7 +53,7 @@ Each `LinkNode` is a `component` (package, export, props with their source, unre
 
 **Visual order:** siblings sort top to bottom, and left to right when their vertical extents overlap (one row). Penpot's own child order is layer order, which isn't reading order.
 
-It is minified because the agent sends the whole file as the call's code (~27 KB). That's also why `design-core-js` builds the exceptions-record schema with zod's mini build.
+It is minified and kept small (~27 KB), so it also works pasted as the call's code where the host can't be reached. That's why `design-core-js` builds the exceptions-record schema with zod's mini build.
 
 ## Tests
 
@@ -55,7 +62,7 @@ It is minified because the agent sends the whole file as the call's code (~27 KB
 - main code and adapter against a fake `penpot` built from the library snapshot fixture (`tests/fixtures/`), the plugin entry run under `vi.stubGlobal('penpot', …)`;
 - the iframe UI in jsdom (`// @vitest-environment jsdom`), driven by the message the main code sends.
 
-**Manual smoke test** (a plugin PR says it was done): install the plugin by URL in the k3s Penpot, open the design system library, select a component, and confirm the inspector shows its component link. Run `read-links.js` once over MCP on a page design.
+**Manual smoke test** (a plugin PR says it was done): install the plugin by URL in the k3s Penpot, open the design system library, select a component, and confirm the inspector shows its component link. Run `read-links.js` once over MCP on a page design. **Penpot runs one plugin at a time:** while the link inspector is open, the MCP plugin stops answering (every `execute_code` times out), so close the inspector before using MCP.
 
 ## Scripts
 
