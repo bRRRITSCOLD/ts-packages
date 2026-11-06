@@ -144,6 +144,35 @@ describe('readSelection', () => {
 		})
 	})
 
+	it('should find a swapped slot by its role in the main component, not its renamed layer', () => {
+		const { build } = fakePenpot()
+		const local = build.localComponent('Notifications', 'Footer')
+		// Penpot renames a swapped nested copy after its new component and cuts its reference,
+		// but keeps its position: the parent's reference names the role at that index.
+		const footer = build.localCopy(local, [], { layer: 'Notifications / Footer' })
+		const content = build.copy('card-content', { children: [footer] })
+		const mainBody = build.copy('slot', { layer: 'Body' })
+		content.componentRefShape = () => build.copy('card-content', { children: [mainBody] })
+
+		expect(readSelection(content, context)).toMatchObject({
+			hints: [],
+			children: [
+				{ kind: 'local', layer: 'Notifications / Footer', role: 'Body', slot: 'Body' },
+			],
+		})
+	})
+
+	it("should take a part's role from the main-component shape it mirrors", () => {
+		const { build } = fakePenpot()
+		const header = build.copy('card-header', { layer: 'Renamed by hand', children: [] })
+		header.componentRefShape = () =>
+			build.copy('card-header', { layer: 'Header', children: [] })
+
+		expect(readSelection(build.copy('card', { children: [header] }), context)).toMatchObject({
+			children: [{ export: 'CardHeader', layer: 'Renamed by hand', role: 'Header' }],
+		})
+	})
+
 	it('should leave hidden layers out', () => {
 		const { build } = fakePenpot()
 		const button = build.copy('button-default', {

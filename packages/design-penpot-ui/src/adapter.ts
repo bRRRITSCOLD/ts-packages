@@ -39,17 +39,25 @@ export type PenpotShape = {
 	isComponentHead(): boolean
 	componentHead(): PenpotShape | null
 	component(): PenpotComponent | null
+	/** In a copy, the shape of the main component this shape mirrors; `null` once swapped. */
+	componentRefShape(): PenpotShape | null
 }
 
 /** Where the walk is: the open file decides which components are page-local. */
 export type AdapterContext = { currentFileId: string }
 
-/** What every node but text carries: its layer, and its role when it fills a slot. */
+/** What every node but text carries: its layer, and its role inside the component it sits in. */
 type NodeBase = {
-	/** The layer name on the canvas. */
+	/** The layer name on the canvas; a swap renames it, so it never identifies a part. */
 	layer: string
 	/** The Penpot layer id. */
 	id: string
+	/**
+	 * The part's role: its name inside the component it sits in, read from the main component
+	 * so it survives a swap renaming the layer (`Body` → `Notifications / Footer`). Absent on a
+	 * node that isn't inside a component.
+	 */
+	role?: string
 	/** The role, when the parent's exceptions record lists this part as a slot. */
 	slot?: string
 }
@@ -177,16 +185,36 @@ const inVisualOrder = (shapes: readonly PenpotShape[]): PenpotShape[] =>
 const isComponentHead = (shape: PenpotShape) =>
 	shape.isComponentInstance() && shape.isComponentHead()
 
+/**
+ * A child's role inside its component: the name of the main-component shape it mirrors. A
+ * swapped copy no longer mirrors one, but keeps its position, so the role is the name at its
+ * index in the parent's reference. A main instance's children are the main shapes themselves.
+ */
+const roleOf = (child: PenpotShape, parent: PenpotShape): string | undefined => {
+	const ref = child.componentRefShape()
+	if (ref) return ref.name
+	const parentRef = parent.componentRefShape()
+	if (parentRef) {
+		const index = (parent.children ?? []).findIndex((sibling) => sibling.id === child.id)
+		const mirrored = parentRef.children?.[index]
+		if (mirrored) return mirrored.name
+	}
+	return parent.isComponentInstance() ? child.name : undefined
+}
+
 /** The children of a shape as link nodes, in visual order, hidden layers left out. */
 const readChildren = (shape: PenpotShape, context: AdapterContext): LinkNode[] =>
-	inVisualOrder(shape.children ?? []).flatMap((child) => readShape(child, context))
+	inVisualOrder(shape.children ?? []).flatMap((child) =>
+		readShape(child, context, roleOf(child, shape))
+	)
 
 const readComponent = (
 	shape: PenpotShape,
 	component: PenpotComponent,
-	context: AdapterContext
+	context: AdapterContext,
+	role: string | undefined
 ): LinkNode => {
-	const base = { layer: shape.name, id: shape.id }
+	const base = { layer: shape.name, id: shape.id, ...(role === undefined ? {} : { role }) }
 	if (!isLibraryComponent(component, context))
 		return {
 			...base,
@@ -208,10 +236,13 @@ const readComponent = (
 		return { ...base, kind: 'icon', package: link.package, export: link.export }
 
 	const children = readChildren(shape, context)
-	const roles = children.flatMap((child) => (child.kind === 'text' ? [] : [child.layer]))
+	const roles = children.flatMap((child) =>
+		child.kind === 'text' || child.role === undefined ? [] : [child.role]
+	)
 	const slots = new Set(record.status === 'valid' ? (record.record.slots ?? []) : [])
 	for (const child of children)
-		if (child.kind !== 'text' && slots.has(child.layer)) child.slot = child.layer
+		if (child.kind !== 'text' && child.role !== undefined && slots.has(child.role))
+			child.slot = child.role
 
 	const hints =
 		record.status === 'invalid'
@@ -238,10 +269,14 @@ const readComponent = (
  * text; a plain board or group is a layout wrapper, so it yields its children's nodes; a hidden
  * layer yields nothing.
  */
-export const readShape = (shape: PenpotShape, context: AdapterContext): LinkNode[] => {
+export const readShape = (
+	shape: PenpotShape,
+	context: AdapterContext,
+	role?: string
+): LinkNode[] => {
 	if (shape.hidden) return []
 	const component = isComponentHead(shape) ? shape.component() : null
-	if (component) return [readComponent(shape, component, context)]
+	if (component) return [readComponent(shape, component, context, role)]
 	if (shape.type === 'text')
 		return [{ kind: 'text', layer: shape.name, id: shape.id, text: shape.characters ?? '' }]
 	return readChildren(shape, context)

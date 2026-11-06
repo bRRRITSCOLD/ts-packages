@@ -97,6 +97,8 @@ const shape = (
 		isComponentHead: () => fields.component !== undefined,
 		componentHead: () => (fields.component ? self : (self.head ?? null)),
 		component: () => fields.component ?? null,
+		// No main-component shapes in the fakes; a test that needs one assigns it.
+		componentRefShape: () => null,
 		...writes,
 	}
 	return self
