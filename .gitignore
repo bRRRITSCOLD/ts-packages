@@ -155,3 +155,6 @@ site
 storybook-static
 test-results
 playwright-report
+
+# core-react drift check output (CI uploads it as an artifact)
+packages/core-react/code-manifest.json

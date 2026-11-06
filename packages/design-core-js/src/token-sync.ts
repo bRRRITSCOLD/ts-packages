@@ -26,6 +26,30 @@ export type TokenMigration = z.infer<typeof tokenMigrationSchema>
 /** `design/token-migrations.json`: every token migration, oldest first. */
 export const tokenMigrationsSchema = z.array(tokenMigrationSchema)
 
+/** Every token name in a token file, across its sets: `color.neutral.50`, `primary`. */
+const tokenNames = (tokenFile: TokenFile) =>
+	new Set(Object.values(tokenFile).flatMap((set) => Object.keys(flattenTokens(set))))
+
+/**
+ * The tokens `base` has and `head` doesn't, with no `design/token-migrations.json` entry naming
+ * them as `from`, sorted. A token counts as removed only when it is gone from every set. CI
+ * fails on any: a renamed or removed token needs a migration, so token sync can re-bind the
+ * shapes that apply it and apps can rewrite their utility classes.
+ */
+export const findUnmigratedTokens = ({
+	base,
+	head,
+	migrations,
+}: {
+	base: TokenFile
+	head: TokenFile
+	migrations: TokenMigration[]
+}): string[] => {
+	const kept = tokenNames(head)
+	const migrated = new Set(migrations.map(({ from }) => from))
+	return [...tokenNames(base)].filter((name) => !kept.has(name) && !migrated.has(name)).sort()
+}
+
 /**
  * A shape token sync leaves for a human: it applies a migrated token `from` that has no
  * replacement (`to: null`), or still applies it after the sync re-pointed it.

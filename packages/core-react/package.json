@@ -42,7 +42,9 @@
 	"scripts": {
 		"build": "rm -rf dist && pnpm build:styles && tsc -p tsconfig.build.json",
 		"build:styles": "tsx scripts/build-styles.ts",
-		"clean": "rm -rf dist storybook-static test-results playwright-report .turbo",
+		"clean": "rm -rf dist storybook-static test-results playwright-report code-manifest.json .turbo",
+		"drift:check": "design-drift check --manifest code-manifest.json --snapshot design/library.snapshot.json --tokens tokens/tokens.json --config design/drift.config.json",
+		"drift:manifest": "design-drift manifest --entry dist/index.d.ts --icons dist/icons.d.ts --out code-manifest.json",
 		"lint": "biome check --write",
 		"lint:check": "biome check",
 		"storybook": "pnpm build:styles && storybook dev -p 6006",

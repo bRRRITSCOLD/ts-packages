@@ -107,3 +107,18 @@ export const formatAnnotations = ({ errors, unchecked, coverageGaps }: DriftRepo
 			]
 		: []),
 ]
+
+/**
+ * Renders the tokens removed from tokens.json without a token migration as GitHub Actions job
+ * annotations, an error each, or the all-clear line when there are none.
+ */
+export const formatUnmigratedTokens = (names: string[]): string[] =>
+	names.length
+		? names.map((name) =>
+				annotation(
+					'error',
+					`Token removed without a migration: ${name}`,
+					`tokens.json no longer has \`${name}\`. Add a design/token-migrations.json entry { "version", "from": "${name}", "to" } (to: null when nothing replaces it).`
+				)
+			)
+		: ['No token removed without a token migration.']
