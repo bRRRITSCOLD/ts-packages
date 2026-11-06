@@ -12,7 +12,7 @@ export const GITHUB_API_URL = 'https://api.github.com'
 export const REPO = 'bRRRITSCOLD/ts-packages'
 export const BASE = 'main'
 
-const BASE_SHA = 'b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0'
+export const BASE_SHA = 'b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0'
 const BASE_TREE_SHA = 'c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1c1'
 const TREE_SHA = 'd2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2'
 export const COMMIT_SHA = 'e3e3e3e3e3e3e3e3e3e3e3e3e3e3e3e3e3e3e3e3'
@@ -127,3 +127,35 @@ export const createPull = (): InterceptConfig =>
 			body: { number: 72, html_url: `https://github.com/${REPO}/pull/72` },
 		},
 	})
+
+/** `GET ref` of the base branch: its head commit. */
+export const readBaseRef = (): InterceptConfig =>
+	github({
+		method: 'get',
+		path: `/git/ref/heads/${BASE}`,
+		reply: { statusCode: 200, body: { object: { sha: BASE_SHA } } },
+	})
+
+/**
+ * Closing the open refresh PR the library no longer needs: the comment naming the base
+ * commit, the close, then the refresh branch's delete. Labels are never touched.
+ */
+export const closeOpenPull = (): InterceptConfig[] => [
+	github({
+		method: 'post',
+		path: `/issues/${OPEN_PULL.number}/comments`,
+		body: { body: `Library matches ${BASE} at ${BASE_SHA}; nothing to merge.` },
+		reply: { statusCode: 201, body: { id: 1 } },
+	}),
+	github({
+		method: 'patch',
+		path: `/pulls/${OPEN_PULL.number}`,
+		body: { state: 'closed' },
+		reply: { statusCode: 200, body: { number: OPEN_PULL.number, state: 'closed' } },
+	}),
+	github({
+		method: 'delete',
+		path: `/git/refs/heads/${SNAPSHOT_REFRESH_BRANCH}`,
+		reply: { statusCode: 204, body: '' },
+	}),
+]

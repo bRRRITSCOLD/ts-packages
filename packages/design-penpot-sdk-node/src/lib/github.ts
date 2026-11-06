@@ -41,6 +41,14 @@ export type GitHubClient = {
 	 * it: created when missing, force-moved when it exists, so the branch never piles up commits.
 	 */
 	commitFile: (parameters: CommitFileParameters) => Promise<void>
+	/** The commit sha a branch points at. */
+	readBranchSha: (branch: string) => Promise<string>
+	/** Posts a comment on a pull request. */
+	commentOnPullRequest: (number: number, body: string) => Promise<void>
+	/** Closes a pull request without merging; its labels stay. */
+	closePullRequest: (number: number) => Promise<void>
+	/** Deletes a branch. */
+	deleteBranch: (branch: string) => Promise<void>
 	/** Opens a pull request from `branch` into `base`. */
 	createPullRequest: (parameters: {
 		branch: string
@@ -86,6 +94,9 @@ export const createGitHubClient = ({
 	const json = async <T>(method: string, path: string, body?: unknown): Promise<T> =>
 		(await (await call(method, path, { body }))?.json()) as T
 
+	const readBranchSha = async (branch: string): Promise<string> =>
+		(await json<{ object: { sha: string } }>('GET', `/git/ref/heads/${branch}`)).object.sha
+
 	return {
 		readFile: async (path, ref) => {
 			const response = await call('GET', `/contents/${path}?ref=${encodeURIComponent(ref)}`, {
@@ -105,11 +116,25 @@ export const createGitHubClient = ({
 			return pull ? { number: pull.number, url: pull.html_url } : null
 		},
 
+		readBranchSha: async (branch) => readBranchSha(branch),
+
+		commentOnPullRequest: async (number, body) => {
+			await call('POST', `/issues/${number}/comments`, { body: { body } })
+		},
+
+		closePullRequest: async (number) => {
+			await call('PATCH', `/pulls/${number}`, { body: { state: 'closed' } })
+		},
+
+		deleteBranch: async (branch) => {
+			await call('DELETE', `/git/refs/heads/${branch}`)
+		},
+
 		commitFile: async ({ base, branch, path, content, message }) => {
-			const baseRef = await json<{ object: { sha: string } }>('GET', `/git/ref/heads/${base}`)
+			const baseSha = await readBranchSha(base)
 			const baseCommit = await json<{ tree: { sha: string } }>(
 				'GET',
-				`/git/commits/${baseRef.object.sha}`
+				`/git/commits/${baseSha}`
 			)
 			const tree = await json<{ sha: string }>('POST', '/git/trees', {
 				base_tree: baseCommit.tree.sha,
@@ -118,7 +143,7 @@ export const createGitHubClient = ({
 			const commit = await json<{ sha: string }>('POST', '/git/commits', {
 				message,
 				tree: tree.sha,
-				parents: [baseRef.object.sha],
+				parents: [baseSha],
 			})
 			const branchExists = await call('GET', `/git/ref/heads/${branch}`, {
 				allowNotFound: true,
