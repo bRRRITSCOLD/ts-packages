@@ -11,7 +11,8 @@
 			"!**/playwright-report/**",
 			"!**/*.d.ts",
 			"!.changeset/**",
-			"!**/design/library.snapshot.json"
+			"!**/design/library.snapshot.json",
+			"!packages/core-react/code-manifest.json"
 		]
 	},
 	"formatter": {

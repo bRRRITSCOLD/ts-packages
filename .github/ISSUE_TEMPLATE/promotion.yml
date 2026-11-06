@@ -1,0 +1,36 @@
+name: Promotion
+description: Propose promoting part of a page design into the design system library and core-react.
+title: "Promote: "
+labels: [promotion]
+body:
+    - type: markdown
+      attributes:
+          value: |
+              A promotion adds a component to `@brrritscold/core-react` and its twin to the design system library. The library owner approves it with the `approved` label; an agent then posts an API proposal here, and once that is OK'd, opens one code-first `core-react` PR that references (not closes) this issue. Workflow: `docs/design-system/SPEC.md` → Operating → Promotion.
+
+              Leave a Penpot comment on the page design that links back to this issue.
+    - type: input
+      id: page-design
+      attributes:
+          label: Page design
+          description: Penpot URL of the page design (board or file) the layers come from.
+          placeholder: http://penpot.localhost/#/workspace/…
+      validations:
+          required: true
+    - type: textarea
+      id: layers
+      attributes:
+          label: Layers to promote
+          description: One per line, the layer names (and boards) to turn into library components.
+      validations:
+          required: true
+    - type: textarea
+      id: why
+      attributes:
+          label: Why it belongs in the library
+          description: Where else it would be used; why an existing core-react component doesn't fit.
+    - type: textarea
+      id: notes
+      attributes:
+          label: Variants, states and tokens
+          description: Optional. Variants or states you expect, and any raw values in the design that need a token.

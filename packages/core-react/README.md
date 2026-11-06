@@ -48,7 +48,7 @@ Everything not listed here follows the shared layout (script names, strict pnpm 
 | `tsconfig.json` with `lib: ["esnext"]`                   | adds `dom` and `jsx: "react-jsx"`; typechecks `src`, `tests`, `scripts`, `.storybook`                                                                                                              | React components and their stories                                                                                            |
 | one `turbo.json` at the root                             | `turbo.json` here extends it so `build` also hashes `tokens/` and `scripts/`                                                                                                                       | the token build is part of `build`                                                                                            |
 
-Scripts beyond the contract: `build:styles` (the token half of `build`), `test:stories` / `test:stories:watch`, `storybook`, `storybook:build`. Each Storybook and stories script runs `build:styles` first, since the preview imports `dist/styles.css`. `test:integration` builds Storybook itself and has no containers, so `test:integration:setup` / `:teardown` run empty scripts; they are kept so `test:integration:ci` has the same setup → run → teardown shape as every other package.
+Scripts beyond the contract: `build:styles` (the token half of `build`), `drift:manifest` / `drift:check` (see [Drift check](#drift-check)), `test:stories` / `test:stories:watch`, `storybook`, `storybook:build`. Each Storybook and stories script runs `build:styles` first, since the preview imports `dist/styles.css`. `test:integration` builds Storybook itself and has no containers, so `test:integration:setup` / `:teardown` run empty scripts; they are kept so `test:integration:ci` has the same setup → run → teardown shape as every other package.
 
 ## Tokens
 
@@ -76,6 +76,22 @@ Scripts beyond the contract: `build:styles` (the token half of `build`), `test:s
   A token already named as its theme variable (`--font-weight-medium`, `--shadow-xs`, `--opacity-50`) sits in a second `@theme inline reference` block, so Tailwind doesn't emit it again as a variable pointing at itself. Breakpoints, motion and z-index keep Tailwind's defaults. Font sizes are stored in px and emitted as rem; opacities are stored as fractions and emitted as percentages, the form a colour modifier's `color-mix()` takes. Style Dictionary fails the build on a broken reference.
 
 - Components use tokens only through those utilities. **Arbitrary values (`bg-[#…]`, `p-[13px]`) and default-palette utilities (`bg-slate-500`, `text-white`) are rejected** by the unit tier's source scan, and the token checks fail a component class that sets a spacing, sizing, typography, shadow, opacity, radius or colour property without reading a token.
+
+## Drift check
+
+The CI job `drift` keeps this package and the design system library in Penpot honest, offline and without Penpot credentials:
+
+1. `pnpm drift:manifest` writes `code-manifest.json` (gitignored; CI uploads it as the `code-manifest` artifact) from the built `.d.ts`: every export, each prop's literal union, the icon names. Run `build` first.
+2. `pnpm drift:check` checks `design/library.snapshot.json` against the manifest and `tokens/tokens.json` (drift rules 1–9 in `@brrritscold/design-core-js`). Library → code mismatches fail; code → library gaps are a warning, except the exports on the allowlist.
+3. Every token the PR's base `tokens.json` has and this one doesn't needs a `design/token-migrations.json` entry, or the job fails (`design-drift migrations`).
+
+| File                           | Holds                                                                                                        |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------ |
+| `design/library.snapshot.json` | the normalized library file; written only by the snapshot refresh, never by hand                             |
+| `design/drift.config.json`     | `allowlist`: exports that never get a library twin (`cn`, cva configs like `buttonVariants`)                 |
+| `design/token-migrations.json` | append-only `[{ "version", "from", "to" }]`; `to: null` when nothing replaces the token. Token sync reads it |
+
+Fixing a red check, lockstep PRs and promotion: the personal-ai `design-system` skill.
 
 ## Vendoring a shadcn component
 

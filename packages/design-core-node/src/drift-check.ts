@@ -11,12 +11,16 @@ import {
 } from '@brrritscold/design-core-js/drift-check'
 import { librarySnapshotSchema } from '@brrritscold/design-core-js/library-snapshot'
 import { tokenFileSchema } from '@brrritscold/design-core-js/token-file'
-import { buildTokenSyncScript, tokenMigrationsSchema } from '@brrritscold/design-core-js/token-sync'
+import {
+	buildTokenSyncScript,
+	findUnmigratedTokens,
+	tokenMigrationsSchema,
+} from '@brrritscold/design-core-js/token-sync'
 
 import { generateCodeManifest } from './code-manifest.js'
-import { formatAnnotations, formatStepSummary } from './drift-report.js'
+import { formatAnnotations, formatStepSummary, formatUnmigratedTokens } from './drift-report.js'
 
-export { formatAnnotations, formatStepSummary }
+export { formatAnnotations, formatStepSummary, formatUnmigratedTokens }
 
 /** What the drift-check CLI reads and writes: the process and the file system by default. */
 export type DriftCliIo = {
@@ -54,6 +58,10 @@ const USAGE = `Usage: design-drift <command> [options]
       Writes job annotations to stdout
       and the step summary to $GITHUB_STEP_SUMMARY (stdout when unset).
       Exit 1 on drift; coverage gaps and unchecked components only warn.
+
+  migrations --base <base tokens.json> --tokens <tokens.json> --migrations <token-migrations.json>
+      Check that every token the base token file has and tokens.json doesn't has a token
+      migration. Writes an error annotation per token to stdout. Exit 1 on any.
 
   token-sync --tokens <tokens.json> [--migrations <token-migrations.json>]
       Print the token sync script: run it as the body of one Penpot MCP execute_code call in
@@ -121,6 +129,17 @@ const runCheck = (argv: string[], io: DriftCliIo) => {
 	return report.errors.length ? 1 : 0
 }
 
+const runMigrations = (argv: string[], io: DriftCliIo) => {
+	const paths = options(argv, ['base', 'tokens', 'migrations'])
+	const unmigrated = findUnmigratedTokens({
+		base: readJson(io, paths.base, 'token file', tokenFileSchema),
+		head: readJson(io, paths.tokens, 'token file', tokenFileSchema),
+		migrations: readJson(io, paths.migrations, 'token migrations', tokenMigrationsSchema),
+	})
+	for (const line of formatUnmigratedTokens(unmigrated)) io.stdout(line)
+	return unmigrated.length ? 1 : 0
+}
+
 const runTokenSync = (argv: string[], io: DriftCliIo) => {
 	const paths = options(argv, ['tokens'], ['migrations'])
 	const tokens = readJson(io, paths.tokens, 'token file', tokenFileSchema)
@@ -139,7 +158,8 @@ const runTokenSync = (argv: string[], io: DriftCliIo) => {
 
 /**
  * Runs the `design-drift` CLI and returns its exit code: `manifest` writes the code manifest,
- * `check` runs the drift check (1 on drift), `token-sync` prints the token sync script; 2 on a
+ * `check` runs the drift check (1 on drift), `migrations` checks every removed token has a token
+ * migration (1 on any without), `token-sync` prints the token sync script; 2 on a
  * usage error, an invalid input file or a token Penpot can't hold.
  */
 export const runDriftCli = (argv: string[], io: DriftCliIo = processIo): number => {
@@ -147,6 +167,7 @@ export const runDriftCli = (argv: string[], io: DriftCliIo = processIo): number 
 	try {
 		if (command === 'manifest') return runManifest(rest, io)
 		if (command === 'check') return runCheck(rest, io)
+		if (command === 'migrations') return runMigrations(rest, io)
 		if (command === 'token-sync') return runTokenSync(rest, io)
 		throw new DriftCliInputError(command ? `Unknown command: ${command}` : 'No command')
 	} catch (error) {

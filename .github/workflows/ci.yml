@@ -46,6 +46,45 @@ jobs:
             - run: pnpm --filter @brrritscold/core-react exec playwright install --with-deps chromium
             - run: pnpm test:integration
 
+    # core-react against the design system library, offline: the committed library snapshot
+    # (design/library.snapshot.json) is the library's side, so this job needs no Penpot
+    # credentials. Rules: docs/design-system/SPEC.md → Drift rules.
+    drift:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  # the base commit's tokens.json, for the token-migration check
+                  fetch-depth: 0
+            - uses: pnpm/action-setup@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+                  cache: pnpm
+            - run: pnpm install --frozen-lockfile
+            - run: pnpm turbo run build --filter=@brrritscold/core-react...
+            - run: pnpm --filter @brrritscold/core-react drift:manifest
+            - uses: actions/upload-artifact@v4
+              with:
+                  name: code-manifest
+                  path: packages/core-react/code-manifest.json
+            - run: pnpm --filter @brrritscold/core-react drift:check
+            - name: Every removed token has a token migration
+              env:
+                  BASE: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+              run: |
+                  tokens=packages/core-react/tokens/tokens.json
+                  base=$(git merge-base "$BASE" HEAD 2>/dev/null || true)
+                  if [ -z "$base" ] || ! git cat-file -e "$base:$tokens" 2>/dev/null; then
+                    echo "No base tokens.json to compare against; skipping."
+                    exit 0
+                  fi
+                  git show "$base:$tokens" > "$RUNNER_TEMP/base.tokens.json"
+                  pnpm --filter @brrritscold/core-react exec design-drift migrations \
+                    --base "$RUNNER_TEMP/base.tokens.json" \
+                    --tokens tokens/tokens.json \
+                    --migrations design/token-migrations.json
+
     # Runs only on pushes to main, after check + integration pass. Exactly ONE of
     # its two release steps runs, chosen by whether .changeset/ holds pending
     # changeset files:
@@ -56,7 +95,7 @@ jobs:
     # Full flow: README.md → Release.
     release:
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        needs: [check, integration]
+        needs: [check, integration, drift]
         runs-on: ubuntu-latest
         concurrency:
             group: release-${{ github.ref }}

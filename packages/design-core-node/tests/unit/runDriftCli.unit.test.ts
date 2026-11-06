@@ -253,6 +253,73 @@ describe('design-drift CLI', () => {
 		})
 	})
 
+	describe('migrations', () => {
+		/** The fixture token file with `primary-foreground` gone from both themes, as `head.tokens.json`. */
+		const withoutPrimaryForeground = () => {
+			const drift = cli()
+			const tokens = JSON.parse(drift.files.get(fixture('design/tokens.json')) ?? '')
+			for (const theme of ['light', 'dark']) delete tokens[theme]['primary-foreground']
+			drift.files.set('head.tokens.json', JSON.stringify(tokens))
+			return drift
+		}
+
+		it('should pass when the token file removes no token (exit 0)', () => {
+			const { run, stdout } = cli()
+
+			const exitCode = run(
+				'migrations',
+				'--base',
+				fixture('design/tokens.json'),
+				'--tokens',
+				fixture('design/tokens.json'),
+				'--migrations',
+				fixture('design/token-migrations.json')
+			)
+
+			expect(exitCode).toBe(0)
+			expect(stdout).toEqual(['No token removed without a token migration.'])
+		})
+
+		it('should fail with an error annotation per token removed without a migration (exit 1)', () => {
+			const { run, stdout } = withoutPrimaryForeground()
+
+			const exitCode = run(
+				'migrations',
+				'--base',
+				fixture('design/tokens.json'),
+				'--tokens',
+				'head.tokens.json',
+				'--migrations',
+				fixture('design/token-migrations.json')
+			)
+
+			expect(exitCode).toBe(1)
+			expect(stdout).toEqual([
+				'::error title=Token removed without a migration%3A primary-foreground::tokens.json no longer has `primary-foreground`. Add a design/token-migrations.json entry { "version", "from": "primary-foreground", "to" } (to: null when nothing replaces it).',
+			])
+		})
+
+		it('should pass a removed token that has a migration entry (exit 0)', () => {
+			const { files, run } = withoutPrimaryForeground()
+			files.set(
+				'migrations.json',
+				JSON.stringify([{ version: '2.0.0', from: 'primary-foreground', to: null }])
+			)
+
+			const exitCode = run(
+				'migrations',
+				'--base',
+				fixture('design/tokens.json'),
+				'--tokens',
+				'head.tokens.json',
+				'--migrations',
+				'migrations.json'
+			)
+
+			expect(exitCode).toBe(0)
+		})
+	})
+
 	describe('invalid input', () => {
 		it('should fail loudly on a snapshot that does not match its schema (exit 2)', () => {
 			const { files, run, stderr } = cliWithManifest()
