@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Link inspector</title>
+		<style>
+			:root { color-scheme: light dark; font: 12px/1.4 system-ui, sans-serif; }
+			body { margin: 0; padding: 12px; background: #fff; color: #1f1f1f; }
+			body[data-theme='dark'] { background: #18181a; color: #e8e8e8; }
+			h1 { font-size: 14px; margin: 0 0 8px; }
+			h2 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; opacity: 0.7; margin: 12px 0 4px; }
+			pre { margin: 0; padding: 8px; white-space: pre-wrap; overflow-wrap: anywhere; border-radius: 4px; background: rgba(127, 127, 127, 0.12); font: 11px/1.45 ui-monospace, monospace; }
+			table { width: 100%; border-collapse: collapse; }
+			th, td { text-align: left; padding: 2px 4px; border-bottom: 1px solid rgba(127, 127, 127, 0.2); }
+			td.source.exceptions-record { color: #b5179e; }
+			body[data-theme='dark'] td.source.exceptions-record { color: #f472d0; }
+			ul { margin: 0; padding-left: 16px; color: #c2410c; }
+			body[data-theme='dark'] ul { color: #fb923c; }
+			.nothing { opacity: 0.7; }
+		</style>
+	</head>
+	<body>
+		<main id="app"><p class="nothing">Select a library component or instance.</p></main>
+		<script src="/link-inspector/ui.js"></script>
+	</body>
+</html>

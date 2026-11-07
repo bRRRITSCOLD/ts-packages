@@ -95,7 +95,8 @@
 		"typecheck": "tsc -p ./tsconfig.json"
 	},
 	"dependencies": {
-		"@brrritscold/core-js": "workspace:^"
+		"@brrritscold/core-js": "workspace:^",
+		"zod": "^4.2.1"
 	},
 	"keywords": [
 		"brrritscold",

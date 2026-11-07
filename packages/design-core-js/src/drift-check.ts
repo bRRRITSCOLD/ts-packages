@@ -406,7 +406,7 @@ const componentLabel = ({ path, name }: LibraryComponent) => (path ? `${path}/${
  * One line per issue of a failed parse, `components.abc.name: Invalid input`, or the bare
  * message for an issue at the root: how the drift check and its CLI report invalid input.
  */
-export const formatSchemaIssues = (error: z.ZodError): string[] =>
+export const formatSchemaIssues = (error: Pick<z.ZodError, 'issues'>): string[] =>
 	error.issues.map(({ path, message }) =>
 		path.length ? `${path.map(String).join('.')}: ${message}` : message
 	)

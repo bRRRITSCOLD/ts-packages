@@ -1,0 +1,28 @@
+# Rendered by the nginx-unprivileged entrypoint (envsubst): ${PENPOT_ORIGIN} is the one origin
+# allowed to load the plugin, its UI and the link reader.
+server {
+	listen 8080;
+	server_name _;
+	root /usr/share/nginx/html;
+
+	# The plugin and the reader change with every image; never let Penpot run a stale copy.
+	add_header Cache-Control "no-cache" always;
+	add_header Access-Control-Allow-Origin "${PENPOT_ORIGIN}" always;
+	add_header Access-Control-Allow-Methods "GET, OPTIONS" always;
+	add_header Access-Control-Allow-Headers $http_access_control_request_headers always;
+	add_header Vary "Origin, Access-Control-Request-Headers" always;
+
+	location = /healthz {
+		access_log off;
+		default_type text/plain;
+		return 200 "ok\n";
+	}
+
+	location / {
+		# A plugin's fetch (Penpot's sandbox, MCP execute_code) sends a CORS preflight first.
+		if ($request_method = OPTIONS) {
+			return 204;
+		}
+		try_files $uri =404;
+	}
+}
