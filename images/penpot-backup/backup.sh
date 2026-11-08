@@ -6,7 +6,9 @@
 #   3. forget --prune (7 daily, 4 weekly, 6 monthly; `pre-upgrade` snapshots are kept)
 #   4. check --read-data-subset
 #   5. with COPY_REPOSITORY: restic copy to it, then forget --prune and check there too
-#   6. healthchecks.io ping; /start at the beginning, /<exit code> with the log tail on failure
+#   6. size check: fails when a repo's raw data exceeds MAX_REPO_GB, after the backup is safely
+#      in every repo, so the alert comes before B2's free-tier cap blocks writes
+#   7. healthchecks.io ping; /start at the beginning, /<exit code> with the log tail on failure
 #
 # A missing repository is initialised (restic exit 10 only; any other open error fails), the
 # second one with the first one's chunker parameters so copies deduplicate.
@@ -23,12 +25,14 @@
 #   HC_PING_URL                         healthchecks.io ping URL; unset skips the ping
 #   BACKUP_TAG                          default nightly; pre-upgrade before a Penpot bump
 #   CHECK_SUBSET                        default 5%
+#   MAX_REPO_GB                         default 8 (B2's free tier is 10 GB); 0 disables
 set -euo pipefail
 # shellcheck source=lib.sh
 . /usr/local/lib/penpot-backup/lib.sh
 
 : "${PGDATABASE:=penpot}" "${ASSETS_DIR:=/backup/assets}" "${DUMP_DIR:=/backup/db}"
 : "${BACKUP_TAG:=nightly}" "${CHECK_SUBSET:=5%}" "${RESTIC_CACHE_DIR:=/tmp/restic-cache}"
+: "${MAX_REPO_GB:=8}"
 export PGDATABASE RESTIC_CACHE_DIR
 HC_URL=${HC_PING_URL:-}
 
@@ -70,6 +74,19 @@ if [[ -n $copy ]]; then
 	RESTIC_FROM_PASSWORD=$RESTIC_PASSWORD restic -r "$copy" copy --from-repo "$primary" --host "$SNAPSHOT_HOST"
 	forget_and_check "$copy"
 fi
+
+# Raw (compressed, deduplicated) pack data: what the bucket bills for.
+over=0
+for repo in "$primary" ${copy:+"$copy"}; do
+	bytes=$(restic -r "$repo" stats --mode raw-data --json | jq -r .total_size)
+	gb=$(awk -v b="$bytes" 'BEGIN { printf "%.2f", b / 1e9 }')
+	log "repo $repo holds ${gb} GB of raw data (limit ${MAX_REPO_GB} GB)"
+	if [[ $MAX_REPO_GB != 0 ]] && awk -v g="$gb" -v m="$MAX_REPO_GB" 'BEGIN { exit !(g > m) }'; then
+		log "error: $repo is over ${MAX_REPO_GB} GB: shorten retention or raise the B2 cap"
+		over=1
+	fi
+done
+((over == 0)) || die "backup stored, but a repo is over its size limit"
 
 log "backup done"
 hc_ping "" "$(tail -c 10000 "$LOG_FILE")"
