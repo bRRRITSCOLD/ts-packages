@@ -71,7 +71,7 @@ Scripts beyond the contract: `build:styles` (the token half of `build`), `drift:
   | `line-height.*`    | `leading-tight`, `leading-normal`, `leading-relaxed`                                                                  |
   | `letter-spacing.*` | `tracking-tight`, `tracking-normal`, `tracking-wide`                                                                  |
   | `shadow.*`         | `shadow-xs`, `shadow-sm`                                                                                              |
-  | `opacity.*`        | `opacity-0`, `opacity-10`, `opacity-50`, `opacity-100`, and a colour's `/10` or `/50` modifier                       |
+  | `opacity.*`        | `opacity-0`, `opacity-10`, `opacity-50`, `opacity-100`, and a colour's `/10` or `/50` modifier                        |
 
   A token already named as its theme variable (`--font-weight-medium`, `--shadow-xs`, `--opacity-50`) sits in a second `@theme inline reference` block, so Tailwind doesn't emit it again as a variable pointing at itself. Breakpoints, motion and z-index keep Tailwind's defaults. Font sizes are stored in px and emitted as rem; opacities are stored as fractions and emitted as percentages, the form a colour modifier's `color-mix()` takes. Style Dictionary fails the build on a broken reference.
 
