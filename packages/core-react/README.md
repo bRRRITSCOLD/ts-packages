@@ -101,6 +101,9 @@ Penpot can't say everything a class list says. The library twin keeps every chec
 - **A colour at an opacity is a tint layer.** Applying a colour token resets the fill's opacity to 1, so Button `destructive`'s `bg-destructive/10` is an absolute `Tint` rectangle behind the label: fill `destructive`, layer opacity `opacity.10`. Penpot can't change an opacity by theme, so dark's `/20` stays at 10%.
 - **`dark:` overrides that pick another semantic are dropped.** Button `outline`'s `dark:border-input dark:bg-input/30` stay `border` and `background`.
 - **Hover, focus, `aria-*` and `disabled` states have no variants.** Only cva keys become variant properties.
+- **An icon's stroke stays 2px when resized.** lucide scales the stroke with the icon's size; Penpot scales the paths (constraints `scale`) but not the stroke width.
+- **An icon's dot is a filled circle.** lucide draws a dot (`Info`, `CircleExclamationPoint`) as a 0.01px path with round caps, which Penpot doesn't render; the twin uses a 2×2 ellipse with fill `foreground`, the same shape.
+- **Library icons use lucide's canonical names, never aliases** (`CircleExclamationPoint`, not `CircleAlert`), so a lucide major that drops an alias doesn't break drift rule 4. Icon twins are built from `lucide-react`'s own icon data over MCP, so their geometry matches the installed version.
 
 ## Vendoring a shadcn component
 
