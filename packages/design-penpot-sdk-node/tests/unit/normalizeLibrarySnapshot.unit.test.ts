@@ -380,6 +380,35 @@ describe('normalizeLibrarySnapshot', () => {
 				unbound: [],
 			})
 		})
+
+		it('should read a path layer, whose content is path data rather than a text tree', () => {
+			const file = fixtureFile()
+			const trash = rawComponent(file, 'Trash2')
+			const { main } = mainInstance(file, trash)
+			Object.assign(main, {
+				type: 'path',
+				content: 'M5 12h14',
+				appliedTokens: { strokeColor: 'foreground' },
+			})
+
+			expect(
+				normalizeLibrarySnapshot(file).components[trash.id].layers[main.id as string]
+			).toEqual({
+				namePath: ['Trash2'],
+				appliedTokens: { 'stroke-color': 'foreground' },
+				unbound: [],
+			})
+		})
+
+		it('should still throw on a text layer whose content is not a text tree', () => {
+			const file = fixtureFile()
+			const button = rawComponent(file, 'Button', 'default')
+			const { main, objects } = mainInstance(file, button)
+			const label = objects[(main.shapes ?? [])[0]]
+			label.content = 'Go'
+
+			expect(() => normalizeLibrarySnapshot(file)).toThrow(/content/)
+		})
 	})
 
 	it('should leave deleted components out', () => {

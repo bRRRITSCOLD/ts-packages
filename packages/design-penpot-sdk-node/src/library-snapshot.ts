@@ -146,37 +146,47 @@ const rawTextNodeSchema: z.ZodType<RawTextNode> = z.lazy(() =>
 	})
 )
 
-const rawShapeSchema = z.object({
-	id: z.string(),
-	name: z.string(),
-	type: z.string(),
-	shapes: z.array(z.string()).optional(),
-	componentId: z.string().optional(),
-	appliedTokens: z.partialRecord(z.enum(PENPOT_TOKEN_ATTRIBUTES), z.string()).nullish(),
-	fills: z.array(z.unknown()).nullish(),
-	strokes: z.array(z.unknown()).nullish(),
-	shadow: z.array(z.unknown()).nullish(),
-	opacity: z.number().nullish(),
-	r1: z.number().nullish(),
-	r2: z.number().nullish(),
-	r3: z.number().nullish(),
-	r4: z.number().nullish(),
-	layout: z.enum(['flex', 'grid']).nullish(),
-	layoutPadding: z
-		.object({
-			p1: z.number().nullish(),
-			p2: z.number().nullish(),
-			p3: z.number().nullish(),
-			p4: z.number().nullish(),
-		})
-		.nullish(),
-	layoutGap: z
-		.object({ rowGap: z.number().nullish(), columnGap: z.number().nullish() })
-		.nullish(),
-	content: rawTextNodeSchema.nullish(),
-})
+const rawShapeSchema = z
+	.object({
+		id: z.string(),
+		name: z.string(),
+		type: z.string(),
+		shapes: z.array(z.string()).optional(),
+		componentId: z.string().optional(),
+		appliedTokens: z.partialRecord(z.enum(PENPOT_TOKEN_ATTRIBUTES), z.string()).nullish(),
+		fills: z.array(z.unknown()).nullish(),
+		strokes: z.array(z.unknown()).nullish(),
+		shadow: z.array(z.unknown()).nullish(),
+		opacity: z.number().nullish(),
+		r1: z.number().nullish(),
+		r2: z.number().nullish(),
+		r3: z.number().nullish(),
+		r4: z.number().nullish(),
+		layout: z.enum(['flex', 'grid']).nullish(),
+		layoutPadding: z
+			.object({
+				p1: z.number().nullish(),
+				p2: z.number().nullish(),
+				p3: z.number().nullish(),
+				p4: z.number().nullish(),
+			})
+			.nullish(),
+		layoutGap: z
+			.object({ rowGap: z.number().nullish(), columnGap: z.number().nullish() })
+			.nullish(),
+		content: z.unknown().optional(),
+	})
+	.transform((shape, ctx) => {
+		// Only a text layer's content is a text tree; a path's is path data, a bool's its geometry.
+		if (shape.type !== 'text') return { ...shape, content: undefined }
+		const content = rawTextNodeSchema.nullish().safeParse(shape.content)
+		if (content.success) return { ...shape, content: content.data }
+		for (const issue of content.error.issues)
+			ctx.addIssue({ ...issue, path: ['content', ...issue.path] })
+		return z.NEVER
+	})
 
-type RawShape = z.infer<typeof rawShapeSchema>
+type RawShape = z.output<typeof rawShapeSchema>
 
 /**
  * The tokens lib as JSON `get-file` sends it: Penpot's own DTCG export, the sets by name plus

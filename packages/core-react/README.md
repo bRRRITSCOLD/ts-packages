@@ -71,7 +71,7 @@ Scripts beyond the contract: `build:styles` (the token half of `build`), `drift:
   | `line-height.*`    | `leading-tight`, `leading-normal`, `leading-relaxed`                                                                  |
   | `letter-spacing.*` | `tracking-tight`, `tracking-normal`, `tracking-wide`                                                                  |
   | `shadow.*`         | `shadow-xs`, `shadow-sm`                                                                                              |
-  | `opacity.*`        | `opacity-0`, `opacity-50`, `opacity-100`, and a colour's `/50` modifier                                               |
+  | `opacity.*`        | `opacity-0`, `opacity-10`, `opacity-50`, `opacity-100`, and a colour's `/10` or `/50` modifier                        |
 
   A token already named as its theme variable (`--font-weight-medium`, `--shadow-xs`, `--opacity-50`) sits in a second `@theme inline reference` block, so Tailwind doesn't emit it again as a variable pointing at itself. Breakpoints, motion and z-index keep Tailwind's defaults. Font sizes are stored in px and emitted as rem; opacities are stored as fractions and emitted as percentages, the form a colour modifier's `color-mix()` takes. Style Dictionary fails the build on a broken reference.
 
@@ -92,6 +92,15 @@ The CI job `drift` keeps this package and the design system library in Penpot ho
 | `design/token-migrations.json` | append-only `[{ "version", "from", "to" }]`; `to: null` when nothing replaces the token. Token sync reads it |
 
 Fixing a red check, lockstep PRs and promotion: the personal-ai `design-system` skill.
+
+### Where a library twin can't match the code
+
+Penpot can't say everything a class list says. The library twin keeps every checked attribute on a token and accepts these known differences:
+
+- **`rounded-md` is `radius`, 2px rounder.** Code derives `rounded-md` as `calc(var(--radius) - 2px)` (8px); Penpot has no derived token, so the applied-token rule puts `radius` (10px) on the corners.
+- **A colour at an opacity is a tint layer.** Applying a colour token resets the fill's opacity to 1, so Button `destructive`'s `bg-destructive/10` is an absolute `Tint` rectangle behind the label: fill `destructive`, layer opacity `opacity.10`. Penpot can't change an opacity by theme, so dark's `/20` stays at 10%.
+- **`dark:` overrides that pick another semantic are dropped.** Button `outline`'s `dark:border-input dark:bg-input/30` stay `border` and `background`.
+- **Hover, focus, `aria-*` and `disabled` states have no variants.** Only cva keys become variant properties.
 
 ## Vendoring a shadcn component
 
