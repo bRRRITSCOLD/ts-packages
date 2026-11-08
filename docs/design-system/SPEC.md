@@ -285,8 +285,9 @@ _Decided in:_ [How is Penpot deployed on k3s?][t29] with amendments from [creden
   "penpot": { "type": "http", "url": "http://penpot.localhost/mcp/stream?userToken=${PENPOT_MCP_KEY}" }
   ```
 - `~/.config/penpot/env` also holds the cluster Secret values (`PENPOT_API_SECRET_KEY`, `PENPOT_POSTGRES_PASSWORD`, and in B4 the restic password and B2 key), so Secrets can be recreated after a namespace delete or restore.
+- **Off-machine copy:** the whole file, `gpg --symmetric --cipher-algo AES256`, committed as `personal-infra/secrets/penpot-env.gpg` (`secrets/seal.sh` encrypts, proves the round trip and stages it; `secrets/README.md` covers re-seal and recovery: clone → `gpg -d` → `~/.config/penpot/env`, `chmod 600`). The passphrase is a 6-word diceware phrase, memorized and on paper at home, never on this disk. Every change to the env file re-seals it. Only ciphertext lands: `secrets/check-ciphertext.sh` scans the diff for every env value before a commit.
 
-_Decided in:_ [How do agents and CI get Penpot credentials?][t30] with amendments from [backups][t30-amend-backup] and [outside access][t30-amend-outside]
+_Decided in:_ [How do agents and CI get Penpot credentials?][t30] with amendments from [backups][t30-amend-backup] and [outside access][t30-amend-outside]; off-machine copy from [Where does an off-machine copy of the Penpot secrets live?][t74]
 
 ---
 
@@ -434,12 +435,12 @@ Needs the C images and the D1 snapshot path.
 
 - **`base/static.yaml`:** Deployment/Service/Ingress for `design-penpot-static` at host **`plugins.penpot.localhost`** (a separate origin, so the plugin iframe can't reach Penpot's cookies or DOM).
 - **`base/snapshot-refresh.yaml`:** CronJob in `penpot`, `schedule: "0 3 * * *"`, `timeZone: America/Denver`, `concurrencyPolicy: Forbid`, `backoffLimit: 1`, 3 successful / 3 failed history. Secret `snapshot-refresh` (`githubToken`, `penpotToken`). On demand: `kubectl create job --from=cronjob/snapshot-refresh <name>`.
-- **`backup/`:** a CronJob at **02:00** running `pg_dump -Fc` of the `penpot` DB **first**, then `restic backup` of the dump plus the assets PVC (mounted read-only), then `forget --prune --keep-daily 7 --keep-weekly 4 --keep-monthly 6`, then `restic check --read-data-subset=5%`, then a healthchecks.io ping on success. No quiesce (Penpot's GC marks at midnight). Secret `penpot-backup`.
+- **`backup/`:** a CronJob at **02:00** running `pg_dump -Fc` of the `penpot` DB **first**, then `restic backup` of the dump plus the assets PVC (mounted read-only), then `forget --prune --keep-daily 7 --keep-weekly 4 --keep-monthly 6`, then `restic check --read-data-subset=5%`, then a healthchecks.io ping on success. No quiesce (Penpot's GC marks at midnight). Secret `penpot-backup`; add the restic password and B2 key to `~/.config/penpot/env`, then re-seal and commit `personal-infra/secrets/penpot-env.gpg`.
   - `base` repo: one **Backblaze B2 free-tier** bucket; the B2 application key is scoped to that bucket, read/write.
   - `overlays/local` adds a hostPath repo at `/var/backups/penpot` and `restic copy` local → B2.
   - A **weekly restore-check CronJob** restores the latest dump into a throwaway Postgres pod and checks: file count > 0, the design system library file id present, newest `modified_at` < 26 h, and every live `storage_object` exists in the restored assets tree; then tears down.
   - Not backed up: Valkey, PVC block snapshots, secrets. `.penpot` exports are a manual escape hatch, not a backup.
-- **`RESTORE.md`:** (1) get the restic password, B2 key and `apiSecretKey` from `~/.config/penpot/env`; (2) scale backend, exporter, MCP to 0; (3) `restic restore` the chosen snapshot (local repo if present, else B2); (4) drop and recreate the DB, `pg_restore`; (5) **replace** the assets dir with the restored tree, never merge; (6) restore with the same `apiSecretKey`, scale up; (7) run the deploy acceptance checks; (8) re-apply the **offboarded list** (remove from team, hard-delete profile). The **restore drill** runs the same steps into namespace `penpot-drill`, reached by port-forward only.
+- **`RESTORE.md`:** (1) get the restic password, B2 key and `apiSecretKey` from `~/.config/penpot/env`, or decrypt `personal-infra/secrets/penpot-env.gpg` if the disk is gone; (2) scale backend, exporter, MCP to 0; (3) `restic restore` the chosen snapshot (local repo if present, else B2); (4) drop and recreate the DB, `pg_restore`; (5) **replace** the assets dir with the restored tree, never merge; (6) restore with the same `apiSecretKey`, scale up; (7) run the deploy acceptance checks; (8) re-apply the **offboarded list** (remove from team, hard-delete profile). The **restore drill** runs the same steps into namespace `penpot-drill`, reached by port-forward only, and starts by decrypting the committed `secrets/penpot-env.gpg` to a `mktemp` file (removed on exit) in a clean environment (`env -i`, since `~/.zshenv` sources the live file), restoring from that copy alone, so every drill proves the copy works.
 - **`overlays/outside-access` + `OUTSIDE-ACCESS.md`:** written now, **not applied** (see Operating → Outside designer).
 
 **Acceptance (completes B2's list):**
@@ -512,14 +513,14 @@ These are standing procedures. The skills (A4) carry them for agents; the `perso
 
 ### Rotate credentials
 
-Each: trigger → mint → destination → verify. Everything except the PAT rotates only on suspicion of a leak or when someone loses access.
-- **GitHub PAT:** on GitHub's expiry email → Regenerate token (same permissions) → re-apply Secret `snapshot-refresh` → `kubectl create job --from=cronjob/snapshot-refresh rotate-check` succeeds.
-- **`snapshot-refresh` Penpot token:** new token on the automation profile → re-apply the Secret → manual job succeeds → delete the old token.
-- **MCP key:** regenerate (revokes the old) → update `PENPOT_MCP_KEY` → restart Claude Code → reload the Penpot tab.
-- **Automation password:** `manage.py update-profile -e automation@penpot.localhost -p …` → update the local env.
-- **`apiSecretKey`:** rotate → restart backend → re-mint the MCP key and the `snapshot-refresh` token (it signs sessions, access tokens, MCP keys and invites; verify at build). Update `~/.config/penpot/env`.
-- **Postgres password:** `ALTER ROLE` → update `postgres-credentials` → restart backend.
-- **Backup keys** (`RESTIC_PASSWORD` via `restic key add`/`remove`, B2 key, `HC_PING_URL`): re-apply `penpot-backup`, run a manual backup, update `~/.config/penpot/env`.
+Each: trigger → mint → destination → verify. Everything except the PAT rotates only on suspicion of a leak or when someone loses access. Every step that changes a value in `~/.config/penpot/env` ends with: update the env file, then re-seal and commit `personal-infra/secrets/penpot-env.gpg` (`secrets/seal.sh`).
+- **GitHub PAT:** on GitHub's expiry email → Regenerate token (same permissions) → re-apply Secret `snapshot-refresh` → `kubectl create job --from=cronjob/snapshot-refresh rotate-check` succeeds → update `SNAPSHOT_REFRESH_GITHUB_TOKEN` in `~/.config/penpot/env`, re-seal and commit `personal-infra/secrets/penpot-env.gpg`.
+- **`snapshot-refresh` Penpot token:** new token on the automation profile → re-apply the Secret → manual job succeeds → delete the old token → update `~/.config/penpot/env`, re-seal and commit `personal-infra/secrets/penpot-env.gpg`.
+- **MCP key:** regenerate (revokes the old) → update `PENPOT_MCP_KEY` in `~/.config/penpot/env`, re-seal and commit `personal-infra/secrets/penpot-env.gpg` → restart Claude Code → reload the Penpot tab.
+- **Automation password:** `manage.py update-profile -e automation@penpot.localhost -p …` → update `~/.config/penpot/env`, re-seal and commit `personal-infra/secrets/penpot-env.gpg`.
+- **`apiSecretKey`:** rotate → restart backend → re-mint the MCP key and the `snapshot-refresh` token (it signs sessions, access tokens, MCP keys and invites; verify at build). Update `~/.config/penpot/env` (the key and the re-minted tokens), re-seal and commit `personal-infra/secrets/penpot-env.gpg`.
+- **Postgres password:** `ALTER ROLE` → update `postgres-credentials` → restart backend → update `~/.config/penpot/env`, re-seal and commit `personal-infra/secrets/penpot-env.gpg`.
+- **Backup keys** (`RESTIC_PASSWORD` via `restic key add`/`remove`, B2 key, `HC_PING_URL`): re-apply `penpot-backup`, run a manual backup, update `~/.config/penpot/env`, re-seal and commit `personal-infra/secrets/penpot-env.gpg`.
 - **Tailscale operator OAuth** (only with outside access): new OAuth client → re-apply `tailscale/operator-oauth` → restart the operator.
 
 ### Pin bump to Penpot 2.19 (a reviewed `personal-infra` PR)
@@ -575,6 +576,7 @@ See the map's [Out of scope][map] section. In short: migrating Figma work; the c
 | [How is Penpot backed up and restored?][t31]                                                      | B4, Operating         |
 | [How does an outside designer get access?][t32]                                                   | B4, Operating         |
 | [Should Penpot be reachable from the LAN?][t73]                                                   | B1, B2                |
+| [Where does an off-machine copy of the Penpot secrets live?][t74]                                 | B3, B4, Operating     |
 
 [map]: https://github.com/bRRRITSCOLD/ts-packages/issues/4
 [t5]: https://github.com/bRRRITSCOLD/ts-packages/issues/5#issuecomment-6617946569
@@ -607,3 +609,4 @@ See the map's [Out of scope][map] section. In short: migrating Figma work; the c
 [t31]: https://github.com/bRRRITSCOLD/ts-packages/issues/31#issuecomment-6647484580
 [t32]: https://github.com/bRRRITSCOLD/ts-packages/issues/32#issuecomment-6647699256
 [t73]: https://github.com/bRRRITSCOLD/ts-packages/issues/73#issuecomment-6674692298
+[t74]: https://github.com/bRRRITSCOLD/ts-packages/issues/74#issuecomment-6674726776
