@@ -188,6 +188,7 @@ _Decided in:_ [What do the new personal-ai frontend-app and design skills cover?
 
 1. Create the private repo **`personal-infra`**.
 2. Re-enable k3s's bundled **Traefik and servicelb**: remove `--disable=traefik --disable=servicelb` from the k3s unit, restart k3s. (Documented one-time host step.)
+   - **Local target only:** lock Traefik (`192.168.1.10:80/443`), the kube-apiserver (`:6443`) and NodePorts (`30000-32767`) to this machine with a persistent nftables table in `personal-infra` (`host/nftables/k3s-local-only.nft`, loaded by `nftables.service`): drop inbound TCP on those ports at a **prerouting** hook at priority `raw`, ahead of servicelb's DNAT (ufw/INPUT never sees it), allowing `iifname { lo, cni0, flannel.1 }` (pods reach the API at `192.168.1.10:6443` via `cni0`). The stock `flush ruleset` in `/etc/nftables.conf` and `ExecStop` is replaced, so reloading never wipes k3s's rules. A prerequisite of `overlays/local` only; `base/` and the portable manifests don't change, and the dormant Tailscale operator proxies need no exception (they take tailnet traffic in their own pod netns).
 3. Leave the prototype namespace `penpot-proto` running until B2 passes, then delete it (nothing is migrated; the library is built fresh).
 
 ## B2 — Penpot on k3s
@@ -247,8 +248,10 @@ penpot/
 5. The exporter renders one PNG **as the automation profile** (proves a viewer can export; if it can't, the automation profile becomes editor in app teams only, never the library team).
 6. Deleting the `penpot` namespace leaves the PVs `Released`, not deleted (then re-apply).
 7. `penpot-proto` is removed.
+8. From another LAN device, `curl -H 'Host: penpot.localhost' http://192.168.1.10/`, `:6443` and a NodePort (e.g. `31355`) time out; `http://penpot.localhost/` on this machine returns 200.
+9. After a reboot: `systemctl is-enabled nftables` is `enabled`, the table is loaded, `kubectl get pods -A` is healthy and a pod reaches the API (helm-controller reconciles, a manual `snapshot-refresh` job runs).
 
-_Decided in:_ [How is Penpot deployed on k3s?][t29] with amendments from [credentials][t29-amend-creds], [backups][t29-amend-backup] and [outside access][t29-amend-outside]
+_Decided in:_ [How is Penpot deployed on k3s?][t29] with amendments from [credentials][t29-amend-creds], [backups][t29-amend-backup] and [outside access][t29-amend-outside]; LAN lockdown from [Should Penpot be reachable from the LAN?][t73]
 
 ## B3 — Profiles and credentials
 
@@ -571,6 +574,7 @@ See the map's [Out of scope][map] section. In short: migrating Figma work; the c
 | [How do agents and CI get Penpot credentials?][t30]                                               | B3, Operating         |
 | [How is Penpot backed up and restored?][t31]                                                      | B4, Operating         |
 | [How does an outside designer get access?][t32]                                                   | B4, Operating         |
+| [Should Penpot be reachable from the LAN?][t73]                                                   | B1, B2                |
 
 [map]: https://github.com/bRRRITSCOLD/ts-packages/issues/4
 [t5]: https://github.com/bRRRITSCOLD/ts-packages/issues/5#issuecomment-6617946569
@@ -602,3 +606,4 @@ See the map's [Out of scope][map] section. In short: migrating Figma work; the c
 [t30-amend-skill]: https://github.com/bRRRITSCOLD/ts-packages/issues/12#issuecomment-6647388757
 [t31]: https://github.com/bRRRITSCOLD/ts-packages/issues/31#issuecomment-6647484580
 [t32]: https://github.com/bRRRITSCOLD/ts-packages/issues/32#issuecomment-6647699256
+[t73]: https://github.com/bRRRITSCOLD/ts-packages/issues/73#issuecomment-6674692298
