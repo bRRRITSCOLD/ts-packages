@@ -329,13 +329,34 @@ const COLOUR_ATTRIBUTES = new Set<string>(['fill', 'stroke-color'])
 const layerLabel = (id: string, { namePath }: LibraryLayer) =>
 	`layer \`${namePath.join(' / ')}\` (${id})`
 
-/** Rules 7–9 on one component's layers: no raw values, no unknown tokens, no primitive colours. */
+/**
+ * The roles of a component's parts that are copies of an `_internal/` component (slot
+ * placeholders). Their layers keep the placeholder's raw styling, so rules 7–9 skip them.
+ */
+const internalPartRoles = (component: LibraryComponent, snapshot: LibrarySnapshot) =>
+	new Set(
+		Object.entries(component.parts)
+			.filter(([, { componentId }]) => {
+				const part = snapshot.components[componentId]
+				return part !== undefined && resolveComponentLink(part).kind === 'internal'
+			})
+			.map(([role]) => role)
+	)
+
+/**
+ * Rules 7–9 on one component's layers: no raw values, no unknown tokens, no primitive colours.
+ * A layer inside a slot placeholder part is skipped: below the main instance its name path
+ * passes through the part's role, which is the copy's layer name.
+ */
 const checkLayers = (
 	component: LibraryComponent,
+	snapshot: LibrarySnapshot,
 	tokenNames: ReturnType<typeof collectTokenNames>,
 	report: (rule: DriftRule) => (mismatch: Mismatch) => void
 ) => {
+	const skipped = internalPartRoles(component, snapshot)
 	for (const [id, layer] of Object.entries(component.layers)) {
+		if (layer.namePath.slice(1).some((name) => skipped.has(name))) continue
 		const label = layerLabel(id, layer)
 		if (layer.unbound.length)
 			report(DRIFT_RULE.unbound)({
@@ -449,7 +470,7 @@ export const checkDrift = ({
 		checkParts(component, snapshot).forEach(report(DRIFT_RULE.part))
 		// An `_internal/` component links to no code, so no core-react styling binds its layers:
 		// the slot placeholder keeps its raw magenta fill.
-		if (link.kind !== 'internal') checkLayers(component, tokenNames, report)
+		if (link.kind !== 'internal') checkLayers(component, snapshot, tokenNames, report)
 
 		if (link.kind === 'icon' && !manifest.icons.includes(link.export))
 			report(DRIFT_RULE.icon)({

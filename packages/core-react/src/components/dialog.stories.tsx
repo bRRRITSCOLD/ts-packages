@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { useId } from 'react'
 import { expect, screen, waitFor } from 'storybook/test'
 
 import { Button } from './button.js'
@@ -12,6 +13,8 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from './dialog.js'
+import { Field, FieldLabel } from './field.js'
+import { Input } from './input.js'
 
 /** Finds an open dialog by its title and waits out the enter animation, which starts at opacity 0. */
 const openDialog = async (name: string) => {
@@ -20,13 +23,16 @@ const openDialog = async (name: string) => {
 	return dialog
 }
 
-/** A plain labelled input; core-react's `Input` and `Field` arrive with the form controls. */
-const NameField = () => (
-	<label className="flex flex-col gap-2">
-		Name
-		<input name="name" className="h-9 rounded-md border border-input px-2.5" />
-	</label>
-)
+/** A labelled name input. `useId` keeps the id unique when a nested dialog renders a second one. */
+const NameField = () => {
+	const id = useId()
+	return (
+		<Field>
+			<FieldLabel htmlFor={id}>Name</FieldLabel>
+			<Input id={id} name="name" />
+		</Field>
+	)
+}
 
 /**
  * `title` is the library component's Penpot path. Each story opens its dialog in `play`; the

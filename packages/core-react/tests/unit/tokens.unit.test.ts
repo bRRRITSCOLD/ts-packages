@@ -26,8 +26,12 @@ const MARKER = /^(group|peer)(\/[\w-]+)?$/
 const TOKEN_PROPERTY =
 	/^(?:padding|margin|inset|gap|row-gap|column-gap|top|right|bottom|left|(?:min-|max-)?(?:width|height)|font-size|font-family|font-weight|letter-spacing|--tw-shadow|opacity|border(?:-[a-z]+)*-radius|color|background-color|border(?:-[a-z]+)?-color|outline-color|--tw-ring-color|fill|stroke|text-decoration-color)(?:-[a-z]+)*$/
 
-/** Values a token property may take without a token: keywords and fractions of the parent. */
-const KEYWORD = /^(?:auto|0|100%|transparent|currentcolor|inherit|calc\(-?\d+ \/ \d+ \* 100%\))$/
+/**
+ * Values a token property may take without a token: keywords, fractions of the parent, and a
+ * 1px hairline (a separator's thickness, a nudge to align a control with its label's first line).
+ */
+const KEYWORD =
+	/^(?:auto|0|1px|100%|fit-content|min-content|max-content|transparent|currentcolor|inherit|calc\(-?\d+ \/ \d+ \* 100%\))$/
 
 /** Tailwind's visually-hidden utility: its 1px box hides text for screen readers, it styles nothing. */
 const VISUALLY_HIDDEN = 'sr-only'
