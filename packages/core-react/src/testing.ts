@@ -1,8 +1,8 @@
 // The `./testing` entry: component objects, the test-side drivers for core-react's components.
-// Each is a plain factory over a Playwright `Locator`, with no fixtures; an app registers the
-// ones it uses through its own `test.extend`. Methods wait for what they act on; every `expect`
-// stays in the spec. `@playwright/test` is an optional peer, imported here for types only.
-import type { Locator } from '@playwright/test'
+// Each is a plain factory over a Playwright `Locator` (`toast` over the `Page`, as toasts are
+// portalled to the body), with no fixtures; an app registers the ones it uses through its own
+// `test.extend`. Methods wait for what they act on; every `expect` stays in the spec. `@playwright/test` is an optional peer, imported here for types only.
+import type { Locator, Page } from '@playwright/test'
 
 /**
  * Drives a `Dialog` or an `AlertDialog` through its popup, the element with role `dialog` or
@@ -193,5 +193,100 @@ export function combobox(input: Locator) {
 			await input.press('Escape')
 			await listbox.waitFor({ state: 'hidden' })
 		},
+	}
+}
+
+/** A toast's priority: Base UI's `low` (the default, role `dialog`) or `high` (role `alertdialog`). */
+export type ToastPriority = 'low' | 'high'
+
+/**
+ * Drives the toasts `Toaster` shows, from the page: they render in the `region` named
+ * "Notifications", portalled to the body. Find a toast by its text and read its priority; never
+ * by an unscoped `getByRole('dialog')`, which also matches every toast (Base UI trap 3).
+ *
+ * Base UI trap 3: a low-priority toast is a `dialog`. A high-priority one is an `alertdialog`,
+ * `aria-hidden` until the viewport gets focus (F6 or a Tab into it), and a separate visually
+ * hidden `role="alert"` outside the region announces its title and description meanwhile. Every
+ * lookup here includes hidden elements, so both priorities are found the same way. The close
+ * button is `aria-hidden` too until the stack expands on hover or the button gets focus.
+ *
+ * The region is never marked `aria-hidden` by an open dialog (Base UI trap 2 exempts it), so a
+ * toast shown from a dialog is found the same way. A closing toast stays mounted through its exit
+ * animation (trap 5); `close()` and `waitForHidden()` return once it is hidden.
+ */
+export function toast(page: Page) {
+	const region = page.getByRole('region', { name: 'Notifications' })
+	const toasts = region
+		.getByRole('dialog', { includeHidden: true })
+		.or(region.getByRole('alertdialog', { includeHidden: true }))
+
+	/** The toast whose title or description contains `text`. */
+	const get = (text: string | RegExp) => toasts.filter({ hasText: text })
+
+	return {
+		region,
+
+		/** The toast whose title or description contains `text`. */
+		get,
+
+		/** The title of every toast on screen, newest first. Waits for at least one. */
+		titles: async () => {
+			await toasts.first().waitFor()
+			return toasts.evaluateAll((all) =>
+				all.map((el) => {
+					const title = el.ownerDocument.getElementById(
+						el.getAttribute('aria-labelledby') ?? ''
+					)
+					return title?.textContent?.trim() ?? ''
+				})
+			)
+		},
+
+		/**
+		 * Reads the toast with this text: its title and description (the elements its
+		 * `aria-labelledby` and `aria-describedby` name; `''` without one) and its priority, from
+		 * its role. Waits for the toast.
+		 */
+		read: async (text: string | RegExp) => {
+			const shown = get(text)
+			await shown.waitFor()
+			return shown.evaluate((el) => {
+				const named = (attribute: string) =>
+					el.ownerDocument
+						.getElementById(el.getAttribute(attribute) ?? '')
+						?.textContent?.trim() ?? ''
+				const priority: ToastPriority =
+					el.getAttribute('role') === 'alertdialog' ? 'high' : 'low'
+				return {
+					title: named('aria-labelledby'),
+					description: named('aria-describedby'),
+					priority,
+				}
+			})
+		},
+
+		/**
+		 * The visually hidden `role="alert"` that announces a high-priority toast with this text
+		 * while the viewport is unfocused. Base UI removes it once the viewport gets focus.
+		 */
+		announcer: (text: string | RegExp) => page.getByRole('alert').filter({ hasText: text }),
+
+		/** A button inside the toast with this text: its action, by accessible name. */
+		button: (text: string | RegExp, name: string | RegExp) =>
+			get(text).getByRole('button', { name, includeHidden: true }),
+
+		/**
+		 * Hovers the toast with this text, which expands the stack and un-hides its close button,
+		 * clicks the button and waits until the toast is hidden.
+		 */
+		close: async (text: string | RegExp) => {
+			const shown = get(text)
+			await shown.hover()
+			await shown.getByRole('button', { name: 'Close toast', includeHidden: true }).click()
+			await shown.waitFor({ state: 'hidden' })
+		},
+
+		/** Waits until the toast with this text is hidden: closed, timed out or swiped away. */
+		waitForHidden: (text: string | RegExp) => get(text).waitFor({ state: 'hidden' }),
 	}
 }

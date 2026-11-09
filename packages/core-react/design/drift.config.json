@@ -30,12 +30,20 @@
 		"Sheet",
 		"SheetClose",
 		"SheetTrigger",
+		"ToastContent",
+		"ToastPortal",
+		"ToastProvider",
+		"ToastViewport",
+		"Toaster",
 		"Tooltip",
 		"TooltipProvider",
 		"TooltipTrigger",
 		"buttonVariants",
 		"cn",
+		"createToastManager",
 		"fieldVariants",
-		"useComboboxAnchor"
+		"toast",
+		"useComboboxAnchor",
+		"useToastManager"
 	]
 }

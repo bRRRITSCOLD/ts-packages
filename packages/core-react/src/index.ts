@@ -114,6 +114,21 @@ export {
 export { Switch } from './components/switch.js'
 export { Textarea } from './components/textarea.js'
 export {
+	createToastManager,
+	Toast,
+	ToastAction,
+	ToastClose,
+	ToastContent,
+	ToastDescription,
+	Toaster,
+	ToastPortal,
+	ToastProvider,
+	ToastTitle,
+	ToastViewport,
+	toast,
+	useToastManager,
+} from './components/toast.js'
+export {
 	Tooltip,
 	TooltipContent,
 	TooltipProvider,
