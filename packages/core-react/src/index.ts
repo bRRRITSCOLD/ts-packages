@@ -30,6 +30,23 @@ export {
 	DialogTrigger,
 } from './components/dialog.js'
 export {
+	DropdownMenu,
+	DropdownMenuCheckboxItem,
+	DropdownMenuContent,
+	DropdownMenuGroup,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuPortal,
+	DropdownMenuRadioGroup,
+	DropdownMenuRadioItem,
+	DropdownMenuSeparator,
+	DropdownMenuShortcut,
+	DropdownMenuSub,
+	DropdownMenuSubContent,
+	DropdownMenuSubTrigger,
+	DropdownMenuTrigger,
+} from './components/dropdown-menu.js'
+export {
 	Field,
 	FieldContent,
 	FieldDescription,
@@ -44,8 +61,32 @@ export {
 } from './components/field.js'
 export { Input } from './components/input.js'
 export { Label } from './components/label.js'
+export {
+	Popover,
+	PopoverContent,
+	PopoverDescription,
+	PopoverHeader,
+	PopoverTitle,
+	PopoverTrigger,
+} from './components/popover.js'
 export { RadioGroup, RadioGroupItem } from './components/radio-group.js'
 export { Separator } from './components/separator.js'
+export {
+	Sheet,
+	SheetClose,
+	SheetContent,
+	SheetDescription,
+	SheetFooter,
+	SheetHeader,
+	SheetTitle,
+	SheetTrigger,
+} from './components/sheet.js'
 export { Switch } from './components/switch.js'
 export { Textarea } from './components/textarea.js'
+export {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from './components/tooltip.js'
 export { cn } from './lib/utils.js'

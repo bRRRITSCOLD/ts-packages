@@ -8,7 +8,7 @@ import { beforeAll, describe, expect, it } from 'vitest'
 // testee
 import { buildStyles, type TokenFile, tokenVars } from '../../scripts/styles.js'
 // utils
-import { componentClasses, sourceFiles } from './__utils__/classes.js'
+import { BASE_UI_VARS, componentClasses, sourceFiles } from './__utils__/classes.js'
 import { PACKAGE_DIR } from './__utils__/package.js'
 
 const tokens = JSON.parse(
@@ -29,6 +29,7 @@ const TOKEN_PROPERTY =
 /**
  * Values a token property may take without a token: keywords, fractions of the parent, and a
  * 1px hairline (a separator's thickness, a nudge to align a control with its label's first line).
+ * An `!important` flag doesn't change the value it marks.
  */
 const KEYWORD =
 	/^(?:auto|0|1px|100%|fit-content|min-content|max-content|transparent|currentcolor|inherit|calc\(-?\d+ \/ \d+ \* 100%\))$/
@@ -43,8 +44,12 @@ const untokened = (css: string, vars: Set<string>): string[] =>
 	[...css.matchAll(DECLARATION)]
 		.filter(([, property = '']) => TOKEN_PROPERTY.test(property))
 		.filter(([, , value = '']) => {
-			const read = [...value.matchAll(/var\((--[\w-]+)/g)].map(([, name]) => name)
-			return !read.some((name) => vars.has(name ?? '')) && !KEYWORD.test(value.trim())
+			const read = [...value.matchAll(/var\((--[\w-]+)/g)].map(([, name = '']) => name)
+			const plain = value.replace(/\s*!important\s*$/, '').trim()
+			return (
+				!read.some((name) => vars.has(name) || BASE_UI_VARS.includes(name)) &&
+				!KEYWORD.test(plain)
+			)
 		})
 		.map(([declaration]) => declaration)
 
@@ -89,7 +94,7 @@ describe('tokens', () => {
 			'h-11',
 			'text-7xl',
 			'font-black',
-			'tracking-widest',
+			'tracking-tighter',
 			'shadow-2xl',
 			'rounded-3xl',
 			'max-w-7xl',
@@ -115,6 +120,15 @@ describe('tokens', () => {
 				'opacity: 40%;',
 				'--tw-shadow: 0 1px 2px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.05));',
 			])
+		})
+
+		it('should accept a Base UI runtime variable and an important fraction', () => {
+			expect(
+				untokened(
+					'.w-\\(--anchor-width\\) { width: var(--anchor-width); } .top-1\\/2\\! { top: calc(1 / 2 * 100%) !important; }',
+					known
+				)
+			).toEqual([])
 		})
 
 		it('should accept a token read, a keyword and a fraction, and ignore other properties', () => {

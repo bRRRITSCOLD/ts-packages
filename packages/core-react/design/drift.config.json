@@ -1,3 +1,28 @@
 {
-	"allowlist": ["buttonVariants", "cn", "fieldVariants"]
+	"allowlist": [
+		"buttonVariants",
+		"cn",
+		"fieldVariants",
+		"AlertDialog",
+		"AlertDialogPortal",
+		"AlertDialogTrigger",
+		"Dialog",
+		"DialogClose",
+		"DialogPortal",
+		"DialogTrigger",
+		"DropdownMenu",
+		"DropdownMenuGroup",
+		"DropdownMenuPortal",
+		"DropdownMenuRadioGroup",
+		"DropdownMenuSub",
+		"DropdownMenuTrigger",
+		"Popover",
+		"PopoverTrigger",
+		"Sheet",
+		"SheetClose",
+		"SheetTrigger",
+		"Tooltip",
+		"TooltipProvider",
+		"TooltipTrigger"
+	]
 }

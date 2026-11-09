@@ -36,3 +36,35 @@ export function dialog(root: Locator) {
 		},
 	}
 }
+
+/**
+ * Drives a `Popover` through its popup, the element with role `dialog` named by its
+ * `PopoverTitle`. Pass that part as `root`: `page.getByRole('dialog', { name: 'Dimensions' })`,
+ * or a testid placed on `PopoverContent`.
+ *
+ * A popover is non-modal: the page under it stays reachable, so scope lookups to `root` only to
+ * reach what is inside it. In a dialog, Escape closes only the popover and leaves the dialog
+ * open (Base UI trap 1), as does a click elsewhere in the dialog.
+ */
+export function popover(root: Locator) {
+	return {
+		root,
+
+		/** A button inside the popover, by accessible name. */
+		button: (name: string | RegExp) => root.getByRole('button', { name }),
+
+		/** A form control inside the popover, by its label. */
+		field: (label: string | RegExp) => root.getByLabel(label),
+
+		/**
+		 * Presses Escape and waits until the popover is hidden. Escape closes only the top layer:
+		 * a dialog the popover was opened from stays open. The exit animation keeps a closing
+		 * popup mounted; this returns once it is hidden.
+		 */
+		dismiss: async () => {
+			await root.waitFor({ state: 'visible' })
+			await root.page().keyboard.press('Escape')
+			await root.waitFor({ state: 'hidden' })
+		},
+	}
+}
