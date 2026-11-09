@@ -330,23 +330,32 @@ const layerLabel = (id: string, { namePath }: LibraryLayer) =>
 	`layer \`${namePath.join(' / ')}\` (${id})`
 
 /**
- * The roles of a component's parts that are copies of an `_internal/` component (slot
- * placeholders). Their layers keep the placeholder's raw styling, so rules 7–9 skip them.
+ * Whether a layer sits inside a copy of an `_internal/` component (a slot placeholder), whose
+ * layers keep the placeholder's raw styling. Below the main instance a part copy's layer name
+ * is its role, so each name that is a role steps into that part's component: a slot two copies
+ * down (a Card Header's Action's Body) is found too. A wrapper or plain layer keeps the current
+ * component.
  */
-const internalPartRoles = (component: LibraryComponent, snapshot: LibrarySnapshot) =>
-	new Set(
-		Object.entries(component.parts)
-			.filter(([, { componentId }]) => {
-				const part = snapshot.components[componentId]
-				return part !== undefined && resolveComponentLink(part).kind === 'internal'
-			})
-			.map(([role]) => role)
-	)
+const isInsideSlot = (
+	component: LibraryComponent,
+	{ namePath }: LibraryLayer,
+	snapshot: LibrarySnapshot
+) => {
+	let current = component
+	for (const name of namePath.slice(1)) {
+		const role = current.parts[name]
+		if (!role) continue
+		const part = snapshot.components[role.componentId]
+		if (part === undefined) return false
+		if (resolveComponentLink(part).kind === 'internal') return true
+		current = part
+	}
+	return false
+}
 
 /**
  * Rules 7–9 on one component's layers: no raw values, no unknown tokens, no primitive colours.
- * A layer inside a slot placeholder part is skipped: below the main instance its name path
- * passes through the part's role, which is the copy's layer name.
+ * A layer inside a slot placeholder, at any depth of part copies, is skipped.
  */
 const checkLayers = (
 	component: LibraryComponent,
@@ -354,9 +363,8 @@ const checkLayers = (
 	tokenNames: ReturnType<typeof collectTokenNames>,
 	report: (rule: DriftRule) => (mismatch: Mismatch) => void
 ) => {
-	const skipped = internalPartRoles(component, snapshot)
 	for (const [id, layer] of Object.entries(component.layers)) {
-		if (layer.namePath.slice(1).some((name) => skipped.has(name))) continue
+		if (isInsideSlot(component, layer, snapshot)) continue
 		const label = layerLabel(id, layer)
 		if (layer.unbound.length)
 			report(DRIFT_RULE.unbound)({
