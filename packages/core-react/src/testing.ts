@@ -69,6 +69,52 @@ export function popover(root: Locator) {
 	}
 }
 
+/**
+ * Drives a `ToggleGroup` through its root, the element with role `group`. Pass that part as
+ * `root`: `page.getByRole('group', { name: 'Text alignment' })` (give the group an `aria-label`),
+ * or a testid placed on `ToggleGroup`.
+ *
+ * Its items are toggle buttons, `aria-pressed`, even when the group holds one value: there is no
+ * `radio` to find and no `aria-checked` to read. Find an item by its label, as `item(label)` does;
+ * `pressed()` reads which are pressed. The group is one tab stop with arrow keys between items,
+ * so a keyboard spec tabs to the group once and arrows from there.
+ */
+export function toggleGroup(root: Locator) {
+	const item = (label: string) => root.getByRole('button', { name: label, exact: true })
+
+	/** Clicks the item unless it is already in the state wanted, then waits for that state. */
+	const set = async (label: string, pressed: boolean) => {
+		const target = item(label)
+		if ((await target.getAttribute('aria-pressed')) !== String(pressed)) await target.click()
+		await root
+			.getByRole('button', { name: label, exact: true, pressed })
+			.waitFor({ state: 'visible' })
+	}
+
+	return {
+		root,
+
+		/** An item, by its accessible name. */
+		item,
+
+		/** The labels of the pressed items, in order. */
+		pressed: async () => {
+			await root.waitFor({ state: 'visible' })
+			return root
+				.getByRole('button', { pressed: true })
+				.evaluateAll((items) =>
+					items.map((el) => el.getAttribute('aria-label') ?? el.textContent?.trim() ?? '')
+				)
+		},
+
+		/** Presses an item; in a single-value group this releases the one pressed before. */
+		press: (label: string) => set(label, true),
+
+		/** Releases a pressed item; a single-value group is then left with nothing pressed. */
+		release: (label: string) => set(label, false),
+	}
+}
+
 /** The listbox a `combobox`-role control opens, found through the control's `aria-controls`. */
 const listboxOf = async (control: Locator) => {
 	const id = await control.getAttribute('aria-controls')

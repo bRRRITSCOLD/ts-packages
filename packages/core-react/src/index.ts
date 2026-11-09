@@ -2,6 +2,13 @@
 // Each line names what it exports, so the code manifest and a reader see the whole surface here.
 
 export {
+	Alert,
+	AlertAction,
+	AlertDescription,
+	AlertTitle,
+	alertVariants,
+} from './components/alert.js'
+export {
 	AlertDialog,
 	AlertDialogAction,
 	AlertDialogCancel,
@@ -15,6 +22,15 @@ export {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from './components/alert-dialog.js'
+export {
+	Avatar,
+	AvatarBadge,
+	AvatarFallback,
+	AvatarGroup,
+	AvatarGroupCount,
+	AvatarImage,
+} from './components/avatar.js'
+export { Badge, badgeVariants } from './components/badge.js'
 export { Button, buttonVariants } from './components/button.js'
 export { Checkbox } from './components/checkbox.js'
 export {
@@ -111,6 +127,7 @@ export {
 	SheetTitle,
 	SheetTrigger,
 } from './components/sheet.js'
+export { Skeleton } from './components/skeleton.js'
 export { Switch } from './components/switch.js'
 export { Textarea } from './components/textarea.js'
 export {
@@ -128,6 +145,8 @@ export {
 	toast,
 	useToastManager,
 } from './components/toast.js'
+export { Toggle, toggleVariants } from './components/toggle.js'
+export { ToggleGroup, ToggleGroupItem } from './components/toggle-group.js'
 export {
 	Tooltip,
 	TooltipContent,
