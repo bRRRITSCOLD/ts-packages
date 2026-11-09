@@ -538,6 +538,10 @@
 					"$type": "spacing",
 					"$value": "64px"
 				},
+				"18": {
+					"$type": "spacing",
+					"$value": "72px"
+				},
 				"20": {
 					"$type": "spacing",
 					"$value": "80px"
@@ -923,6 +927,2461 @@
 					],
 					"appliedTokens": {
 						"stroke-color": "muted-foreground"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6cea432fbe": {
+			"path": "Components",
+			"name": "Skeleton",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6cea244f72": {
+					"namePath": [
+						"Components / Skeleton"
+					],
+					"appliedTokens": {
+						"fill": "muted",
+						"r1": "border-radius.md",
+						"r2": "border-radius.md",
+						"r3": "border-radius.md",
+						"r4": "border-radius.md"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6cfff0d27d": {
+			"path": "Components",
+			"name": "Badge",
+			"variantProperties": {
+				"variant": "default"
+			},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6cf1a8dc11": {
+					"namePath": [
+						"Components / Badge"
+					],
+					"appliedTokens": {
+						"fill": "primary",
+						"r1": "border-radius.full",
+						"r2": "border-radius.full",
+						"r3": "border-radius.full",
+						"r4": "border-radius.full",
+						"p1": "space.0-5",
+						"p2": "space.2",
+						"p3": "space.0-5",
+						"p4": "space.2",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6cf1f0e2c7": {
+					"namePath": [
+						"Components / Badge",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "primary-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.xs",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6d0014cced": {
+			"path": "Components",
+			"name": "Badge",
+			"variantProperties": {
+				"variant": "secondary"
+			},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6cf217c227": {
+					"namePath": [
+						"Components / Badge"
+					],
+					"appliedTokens": {
+						"fill": "secondary",
+						"r1": "border-radius.full",
+						"r2": "border-radius.full",
+						"r3": "border-radius.full",
+						"r4": "border-radius.full",
+						"p1": "space.0-5",
+						"p2": "space.2",
+						"p3": "space.0-5",
+						"p4": "space.2",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6cf25cce3a": {
+					"namePath": [
+						"Components / Badge",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "secondary-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.xs",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6d00378bfc": {
+			"path": "Components",
+			"name": "Badge",
+			"variantProperties": {
+				"variant": "destructive"
+			},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6cf2804e6a": {
+					"namePath": [
+						"Components / Badge"
+					],
+					"appliedTokens": {
+						"r1": "border-radius.full",
+						"r2": "border-radius.full",
+						"r3": "border-radius.full",
+						"r4": "border-radius.full",
+						"p1": "space.0-5",
+						"p2": "space.2",
+						"p3": "space.0-5",
+						"p4": "space.2",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6cf2b7da22": {
+					"namePath": [
+						"Components / Badge",
+						"Background"
+					],
+					"appliedTokens": {
+						"fill": "destructive",
+						"r1": "border-radius.full",
+						"r2": "border-radius.full",
+						"r3": "border-radius.full",
+						"r4": "border-radius.full",
+						"opacity": "opacity.10"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6cf2d6bf0b": {
+					"namePath": [
+						"Components / Badge",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "destructive",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.xs",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6d0059c836": {
+			"path": "Components",
+			"name": "Badge",
+			"variantProperties": {
+				"variant": "outline"
+			},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6cf2feb0b6": {
+					"namePath": [
+						"Components / Badge"
+					],
+					"appliedTokens": {
+						"stroke-color": "border",
+						"r1": "border-radius.full",
+						"r2": "border-radius.full",
+						"r3": "border-radius.full",
+						"r4": "border-radius.full",
+						"p1": "space.0-5",
+						"p2": "space.2",
+						"p3": "space.0-5",
+						"p4": "space.2",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6cf3527821": {
+					"namePath": [
+						"Components / Badge",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.xs",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6d007c86fb": {
+			"path": "Components",
+			"name": "Badge",
+			"variantProperties": {
+				"variant": "ghost"
+			},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6cf37ed630": {
+					"namePath": [
+						"Components / Badge"
+					],
+					"appliedTokens": {
+						"r1": "border-radius.full",
+						"r2": "border-radius.full",
+						"r3": "border-radius.full",
+						"r4": "border-radius.full",
+						"p1": "space.0-5",
+						"p2": "space.2",
+						"p3": "space.0-5",
+						"p4": "space.2",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6cf3b5b35f": {
+					"namePath": [
+						"Components / Badge",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.xs",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6d009f71bf": {
+			"path": "Components",
+			"name": "Badge",
+			"variantProperties": {
+				"variant": "link"
+			},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6cf3d88847": {
+					"namePath": [
+						"Components / Badge"
+					],
+					"appliedTokens": {
+						"r1": "border-radius.full",
+						"r2": "border-radius.full",
+						"r3": "border-radius.full",
+						"r4": "border-radius.full",
+						"p1": "space.0-5",
+						"p2": "space.2",
+						"p3": "space.0-5",
+						"p4": "space.2",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6cf40ef1a6": {
+					"namePath": [
+						"Components / Badge",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "primary",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.xs",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6d20c9bbf1": {
+			"path": "Components",
+			"name": "Toggle",
+			"variantProperties": {
+				"disabled": "false",
+				"pressed": "false",
+				"size": "default",
+				"variant": "default"
+			},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6d186cc618": {
+					"namePath": [
+						"Components / Toggle"
+					],
+					"appliedTokens": {
+						"r1": "border-radius.md",
+						"r2": "border-radius.md",
+						"r3": "border-radius.md",
+						"r4": "border-radius.md",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d18984439": {
+					"namePath": [
+						"Components / Toggle",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6d20efb71a": {
+			"path": "Components",
+			"name": "Toggle",
+			"variantProperties": {
+				"disabled": "false",
+				"pressed": "false",
+				"size": "sm",
+				"variant": "default"
+			},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6d18c24fb0": {
+					"namePath": [
+						"Components / Toggle"
+					],
+					"appliedTokens": {
+						"r1": "border-radius.md",
+						"r2": "border-radius.md",
+						"r3": "border-radius.md",
+						"r4": "border-radius.md",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d18edc075": {
+					"namePath": [
+						"Components / Toggle",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6d2114fa6c": {
+			"path": "Components",
+			"name": "Toggle",
+			"variantProperties": {
+				"disabled": "false",
+				"pressed": "false",
+				"size": "lg",
+				"variant": "default"
+			},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6d1913ebec": {
+					"namePath": [
+						"Components / Toggle"
+					],
+					"appliedTokens": {
+						"r1": "border-radius.md",
+						"r2": "border-radius.md",
+						"r3": "border-radius.md",
+						"r4": "border-radius.md",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d193adf4f": {
+					"namePath": [
+						"Components / Toggle",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6d213970c0": {
+			"path": "Components",
+			"name": "Toggle",
+			"variantProperties": {
+				"disabled": "false",
+				"pressed": "false",
+				"size": "default",
+				"variant": "outline"
+			},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6d196364b9": {
+					"namePath": [
+						"Components / Toggle"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "input",
+						"r1": "border-radius.md",
+						"r2": "border-radius.md",
+						"r3": "border-radius.md",
+						"r4": "border-radius.md",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d19a9b94c": {
+					"namePath": [
+						"Components / Toggle",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6d215f7536": {
+			"path": "Components",
+			"name": "Toggle",
+			"variantProperties": {
+				"disabled": "false",
+				"pressed": "false",
+				"size": "sm",
+				"variant": "outline"
+			},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6d19d4f2de": {
+					"namePath": [
+						"Components / Toggle"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "input",
+						"r1": "border-radius.md",
+						"r2": "border-radius.md",
+						"r3": "border-radius.md",
+						"r4": "border-radius.md",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d1a2ac17d": {
+					"namePath": [
+						"Components / Toggle",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6d2185195d": {
+			"path": "Components",
+			"name": "Toggle",
+			"variantProperties": {
+				"disabled": "false",
+				"pressed": "false",
+				"size": "lg",
+				"variant": "outline"
+			},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6d1a53e6e3": {
+					"namePath": [
+						"Components / Toggle"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "input",
+						"r1": "border-radius.md",
+						"r2": "border-radius.md",
+						"r3": "border-radius.md",
+						"r4": "border-radius.md",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d1aa36c70": {
+					"namePath": [
+						"Components / Toggle",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6d21aa5b74": {
+			"path": "Components",
+			"name": "Toggle",
+			"variantProperties": {
+				"disabled": "false",
+				"pressed": "true",
+				"size": "default",
+				"variant": "default"
+			},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6d1ac835da": {
+					"namePath": [
+						"Components / Toggle"
+					],
+					"appliedTokens": {
+						"fill": "muted",
+						"r1": "border-radius.md",
+						"r2": "border-radius.md",
+						"r3": "border-radius.md",
+						"r4": "border-radius.md",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d1afb84c1": {
+					"namePath": [
+						"Components / Toggle",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6d21d06755": {
+			"path": "Components",
+			"name": "Toggle",
+			"variantProperties": {
+				"disabled": "false",
+				"pressed": "true",
+				"size": "default",
+				"variant": "outline"
+			},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6d1b21da4b": {
+					"namePath": [
+						"Components / Toggle"
+					],
+					"appliedTokens": {
+						"fill": "muted",
+						"stroke-color": "input",
+						"r1": "border-radius.md",
+						"r2": "border-radius.md",
+						"r3": "border-radius.md",
+						"r4": "border-radius.md",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d1b65a918": {
+					"namePath": [
+						"Components / Toggle",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6d21f627ff": {
+			"path": "Components",
+			"name": "Toggle",
+			"variantProperties": {
+				"disabled": "true",
+				"pressed": "false",
+				"size": "default",
+				"variant": "default"
+			},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6d1b88d6ea": {
+					"namePath": [
+						"Components / Toggle"
+					],
+					"appliedTokens": {
+						"r1": "border-radius.md",
+						"r2": "border-radius.md",
+						"r3": "border-radius.md",
+						"r4": "border-radius.md",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1",
+						"opacity": "opacity.50"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d1bb9ca32": {
+					"namePath": [
+						"Components / Toggle",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6d221d06f8": {
+			"path": "Components",
+			"name": "Toggle",
+			"variantProperties": {
+				"disabled": "true",
+				"pressed": "false",
+				"size": "default",
+				"variant": "outline"
+			},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6d1be7911e": {
+					"namePath": [
+						"Components / Toggle"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "input",
+						"r1": "border-radius.md",
+						"r2": "border-radius.md",
+						"r3": "border-radius.md",
+						"r4": "border-radius.md",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1",
+						"shadow": "shadow.xs",
+						"opacity": "opacity.50"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d1c435f7f": {
+					"namePath": [
+						"Components / Toggle",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6d331145a2": {
+			"path": "Components/ToggleGroup",
+			"name": "Item",
+			"variantProperties": {
+				"pressed": "false",
+				"variant": "default"
+			},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6d32b712c1": {
+					"namePath": [
+						"Components / ToggleGroup / Item"
+					],
+					"appliedTokens": {
+						"r1": "border-radius.md",
+						"r2": "border-radius.md",
+						"r3": "border-radius.md",
+						"r4": "border-radius.md",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d32e81c5e": {
+					"namePath": [
+						"Components / ToggleGroup / Item",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6d33725446": {
+			"path": "Components/ToggleGroup",
+			"name": "Item",
+			"variantProperties": {
+				"pressed": "true",
+				"variant": "default"
+			},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6d3312c46b": {
+					"namePath": [
+						"Components / ToggleGroup / Item"
+					],
+					"appliedTokens": {
+						"fill": "muted",
+						"r1": "border-radius.md",
+						"r2": "border-radius.md",
+						"r3": "border-radius.md",
+						"r4": "border-radius.md",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3346d51a": {
+					"namePath": [
+						"Components / ToggleGroup / Item",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6d33f506fe": {
+			"path": "Components/ToggleGroup",
+			"name": "Item",
+			"variantProperties": {
+				"pressed": "false",
+				"variant": "outline"
+			},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6d3373d551": {
+					"namePath": [
+						"Components / ToggleGroup / Item"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "input",
+						"r1": "border-radius.md",
+						"r2": "border-radius.md",
+						"r3": "border-radius.md",
+						"r4": "border-radius.md",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d33c9df5d": {
+					"namePath": [
+						"Components / ToggleGroup / Item",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6d345bd7ae": {
+			"path": "Components/ToggleGroup",
+			"name": "Item",
+			"variantProperties": {
+				"pressed": "true",
+				"variant": "outline"
+			},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6d33f67379": {
+					"namePath": [
+						"Components / ToggleGroup / Item"
+					],
+					"appliedTokens": {
+						"fill": "muted",
+						"stroke-color": "input",
+						"r1": "border-radius.md",
+						"r2": "border-radius.md",
+						"r3": "border-radius.md",
+						"r4": "border-radius.md",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3436e901": {
+					"namePath": [
+						"Components / ToggleGroup / Item",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6d521e30b6": {
+			"path": "Components",
+			"name": "ToggleGroup",
+			"variantProperties": {
+				"orientation": "horizontal",
+				"spacing": "2",
+				"variant": "default"
+			},
+			"parts": {
+				"Center": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6d33725446"
+				},
+				"Left": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6d331145a2"
+				},
+				"Right": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6d331145a2"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6d3b958228": {
+					"namePath": [
+						"Components / ToggleGroup"
+					],
+					"appliedTokens": {
+						"r1": "border-radius.md",
+						"r2": "border-radius.md",
+						"r3": "border-radius.md",
+						"r4": "border-radius.md",
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3bacb96b": {
+					"namePath": [
+						"Components / ToggleGroup",
+						"Left"
+					],
+					"appliedTokens": {
+						"r1": "border-radius.md",
+						"r2": "border-radius.md",
+						"r3": "border-radius.md",
+						"r4": "border-radius.md",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3bacb96c": {
+					"namePath": [
+						"Components / ToggleGroup",
+						"Left",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3bafdf8c": {
+					"namePath": [
+						"Components / ToggleGroup",
+						"Center"
+					],
+					"appliedTokens": {
+						"fill": "muted",
+						"r1": "border-radius.md",
+						"r2": "border-radius.md",
+						"r3": "border-radius.md",
+						"r4": "border-radius.md",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3bafdf8d": {
+					"namePath": [
+						"Components / ToggleGroup",
+						"Center",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3bb3085a": {
+					"namePath": [
+						"Components / ToggleGroup",
+						"Right"
+					],
+					"appliedTokens": {
+						"r1": "border-radius.md",
+						"r2": "border-radius.md",
+						"r3": "border-radius.md",
+						"r4": "border-radius.md",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3bb3085b": {
+					"namePath": [
+						"Components / ToggleGroup",
+						"Right",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6d52471f46": {
+			"path": "Components",
+			"name": "ToggleGroup",
+			"variantProperties": {
+				"orientation": "horizontal",
+				"spacing": "2",
+				"variant": "outline"
+			},
+			"parts": {
+				"Center": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6d345bd7ae"
+				},
+				"Left": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6d33f506fe"
+				},
+				"Right": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6d33f506fe"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6d3bb587d4": {
+					"namePath": [
+						"Components / ToggleGroup"
+					],
+					"appliedTokens": {
+						"r1": "border-radius.md",
+						"r2": "border-radius.md",
+						"r3": "border-radius.md",
+						"r4": "border-radius.md",
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3bcd5ae5": {
+					"namePath": [
+						"Components / ToggleGroup",
+						"Left"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "input",
+						"r1": "border-radius.md",
+						"r2": "border-radius.md",
+						"r3": "border-radius.md",
+						"r4": "border-radius.md",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3bcd5ae6": {
+					"namePath": [
+						"Components / ToggleGroup",
+						"Left",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3bd06452": {
+					"namePath": [
+						"Components / ToggleGroup",
+						"Center"
+					],
+					"appliedTokens": {
+						"fill": "muted",
+						"stroke-color": "input",
+						"r1": "border-radius.md",
+						"r2": "border-radius.md",
+						"r3": "border-radius.md",
+						"r4": "border-radius.md",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3bd06453": {
+					"namePath": [
+						"Components / ToggleGroup",
+						"Center",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3bd45a01": {
+					"namePath": [
+						"Components / ToggleGroup",
+						"Right"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "input",
+						"r1": "border-radius.md",
+						"r2": "border-radius.md",
+						"r3": "border-radius.md",
+						"r4": "border-radius.md",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3bd45a02": {
+					"namePath": [
+						"Components / ToggleGroup",
+						"Right",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6d527034e5": {
+			"path": "Components",
+			"name": "ToggleGroup",
+			"variantProperties": {
+				"orientation": "horizontal",
+				"spacing": "0",
+				"variant": "default"
+			},
+			"parts": {
+				"Center": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6d33725446"
+				},
+				"Left": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6d331145a2"
+				},
+				"Right": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6d331145a2"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6d3bd686af": {
+					"namePath": [
+						"Components / ToggleGroup"
+					],
+					"appliedTokens": {
+						"r1": "border-radius.md",
+						"r2": "border-radius.md",
+						"r3": "border-radius.md",
+						"r4": "border-radius.md",
+						"column-gap": "space.0"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3beed37e": {
+					"namePath": [
+						"Components / ToggleGroup",
+						"Left"
+					],
+					"appliedTokens": {
+						"r1": "border-radius.md",
+						"r2": "border-radius.none",
+						"r3": "border-radius.none",
+						"r4": "border-radius.md",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3beed37f": {
+					"namePath": [
+						"Components / ToggleGroup",
+						"Left",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3bf1c987": {
+					"namePath": [
+						"Components / ToggleGroup",
+						"Center"
+					],
+					"appliedTokens": {
+						"fill": "muted",
+						"r1": "border-radius.none",
+						"r2": "border-radius.none",
+						"r3": "border-radius.none",
+						"r4": "border-radius.none",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3bf1c988": {
+					"namePath": [
+						"Components / ToggleGroup",
+						"Center",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3bf4e1be": {
+					"namePath": [
+						"Components / ToggleGroup",
+						"Right"
+					],
+					"appliedTokens": {
+						"r1": "border-radius.none",
+						"r2": "border-radius.md",
+						"r3": "border-radius.md",
+						"r4": "border-radius.none",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3bf4e1bf": {
+					"namePath": [
+						"Components / ToggleGroup",
+						"Right",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6d529816e9": {
+			"path": "Components",
+			"name": "ToggleGroup",
+			"variantProperties": {
+				"orientation": "horizontal",
+				"spacing": "0",
+				"variant": "outline"
+			},
+			"parts": {
+				"Center": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6d345bd7ae"
+				},
+				"Left": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6d33f506fe"
+				},
+				"Right": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6d33f506fe"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6d3bf74c88": {
+					"namePath": [
+						"Components / ToggleGroup"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"r1": "border-radius.md",
+						"r2": "border-radius.md",
+						"r3": "border-radius.md",
+						"r4": "border-radius.md",
+						"column-gap": "space.0",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3c22920f": {
+					"namePath": [
+						"Components / ToggleGroup",
+						"Left"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "input",
+						"r1": "border-radius.md",
+						"r2": "border-radius.none",
+						"r3": "border-radius.none",
+						"r4": "border-radius.md",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3c229210": {
+					"namePath": [
+						"Components / ToggleGroup",
+						"Left",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3c259c5e": {
+					"namePath": [
+						"Components / ToggleGroup",
+						"Center"
+					],
+					"appliedTokens": {
+						"fill": "muted",
+						"stroke-color": "input",
+						"r1": "border-radius.none",
+						"r2": "border-radius.none",
+						"r3": "border-radius.none",
+						"r4": "border-radius.none",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3c259c5f": {
+					"namePath": [
+						"Components / ToggleGroup",
+						"Center",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3c28851b": {
+					"namePath": [
+						"Components / ToggleGroup",
+						"Right"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "input",
+						"r1": "border-radius.none",
+						"r2": "border-radius.md",
+						"r3": "border-radius.md",
+						"r4": "border-radius.none",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3c28851c": {
+					"namePath": [
+						"Components / ToggleGroup",
+						"Right",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6d52c08edd": {
+			"path": "Components",
+			"name": "ToggleGroup",
+			"variantProperties": {
+				"orientation": "horizontal",
+				"spacing": "1",
+				"variant": "default"
+			},
+			"parts": {
+				"Center": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6d33725446"
+				},
+				"Left": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6d331145a2"
+				},
+				"Right": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6d331145a2"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6d3c2b161b": {
+					"namePath": [
+						"Components / ToggleGroup"
+					],
+					"appliedTokens": {
+						"r1": "border-radius.md",
+						"r2": "border-radius.md",
+						"r3": "border-radius.md",
+						"r4": "border-radius.md",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3c3f8f1f": {
+					"namePath": [
+						"Components / ToggleGroup",
+						"Left"
+					],
+					"appliedTokens": {
+						"r1": "border-radius.md",
+						"r2": "border-radius.md",
+						"r3": "border-radius.md",
+						"r4": "border-radius.md",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3c3f8f20": {
+					"namePath": [
+						"Components / ToggleGroup",
+						"Left",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3c42cd26": {
+					"namePath": [
+						"Components / ToggleGroup",
+						"Center"
+					],
+					"appliedTokens": {
+						"fill": "muted",
+						"r1": "border-radius.md",
+						"r2": "border-radius.md",
+						"r3": "border-radius.md",
+						"r4": "border-radius.md",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3c42cd27": {
+					"namePath": [
+						"Components / ToggleGroup",
+						"Center",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3c46136e": {
+					"namePath": [
+						"Components / ToggleGroup",
+						"Right"
+					],
+					"appliedTokens": {
+						"r1": "border-radius.md",
+						"r2": "border-radius.md",
+						"r3": "border-radius.md",
+						"r4": "border-radius.md",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3c46136f": {
+					"namePath": [
+						"Components / ToggleGroup",
+						"Right",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6d52e995b2": {
+			"path": "Components",
+			"name": "ToggleGroup",
+			"variantProperties": {
+				"orientation": "vertical",
+				"spacing": "0",
+				"variant": "outline"
+			},
+			"parts": {
+				"Center": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6d345bd7ae"
+				},
+				"Left": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6d33f506fe"
+				},
+				"Right": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6d33f506fe"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6d3c487913": {
+					"namePath": [
+						"Components / ToggleGroup"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"r1": "border-radius.md",
+						"r2": "border-radius.md",
+						"r3": "border-radius.md",
+						"r4": "border-radius.md",
+						"row-gap": "space.0",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3c74c464": {
+					"namePath": [
+						"Components / ToggleGroup",
+						"Left"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "input",
+						"r1": "border-radius.md",
+						"r2": "border-radius.md",
+						"r3": "border-radius.none",
+						"r4": "border-radius.none",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3c74c465": {
+					"namePath": [
+						"Components / ToggleGroup",
+						"Left",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3c79fce0": {
+					"namePath": [
+						"Components / ToggleGroup",
+						"Center"
+					],
+					"appliedTokens": {
+						"fill": "muted",
+						"stroke-color": "input",
+						"r1": "border-radius.none",
+						"r2": "border-radius.none",
+						"r3": "border-radius.none",
+						"r4": "border-radius.none",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3c7a1fe3": {
+					"namePath": [
+						"Components / ToggleGroup",
+						"Center",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3c7dca1a": {
+					"namePath": [
+						"Components / ToggleGroup",
+						"Right"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "input",
+						"r1": "border-radius.none",
+						"r2": "border-radius.none",
+						"r3": "border-radius.md",
+						"r4": "border-radius.md",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d3c7dca1b": {
+					"namePath": [
+						"Components / ToggleGroup",
+						"Right",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6d6b2e665b": {
+			"path": "Components/Alert",
+			"name": "Title",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6d6b05349f": {
+					"namePath": [
+						"Components / Alert / Title",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "card-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6d6b5c2a18": {
+			"path": "Components/Alert",
+			"name": "Description",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6d6b35a674": {
+					"namePath": [
+						"Components / Alert / Description",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6d6b66d3f7": {
+			"path": "Components/Alert",
+			"name": "Action",
+			"variantProperties": {},
+			"parts": {
+				"Components / Button": {
+					"componentId": "34194205-34cb-806a-8008-e98872623aeb"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6d6b647d2b": {
+					"namePath": [
+						"Components / Alert / Action",
+						"Components / Button"
+					],
+					"appliedTokens": {
+						"fill": "primary",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2",
+						"p4": "space.2",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6e50fae6f7": {
+					"namePath": [
+						"Components / Alert / Action",
+						"Components / Button",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "primary-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.xs",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6d9f83cdea": {
+			"path": "Components",
+			"name": "Alert",
+			"variantProperties": {
+				"variant": "default"
+			},
+			"parts": {
+				"Action": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6d6b66d3f7"
+				},
+				"Description": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6d6b5c2a18"
+				},
+				"Icon": {
+					"componentId": "34194205-34cb-806a-8008-ea142f4df7b5"
+				},
+				"Title": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6d6b2e665b"
+				}
+			},
+			"wrappers": [
+				"Text"
+			],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6d784c204d": {
+					"namePath": [
+						"Components / Alert"
+					],
+					"appliedTokens": {
+						"fill": "card",
+						"stroke-color": "border",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.3",
+						"p2": "space.4",
+						"p3": "space.3",
+						"p4": "space.4",
+						"column-gap": "space.2-5"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d78ac481e": {
+					"namePath": [
+						"Components / Alert",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "card-foreground"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d78ac481f": {
+					"namePath": [
+						"Components / Alert",
+						"Icon",
+						"Stroke 2"
+					],
+					"appliedTokens": {
+						"stroke-color": "card-foreground"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d78d460ce": {
+					"namePath": [
+						"Components / Alert",
+						"Text"
+					],
+					"appliedTokens": {
+						"row-gap": "space.0-5"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d78e7e8af": {
+					"namePath": [
+						"Components / Alert",
+						"Text",
+						"Title",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "card-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d78f76ce3": {
+					"namePath": [
+						"Components / Alert",
+						"Text",
+						"Description",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d7905e40e": {
+					"namePath": [
+						"Components / Alert",
+						"Action",
+						"Components / Button"
+					],
+					"appliedTokens": {
+						"fill": "primary",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2",
+						"p4": "space.2",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6e511d7fc5": {
+					"namePath": [
+						"Components / Alert",
+						"Action",
+						"Components / Button",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "primary-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.xs",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6d9facefab": {
+			"path": "Components",
+			"name": "Alert",
+			"variantProperties": {
+				"variant": "destructive"
+			},
+			"parts": {
+				"Action": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6d6b66d3f7"
+				},
+				"Description": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6d6b5c2a18"
+				},
+				"Icon": {
+					"componentId": "34194205-34cb-806a-8008-ea142f4df7b5"
+				},
+				"Title": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6d6b2e665b"
+				}
+			},
+			"wrappers": [
+				"Text"
+			],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6d7908a3fc": {
+					"namePath": [
+						"Components / Alert"
+					],
+					"appliedTokens": {
+						"fill": "card",
+						"stroke-color": "border",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.3",
+						"p2": "space.4",
+						"p3": "space.3",
+						"p4": "space.4",
+						"column-gap": "space.2-5"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d795d9b3a": {
+					"namePath": [
+						"Components / Alert",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "destructive"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d795d9b3b": {
+					"namePath": [
+						"Components / Alert",
+						"Icon",
+						"Stroke 2"
+					],
+					"appliedTokens": {
+						"stroke-color": "destructive"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d798171cd": {
+					"namePath": [
+						"Components / Alert",
+						"Text"
+					],
+					"appliedTokens": {
+						"row-gap": "space.0-5"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d799031af": {
+					"namePath": [
+						"Components / Alert",
+						"Text",
+						"Title",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "destructive",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d799c8d36": {
+					"namePath": [
+						"Components / Alert",
+						"Text",
+						"Description",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "destructive",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6d79a96f36": {
+					"namePath": [
+						"Components / Alert",
+						"Action",
+						"Components / Button"
+					],
+					"appliedTokens": {
+						"fill": "primary",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2",
+						"p4": "space.2",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6e511ce1d4": {
+					"namePath": [
+						"Components / Alert",
+						"Action",
+						"Components / Button",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "primary-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.xs",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6db1fc56a0": {
+			"path": "Components/Avatar",
+			"name": "Image",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6db1e4cd91": {
+					"namePath": [
+						"Components / Avatar / Image"
+					],
+					"appliedTokens": {
+						"r1": "border-radius.full",
+						"r2": "border-radius.full",
+						"r3": "border-radius.full",
+						"r4": "border-radius.full"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6db23db726": {
+			"path": "Components/Avatar",
+			"name": "Fallback",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6db1fda1ac": {
+					"namePath": [
+						"Components / Avatar / Fallback"
+					],
+					"appliedTokens": {
+						"fill": "muted",
+						"r1": "border-radius.full",
+						"r2": "border-radius.full",
+						"r3": "border-radius.full",
+						"r4": "border-radius.full"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6db2190040": {
+					"namePath": [
+						"Components / Avatar / Fallback",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6db2620433": {
+			"path": "Components/Avatar",
+			"name": "Badge",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6db23e7030": {
+					"namePath": [
+						"Components / Avatar / Badge"
+					],
+					"appliedTokens": {
+						"fill": "primary",
+						"stroke-color": "background",
+						"r1": "border-radius.full",
+						"r2": "border-radius.full",
+						"r3": "border-radius.full",
+						"r4": "border-radius.full"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6db2ac57d4": {
+			"path": "Components/Avatar",
+			"name": "GroupCount",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6db2636a50": {
+					"namePath": [
+						"Components / Avatar / GroupCount"
+					],
+					"appliedTokens": {
+						"fill": "muted",
+						"stroke-color": "background",
+						"r1": "border-radius.full",
+						"r2": "border-radius.full",
+						"r3": "border-radius.full",
+						"r4": "border-radius.full"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6db28840d1": {
+					"namePath": [
+						"Components / Avatar / GroupCount",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6dc2e498a6": {
+			"path": "Components",
+			"name": "Avatar",
+			"variantProperties": {
+				"size": "default"
+			},
+			"parts": {
+				"Badge": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6db2620433"
+				},
+				"Fallback": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6db23db726"
+				},
+				"Image": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6db1fc56a0"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6dba7274fd": {
+					"namePath": [
+						"Components / Avatar"
+					],
+					"appliedTokens": {
+						"r1": "border-radius.full",
+						"r2": "border-radius.full",
+						"r3": "border-radius.full",
+						"r4": "border-radius.full"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6dbaad97f0": {
+					"namePath": [
+						"Components / Avatar",
+						"Image"
+					],
+					"appliedTokens": {
+						"r1": "border-radius.full",
+						"r2": "border-radius.full",
+						"r3": "border-radius.full",
+						"r4": "border-radius.full"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6dbadce98f": {
+					"namePath": [
+						"Components / Avatar",
+						"Fallback"
+					],
+					"appliedTokens": {
+						"fill": "muted",
+						"r1": "border-radius.full",
+						"r2": "border-radius.full",
+						"r3": "border-radius.full",
+						"r4": "border-radius.full"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6dbadce990": {
+					"namePath": [
+						"Components / Avatar",
+						"Fallback",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6dbae2c0a6": {
+					"namePath": [
+						"Components / Avatar",
+						"Ring"
+					],
+					"appliedTokens": {
+						"stroke-color": "border"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6dbb1cf6ca": {
+					"namePath": [
+						"Components / Avatar",
+						"Badge"
+					],
+					"appliedTokens": {
+						"fill": "primary",
+						"stroke-color": "background",
+						"r1": "border-radius.full",
+						"r2": "border-radius.full",
+						"r3": "border-radius.full",
+						"r4": "border-radius.full"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6dc30f4d47": {
+			"path": "Components",
+			"name": "Avatar",
+			"variantProperties": {
+				"size": "sm"
+			},
+			"parts": {
+				"Badge": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6db2620433"
+				},
+				"Fallback": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6db23db726"
+				},
+				"Image": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6db1fc56a0"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6dbb235ad9": {
+					"namePath": [
+						"Components / Avatar"
+					],
+					"appliedTokens": {
+						"r1": "border-radius.full",
+						"r2": "border-radius.full",
+						"r3": "border-radius.full",
+						"r4": "border-radius.full"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6dbb594417": {
+					"namePath": [
+						"Components / Avatar",
+						"Image"
+					],
+					"appliedTokens": {
+						"r1": "border-radius.full",
+						"r2": "border-radius.full",
+						"r3": "border-radius.full",
+						"r4": "border-radius.full"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6dbb862d0f": {
+					"namePath": [
+						"Components / Avatar",
+						"Fallback"
+					],
+					"appliedTokens": {
+						"fill": "muted",
+						"r1": "border-radius.full",
+						"r2": "border-radius.full",
+						"r3": "border-radius.full",
+						"r4": "border-radius.full"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6dbb862d10": {
+					"namePath": [
+						"Components / Avatar",
+						"Fallback",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.xs",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6dbb95c4be": {
+					"namePath": [
+						"Components / Avatar",
+						"Ring"
+					],
+					"appliedTokens": {
+						"stroke-color": "border"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6dbbd0abcd": {
+					"namePath": [
+						"Components / Avatar",
+						"Badge"
+					],
+					"appliedTokens": {
+						"fill": "primary",
+						"stroke-color": "background",
+						"r1": "border-radius.full",
+						"r2": "border-radius.full",
+						"r3": "border-radius.full",
+						"r4": "border-radius.full"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6dc339efcf": {
+			"path": "Components",
+			"name": "Avatar",
+			"variantProperties": {
+				"size": "lg"
+			},
+			"parts": {
+				"Badge": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6db2620433"
+				},
+				"Fallback": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6db23db726"
+				},
+				"Image": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6db1fc56a0"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb6dbbd60234": {
+					"namePath": [
+						"Components / Avatar"
+					],
+					"appliedTokens": {
+						"r1": "border-radius.full",
+						"r2": "border-radius.full",
+						"r3": "border-radius.full",
+						"r4": "border-radius.full"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6dbc0d2d87": {
+					"namePath": [
+						"Components / Avatar",
+						"Image"
+					],
+					"appliedTokens": {
+						"r1": "border-radius.full",
+						"r2": "border-radius.full",
+						"r3": "border-radius.full",
+						"r4": "border-radius.full"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6dbc3c04da": {
+					"namePath": [
+						"Components / Avatar",
+						"Fallback"
+					],
+					"appliedTokens": {
+						"fill": "muted",
+						"r1": "border-radius.full",
+						"r2": "border-radius.full",
+						"r3": "border-radius.full",
+						"r4": "border-radius.full"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6dbc3c04db": {
+					"namePath": [
+						"Components / Avatar",
+						"Fallback",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6dbc4494a7": {
+					"namePath": [
+						"Components / Avatar",
+						"Ring"
+					],
+					"appliedTokens": {
+						"stroke-color": "border"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb6dbc8040f0": {
+					"namePath": [
+						"Components / Avatar",
+						"Badge"
+					],
+					"appliedTokens": {
+						"fill": "primary",
+						"stroke-color": "background",
+						"r1": "border-radius.full",
+						"r2": "border-radius.full",
+						"r3": "border-radius.full",
+						"r4": "border-radius.full"
 					},
 					"unbound": []
 				}
