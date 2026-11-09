@@ -49,6 +49,7 @@ describe('source scan', () => {
 					"[&_svg:not([class*='size-'])]:size-4 has-data-[icon=inline-end]:pr-2",
 					'active:not-aria-[haspopup]:translate-y-px in-data-[slot=button-group]:rounded-md',
 					'@base-ui/react/button use client',
+					'origin-(--transform-origin) max-h-(--available-height) w-(--anchor-width)',
 				])
 			).toEqual([])
 		})

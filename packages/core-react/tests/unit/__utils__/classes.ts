@@ -42,8 +42,26 @@ const utilityOf = (cls: string) => {
 	return cls.slice(start).replace(/^[!-]+|!$/g, '')
 }
 
+/**
+ * The CSS variables Base UI sets on a popup at runtime to size and place it against its anchor.
+ * They are layout, not design: a token can't stand in for the anchor's width.
+ */
+export const BASE_UI_VARS = [
+	'--anchor-height',
+	'--anchor-width',
+	'--available-height',
+	'--available-width',
+	'--transform-origin',
+]
+
+/** `origin-(--transform-origin)`: a utility reading one of Base UI's runtime variables. */
+const readsBaseUiVar = (utility: string) => {
+	const read = /^[\w-]+-\((--[\w-]+)\)$/.exec(utility)?.[1]
+	return read !== undefined && BASE_UI_VARS.includes(read)
+}
+
 /** `bg-[#fff]`, `p-[13px]`, `bg-(--brand)`, `[mask-type:luminance]`, `bg-primary/[0.4]`. */
-const isArbitraryValue = (utility: string) => /[[(]/.test(utility)
+const isArbitraryValue = (utility: string) => /[[(]/.test(utility) && !readsBaseUiVar(utility)
 
 const PALETTE =
 	'slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose'

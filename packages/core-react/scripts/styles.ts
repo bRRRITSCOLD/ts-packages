@@ -16,6 +16,7 @@ const ROOT_FONT_SIZE_PX = 16
 
 /** shadcn's `rounded-*` scale, every step derived from the one `radius` semantic; `rounded-full` reads the `border-radius.full` primitive. */
 const RADIUS_SCALE = [
+	'--radius-xs: calc(var(--radius) - 8px);',
 	'--radius-sm: calc(var(--radius) - 4px);',
 	'--radius-md: calc(var(--radius) - 2px);',
 	'--radius-lg: var(--radius);',
