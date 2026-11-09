@@ -640,3 +640,161 @@ export function dataTable(root: Locator) {
 		},
 	}
 }
+
+/**
+ * Throws on a disabled day rather than wait on it: a native disabled button, or `aria-disabled`
+ * while it has focus (react-day-picker keeps a focused day focusable).
+ */
+const refuseDisabled = async (day: Locator, iso: string) => {
+	if ((await day.isDisabled()) || (await day.getAttribute('aria-disabled')) === 'true')
+		throw new Error(`day ${iso} is disabled`)
+}
+
+/**
+ * Drives a `Calendar` through its root, the element with `data-slot="calendar"`. It has no role:
+ * pass a testid placed on `Calendar` (`page.getByTestId('due')`; unlike a Base UI Root, the
+ * calendar's root is a DOM element, so the testid reaches it), or `datePicker(trigger).open()`'s.
+ *
+ * Days are found by ISO date (`2026-11-09`), the `data-day` react-day-picker writes on each
+ * gridcell, not by name: a day button's name is the full date in the app's locale (`Monday,
+ * November 9, 2026`, with `Today, ` and `, selected` around it). A day of the next or previous
+ * month shown at a grid's edge (an outside day) is skipped, so a date is found in its own month.
+ * Each month is a `grid` named by the month. The nav buttons are found by react-day-picker's
+ * `rdp-button_previous` / `rdp-button_next` classes, as their names follow the locale too; at
+ * `startMonth` / `endMonth` they are `aria-disabled`, so `previous()` / `next()` throw rather than
+ * wait. A disabled day is a native disabled button (`aria-disabled` while it has focus), so
+ * `select()` throws on it. In single mode a click on the picked day clears it, so `select()`
+ * leaves a picked day alone.
+ */
+export function calendar(root: Locator) {
+	const shown = root.locator('td[data-day]:not([data-outside])')
+	const cell = (iso: string) => root.locator(`td[data-day="${iso}"]:not([data-outside])`)
+	const day = (iso: string) => cell(iso).getByRole('button')
+
+	/** Steps a month through a nav button and waits until the first month on show has gone. */
+	const step = async (direction: 'previous' | 'next') => {
+		const button = root.locator(`.rdp-button_${direction}`)
+		if ((await button.getAttribute('aria-disabled')) === 'true')
+			throw new Error(`the calendar has no ${direction} month`)
+		const first = await shown.first().getAttribute('data-day')
+		await button.click()
+		await cell(first ?? '').waitFor({ state: 'detached' })
+	}
+
+	/** Steps month by month until `iso`'s month is on show (at most ten years either way). */
+	const show = async (iso: string) => {
+		for (let steps = 0; steps < 120; steps++) {
+			await shown.first().waitFor()
+			if ((await cell(iso).count()) > 0) return
+			const first = (await shown.first().getAttribute('data-day')) ?? ''
+			await step(iso < first ? 'previous' : 'next')
+		}
+		throw new Error(`could not reach ${iso}`)
+	}
+
+	return {
+		root,
+
+		/** A day's button, by ISO date, in the months on show. */
+		day,
+
+		/** The months on show, by their grids' names (`November 2026`). */
+		months: async () => {
+			await root.getByRole('grid').first().waitFor()
+			return root
+				.getByRole('grid')
+				.evaluateAll((grids) => grids.map((grid) => grid.getAttribute('aria-label') ?? ''))
+		},
+
+		/** The ISO dates of the picked days on show, in order. */
+		selected: async () => {
+			await shown.first().waitFor()
+			return root
+				.locator('td[aria-selected=true]:not([data-outside])')
+				.evaluateAll((cells) => cells.map((td) => td.getAttribute('data-day') ?? ''))
+		},
+
+		/** Shows the next month; throws at `endMonth`. */
+		next: () => step('next'),
+
+		/** Shows the previous month; throws at `startMonth`. */
+		previous: () => step('previous'),
+
+		/** Steps to the month holding `iso`. */
+		show,
+
+		/**
+		 * Steps to `iso`'s month and picks the day, unless it is picked already, then waits until it
+		 * is; throws on a disabled day. In a `DatePicker`, use `datePicker().select()`: a pick
+		 * closes the popup.
+		 */
+		select: async (iso: string) => {
+			await show(iso)
+			const target = day(iso)
+			await refuseDisabled(target, iso)
+			if ((await cell(iso).getAttribute('aria-selected')) !== 'true') await target.click()
+			await root
+				.locator(`td[data-day="${iso}"][aria-selected=true]:not([data-outside])`)
+				.waitFor()
+		},
+	}
+}
+
+/**
+ * Drives a `DatePicker` through its trigger, the outline button. Pass that part as `trigger`: a
+ * testid placed on `DatePicker` (it reaches the trigger), or `page.getByRole('button', { name:
+ * 'Due date' })` when a `FieldLabel` names it.
+ *
+ * The popup is portalled and found through the trigger's `aria-controls`, which Base UI sets once
+ * it has mounted; `open()` returns a `calendar()` over the calendar inside. A pick closes the
+ * popup and focus returns to the trigger; `select()` and `dismiss()` wait out the exit animation
+ * (Base UI trap 5). A click on the picked day clears it, so `select()` closes the popup with
+ * Escape when the day is picked already.
+ */
+export function datePicker(trigger: Locator) {
+	const page = trigger.page()
+
+	const popup = async () => {
+		if ((await trigger.getAttribute('aria-expanded')) !== 'true') await trigger.click()
+		// Base UI names the popup in aria-controls only once it has mounted.
+		await trigger.and(page.getByRole('button', { expanded: true })).waitFor()
+		const id = await trigger.getAttribute('aria-controls')
+		if (!id) throw new Error('the date picker is open but names no popup in aria-controls')
+		const found = page.locator(`id=${id}`)
+		await found.waitFor({ state: 'visible' })
+		return found
+	}
+
+	const close = async (open: Locator) => {
+		await page.keyboard.press('Escape')
+		await open.waitFor({ state: 'hidden' })
+	}
+
+	return {
+		trigger,
+
+		/** What the trigger shows: the picked date, formatted, or the placeholder. */
+		value: async () => (await trigger.innerText()).trim(),
+
+		/** Opens the popup unless it is open, and returns a `calendar()` over its calendar. */
+		open: async () => calendar((await popup()).locator('[data-slot=calendar]')),
+
+		/**
+		 * Opens the popup, steps to `iso`'s month and picks the day, then waits for the popup to
+		 * close; throws on a disabled day.
+		 */
+		select: async (iso: string) => {
+			const open = await popup()
+			const days = calendar(open.locator('[data-slot=calendar]'))
+			await days.show(iso)
+			const target = days.day(iso)
+			await refuseDisabled(target, iso)
+			if ((await days.selected()).includes(iso)) return close(open)
+			await target.click()
+			await open.waitFor({ state: 'hidden' })
+		},
+
+		/** Opens the popup unless it is open, presses Escape and waits until it is hidden. */
+		dismiss: async () => close(await popup()),
+	}
+}

@@ -47,6 +47,7 @@ export {
 	BreadcrumbSeparator,
 } from './components/breadcrumb.js'
 export { Button, buttonVariants } from './components/button.js'
+export { Calendar, CalendarDayButton } from './components/calendar.js'
 export {
 	Card,
 	CardAction,
@@ -79,6 +80,7 @@ export { DataTableColumnHeader } from './components/data-table-column-header.js'
 export { DataTablePagination } from './components/data-table-pagination.js'
 export { DataTableToolbar } from './components/data-table-toolbar.js'
 export { DataTableViewOptions } from './components/data-table-view-options.js'
+export { DatePicker } from './components/date-picker.js'
 export {
 	Dialog,
 	DialogClose,
