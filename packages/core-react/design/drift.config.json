@@ -45,6 +45,7 @@
 		"cn",
 		"createToastManager",
 		"fieldVariants",
+		"tabsListVariants",
 		"toast",
 		"toggleVariants",
 		"useComboboxAnchor",

@@ -115,6 +115,99 @@ export function toggleGroup(root: Locator) {
 	}
 }
 
+/**
+ * Drives an `Accordion` through its root. The root has no role: pass a testid placed on
+ * `Accordion` (`page.getByTestId('faq')`) or a locator scoped to the section holding it.
+ *
+ * Each item is a trigger button, named by its text, and a panel with role `region` named by its
+ * trigger. A closed panel is unmounted, not hidden, once its height animation ends (Base UI trap
+ * 5): `close()` returns after that, and a closed item's panel has nothing to read. Opening an item
+ * of a single-value accordion closes the one open before. A disabled item's trigger is a native
+ * disabled button that ignores the pointer, so `open()` and `close()` throw rather than wait on
+ * it. Each trigger is its own tab stop: Base UI 1.9 dropped the accordion's roving focus, so the
+ * arrow keys do nothing and Tab moves between triggers (skipping a disabled one). Enter or Space
+ * toggles the focused trigger.
+ */
+export function accordion(root: Locator) {
+	const trigger = (label: string) => root.getByRole('button', { name: label, exact: true })
+	const panel = (label: string) => root.getByRole('region', { name: label, exact: true })
+
+	/** Clicks the trigger unless the item is already in the state wanted, then waits for its panel. */
+	const set = async (label: string, open: boolean) => {
+		const target = trigger(label)
+		if (await target.isDisabled()) throw new Error(`accordion item "${label}" is disabled`)
+		if ((await target.getAttribute('aria-expanded')) !== String(open)) await target.click()
+		await panel(label).waitFor({ state: open ? 'visible' : 'detached' })
+	}
+
+	return {
+		root,
+
+		/** An item's trigger, by its text. */
+		trigger,
+
+		/** An open item's panel, by its trigger's text; a closed item has none. */
+		panel,
+
+		/** The labels of the open items, in order. */
+		expanded: async () => {
+			await root.waitFor({ state: 'visible' })
+			return root
+				.getByRole('button', { expanded: true })
+				.evaluateAll((items) => items.map((el) => el.textContent?.trim() ?? ''))
+		},
+
+		/** Opens an item and waits for its panel; in a single-value accordion this closes the other. */
+		open: (label: string) => set(label, true),
+
+		/** Closes an item and waits until its panel has animated out and unmounted. */
+		close: (label: string) => set(label, false),
+	}
+}
+
+/**
+ * Drives `Tabs` through its root, which holds the `tablist` and the panels. The root has no role:
+ * pass a testid placed on `Tabs` (`page.getByTestId('settings')`) or a locator scoped to the
+ * section holding it.
+ *
+ * Only the selected tab's panel is mounted, but for a moment after a switch the panel being left
+ * is still there beside the new one, so `panel(label)` finds a panel by the tab that names it,
+ * never as the only `tabpanel`. The arrow keys move focus between tabs without selecting (Base UI's
+ * `activateOnFocus` is off): Enter or Space selects the focused tab. A disabled tab stays
+ * focusable (`aria-disabled`) and ignores the pointer, so `select()` throws rather than wait on it.
+ */
+export function tabs(root: Locator) {
+	const tab = (label: string) => root.getByRole('tab', { name: label, exact: true })
+
+	/** The selected tab's label. */
+	const selected = async () => {
+		const active = root.getByRole('tab', { selected: true })
+		await active.waitFor({ state: 'visible' })
+		return (await active.textContent())?.trim() ?? ''
+	}
+
+	return {
+		root,
+
+		/** A tab, by its label. */
+		tab,
+
+		selected,
+
+		/** A tab's panel, named by the tab; mounted only while that tab is selected. */
+		panel: (label: string) => root.getByRole('tabpanel', { name: label, exact: true }),
+
+		/** Selects a tab and waits until it is selected. */
+		select: async (label: string) => {
+			const target = tab(label)
+			if ((await target.getAttribute('aria-disabled')) === 'true')
+				throw new Error(`tab "${label}" is disabled`)
+			await target.click()
+			await root.getByRole('tab', { name: label, exact: true, selected: true }).waitFor()
+		},
+	}
+}
+
 /** The listbox a `combobox`-role control opens, found through the control's `aria-controls`. */
 const listboxOf = async (control: Locator) => {
 	const id = await control.getAttribute('aria-controls')

@@ -2,6 +2,12 @@
 // Each line names what it exports, so the code manifest and a reader see the whole surface here.
 
 export {
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger,
+} from './components/accordion.js'
+export {
 	Alert,
 	AlertAction,
 	AlertDescription,
@@ -31,7 +37,25 @@ export {
 	AvatarImage,
 } from './components/avatar.js'
 export { Badge, badgeVariants } from './components/badge.js'
+export {
+	Breadcrumb,
+	BreadcrumbEllipsis,
+	BreadcrumbItem,
+	BreadcrumbLink,
+	BreadcrumbList,
+	BreadcrumbPage,
+	BreadcrumbSeparator,
+} from './components/breadcrumb.js'
 export { Button, buttonVariants } from './components/button.js'
+export {
+	Card,
+	CardAction,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from './components/card.js'
 export { Checkbox } from './components/checkbox.js'
 export {
 	Combobox,
@@ -129,6 +153,7 @@ export {
 } from './components/sheet.js'
 export { Skeleton } from './components/skeleton.js'
 export { Switch } from './components/switch.js'
+export { Tabs, TabsContent, TabsList, TabsTrigger, tabsListVariants } from './components/tabs.js'
 export { Textarea } from './components/textarea.js'
 export {
 	createToastManager,
