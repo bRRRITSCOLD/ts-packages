@@ -429,3 +429,214 @@ export function toast(page: Page) {
 		waitForHidden: (text: string | RegExp) => get(text).waitFor({ state: 'hidden' }),
 	}
 }
+
+/** A data table column's sort order, as `DataTableColumnHeader` takes it. */
+export type DataTableSortOrder = 'none' | 'asc' | 'desc'
+
+const SORT_LABEL: Record<DataTableSortOrder, string> = { none: 'None', asc: 'Asc', desc: 'Desc' }
+const SORT_OF: Record<string, DataTableSortOrder> = { ascending: 'asc', descending: 'desc' }
+
+/** Opens a menu from its trigger unless it is open, and returns its portalled popup. */
+const openMenu = async (trigger: Locator) => {
+	if ((await trigger.getAttribute('aria-expanded')) !== 'true') await trigger.click()
+	// Base UI names the popup in aria-controls only once it has mounted.
+	await trigger.and(trigger.page().getByRole('button', { expanded: true })).waitFor()
+	const id = await trigger.getAttribute('aria-controls')
+	if (!id) throw new Error('the menu trigger names no popup in aria-controls')
+	const menu = trigger.page().locator(`id=${id}`)
+	await menu.waitFor({ state: 'visible' })
+	return menu
+}
+
+/**
+ * Drives a data table: `Table` with `DataTableColumnHeader`s, a `DataTableToolbar` (with
+ * `DataTableViewOptions`) and a `DataTablePagination`, as `useDataTable` wires them. The parts
+ * have no common role: pass a testid placed on the element holding them all
+ * (`page.getByTestId('payments')`) or a locator scoped to the section holding it.
+ *
+ * - **`aria-sort` is on the header cell**, the `columnheader`, not on its sort button, and only on
+ *   the sorted column: an unsorted column has none, which `sort()` reads as `none`.
+ * - **The header and View menus are portalled** outside `root`: each is found through its
+ *   trigger's `aria-controls`. A sort pick closes its menu; a View checkbox item keeps it open,
+ *   so `toggleColumn()` closes it with Escape. Both wait out the exit animation (Base UI trap 5).
+ * - **Pagination's pages are buttons, not links**: Base UI renders them as `<a role="button">`.
+ *   The current page is `aria-current="page"`, not `pressed` or `selected`. Previous on the
+ *   first page and Next on the last are `aria-disabled` and ignore the pointer, so
+ *   `previousPage()` / `nextPage()` throw rather than wait on them.
+ * - **A checkbox is Base UI's `<span role="checkbox">`** (Base UI trap 6's hidden input sits
+ *   beside it): click the role, never `check()` the input. Select-all reads `mixed` when some rows
+ *   of the page are picked.
+ * - A filter goes back to the first page; a page shows only its rows, so `rows()` reads one page.
+ */
+export function dataTable(root: Locator) {
+	const table = root.getByRole('table')
+	const body = table.locator('tbody')
+	const pagination = root.getByRole('navigation', { name: 'pagination' })
+
+	/** A column's header cell, by its label. */
+	const header = (column: string) =>
+		table.getByRole('columnheader', { name: column, exact: true })
+
+	/** The body row whose text contains `text`. */
+	const row = (text: string | RegExp) => body.getByRole('row').filter({ hasText: text })
+
+	/** The labels of the header cells, in order; `''` for one with no text (the select-all column). */
+	const columns = async () => {
+		await table.waitFor()
+		return (await table.getByRole('columnheader').allInnerTexts()).map((text) => text.trim())
+	}
+
+	/** The current page's number, from 1. */
+	const page = async () => {
+		await pagination.waitFor()
+		return pagination.evaluate((nav) =>
+			Number(
+				[...nav.querySelectorAll('a')]
+					.find((link) => link.getAttribute('aria-current') === 'page')
+					?.textContent?.trim()
+			)
+		)
+	}
+
+	/** Waits until page `number` is the current page. */
+	const waitForPage = async (number: number) => {
+		const nav = await pagination.elementHandle()
+		await root
+			.page()
+			.waitForFunction(
+				([el, want]) =>
+					[...(el as HTMLElement).querySelectorAll('a')].some(
+						(link) =>
+							link.getAttribute('aria-current') === 'page' &&
+							link.textContent?.trim() === want
+					),
+				[nav, String(number)] as const
+			)
+	}
+
+	/** Clicks Previous or Next unless it is disabled, then waits for the page it goes to. */
+	const step = async (name: string, by: number) => {
+		const button = pagination.getByRole('button', { name })
+		if ((await button.getAttribute('aria-disabled')) === 'true')
+			throw new Error(`"${name}" is disabled`)
+		const from = await page()
+		await button.click()
+		await waitForPage(from + by)
+	}
+
+	/** Sets a row checkbox's state unless it is in it, then waits for it. */
+	const check = async (checkbox: Locator, checked: boolean) => {
+		if ((await checkbox.getAttribute('aria-checked')) !== String(checked))
+			await checkbox.click()
+		await checkbox.and(root.getByRole('checkbox', { checked })).waitFor()
+	}
+
+	return {
+		root,
+		table,
+		header,
+		row,
+		columns,
+
+		/** The text of each cell of each body row on the page, in order. */
+		rows: async () => {
+			await table.waitFor()
+			return body
+				.getByRole('row')
+				.evaluateAll((rows) =>
+					rows.map((tr) =>
+						[...tr.querySelectorAll('td')].map((td) => td.textContent?.trim() ?? '')
+					)
+				)
+		},
+
+		/** The cell of the row containing `text`, in the column with this label. */
+		cell: async (text: string | RegExp, column: string) => {
+			const index = (await columns()).indexOf(column)
+			if (index < 0) throw new Error(`no column "${column}"`)
+			return row(text).getByRole('cell').nth(index)
+		},
+
+		/** A column's sort order, from its header cell's `aria-sort`; `none` when it has none. */
+		sort: async (column: string) => {
+			const cell = header(column)
+			await cell.waitFor()
+			return SORT_OF[(await cell.getAttribute('aria-sort')) ?? ''] ?? 'none'
+		},
+
+		/** Opens a column's header menu, picks the order and waits for the menu to close. */
+		sortBy: async (column: string, order: DataTableSortOrder) => {
+			const menu = await openMenu(header(column).getByRole('button'))
+			await menu.getByRole('menuitemradio', { name: SORT_LABEL[order], exact: true }).click()
+			await menu.waitFor({ state: 'hidden' })
+		},
+
+		/** Types `text` into the toolbar's filter, replacing what was there; `''` clears it. */
+		filter: (text: string) => root.getByRole('searchbox').fill(text),
+
+		/**
+		 * Shows or hides a column through the View menu: checks or unchecks its item, waits for the
+		 * state, then closes the menu (a checkbox item keeps it open).
+		 */
+		toggleColumn: async (label: string, visible: boolean) => {
+			const menu = await openMenu(root.getByRole('button', { name: 'View' }))
+			const item = menu.getByRole('menuitemcheckbox', { name: label, exact: true })
+			if ((await item.getAttribute('aria-checked')) !== String(visible)) await item.click()
+			await menu
+				.getByRole('menuitemcheckbox', { name: label, exact: true, checked: visible })
+				.waitFor()
+			await root.page().keyboard.press('Escape')
+			await menu.waitFor({ state: 'hidden' })
+		},
+
+		/** Selects (or with `false`, clears) the row containing `text` through its checkbox. */
+		selectRow: (text: string | RegExp, selected = true) =>
+			check(row(text).getByRole('checkbox'), selected),
+
+		/** Selects (or with `false`, clears) every row of the page through the header checkbox. */
+		selectAll: (selected = true) =>
+			check(table.locator('thead').getByRole('checkbox'), selected),
+
+		/** The text of each selected row on the page, cells joined by a space. */
+		selectedRows: async () => {
+			await table.waitFor()
+			return body
+				.getByRole('row')
+				.filter({ has: root.page().getByRole('checkbox', { checked: true }) })
+				.evaluateAll((rows) =>
+					rows.map((tr) =>
+						[...tr.querySelectorAll('td')]
+							.map((td) => td.textContent?.trim() ?? '')
+							.filter(Boolean)
+							.join(' ')
+					)
+				)
+		},
+
+		page,
+
+		/** The page controls shown, in order: page numbers, `…` for a gap. */
+		pages: async () => {
+			await pagination.waitFor()
+			return pagination.evaluate((nav) =>
+				[...nav.querySelectorAll('li')]
+					.slice(1, -1)
+					.map((li) => (li.querySelector('a') ? (li.textContent?.trim() ?? '') : '…'))
+			)
+		},
+
+		/** Goes to the next page and waits for it; throws on the last page. */
+		nextPage: () => step('Go to next page', 1),
+
+		/** Goes to the previous page and waits for it; throws on the first page. */
+		previousPage: () => step('Go to previous page', -1),
+
+		/** Goes to page `number` (from 1) and waits for it; throws when that page isn't shown. */
+		goToPage: async (number: number) => {
+			const link = pagination.getByRole('button', { name: String(number), exact: true })
+			if ((await link.count()) === 0) throw new Error(`page ${number} is not shown`)
+			await link.click()
+			await waitForPage(number)
+		},
+	}
+}

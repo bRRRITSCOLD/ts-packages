@@ -75,6 +75,10 @@ export {
 	ComboboxValue,
 	useComboboxAnchor,
 } from './components/combobox.js'
+export { DataTableColumnHeader } from './components/data-table-column-header.js'
+export { DataTablePagination } from './components/data-table-pagination.js'
+export { DataTableToolbar } from './components/data-table-toolbar.js'
+export { DataTableViewOptions } from './components/data-table-view-options.js'
 export {
 	Dialog,
 	DialogClose,
@@ -120,6 +124,15 @@ export {
 export { Input } from './components/input.js'
 export { Label } from './components/label.js'
 export {
+	Pagination,
+	PaginationContent,
+	PaginationEllipsis,
+	PaginationItem,
+	PaginationLink,
+	PaginationNext,
+	PaginationPrevious,
+} from './components/pagination.js'
+export {
 	Popover,
 	PopoverContent,
 	PopoverDescription,
@@ -153,6 +166,16 @@ export {
 } from './components/sheet.js'
 export { Skeleton } from './components/skeleton.js'
 export { Switch } from './components/switch.js'
+export {
+	Table,
+	TableBody,
+	TableCaption,
+	TableCell,
+	TableFooter,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from './components/table.js'
 export { Tabs, TabsContent, TabsList, TabsTrigger, tabsListVariants } from './components/tabs.js'
 export { Textarea } from './components/textarea.js'
 export {
