@@ -4,11 +4,17 @@ import { describe, expect, it } from 'vitest'
 // utils
 import { forbiddenClasses, sourceFiles, stringsIn } from './__utils__/classes.js'
 
+/**
+ * The component objects in `src/testing.ts` hold Playwright selectors (`td[data-day="…"]`), never
+ * classes, and a selector's attribute brackets read as an arbitrary value.
+ */
+const SELECTORS = 'src/testing.ts'
+
 describe('source scan', () => {
-	it('should find no arbitrary value or default-palette utility anywhere in src/', () => {
-		const offenders = sourceFiles().flatMap((file) =>
-			forbiddenClasses(stringsIn(file)).map((cls) => `${file}: ${cls}`)
-		)
+	it('should find no arbitrary value or default-palette utility in src/ outside the component objects', () => {
+		const offenders = sourceFiles()
+			.filter((file) => file !== SELECTORS)
+			.flatMap((file) => forbiddenClasses(stringsIn(file)).map((cls) => `${file}: ${cls}`))
 
 		expect(offenders).toEqual([])
 	})
