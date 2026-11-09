@@ -56,6 +56,22 @@ describe('source scan', () => {
 			])
 		})
 
+		it('should reject a transform on Base UI variables that adds a length or reads another variable', () => {
+			expect(
+				forbiddenClasses([
+					'transform-[translateY(calc(var(--toast-swipe-movement-y)+16px))]',
+					'transform-[translateY(calc(var(--toast-index)*var(--gap)))]',
+					'transform-[translateY(150%)]',
+					'[transform:translateY(var(--toast-offset-y))]',
+				])
+			).toEqual([
+				'transform-[translateY(calc(var(--toast-swipe-movement-y)+16px))]',
+				'transform-[translateY(calc(var(--toast-index)*var(--gap)))]',
+				'transform-[translateY(150%)]',
+				'[transform:translateY(var(--toast-offset-y))]',
+			])
+		})
+
 		it('should accept token utilities and arbitrary variants', () => {
 			expect(
 				forbiddenClasses([
@@ -66,6 +82,9 @@ describe('source scan', () => {
 					'origin-(--transform-origin) max-h-(--available-height) w-(--anchor-width)',
 					'min-w-[calc(var(--anchor-width)+var(--spacing-7))]',
 					'max-h-[min(calc(var(--spacing-72)-var(--spacing-9)),calc(var(--available-height)-var(--spacing-9)))]',
+					'h-(--toast-frontmost-height) z-[calc(1000-var(--toast-index))]',
+					'transform-[translateX(var(--toast-swipe-movement-x))_translateY(calc(var(--toast-swipe-movement-y)-var(--toast-index)*var(--spacing-3)-min(1,var(--toast-index)*0.1)*var(--toast-frontmost-height)))_scale(max(0,1-var(--toast-index)*0.1))]',
+					'data-ending-style:transform-[translateY(calc(var(--toast-swipe-movement-y)+150%))]',
 				])
 			).toEqual([])
 		})

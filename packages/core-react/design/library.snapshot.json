@@ -604,6 +604,330 @@
 		}
 	],
 	"components": {
+		"2d55422c-4cf4-80e5-8008-eb6353e4f2fc": {
+			"path": "Components/Toast",
+			"name": "Title",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb633df37baa": {
+					"namePath": [
+						"Components / Toast / Title",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "popover-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6353e7652b": {
+			"path": "Components/Toast",
+			"name": "Description",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb633dff21c1": {
+					"namePath": [
+						"Components / Toast / Description",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6353e99bfb": {
+			"path": "Components/Toast",
+			"name": "Action",
+			"variantProperties": {},
+			"parts": {
+				"Components / Button": {
+					"componentId": "34194205-34cb-806a-8008-e988728a9f9a"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb633e0b7b65": {
+					"namePath": [
+						"Components / Toast / Action",
+						"Components / Button"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "border",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb633e0b7b66": {
+					"namePath": [
+						"Components / Toast / Action",
+						"Components / Button",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6353eb84f9": {
+			"path": "Components/Toast",
+			"name": "Close",
+			"variantProperties": {},
+			"parts": {
+				"Components / Button": {
+					"componentId": "34194205-34cb-806a-8008-e98872f374b8"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb633e17aa26": {
+					"namePath": [
+						"Components / Toast / Close",
+						"Components / Button"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb634392c789": {
+					"namePath": [
+						"Components / Toast / Close",
+						"Components / Button",
+						"icon / X",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "muted-foreground"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb634392c78a": {
+					"namePath": [
+						"Components / Toast / Close",
+						"Components / Button",
+						"icon / X",
+						"Stroke 2"
+					],
+					"appliedTokens": {
+						"stroke-color": "muted-foreground"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb6389f5e25b": {
+			"path": "Components",
+			"name": "Toast",
+			"variantProperties": {},
+			"parts": {
+				"Action": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6353e99bfb"
+				},
+				"Close": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6353eb84f9"
+				},
+				"Description": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6353e7652b"
+				},
+				"Icon": {
+					"componentId": "34194205-34cb-806a-8008-ea142f4df7b5"
+				},
+				"Title": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb6353e4f2fc"
+				}
+			},
+			"wrappers": [
+				"Text"
+			],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb635f04b2ce": {
+					"namePath": [
+						"Components / Toast"
+					],
+					"appliedTokens": {
+						"fill": "popover",
+						"stroke-color": "border",
+						"r1": "border-radius.xl",
+						"r2": "border-radius.xl",
+						"r3": "border-radius.xl",
+						"r4": "border-radius.xl",
+						"p1": "space.4",
+						"p2": "space.4",
+						"p3": "space.4",
+						"p4": "space.4",
+						"column-gap": "space.3",
+						"shadow": "shadow.lg"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb635f12d539": {
+					"namePath": [
+						"Components / Toast",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "popover-foreground"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb635f12d53a": {
+					"namePath": [
+						"Components / Toast",
+						"Icon",
+						"Stroke 2"
+					],
+					"appliedTokens": {
+						"stroke-color": "popover-foreground"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb635f1584de": {
+					"namePath": [
+						"Components / Toast",
+						"Text"
+					],
+					"appliedTokens": {
+						"row-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb635f1e67a4": {
+					"namePath": [
+						"Components / Toast",
+						"Text",
+						"Title",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "popover-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb635f22309b": {
+					"namePath": [
+						"Components / Toast",
+						"Text",
+						"Description",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb635f27fb7a": {
+					"namePath": [
+						"Components / Toast",
+						"Action",
+						"Components / Button"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "border",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb635f27fb7b": {
+					"namePath": [
+						"Components / Toast",
+						"Action",
+						"Components / Button",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb635f2b0d59": {
+					"namePath": [
+						"Components / Toast",
+						"Close",
+						"Components / Button"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb635f2b0d5b": {
+					"namePath": [
+						"Components / Toast",
+						"Close",
+						"Components / Button",
+						"icon / X",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "muted-foreground"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb635f2b0d5c": {
+					"namePath": [
+						"Components / Toast",
+						"Close",
+						"Components / Button",
+						"icon / X",
+						"Stroke 2"
+					],
+					"appliedTokens": {
+						"stroke-color": "muted-foreground"
+					},
+					"unbound": []
+				}
+			}
+		},
 		"34194205-34cb-806a-8008-e987d8c988c7": {
 			"path": "icon",
 			"name": "Plus",

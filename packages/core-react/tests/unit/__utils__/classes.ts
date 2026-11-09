@@ -43,8 +43,9 @@ const utilityOf = (cls: string) => {
 }
 
 /**
- * The CSS variables Base UI sets on a popup at runtime to size and place it against its anchor.
- * They are layout, not design: a token can't stand in for the anchor's width.
+ * The CSS variables Base UI sets at runtime: a popup's size and place against its anchor, and a
+ * toast's place in the stack, its measured height and its swipe. They are layout, not design: a
+ * token can't stand in for the anchor's width or how far a toast has been dragged.
  */
 export const BASE_UI_VARS = [
 	'--anchor-height',
@@ -52,6 +53,12 @@ export const BASE_UI_VARS = [
 	'--available-height',
 	'--available-width',
 	'--transform-origin',
+	'--toast-frontmost-height',
+	'--toast-height',
+	'--toast-index',
+	'--toast-offset-y',
+	'--toast-swipe-movement-x',
+	'--toast-swipe-movement-y',
 ]
 
 /** `origin-(--transform-origin)`: a utility reading one of Base UI's runtime variables. */
@@ -61,9 +68,12 @@ const readsBaseUiVar = (utility: string) => {
 }
 
 /**
- * `min-w-[calc(var(--anchor-width)+var(--spacing-7))]`: arithmetic on Base UI's runtime
- * variables and spacing tokens only, the anchor's width plus a step of the scale. Every value it
- * reads is a variable, so nothing raw can hide in it.
+ * `min-w-[calc(var(--anchor-width)+var(--spacing-7))]`, a toast's
+ * `transform-[translateY(calc(var(--toast-swipe-movement-y)-var(--toast-index)*var(--spacing-3)))]`:
+ * arithmetic on Base UI's runtime variables and spacing tokens only. Beside the variables it may
+ * hold `calc` / `min` / `max`, the transform functions `translateX` / `translateY` / `scale`,
+ * unitless numbers (a multiplier, `1000-` for a z-index) and percentages (of the element's own
+ * size), never a unit, so no raw length can hide in it.
  */
 const computesFromBaseUiVar = (utility: string) => {
 	const value = /^[\w-]+-\[(.+)\]$/.exec(utility)?.[1]
@@ -72,7 +82,9 @@ const computesFromBaseUiVar = (utility: string) => {
 	return (
 		read.some((name) => BASE_UI_VARS.includes(name)) &&
 		read.every((name) => BASE_UI_VARS.includes(name) || /^--spacing-[\w-]+$/.test(name)) &&
-		/^(?:calc|min|max|[()+\-*,_\s])*$/.test(value.replace(/var\(--[\w-]+\)/g, ''))
+		/^(?:calc|min|max|translate[XY]|scale|\d*\.?\d+%?|[()+\-*,_\s])*$/.test(
+			value.replace(/var\(--[\w-]+\)/g, '')
+		)
 	)
 }
 
