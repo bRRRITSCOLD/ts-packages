@@ -1,11 +1,15 @@
 {
 	"allowlist": [
-		"buttonVariants",
-		"cn",
-		"fieldVariants",
 		"AlertDialog",
 		"AlertDialogPortal",
 		"AlertDialogTrigger",
+		"Combobox",
+		"ComboboxChipsInput",
+		"ComboboxCollection",
+		"ComboboxGroup",
+		"ComboboxList",
+		"ComboboxTrigger",
+		"ComboboxValue",
 		"Dialog",
 		"DialogClose",
 		"DialogPortal",
@@ -18,11 +22,20 @@
 		"DropdownMenuTrigger",
 		"Popover",
 		"PopoverTrigger",
+		"Select",
+		"SelectGroup",
+		"SelectScrollDownButton",
+		"SelectScrollUpButton",
+		"SelectValue",
 		"Sheet",
 		"SheetClose",
 		"SheetTrigger",
 		"Tooltip",
 		"TooltipProvider",
-		"TooltipTrigger"
+		"TooltipTrigger",
+		"buttonVariants",
+		"cn",
+		"fieldVariants",
+		"useComboboxAnchor"
 	]
 }

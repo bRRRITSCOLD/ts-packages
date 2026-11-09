@@ -60,8 +60,25 @@ const readsBaseUiVar = (utility: string) => {
 	return read !== undefined && BASE_UI_VARS.includes(read)
 }
 
+/**
+ * `min-w-[calc(var(--anchor-width)+var(--spacing-7))]`: arithmetic on Base UI's runtime
+ * variables and spacing tokens only, the anchor's width plus a step of the scale. Every value it
+ * reads is a variable, so nothing raw can hide in it.
+ */
+const computesFromBaseUiVar = (utility: string) => {
+	const value = /^[\w-]+-\[(.+)\]$/.exec(utility)?.[1]
+	if (value === undefined) return false
+	const read = [...value.matchAll(/var\((--[\w-]+)\)/g)].map(([, name = '']) => name)
+	return (
+		read.some((name) => BASE_UI_VARS.includes(name)) &&
+		read.every((name) => BASE_UI_VARS.includes(name) || /^--spacing-[\w-]+$/.test(name)) &&
+		/^(?:calc|min|max|[()+\-*,_\s])*$/.test(value.replace(/var\(--[\w-]+\)/g, ''))
+	)
+}
+
 /** `bg-[#fff]`, `p-[13px]`, `bg-(--brand)`, `[mask-type:luminance]`, `bg-primary/[0.4]`. */
-const isArbitraryValue = (utility: string) => /[[(]/.test(utility) && !readsBaseUiVar(utility)
+const isArbitraryValue = (utility: string) =>
+	/[[(]/.test(utility) && !readsBaseUiVar(utility) && !computesFromBaseUiVar(utility)
 
 const PALETTE =
 	'slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose'

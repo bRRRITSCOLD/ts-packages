@@ -11305,6 +11305,7 @@
 						"p2": "space.1-5",
 						"p3": "space.1-5",
 						"p4": "space.1-5",
+						"row-gap": "space.1-5",
 						"column-gap": "space.1-5",
 						"shadow": "shadow.xs"
 					},

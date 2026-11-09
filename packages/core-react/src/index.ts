@@ -18,6 +18,24 @@ export {
 export { Button, buttonVariants } from './components/button.js'
 export { Checkbox } from './components/checkbox.js'
 export {
+	Combobox,
+	ComboboxChip,
+	ComboboxChips,
+	ComboboxChipsInput,
+	ComboboxCollection,
+	ComboboxContent,
+	ComboboxEmpty,
+	ComboboxGroup,
+	ComboboxInput,
+	ComboboxItem,
+	ComboboxLabel,
+	ComboboxList,
+	ComboboxSeparator,
+	ComboboxTrigger,
+	ComboboxValue,
+	useComboboxAnchor,
+} from './components/combobox.js'
+export {
 	Dialog,
 	DialogClose,
 	DialogContent,
@@ -70,6 +88,18 @@ export {
 	PopoverTrigger,
 } from './components/popover.js'
 export { RadioGroup, RadioGroupItem } from './components/radio-group.js'
+export {
+	Select,
+	SelectContent,
+	SelectGroup,
+	SelectItem,
+	SelectLabel,
+	SelectScrollDownButton,
+	SelectScrollUpButton,
+	SelectSeparator,
+	SelectTrigger,
+	SelectValue,
+} from './components/select.js'
 export { Separator } from './components/separator.js'
 export {
 	Sheet,
