@@ -108,7 +108,8 @@ export const Line: Story = {
 			getComputedStyle(tabs).backgroundColor
 		)
 		await waitFor(() => expect(getComputedStyle(password, '::after').opacity).toBe('1'))
-		await expect(getComputedStyle(account, '::after').opacity).toBe('0')
+		// Both bars transition: one can land while the other's ease-out tail is still above 0.
+		await waitFor(() => expect(getComputedStyle(account, '::after').opacity).toBe('0'))
 		await expect(getComputedStyle(password, '::after').height).toBe('2px')
 		const bar =
 			password.getBoundingClientRect().bottom -

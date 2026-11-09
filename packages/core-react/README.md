@@ -22,14 +22,14 @@ import { PlusIcon } from '@brrritscold/core-react/icons'
 
 Dark mode is the `.dark` class on an ancestor; there is no theme provider.
 
-| Subpath         | Holds                                                                                                                                                                |
-| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `.`             | named component and part exports plus `cn`, from one pure barrel (`src/index.ts`)                                                                                    |
-| `./icons`       | `export * from "lucide-react"`; use the `<Name>Icon` aliases                                                                                                         |
-| `./data-table`  | `useDataTable` only (arrives with the day-one data table; empty until then)                                                                                          |
-| `./styles.css`  | the built theme: `@import "tailwindcss"`, its own `@source "./**/*.js"`, tokens, `@theme inline`                                                                     |
-| `./tokens.json` | the raw token file                                                                                                                                                   |
-| `./testing`     | component objects for Playwright specs (`dialog(root)`, `toast(page)`, `toggleGroup(root)`, `accordion(root)`, `tabs(root)`); `@playwright/test` is an optional peer |
+| Subpath         | Holds                                                                                                                                                                                      |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `.`             | named component and part exports plus `cn`, from one pure barrel (`src/index.ts`)                                                                                                          |
+| `./icons`       | `export * from "lucide-react"`; use the `<Name>Icon` aliases                                                                                                                               |
+| `./data-table`  | `useDataTable` (and its types): the one importer of `@tanstack/react-table`; see [Data table](#data-table)                                                                                 |
+| `./styles.css`  | the built theme: `@import "tailwindcss"`, its own `@source "./**/*.js"`, tokens, `@theme inline`                                                                                           |
+| `./tokens.json` | the raw token file                                                                                                                                                                         |
+| `./testing`     | component objects for Playwright specs (`dialog(root)`, `toast(page)`, `toggleGroup(root)`, `accordion(root)`, `tabs(root)`, `dataTable(root)`, …); `@playwright/test` is an optional peer |
 
 ## Where this package departs from the repo's package layout
 
@@ -114,10 +114,102 @@ Penpot can't say everything a class list says. The library twin keeps every chec
 - **Open/active states are hidden layers.** Base UI holds them, not a prop. `Accordion/Item` has a hidden `Content` and its Trigger a hidden `Open` chevron (`ChevronUp`) beside `Closed` (`ChevronDown`). `Tabs/Trigger` has a hidden `Active` pill (`background`, `shadow.sm`) and a hidden `Line` bar for the `line` list. A copy shows them. The bottom border of an accordion item is a 1px `Border` layer, hidden on the last item.
 - **An inactive tab's text is `muted-foreground`,** not `text-foreground/60` (there is no `opacity.60` token). Dark's active `border-input bg-input/30` stays `background`. Vertical `Tabs` turns its `List` copy into a column.
 - **Card's `ring-1 ring-foreground/10` is a `Ring` layer** on top (`foreground` stroke at `opacity.10`). The `sm` variant overrides its parts' padding to `space.4` and the title to `font-size.sm`. `Action` is hidden in `Header`; `Action`, `Content`, `Footer` and `Tabs/Content`, `Accordion/Content` hold `_internal/Slot` placeholders. `BreadcrumbItem` is layout-only and on the drift allowlist. `BreadcrumbList`'s gap is `space.2-5` (`sm:gap-2.5`, the desktop width).
+- **Table's columns are fixed-width cells.** `Table/Head` and `Table/Cell` are 120px boards (a table lays out its columns from content; Penpot can't), so the twin's columns don't stretch to the container's `w-full`. `TableHeader` and `TableBody` are layout-only (`Columns` and `Rows` wrappers) and on the drift allowlist. A row's `border-b` is a 1px `Border` layer, hidden on the last body row and on the footer's row; `data-[state=selected]:bg-muted` is a hidden `Selected` layer a copy shows (no prop). `Table/Footer`'s `bg-muted/50` is a `Tint` layer (`muted` at `opacity.50`); its text is `font-weight.medium` on each cell's copy. Hover (`hover:bg-muted/50`) has no twin.
+- **Pagination's buttons are their own boards, not Button copies.** `Button`'s main holds a `Label` only, and a copy can't add an icon, so `Pagination/Link` (`isActive` `true` → outline, `false` → ghost, `icon` size), `Previous`, `Next`, `Ellipsis`, `DataTableColumnHeader`'s trigger, `DataTableViewOptions` and the toolbar's `Reset` are boards carrying Button's tokens for that variant and size. `PaginationItem` is a bare `<li>`, on the drift allowlist. `Pagination` hugs its content where code is `w-full justify-center`; `DataTablePagination` hugs too, so its pagination sits next to the rows-per-page select instead of pushed right, and Previous / Next show no `aria-disabled` fade (no prop to vary).
+- **The data-table primitives twin their resting look.** `DataTableColumnHeader` has a `sort` variant (`none` / `asc` / `desc`) and draws the sortable trigger; the plain-text header (no `onSortChange`) and the trigger's `-ml-3` have no twin, nor does its menu. `DataTableViewOptions` is the trigger only; its menu is a `DropdownMenu` of checkbox items. `DataTableToolbar`'s `Reset` and `DataTablePagination`'s `Rows per page` group are hidden layers a copy shows; the toolbar's `Actions` is an `_internal/Slot`. The filter input is an `Input` copy at 32px tall with `size.xs` on its width.
 - **The dark-mode switch thumb is wrong.** Code's thumb is `dark:bg-foreground` unchecked and `dark:bg-primary-foreground` checked. The twin keeps `background`, so in Dark an unchecked thumb is near-black on the track.
 - **An icon's stroke stays 2px when resized.** lucide scales the stroke with the icon's size; Penpot scales the paths (constraints `scale`) but not the stroke width. A twin that resizes an icon copy sets the copy's stroke width by hand (Checkbox's 14px check: 2 × 14 / 24 ≈ 1.167).
 - **An icon's dot is a filled circle.** lucide draws a dot (`Info`, `CircleExclamationPoint`) as a 0.01px path with round caps, which Penpot doesn't render; the twin uses a 2×2 ellipse with fill `foreground`, the same shape.
 - **Library icons use lucide's canonical names, never aliases** (`CircleExclamationPoint`, not `CircleAlert`), so a lucide major that drops an alias doesn't break drift rule 4. Icon twins are built from `lucide-react`'s own icon data over MCP, so their geometry matches the installed version.
+
+## Data table
+
+The data table is two halves that meet only through plain props:
+
+- **The primitives, in `.`**: `DataTableColumnHeader` (`title`, `sort: 'none' | 'asc' | 'desc'`, `onSortChange`, `onHide`), `DataTableToolbar` (`filter`, `onFilterChange`, `filterLabel`, children at the end), `DataTableViewOptions` (`columns: { id, label, visible }[]`, `onVisibilityChange`) and `DataTablePagination` (`pageIndex`, `pageCount`, `onPageChange`, and a rows-per-page select with `pageSize` / `pageSizeOptions` / `onPageSizeChange`), built on `Table`, `Pagination`, `DropdownMenu`, `Input`, `Select` and `Button`. They **never import TanStack**: a hand-rolled or server-driven table feeds them its own state. Each has a library twin.
+- **`useDataTable`, in `./data-table`**: wraps TanStack Table v9's `useTable` with sorting, a global filter, pagination, row selection and column visibility, client-side, and returns the `table` plus a prop getter per primitive. It is the only file that imports `@tanstack/react-table`; the unit tier's TanStack boundary check walks the `.` entry's import graph and fails if it ever reaches TanStack. Code only: no library twin, on the drift allowlist.
+
+```tsx
+import {
+	Checkbox,
+	DataTableColumnHeader,
+	DataTablePagination,
+	DataTableToolbar,
+	DataTableViewOptions,
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from '@brrritscold/core-react'
+import { type DataTableColumnDef, useDataTable } from '@brrritscold/core-react/data-table'
+
+const columns: DataTableColumnDef<Payment>[] = [
+	{ id: 'select', enableSorting: false, enableHiding: false },
+	{ accessorKey: 'email', header: 'Email' },
+	{ accessorKey: 'status', header: 'Status', enableSorting: false },
+]
+
+function Payments({ data }: { data: Payment[] }) {
+	const dt = useDataTable({ data, columns, getRowId: (row) => row.id })
+	return (
+		<div data-testid="payments">
+			<DataTableToolbar {...dt.getToolbarProps()}>
+				<DataTableViewOptions {...dt.getViewOptionsProps()} />
+			</DataTableToolbar>
+			<Table>
+				<TableHeader>
+					{dt.table.getHeaderGroups().map((group) => (
+						<TableRow key={group.id}>
+							{group.headers.map((header) => (
+								<TableHead key={header.id} {...dt.getHeadProps(header)}>
+									{header.column.id === 'select' ? (
+										<Checkbox {...dt.getSelectAllProps()} />
+									) : (
+										<DataTableColumnHeader
+											{...dt.getColumnHeaderProps(header.column)}
+										/>
+									)}
+								</TableHead>
+							))}
+						</TableRow>
+					))}
+				</TableHeader>
+				<TableBody>
+					{dt.table.getRowModel().rows.map((row) => (
+						<TableRow key={row.id} {...dt.getRowProps(row)}>
+							{row.getVisibleCells().map((cell) => (
+								<TableCell key={cell.id}>
+									{cell.column.id === 'select' ? (
+										<Checkbox {...dt.getRowSelectProps(row)} />
+									) : (
+										dt.renderCell(cell)
+									)}
+								</TableCell>
+							))}
+						</TableRow>
+					))}
+				</TableBody>
+			</Table>
+			<DataTablePagination {...dt.getPaginationProps()} />
+		</div>
+	)
+}
+```
+
+| Getter                                           | Feeds                   | Gives                                                                                                                    |
+| ------------------------------------------------ | ----------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `getHeadProps(header)`                           | `TableHead`             | `colSpan`, and `aria-sort` (`ascending` / `descending`) on the sorted column's cell only                                 |
+| `getColumnHeaderProps(column)`                   | `DataTableColumnHeader` | `title` (the column's text `header`, else its id), `sort`, `onSortChange` if it can sort, `onHide` if it can hide        |
+| `getRowProps(row)`                               | `TableRow`              | `data-state="selected"` on a selected row                                                                                |
+| `getSelectAllProps()` / `getRowSelectProps(row)` | `Checkbox`              | `checked`, `indeterminate` (select-all), `disabled` (a row), `onCheckedChange`, `aria-label` `Select all` / `Select row` |
+| `getToolbarProps()`                              | `DataTableToolbar`      | `filter`, `onFilterChange` (the global filter; a new filter goes back to the first page)                                 |
+| `getViewOptionsProps()`                          | `DataTableViewOptions`  | `columns` that can hide, by label, and `onVisibilityChange`                                                              |
+| `getPaginationProps()`                           | `DataTablePagination`   | `pageIndex`, `pageCount` (at least 1), `onPageChange`, `pageSize`, `onPageSizeChange`                                    |
+| `renderHeader(header)` / `renderCell(cell)`      | —                       | a column's own `header` / `cell`, through TanStack's `flexRender`                                                        |
+
+Keep `data` and `columns` stable between renders (state, a memo or module scope): TanStack recomputes its row models on a new array. `table` is the TanStack table for anything the getters don't cover. `useDataTable` follows TanStack Table v9 (`useTable` and a feature registry), not v8's `useReactTable`; `DataTableColumnDef<TData>` is a column definition over its features, so an app types its columns without depending on TanStack itself. `dataTable(root)` in `./testing` drives the result.
 
 ## Vendoring a shadcn component
 
@@ -149,6 +241,9 @@ Where upstream steps off the tokens, the file says so in a header comment and fi
 - `accordion.tsx` (Base UI Accordion): the trigger's `aria-disabled:` is `disabled:`. Base UI 1.9 disables the trigger as a native button with the `disabled` attribute, so a disabled item never dimmed. The height animation moves onto the panel: upstream put `h-(--accordion-panel-height)` and `data-starting-style:h-0` / `data-ending-style:h-0` on the inner div, which carries none of Base UI's attributes, and animated the panel with tw-animate-css's `animate-accordion-down/up`, whose keyframes read Radix's `--radix-accordion-content-height`, so the height jumped. The panel transitions its own height (`transition-all duration-200 ease-out`) between 0 and Base UI's `--accordion-panel-height`, which joins the source scan's Base UI variables. Upstream has no `"use client"`, and neither does the file.
 - `breadcrumb.tsx` is upstream on tokens; the ellipsis icon is lucide's canonical `EllipsisIcon`, not the `MoreHorizontalIcon` alias.
 - `card.tsx`: upstream spaced every part with an element-local `--card-spacing` (`[--card-spacing:--spacing(6)]`, `gap-(--card-spacing)`, `px-(--card-spacing)`), and `--spacing(…)` reads Tailwind's `--spacing`, which the theme clears, so the card had no padding or gaps. Each use is the step it means, `6` (24px) and `4` (16px) at `size` sm: `gap-6 py-6` / `data-[size=sm]:gap-4 data-[size=sm]:py-4`, the parts' `px-6` / `group-data-[size=sm]/card:px-4`, and the ruled header's `pb` and footer's `pt` likewise. The header drops `has-data-[slot=card-action]:grid-cols-[1fr_auto]` and `has-data-[slot=card-description]:grid-rows-[auto_auto]`: the action's `col-start-2 row-span-2 justify-self-end` makes the implicit tracks, and its column holds no more than the action, so it still ends at the header's right edge.
+- `table.tsx` is upstream unchanged. A row's `data-[state=selected]:bg-muted` reads an attribute the app sets (`useDataTable`'s `getRowProps`), not one Base UI sets, and the story asserts it.
+- `pagination.tsx` (on Button): the ellipsis icon is lucide's canonical `EllipsisIcon`, not the `MoreHorizontalIcon` alias. A link is Base UI's Button rendering an `<a>` (`nativeButton={false}`), and Base UI gives it `role="button"`, with or without an `href`: find pages as buttons, not links. A link has no `disabled`; `DataTablePagination` marks Previous / Next `aria-disabled` and fades them with `aria-disabled:pointer-events-none aria-disabled:opacity-50`.
+- `data-table-column-header.tsx`, `data-table-toolbar.tsx`, `data-table-view-options.tsx`, `data-table-pagination.tsx` have no registry item: they follow shadcn's data-table guide on our components, with plain props instead of a TanStack `column` / `table`. The column header's sort is a `sort` prop with a `none` value, and its menu is a radio group (Asc, Desc, None) that shows the current order and closes on a pick, where the guide had two plain items; the guide's `data-[state=open]:bg-accent` is dropped (Base UI sets no `data-state`; Button's ghost variant already styles `aria-expanded`) and the trigger's `h-8` is Button size `sm`'s own. The toolbar has one text filter (a `search` input, so a `searchbox`, its browser clear button hidden as Reset clears it) where the guide filtered one column, and the input's `w-[150px] lg:w-[250px]` is `w-full max-w-xs`. View options shows the trigger at every width (the guide's `hidden lg:flex` is an app's call), its menu's `w-[150px]` is `w-36`, items show the column's label rather than its capitalised id, and the label sits in a group, as Base UI's group label needs. Pagination is Pagination's numbered pages (first, last, the current one and its neighbours, an ellipsis per gap) with Previous and Next, not the guide's first/previous/next/last icon buttons and "Page x of y"; the rows-per-page select shows only with `onPageSizeChange`, and the selected-row count is the app's.
 - `tabs.tsx` (Base UI Tabs): `data-horizontal:` / `data-vertical:` (and the `group-data-*/tabs:` forms) are `data-[orientation=…]:`. Base UI 1.9 sets only `data-orientation`, so the list never sat above the panel and a vertical list never stacked. `orientation` is passed to Base UI as well as to the `data-` attribute (upstream set only the attribute), so the arrow keys follow it. The list's `p-[3px]` is `p-1` and the trigger's `h-[calc(100%-1px)]` is `h-full` (a 28px tab in the 36px list, upstream's was 29px), the line underline's `bottom-[-5px]` is `-bottom-1`, on the list's foot as the vertical bar's `-right-1` already was, and `ring-[3px]` is `ring-3`. `tabsListVariants` is exported.
 
 The shadcn CLI resolves `components.json`'s `utils` alias to the npm package `cn` and writes `src/components/…` imports: after a pull, point them back at `../lib/utils.js` and `./<name>.js`, and drop any `cn` dependency it added.
@@ -159,11 +254,11 @@ Naming is the component link: export name = library component name, cva variant 
 
 ## Tests
 
-| Tier          | Files                                        | Runner                                                                                                                                 |
-| ------------- | -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| `stories`     | `src/components/*.stories.tsx`               | Vitest browser mode (Chromium) via `@storybook/addon-vitest`; `@storybook/addon-a11y` fails on violations                              |
-| `unit`        | `tests/unit/**/*.unit.test.ts(x)`            | Vitest on jsdom, `fetch` throwing: `cn`, the token build, the token checks, the source scan, the story-title and tier-placement checks |
-| `integration` | `tests/integration/**/*.integration.spec.ts` | Playwright against `storybook build`, served by `vite preview`; proves the component objects and the Base UI traps                     |
+| Tier          | Files                                        | Runner                                                                                                                                                                                               |
+| ------------- | -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `stories`     | `src/components/*.stories.tsx`               | Vitest browser mode (Chromium) via `@storybook/addon-vitest`; `@storybook/addon-a11y` fails on violations                                                                                            |
+| `unit`        | `tests/unit/**/*.unit.test.ts(x)`            | Vitest on jsdom, `fetch` throwing: `cn`, `useDataTable` (through `renderHook`), the token build, the token checks, the source scan, the TanStack boundary, the story-title and tier-placement checks |
+| `integration` | `tests/integration/**/*.integration.spec.ts` | Playwright against `storybook build`, served by `vite preview`; proves the component objects and the Base UI traps                                                                                   |
 
 A story's `title` is its library component's Penpot path (`Components/Button`), one story per variant value, each with a `play` function. The component name in that path is the export, so a two-word component is `Components/AlertDialog`, never `Alert Dialog`; the unit tier's story-title check fails a title whose last segment isn't a `.` export. The `design` parameter holds the library component's Penpot URL; no story sets it yet, because the design system library and its component URLs arrive with [ts-packages#51](https://github.com/bRRRITSCOLD/ts-packages/issues/51). A story that opts out of a11y (`parameters: { a11y: { test: 'off' } }`) says why in a comment beside it. The token checks: light and dark define the same semantic tokens, every class a component applies compiles to a utility of the built theme, and each of those utilities reads a token for every token-typed property it sets.
 
@@ -208,3 +303,5 @@ export const test = base.extend<{ profileDialog: ReturnType<typeof dialog> }>({
 `accordion(root)` drives an Accordion from its root, which has no role: put a testid on `Accordion`. `trigger(label)`, `panel(label)` (role `region`, named by its trigger), `expanded()` reads the open items' labels in order, and `open(label)` / `close(label)` click a trigger unless the item is already in that state. **Trap 5:** a closed panel is unmounted, not hidden, once its height animation ends; `close()` returns after that, so a closed item has no panel to read. Opening an item of a single-value accordion closes the one before. A disabled trigger is a native disabled button that ignores the pointer, so `open()` / `close()` throw rather than wait on it. Each trigger is its own tab stop: Base UI 1.9 dropped the accordion's roving focus (following the APG), so the arrow keys do nothing and Tab moves between triggers, skipping a disabled one. Proven in `accordion.integration.spec.ts`.
 
 `tabs(root)` drives Tabs from its root, which holds the `tablist` and the panels and has no role: put a testid on `Tabs`. `tab(label)`, `selected()` reads the selected tab's label, `panel(label)` finds a tab's panel by the tab that names it, and `select(label)` clicks a tab and waits until it is selected. Only the selected tab's panel is mounted, but the panel being left stays a moment beside the new one, so never look a panel up as the only `tabpanel`. The arrow keys move focus between tabs without selecting (Base UI's `activateOnFocus` is off); Enter or Space selects. A disabled tab stays focusable (`aria-disabled`) but ignores the pointer, so `select()` throws rather than wait on it. Proven in `tabs.integration.spec.ts`.
+
+`dataTable(root)` drives a data table built from `Table` and the four primitives, as `useDataTable` wires them; the parts share no role, so put a testid on the element holding them. `columns()` and `rows()` read the header labels and the page's cell text, `row(text)`, `header(label)` and `cell(text, column)` find parts, `sort(column)` reads a column's order and `sortBy(column, 'asc' | 'desc' | 'none')` sets it through the header menu, `filter(text)` types into the toolbar, `toggleColumn(label, visible)` goes through the View menu, `selectRow(text, selected?)`, `selectAll(selected?)` and `selectedRows()` drive the checkboxes, and `page()`, `pages()`, `nextPage()`, `previousPage()` and `goToPage(n)` the pagination. What it carries: **`aria-sort` is on the header cell** (`columnheader`), not on its sort button, and only on the sorted column, so `sort()` reads its absence as `none`. **The header and View menus are portalled** out of `root` and found through their trigger's `aria-controls`, which Base UI sets only once the popup has mounted; a sort pick closes its menu, but a View checkbox item keeps it open, so `toggleColumn()` closes it with Escape, and both wait out the exit animation (**trap 5**). **Pages are buttons, not links** (Base UI's `<a role="button">`), the current one `aria-current="page"`; Previous on the first page and Next on the last are `aria-disabled` and ignore the pointer, so `previousPage()` / `nextPage()` throw rather than wait. A checkbox is Base UI's `role="checkbox"` span with a hidden input beside it (**trap 6**): click the role; select-all reads `mixed` while some rows are picked. A new filter goes back to the first page. Proven in `data-table.integration.spec.ts`.

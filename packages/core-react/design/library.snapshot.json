@@ -6182,6 +6182,2608 @@
 				}
 			}
 		},
+		"2d55422c-4cf4-80e5-8008-eb7d9552010f": {
+			"path": "Components/Table",
+			"name": "Caption",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb7d9480b9e1": {
+					"namePath": [
+						"Components / Table / Caption",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb7d95539350": {
+			"path": "Components/Table",
+			"name": "Head",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb7d94b0a886": {
+					"namePath": [
+						"Components / Table / Head"
+					],
+					"appliedTokens": {
+						"p2": "space.2",
+						"p4": "space.2"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7d94b93cc9": {
+					"namePath": [
+						"Components / Table / Head",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb7d9558312f": {
+			"path": "Components/Table",
+			"name": "Cell",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb7d94f43896": {
+					"namePath": [
+						"Components / Table / Cell"
+					],
+					"appliedTokens": {
+						"p1": "space.2",
+						"p2": "space.2",
+						"p3": "space.2",
+						"p4": "space.2"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7d94fde121": {
+					"namePath": [
+						"Components / Table / Cell",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb7da0e435a6": {
+			"path": "Components/Table",
+			"name": "Row",
+			"variantProperties": {},
+			"parts": {
+				"Amount": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb7d9558312f"
+				},
+				"Invoice": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb7d9558312f"
+				},
+				"Status": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb7d9558312f"
+				}
+			},
+			"wrappers": [
+				"Cells"
+			],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb7da0500261": {
+					"namePath": [
+						"Components / Table / Row",
+						"Cells",
+						"Invoice"
+					],
+					"appliedTokens": {
+						"p1": "space.2",
+						"p2": "space.2",
+						"p3": "space.2",
+						"p4": "space.2"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7da0500262": {
+					"namePath": [
+						"Components / Table / Row",
+						"Cells",
+						"Invoice",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7da055eacc": {
+					"namePath": [
+						"Components / Table / Row",
+						"Cells",
+						"Status"
+					],
+					"appliedTokens": {
+						"p1": "space.2",
+						"p2": "space.2",
+						"p3": "space.2",
+						"p4": "space.2"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7da055eacd": {
+					"namePath": [
+						"Components / Table / Row",
+						"Cells",
+						"Status",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7da05afbd0": {
+					"namePath": [
+						"Components / Table / Row",
+						"Cells",
+						"Amount"
+					],
+					"appliedTokens": {
+						"p1": "space.2",
+						"p2": "space.2",
+						"p3": "space.2",
+						"p4": "space.2"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7da05afbd1": {
+					"namePath": [
+						"Components / Table / Row",
+						"Cells",
+						"Amount",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7da05fac3d": {
+					"namePath": [
+						"Components / Table / Row",
+						"Border"
+					],
+					"appliedTokens": {
+						"fill": "border"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7da0ce8f68": {
+					"namePath": [
+						"Components / Table / Row",
+						"Selected"
+					],
+					"appliedTokens": {
+						"fill": "muted"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb7dab72f991": {
+			"path": "Components/Table",
+			"name": "Footer",
+			"variantProperties": {},
+			"parts": {
+				"Total": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb7da0e435a6"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb7daab50580": {
+					"namePath": [
+						"Components / Table / Footer",
+						"Border"
+					],
+					"appliedTokens": {
+						"fill": "border"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7daaca03d1": {
+					"namePath": [
+						"Components / Table / Footer",
+						"Total",
+						"Border"
+					],
+					"appliedTokens": {
+						"fill": "border"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7daaca03d3": {
+					"namePath": [
+						"Components / Table / Footer",
+						"Total",
+						"Cells",
+						"Amount"
+					],
+					"appliedTokens": {
+						"p1": "space.2",
+						"p2": "space.2",
+						"p3": "space.2",
+						"p4": "space.2"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7daaca03d4": {
+					"namePath": [
+						"Components / Table / Footer",
+						"Total",
+						"Cells",
+						"Amount",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7daaca03d5": {
+					"namePath": [
+						"Components / Table / Footer",
+						"Total",
+						"Cells",
+						"Status"
+					],
+					"appliedTokens": {
+						"p1": "space.2",
+						"p2": "space.2",
+						"p3": "space.2",
+						"p4": "space.2"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7daaca03d6": {
+					"namePath": [
+						"Components / Table / Footer",
+						"Total",
+						"Cells",
+						"Status",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7daaca03d7": {
+					"namePath": [
+						"Components / Table / Footer",
+						"Total",
+						"Cells",
+						"Invoice"
+					],
+					"appliedTokens": {
+						"p1": "space.2",
+						"p2": "space.2",
+						"p3": "space.2",
+						"p4": "space.2"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7daaca03d8": {
+					"namePath": [
+						"Components / Table / Footer",
+						"Total",
+						"Cells",
+						"Invoice",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7daaca03d9": {
+					"namePath": [
+						"Components / Table / Footer",
+						"Total",
+						"Selected"
+					],
+					"appliedTokens": {
+						"fill": "muted"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dab56b59a": {
+					"namePath": [
+						"Components / Table / Footer",
+						"Tint"
+					],
+					"appliedTokens": {
+						"fill": "muted",
+						"opacity": "opacity.50"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb7dc4cb83e5": {
+			"path": "Components",
+			"name": "Table",
+			"variantProperties": {},
+			"parts": {
+				"Caption": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb7d9552010f"
+				},
+				"Footer": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb7dab72f991"
+				},
+				"Headings": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb7da0e435a6"
+				},
+				"INV001": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb7da0e435a6"
+				},
+				"INV002": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb7da0e435a6"
+				},
+				"INV003": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb7da0e435a6"
+				}
+			},
+			"wrappers": [
+				"Columns",
+				"Rows"
+			],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb7dc00a6acb": {
+					"namePath": [
+						"Components / Table",
+						"Columns",
+						"Headings",
+						"Border"
+					],
+					"appliedTokens": {
+						"fill": "border"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc00a6acd": {
+					"namePath": [
+						"Components / Table",
+						"Columns",
+						"Headings",
+						"Cells",
+						"Amount"
+					],
+					"appliedTokens": {
+						"p2": "space.2",
+						"p4": "space.2"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc00a6acf": {
+					"namePath": [
+						"Components / Table",
+						"Columns",
+						"Headings",
+						"Cells",
+						"Status"
+					],
+					"appliedTokens": {
+						"p2": "space.2",
+						"p4": "space.2"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc00a6ad1": {
+					"namePath": [
+						"Components / Table",
+						"Columns",
+						"Headings",
+						"Cells",
+						"Invoice"
+					],
+					"appliedTokens": {
+						"p2": "space.2",
+						"p4": "space.2"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc00a6ad3": {
+					"namePath": [
+						"Components / Table",
+						"Columns",
+						"Headings",
+						"Selected"
+					],
+					"appliedTokens": {
+						"fill": "muted"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc00e4b73": {
+					"namePath": [
+						"Components / Table",
+						"Columns",
+						"Headings",
+						"Cells",
+						"Invoice",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc010afc8": {
+					"namePath": [
+						"Components / Table",
+						"Columns",
+						"Headings",
+						"Cells",
+						"Status",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc0124c8a": {
+					"namePath": [
+						"Components / Table",
+						"Columns",
+						"Headings",
+						"Cells",
+						"Amount",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc01bf9cb": {
+					"namePath": [
+						"Components / Table",
+						"Rows",
+						"INV001",
+						"Border"
+					],
+					"appliedTokens": {
+						"fill": "border"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc01bf9cd": {
+					"namePath": [
+						"Components / Table",
+						"Rows",
+						"INV001",
+						"Cells",
+						"Amount"
+					],
+					"appliedTokens": {
+						"p1": "space.2",
+						"p2": "space.2",
+						"p3": "space.2",
+						"p4": "space.2"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc01bf9ce": {
+					"namePath": [
+						"Components / Table",
+						"Rows",
+						"INV001",
+						"Cells",
+						"Amount",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc01bf9cf": {
+					"namePath": [
+						"Components / Table",
+						"Rows",
+						"INV001",
+						"Cells",
+						"Status"
+					],
+					"appliedTokens": {
+						"p1": "space.2",
+						"p2": "space.2",
+						"p3": "space.2",
+						"p4": "space.2"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc01bf9d0": {
+					"namePath": [
+						"Components / Table",
+						"Rows",
+						"INV001",
+						"Cells",
+						"Status",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc01bf9d1": {
+					"namePath": [
+						"Components / Table",
+						"Rows",
+						"INV001",
+						"Cells",
+						"Invoice"
+					],
+					"appliedTokens": {
+						"p1": "space.2",
+						"p2": "space.2",
+						"p3": "space.2",
+						"p4": "space.2"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc01bf9d2": {
+					"namePath": [
+						"Components / Table",
+						"Rows",
+						"INV001",
+						"Cells",
+						"Invoice",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc01bf9d3": {
+					"namePath": [
+						"Components / Table",
+						"Rows",
+						"INV001",
+						"Selected"
+					],
+					"appliedTokens": {
+						"fill": "muted"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc01f8059": {
+					"namePath": [
+						"Components / Table",
+						"Rows",
+						"INV002",
+						"Border"
+					],
+					"appliedTokens": {
+						"fill": "border"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc01f805b": {
+					"namePath": [
+						"Components / Table",
+						"Rows",
+						"INV002",
+						"Cells",
+						"Amount"
+					],
+					"appliedTokens": {
+						"p1": "space.2",
+						"p2": "space.2",
+						"p3": "space.2",
+						"p4": "space.2"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc01f805c": {
+					"namePath": [
+						"Components / Table",
+						"Rows",
+						"INV002",
+						"Cells",
+						"Amount",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc01f805d": {
+					"namePath": [
+						"Components / Table",
+						"Rows",
+						"INV002",
+						"Cells",
+						"Status"
+					],
+					"appliedTokens": {
+						"p1": "space.2",
+						"p2": "space.2",
+						"p3": "space.2",
+						"p4": "space.2"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc01f805e": {
+					"namePath": [
+						"Components / Table",
+						"Rows",
+						"INV002",
+						"Cells",
+						"Status",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc01f805f": {
+					"namePath": [
+						"Components / Table",
+						"Rows",
+						"INV002",
+						"Cells",
+						"Invoice"
+					],
+					"appliedTokens": {
+						"p1": "space.2",
+						"p2": "space.2",
+						"p3": "space.2",
+						"p4": "space.2"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc01f8060": {
+					"namePath": [
+						"Components / Table",
+						"Rows",
+						"INV002",
+						"Cells",
+						"Invoice",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc01f8061": {
+					"namePath": [
+						"Components / Table",
+						"Rows",
+						"INV002",
+						"Selected"
+					],
+					"appliedTokens": {
+						"fill": "muted"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc026051e": {
+					"namePath": [
+						"Components / Table",
+						"Rows",
+						"INV003",
+						"Border"
+					],
+					"appliedTokens": {
+						"fill": "border"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc0260520": {
+					"namePath": [
+						"Components / Table",
+						"Rows",
+						"INV003",
+						"Cells",
+						"Amount"
+					],
+					"appliedTokens": {
+						"p1": "space.2",
+						"p2": "space.2",
+						"p3": "space.2",
+						"p4": "space.2"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc0260521": {
+					"namePath": [
+						"Components / Table",
+						"Rows",
+						"INV003",
+						"Cells",
+						"Amount",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc0260522": {
+					"namePath": [
+						"Components / Table",
+						"Rows",
+						"INV003",
+						"Cells",
+						"Status"
+					],
+					"appliedTokens": {
+						"p1": "space.2",
+						"p2": "space.2",
+						"p3": "space.2",
+						"p4": "space.2"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc0260523": {
+					"namePath": [
+						"Components / Table",
+						"Rows",
+						"INV003",
+						"Cells",
+						"Status",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc0260524": {
+					"namePath": [
+						"Components / Table",
+						"Rows",
+						"INV003",
+						"Cells",
+						"Invoice"
+					],
+					"appliedTokens": {
+						"p1": "space.2",
+						"p2": "space.2",
+						"p3": "space.2",
+						"p4": "space.2"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc0260525": {
+					"namePath": [
+						"Components / Table",
+						"Rows",
+						"INV003",
+						"Cells",
+						"Invoice",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc0260526": {
+					"namePath": [
+						"Components / Table",
+						"Rows",
+						"INV003",
+						"Selected"
+					],
+					"appliedTokens": {
+						"fill": "muted"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc02da917": {
+					"namePath": [
+						"Components / Table",
+						"Footer",
+						"Total",
+						"Border"
+					],
+					"appliedTokens": {
+						"fill": "border"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc02da919": {
+					"namePath": [
+						"Components / Table",
+						"Footer",
+						"Total",
+						"Cells",
+						"Amount"
+					],
+					"appliedTokens": {
+						"p1": "space.2",
+						"p2": "space.2",
+						"p3": "space.2",
+						"p4": "space.2"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc02da91a": {
+					"namePath": [
+						"Components / Table",
+						"Footer",
+						"Total",
+						"Cells",
+						"Amount",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc02da91b": {
+					"namePath": [
+						"Components / Table",
+						"Footer",
+						"Total",
+						"Cells",
+						"Status"
+					],
+					"appliedTokens": {
+						"p1": "space.2",
+						"p2": "space.2",
+						"p3": "space.2",
+						"p4": "space.2"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc02da91c": {
+					"namePath": [
+						"Components / Table",
+						"Footer",
+						"Total",
+						"Cells",
+						"Status",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc02da91d": {
+					"namePath": [
+						"Components / Table",
+						"Footer",
+						"Total",
+						"Cells",
+						"Invoice"
+					],
+					"appliedTokens": {
+						"p1": "space.2",
+						"p2": "space.2",
+						"p3": "space.2",
+						"p4": "space.2"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc02da91e": {
+					"namePath": [
+						"Components / Table",
+						"Footer",
+						"Total",
+						"Cells",
+						"Invoice",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc02da91f": {
+					"namePath": [
+						"Components / Table",
+						"Footer",
+						"Total",
+						"Selected"
+					],
+					"appliedTokens": {
+						"fill": "muted"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc02da920": {
+					"namePath": [
+						"Components / Table",
+						"Footer",
+						"Border"
+					],
+					"appliedTokens": {
+						"fill": "border"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc02da921": {
+					"namePath": [
+						"Components / Table",
+						"Footer",
+						"Tint"
+					],
+					"appliedTokens": {
+						"fill": "muted",
+						"opacity": "opacity.50"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dc030fbe2": {
+					"namePath": [
+						"Components / Table",
+						"Caption",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb7dddee5ccb": {
+			"path": "Components/Pagination",
+			"name": "Link",
+			"variantProperties": {
+				"isActive": "false"
+			},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb7ddd48005a": {
+					"namePath": [
+						"Components / Pagination / Link"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7ddd6667a1": {
+					"namePath": [
+						"Components / Pagination / Link",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb7dddf01b00": {
+			"path": "Components/Pagination",
+			"name": "Link",
+			"variantProperties": {
+				"isActive": "true"
+			},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb7ddd922038": {
+					"namePath": [
+						"Components / Pagination / Link"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "border",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7ddda6a99f": {
+					"namePath": [
+						"Components / Pagination / Link",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb7ddeeb11eb": {
+			"path": "Components/Pagination",
+			"name": "Previous",
+			"variantProperties": {},
+			"parts": {
+				"Icon": {
+					"componentId": "34194205-34cb-806a-8008-ea142ec4cac6"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb7dddf1c1b9": {
+					"namePath": [
+						"Components / Pagination / Previous"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2-5",
+						"p4": "space.2",
+						"column-gap": "space.1-5"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dde04ad6b": {
+					"namePath": [
+						"Components / Pagination / Previous",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dde17255e": {
+					"namePath": [
+						"Components / Pagination / Previous",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb7ddeed487d": {
+			"path": "Components/Pagination",
+			"name": "Next",
+			"variantProperties": {},
+			"parts": {
+				"Icon": {
+					"componentId": "34194205-34cb-806a-8008-ea142ecd7ae5"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb7dde645580": {
+					"namePath": [
+						"Components / Pagination / Next"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2",
+						"p4": "space.2-5",
+						"column-gap": "space.1-5"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dde7eb771": {
+					"namePath": [
+						"Components / Pagination / Next",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dde90a6a9": {
+					"namePath": [
+						"Components / Pagination / Next",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb7ddf2340b7": {
+			"path": "Components/Pagination",
+			"name": "Ellipsis",
+			"variantProperties": {},
+			"parts": {
+				"Icon": {
+					"componentId": "34194205-34cb-806a-8008-ea142eea02f3"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb7ddef97cea": {
+					"namePath": [
+						"Components / Pagination / Ellipsis",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7ddef97ceb": {
+					"namePath": [
+						"Components / Pagination / Ellipsis",
+						"Icon",
+						"Stroke 2"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7ddef97cec": {
+					"namePath": [
+						"Components / Pagination / Ellipsis",
+						"Icon",
+						"Stroke 3"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb7def73ac60": {
+			"path": "Components/Pagination",
+			"name": "Content",
+			"variantProperties": {},
+			"parts": {
+				"Ellipsis": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb7ddf2340b7"
+				},
+				"Next": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb7ddeed487d"
+				},
+				"Page 1": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb7dddee5ccb"
+				},
+				"Page 2": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb7dddf01b00"
+				},
+				"Page 3": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb7dddee5ccb"
+				},
+				"Previous": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb7ddeeb11eb"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb7def4eee3d": {
+					"namePath": [
+						"Components / Pagination / Content"
+					],
+					"appliedTokens": {
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7def54e679": {
+					"namePath": [
+						"Components / Pagination / Content",
+						"Previous"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2-5",
+						"p4": "space.2",
+						"column-gap": "space.1-5"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7def54e67a": {
+					"namePath": [
+						"Components / Pagination / Content",
+						"Previous",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7def54e67c": {
+					"namePath": [
+						"Components / Pagination / Content",
+						"Previous",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7def583e60": {
+					"namePath": [
+						"Components / Pagination / Content",
+						"Page 1"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7def583e61": {
+					"namePath": [
+						"Components / Pagination / Content",
+						"Page 1",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7def5c109a": {
+					"namePath": [
+						"Components / Pagination / Content",
+						"Page 2"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "border",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7def5c109b": {
+					"namePath": [
+						"Components / Pagination / Content",
+						"Page 2",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7def5fddae": {
+					"namePath": [
+						"Components / Pagination / Content",
+						"Page 3"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7def5fddaf": {
+					"namePath": [
+						"Components / Pagination / Content",
+						"Page 3",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7def63ab45": {
+					"namePath": [
+						"Components / Pagination / Content",
+						"Ellipsis",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7def63ab46": {
+					"namePath": [
+						"Components / Pagination / Content",
+						"Ellipsis",
+						"Icon",
+						"Stroke 2"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7def63eb85": {
+					"namePath": [
+						"Components / Pagination / Content",
+						"Ellipsis",
+						"Icon",
+						"Stroke 3"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7def66f1bc": {
+					"namePath": [
+						"Components / Pagination / Content",
+						"Next"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2",
+						"p4": "space.2-5",
+						"column-gap": "space.1-5"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7def66f1be": {
+					"namePath": [
+						"Components / Pagination / Content",
+						"Next",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7def66f1bf": {
+					"namePath": [
+						"Components / Pagination / Content",
+						"Next",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb7def81c3b3": {
+			"path": "Components",
+			"name": "Pagination",
+			"variantProperties": {},
+			"parts": {
+				"Content": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb7def73ac60"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb7def7c7381": {
+					"namePath": [
+						"Components / Pagination",
+						"Content"
+					],
+					"appliedTokens": {
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7def7c7382": {
+					"namePath": [
+						"Components / Pagination",
+						"Content",
+						"Next"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2",
+						"p4": "space.2-5",
+						"column-gap": "space.1-5"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7def7c7384": {
+					"namePath": [
+						"Components / Pagination",
+						"Content",
+						"Next",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7def7c7385": {
+					"namePath": [
+						"Components / Pagination",
+						"Content",
+						"Next",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7def7c7388": {
+					"namePath": [
+						"Components / Pagination",
+						"Content",
+						"Ellipsis",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7def7c7389": {
+					"namePath": [
+						"Components / Pagination",
+						"Content",
+						"Ellipsis",
+						"Icon",
+						"Stroke 2"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7def7c738a": {
+					"namePath": [
+						"Components / Pagination",
+						"Content",
+						"Ellipsis",
+						"Icon",
+						"Stroke 3"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7def7c738b": {
+					"namePath": [
+						"Components / Pagination",
+						"Content",
+						"Page 3"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7def7c738c": {
+					"namePath": [
+						"Components / Pagination",
+						"Content",
+						"Page 3",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7def7c98dc": {
+					"namePath": [
+						"Components / Pagination",
+						"Content",
+						"Page 2"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "border",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7def7c98dd": {
+					"namePath": [
+						"Components / Pagination",
+						"Content",
+						"Page 2",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7def7c98de": {
+					"namePath": [
+						"Components / Pagination",
+						"Content",
+						"Page 1"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7def7c98df": {
+					"namePath": [
+						"Components / Pagination",
+						"Content",
+						"Page 1",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7def7c98e0": {
+					"namePath": [
+						"Components / Pagination",
+						"Content",
+						"Previous"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2-5",
+						"p4": "space.2",
+						"column-gap": "space.1-5"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7def7c98e1": {
+					"namePath": [
+						"Components / Pagination",
+						"Content",
+						"Previous",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7def7c98e3": {
+					"namePath": [
+						"Components / Pagination",
+						"Content",
+						"Previous",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb7dfc3fef66": {
+			"path": "Components",
+			"name": "DataTableColumnHeader",
+			"variantProperties": {
+				"sort": "none"
+			},
+			"parts": {
+				"Icon": {
+					"componentId": "34194205-34cb-806a-8008-ea142ed6c877"
+				}
+			},
+			"wrappers": [
+				"Trigger"
+			],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb7dfbb26b6a": {
+					"namePath": [
+						"Components / DataTableColumnHeader"
+					],
+					"appliedTokens": {
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dfbbb980e": {
+					"namePath": [
+						"Components / DataTableColumnHeader",
+						"Trigger"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dfbcffafa": {
+					"namePath": [
+						"Components / DataTableColumnHeader",
+						"Trigger",
+						"Title"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dfbf94318": {
+					"namePath": [
+						"Components / DataTableColumnHeader",
+						"Trigger",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dfbf99094": {
+					"namePath": [
+						"Components / DataTableColumnHeader",
+						"Trigger",
+						"Icon",
+						"Stroke 2"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb7dfce79621": {
+			"path": "Components",
+			"name": "DataTableColumnHeader",
+			"variantProperties": {
+				"sort": "asc"
+			},
+			"parts": {
+				"Icon": {
+					"componentId": "34194205-34cb-806a-8008-ea142f144c59"
+				}
+			},
+			"wrappers": [
+				"Trigger"
+			],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb7dfc41d998": {
+					"namePath": [
+						"Components / DataTableColumnHeader"
+					],
+					"appliedTokens": {
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dfc4b3688": {
+					"namePath": [
+						"Components / DataTableColumnHeader",
+						"Trigger"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dfc630c34": {
+					"namePath": [
+						"Components / DataTableColumnHeader",
+						"Trigger",
+						"Title"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dfc97eb86": {
+					"namePath": [
+						"Components / DataTableColumnHeader",
+						"Trigger",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dfc97eb87": {
+					"namePath": [
+						"Components / DataTableColumnHeader",
+						"Trigger",
+						"Icon",
+						"Stroke 2"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb7dfd736653": {
+			"path": "Components",
+			"name": "DataTableColumnHeader",
+			"variantProperties": {
+				"sort": "desc"
+			},
+			"parts": {
+				"Icon": {
+					"componentId": "34194205-34cb-806a-8008-ea142f1e3d0d"
+				}
+			},
+			"wrappers": [
+				"Trigger"
+			],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb7dfce94804": {
+					"namePath": [
+						"Components / DataTableColumnHeader"
+					],
+					"appliedTokens": {
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dfcf15718": {
+					"namePath": [
+						"Components / DataTableColumnHeader",
+						"Trigger"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dfd07eae3": {
+					"namePath": [
+						"Components / DataTableColumnHeader",
+						"Trigger",
+						"Title"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dfd32bca2": {
+					"namePath": [
+						"Components / DataTableColumnHeader",
+						"Trigger",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7dfd32bca3": {
+					"namePath": [
+						"Components / DataTableColumnHeader",
+						"Trigger",
+						"Icon",
+						"Stroke 2"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb7e1cccbd19": {
+			"path": "Components",
+			"name": "DataTableViewOptions",
+			"variantProperties": {},
+			"parts": {
+				"Icon": {
+					"componentId": "34194205-34cb-806a-8008-ea142f2c836c"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb7e1c18962c": {
+					"namePath": [
+						"Components / DataTableViewOptions"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "border",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2-5",
+						"p4": "space.1-5",
+						"column-gap": "space.1",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7e1c58e3d1": {
+					"namePath": [
+						"Components / DataTableViewOptions",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7e1c58e3d2": {
+					"namePath": [
+						"Components / DataTableViewOptions",
+						"Icon",
+						"Stroke 2"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7e1c58e3d3": {
+					"namePath": [
+						"Components / DataTableViewOptions",
+						"Icon",
+						"Stroke 3"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7e1c58e3d4": {
+					"namePath": [
+						"Components / DataTableViewOptions",
+						"Icon",
+						"Stroke 4"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7e1c8c34b9": {
+					"namePath": [
+						"Components / DataTableViewOptions",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb7e2c5ff5da": {
+			"path": "Components",
+			"name": "DataTableToolbar",
+			"variantProperties": {},
+			"parts": {
+				"Actions": {
+					"componentId": "411cee6b-cc3d-8041-8008-eacbe3bb726f"
+				},
+				"Icon": {
+					"componentId": "34194205-34cb-806a-8008-ea142ef3e605"
+				},
+				"Input": {
+					"componentId": "411cee6b-cc3d-8041-8008-eacbe3cbf20c"
+				}
+			},
+			"wrappers": [
+				"Filters",
+				"Reset"
+			],
+			"exceptionsRecord": {
+				"v": 1,
+				"slots": [
+					"Actions"
+				]
+			},
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb7e26a03363": {
+					"namePath": [
+						"Components / DataTableToolbar"
+					],
+					"appliedTokens": {
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7e26b16b54": {
+					"namePath": [
+						"Components / DataTableToolbar",
+						"Filters"
+					],
+					"appliedTokens": {
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7e26b937e1": {
+					"namePath": [
+						"Components / DataTableToolbar",
+						"Filters",
+						"Input"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "input",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.1",
+						"p2": "space.2-5",
+						"p3": "space.1",
+						"p4": "space.2-5",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7e26b937e2": {
+					"namePath": [
+						"Components / DataTableToolbar",
+						"Filters",
+						"Input",
+						"Placeholder"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7e26be78ba": {
+					"namePath": [
+						"Components / DataTableToolbar",
+						"Filters",
+						"Reset"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.1-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7e26d3d467": {
+					"namePath": [
+						"Components / DataTableToolbar",
+						"Filters",
+						"Reset",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7e27001104": {
+					"namePath": [
+						"Components / DataTableToolbar",
+						"Filters",
+						"Reset",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7e27001105": {
+					"namePath": [
+						"Components / DataTableToolbar",
+						"Filters",
+						"Reset",
+						"Icon",
+						"Stroke 2"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7e27401571": {
+					"namePath": [
+						"Components / DataTableToolbar",
+						"Actions"
+					],
+					"appliedTokens": {},
+					"unbound": [
+						"fill",
+						"stroke-color"
+					]
+				},
+				"2d55422c-4cf4-80e5-8008-eb7e27401572": {
+					"namePath": [
+						"Components / DataTableToolbar",
+						"Actions",
+						"Role"
+					],
+					"appliedTokens": {},
+					"unbound": [
+						"fill"
+					]
+				}
+			}
+		},
+		"2d55422c-4cf4-80e5-8008-eb7e4a77e94e": {
+			"path": "Components",
+			"name": "DataTablePagination",
+			"variantProperties": {},
+			"parts": {
+				"Label": {
+					"componentId": "411cee6b-cc3d-8041-8008-eacbb7cfe154"
+				},
+				"Page size": {
+					"componentId": "411cee6b-cc3d-8041-8008-eae11e22a36c"
+				},
+				"Pagination": {
+					"componentId": "2d55422c-4cf4-80e5-8008-eb7def81c3b3"
+				}
+			},
+			"wrappers": [
+				"Rows per page"
+			],
+			"layers": {
+				"2d55422c-4cf4-80e5-8008-eb7e3406c36b": {
+					"namePath": [
+						"Components / DataTablePagination"
+					],
+					"appliedTokens": {
+						"column-gap": "space.4"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7e340fb564": {
+					"namePath": [
+						"Components / DataTablePagination",
+						"Rows per page"
+					],
+					"appliedTokens": {
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7e341967ae": {
+					"namePath": [
+						"Components / DataTablePagination",
+						"Rows per page",
+						"Label"
+					],
+					"appliedTokens": {
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7e341967af": {
+					"namePath": [
+						"Components / DataTablePagination",
+						"Rows per page",
+						"Label",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7e341fb46a": {
+					"namePath": [
+						"Components / DataTablePagination",
+						"Rows per page",
+						"Page size"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "input",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.2",
+						"p2": "space.2",
+						"p3": "space.2",
+						"p4": "space.2-5",
+						"column-gap": "space.1-5",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7e341fb46c": {
+					"namePath": [
+						"Components / DataTablePagination",
+						"Rows per page",
+						"Page size",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "muted-foreground"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7e341fb46d": {
+					"namePath": [
+						"Components / DataTablePagination",
+						"Rows per page",
+						"Page size",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7e342ff341": {
+					"namePath": [
+						"Components / DataTablePagination",
+						"Pagination",
+						"Content"
+					],
+					"appliedTokens": {
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7e342ff342": {
+					"namePath": [
+						"Components / DataTablePagination",
+						"Pagination",
+						"Content",
+						"Next"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2",
+						"p4": "space.2-5",
+						"column-gap": "space.1-5"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7e342ff344": {
+					"namePath": [
+						"Components / DataTablePagination",
+						"Pagination",
+						"Content",
+						"Next",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7e342ff345": {
+					"namePath": [
+						"Components / DataTablePagination",
+						"Pagination",
+						"Content",
+						"Next",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7e342ff348": {
+					"namePath": [
+						"Components / DataTablePagination",
+						"Pagination",
+						"Content",
+						"Ellipsis",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7e342ff349": {
+					"namePath": [
+						"Components / DataTablePagination",
+						"Pagination",
+						"Content",
+						"Ellipsis",
+						"Icon",
+						"Stroke 2"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7e34301a15": {
+					"namePath": [
+						"Components / DataTablePagination",
+						"Pagination",
+						"Content",
+						"Ellipsis",
+						"Icon",
+						"Stroke 3"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7e34301a16": {
+					"namePath": [
+						"Components / DataTablePagination",
+						"Pagination",
+						"Content",
+						"Page 3"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7e34301a17": {
+					"namePath": [
+						"Components / DataTablePagination",
+						"Pagination",
+						"Content",
+						"Page 3",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7e34301a18": {
+					"namePath": [
+						"Components / DataTablePagination",
+						"Pagination",
+						"Content",
+						"Page 2"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "border",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7e34301a19": {
+					"namePath": [
+						"Components / DataTablePagination",
+						"Pagination",
+						"Content",
+						"Page 2",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7e34301a1a": {
+					"namePath": [
+						"Components / DataTablePagination",
+						"Pagination",
+						"Content",
+						"Page 1"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7e34301a1b": {
+					"namePath": [
+						"Components / DataTablePagination",
+						"Pagination",
+						"Content",
+						"Page 1",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7e34301a1c": {
+					"namePath": [
+						"Components / DataTablePagination",
+						"Pagination",
+						"Content",
+						"Previous"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2-5",
+						"p4": "space.2",
+						"column-gap": "space.1-5"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7e34301a1d": {
+					"namePath": [
+						"Components / DataTablePagination",
+						"Pagination",
+						"Content",
+						"Previous",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"2d55422c-4cf4-80e5-8008-eb7e34301a1f": {
+					"namePath": [
+						"Components / DataTablePagination",
+						"Pagination",
+						"Content",
+						"Previous",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				}
+			}
+		},
 		"34194205-34cb-806a-8008-e987d8c988c7": {
 			"path": "icon",
 			"name": "Plus",
