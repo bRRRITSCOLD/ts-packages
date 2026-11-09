@@ -38,11 +38,14 @@
 		"Tooltip",
 		"TooltipProvider",
 		"TooltipTrigger",
+		"alertVariants",
+		"badgeVariants",
 		"buttonVariants",
 		"cn",
 		"createToastManager",
 		"fieldVariants",
 		"toast",
+		"toggleVariants",
 		"useComboboxAnchor",
 		"useToastManager"
 	]
