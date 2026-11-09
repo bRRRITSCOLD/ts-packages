@@ -112,6 +112,66 @@ export const commitSnapshot = (snapshot: string, branchExists: boolean): Interce
 			}),
 ]
 
+/** A lockstep `core-react` PR: open into the base branch from a branch of the same repo. */
+export const LOCKSTEP_PULL = {
+	number: 96,
+	html_url: `https://github.com/${REPO}/pull/96`,
+	head: {
+		ref: 'feat/select-combobox',
+		sha: 'f4f4f4f4f4f4f4f4f4f4f4f4f4f4f4f4f4f4f4f4',
+		repo: { full_name: REPO },
+	},
+}
+
+/** A PR from a fork; its snapshot is never read. */
+export const FORK_PULL = {
+	number: 98,
+	html_url: `https://github.com/${REPO}/pull/98`,
+	head: {
+		ref: 'main',
+		sha: 'a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5',
+		repo: { full_name: 'someone/ts-packages' },
+	},
+}
+
+/** `GET pulls` for every open PR into the base branch (the lockstep check). */
+export const listPullsIntoBase = (pulls: (typeof LOCKSTEP_PULL)[]): InterceptConfig =>
+	github({
+		method: 'get',
+		path: '/pulls',
+		query: { state: 'open', base: BASE, per_page: '100' },
+		reply: { statusCode: 200, body: pulls },
+	})
+
+/** The open refresh PR as `listPullsIntoBase` lists it. */
+export const OPEN_PULL_LISTED = {
+	...OPEN_PULL,
+	head: { ref: SNAPSHOT_REFRESH_BRANCH, sha: BASE_SHA, repo: { full_name: REPO } },
+}
+
+/** Closing the open refresh PR because a lockstep PR already carries the snapshot. */
+export const deferOpenPull = (): InterceptConfig[] => [
+	github({
+		method: 'post',
+		path: `/issues/${OPEN_PULL.number}/comments`,
+		body: {
+			body: `Lockstep PR #${LOCKSTEP_PULL.number} already carries this library snapshot; nothing to merge here.`,
+		},
+		reply: { statusCode: 201, body: { id: 1 } },
+	}),
+	github({
+		method: 'patch',
+		path: `/pulls/${OPEN_PULL.number}`,
+		body: { state: 'closed' },
+		reply: { statusCode: 200, body: { number: OPEN_PULL.number, state: 'closed' } },
+	}),
+	github({
+		method: 'delete',
+		path: `/git/refs/heads/${SNAPSHOT_REFRESH_BRANCH}`,
+		reply: { statusCode: 204, body: '' },
+	}),
+]
+
 /** `POST pulls` from the refresh branch into the base branch. */
 export const createPull = (): InterceptConfig =>
 	github({

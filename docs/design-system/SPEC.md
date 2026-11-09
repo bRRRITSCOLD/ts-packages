@@ -344,7 +344,7 @@ Code → library: exports with no library counterpart are a coverage gap; those 
 
 ### Snapshot refresh
 
-- Reads Penpot as the automation profile (`penpotToken`), writes the snapshot, and if it changed opens a PR with the GitHub PAT (a `GITHUB_TOKEN` PR wouldn't trigger CI). Unchanged → no PR. A refresh PR already open → update it.
+- Reads Penpot as the automation profile (`penpotToken`), writes the snapshot, and if it changed opens a PR with the GitHub PAT (a `GITHUB_TOKEN` PR wouldn't trigger CI). Unchanged → no PR. A refresh PR already open → update it. An open lockstep PR already holding the same snapshot → no refresh PR (and an open one closes), so a twin built ahead of its code merge never opens a red refresh PR.
 - Unchanged while a refresh PR is open (the library edit was reverted) → comment `Library matches main at <sha>; nothing to merge.`, close the PR and delete `design/snapshot-refresh`; labels stay, so `drift` stays on the closed PR. Only the refresh-PR mode does this: writing a snapshot into a lockstep `core-react` PR never touches the refresh PR.
 - The refresh branch is always rebuilt on the base branch's head and force-pushed, never stacked.
 - In the cluster it calls the backend through the frontend Service, not the ingress.
