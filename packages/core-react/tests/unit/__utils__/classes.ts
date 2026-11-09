@@ -43,11 +43,13 @@ const utilityOf = (cls: string) => {
 }
 
 /**
- * The CSS variables Base UI sets at runtime: a popup's size and place against its anchor, and a
- * toast's place in the stack, its measured height and its swipe. They are layout, not design: a
- * token can't stand in for the anchor's width or how far a toast has been dragged.
+ * The CSS variables Base UI sets at runtime: an accordion panel's measured height, a popup's size
+ * and place against its anchor, and a toast's place in the stack, its measured height and its
+ * swipe. They are layout, not design: a token can't stand in for the anchor's width or how far a
+ * toast has been dragged.
  */
 export const BASE_UI_VARS = [
+	'--accordion-panel-height',
 	'--anchor-height',
 	'--anchor-width',
 	'--available-height',
