@@ -28,11 +28,12 @@ const TOKEN_PROPERTY =
 
 /**
  * Values a token property may take without a token: keywords, fractions of the parent, and a
- * 1px hairline (a separator's thickness, a nudge to align a control with its label's first line).
+ * 1px hairline (a separator's thickness, a nudge to align a control with its label's first line),
+ * and `shadow-none`'s empty shadow.
  * An `!important` flag doesn't change the value it marks.
  */
 const KEYWORD =
-	/^(?:auto|0|1px|100%|fit-content|min-content|max-content|transparent|currentcolor|inherit|calc\(-?\d+ \/ \d+ \* 100%\))$/
+	/^(?:auto|0|1px|100%|fit-content|min-content|max-content|transparent|currentcolor|inherit|calc\(-?\d+ \/ \d+ \* 100%\)|0 0 #0000)$/
 
 /** Tailwind's visually-hidden utility: its 1px box hides text for screen readers, it styles nothing. */
 const VISUALLY_HIDDEN = 'sr-only'

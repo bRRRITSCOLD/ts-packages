@@ -42,6 +42,20 @@ describe('source scan', () => {
 			).toEqual(['bg-slate-500', 'text-white', 'dark:ring-offset-zinc-950/50', 'bg-black/50'])
 		})
 
+		it('should reject arithmetic on Base UI variables that reads a raw value or another variable', () => {
+			expect(
+				forbiddenClasses([
+					'min-w-[calc(var(--anchor-width)+28px)]',
+					'max-h-[calc(var(--available-height)-var(--radius))]',
+					'min-w-[calc(var(--spacing-7)+var(--spacing-1))]',
+				])
+			).toEqual([
+				'min-w-[calc(var(--anchor-width)+28px)]',
+				'max-h-[calc(var(--available-height)-var(--radius))]',
+				'min-w-[calc(var(--spacing-7)+var(--spacing-1))]',
+			])
+		})
+
 		it('should accept token utilities and arbitrary variants', () => {
 			expect(
 				forbiddenClasses([
@@ -50,6 +64,8 @@ describe('source scan', () => {
 					'active:not-aria-[haspopup]:translate-y-px in-data-[slot=button-group]:rounded-md',
 					'@base-ui/react/button use client',
 					'origin-(--transform-origin) max-h-(--available-height) w-(--anchor-width)',
+					'min-w-[calc(var(--anchor-width)+var(--spacing-7))]',
+					'max-h-[min(calc(var(--spacing-72)-var(--spacing-9)),calc(var(--available-height)-var(--spacing-9)))]',
 				])
 			).toEqual([])
 		})
