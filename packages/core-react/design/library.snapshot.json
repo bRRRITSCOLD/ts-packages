@@ -550,6 +550,10 @@
 					"$type": "spacing",
 					"$value": "128px"
 				},
+				"36": {
+					"$type": "spacing",
+					"$value": "144px"
+				},
 				"72": {
 					"$type": "spacing",
 					"$value": "288px"
@@ -573,6 +577,10 @@
 				"4-5": {
 					"$type": "spacing",
 					"$value": "18px"
+				},
+				"5-5": {
+					"$type": "spacing",
+					"$value": "22px"
 				}
 			}
 		}
@@ -9537,6 +9545,1916 @@
 						"r3": "radius",
 						"r4": "radius",
 						"opacity": "opacity.10"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-eae0530bf04c": {
+			"path": "Components/Select",
+			"name": "Label",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-eae052a03431": {
+					"namePath": [
+						"Components / Select / Label"
+					],
+					"appliedTokens": {
+						"p1": "space.1-5",
+						"p2": "space.2",
+						"p3": "space.1-5",
+						"p4": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae052cd9eba": {
+					"namePath": [
+						"Components / Select / Label",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.xs",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-eae0530c49cb": {
+			"path": "Components/Select",
+			"name": "Separator",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-eae052f98dcd": {
+					"namePath": [
+						"Components / Select / Separator"
+					],
+					"appliedTokens": {
+						"fill": "border"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-eae063143bdc": {
+			"path": "Components/Select",
+			"name": "Item",
+			"variantProperties": {},
+			"parts": {
+				"Indicator": {
+					"componentId": "34194205-34cb-806a-8008-ea142ea85e42"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-eae05b235040": {
+					"namePath": [
+						"Components / Select / Item"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.1-5",
+						"p2": "space.8",
+						"p3": "space.1-5",
+						"p4": "space.2",
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae05b675ed4": {
+					"namePath": [
+						"Components / Select / Item",
+						"Highlight"
+					],
+					"appliedTokens": {
+						"fill": "accent",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae05b84a9f3": {
+					"namePath": [
+						"Components / Select / Item",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "popover-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae05ba818b3": {
+					"namePath": [
+						"Components / Select / Item",
+						"Indicator",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "popover-foreground"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-eae063356029": {
+			"path": "Components/Combobox",
+			"name": "Item",
+			"variantProperties": {},
+			"parts": {
+				"Indicator": {
+					"componentId": "34194205-34cb-806a-8008-ea142ea85e42"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-eae05bb5742d": {
+					"namePath": [
+						"Components / Combobox / Item"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.1-5",
+						"p2": "space.8",
+						"p3": "space.1-5",
+						"p4": "space.2",
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae05bee819a": {
+					"namePath": [
+						"Components / Combobox / Item",
+						"Highlight"
+					],
+					"appliedTokens": {
+						"fill": "accent",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae05c102475": {
+					"namePath": [
+						"Components / Combobox / Item",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "popover-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae05c3cc949": {
+					"namePath": [
+						"Components / Combobox / Item",
+						"Indicator",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "popover-foreground"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-eae110910ff0": {
+			"path": "Components/Select",
+			"name": "Content",
+			"variantProperties": {},
+			"parts": {
+				"Apple": {
+					"componentId": "411cee6b-cc3d-8041-8008-eae063143bdc"
+				},
+				"Banana": {
+					"componentId": "411cee6b-cc3d-8041-8008-eae063143bdc"
+				},
+				"Blueberry": {
+					"componentId": "411cee6b-cc3d-8041-8008-eae063143bdc"
+				},
+				"Carrot": {
+					"componentId": "411cee6b-cc3d-8041-8008-eae063143bdc"
+				},
+				"Fruits": {
+					"componentId": "411cee6b-cc3d-8041-8008-eae0530bf04c"
+				},
+				"Grapes": {
+					"componentId": "411cee6b-cc3d-8041-8008-eae063143bdc"
+				},
+				"Leek": {
+					"componentId": "411cee6b-cc3d-8041-8008-eae063143bdc"
+				},
+				"Separator": {
+					"componentId": "411cee6b-cc3d-8041-8008-eae0530c49cb"
+				},
+				"Vegetables": {
+					"componentId": "411cee6b-cc3d-8041-8008-eae0530bf04c"
+				}
+			},
+			"wrappers": [
+				"FruitsGroup",
+				"VegetablesGroup"
+			],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-eae0e71baace": {
+					"namePath": [
+						"Components / Select / Content"
+					],
+					"appliedTokens": {
+						"fill": "popover",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"shadow": "shadow.md"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae0e743ca49": {
+					"namePath": [
+						"Components / Select / Content",
+						"FruitsGroup"
+					],
+					"appliedTokens": {
+						"p1": "space.1",
+						"p2": "space.1",
+						"p3": "space.1",
+						"p4": "space.1"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae0e76dd05b": {
+					"namePath": [
+						"Components / Select / Content",
+						"FruitsGroup",
+						"Fruits"
+					],
+					"appliedTokens": {
+						"p1": "space.1-5",
+						"p2": "space.2",
+						"p3": "space.1-5",
+						"p4": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae0e76dd05c": {
+					"namePath": [
+						"Components / Select / Content",
+						"FruitsGroup",
+						"Fruits",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.xs",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae0e771990b": {
+					"namePath": [
+						"Components / Select / Content",
+						"FruitsGroup",
+						"Apple"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.1-5",
+						"p2": "space.8",
+						"p3": "space.1-5",
+						"p4": "space.2",
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae0e771dc92": {
+					"namePath": [
+						"Components / Select / Content",
+						"FruitsGroup",
+						"Apple",
+						"Highlight"
+					],
+					"appliedTokens": {
+						"fill": "accent",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae0e771dc94": {
+					"namePath": [
+						"Components / Select / Content",
+						"FruitsGroup",
+						"Apple",
+						"Indicator",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "popover-foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae0e771dc95": {
+					"namePath": [
+						"Components / Select / Content",
+						"FruitsGroup",
+						"Apple",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "popover-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae0e775fbdc": {
+					"namePath": [
+						"Components / Select / Content",
+						"FruitsGroup",
+						"Banana"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.1-5",
+						"p2": "space.8",
+						"p3": "space.1-5",
+						"p4": "space.2",
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae0e775fbdd": {
+					"namePath": [
+						"Components / Select / Content",
+						"FruitsGroup",
+						"Banana",
+						"Highlight"
+					],
+					"appliedTokens": {
+						"fill": "accent",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae0e775fbdf": {
+					"namePath": [
+						"Components / Select / Content",
+						"FruitsGroup",
+						"Banana",
+						"Indicator",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "popover-foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae0e775fbe0": {
+					"namePath": [
+						"Components / Select / Content",
+						"FruitsGroup",
+						"Banana",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "popover-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae0e779e5a1": {
+					"namePath": [
+						"Components / Select / Content",
+						"FruitsGroup",
+						"Blueberry"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.1-5",
+						"p2": "space.8",
+						"p3": "space.1-5",
+						"p4": "space.2",
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae0e779e5a2": {
+					"namePath": [
+						"Components / Select / Content",
+						"FruitsGroup",
+						"Blueberry",
+						"Highlight"
+					],
+					"appliedTokens": {
+						"fill": "accent",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae0e779e5a4": {
+					"namePath": [
+						"Components / Select / Content",
+						"FruitsGroup",
+						"Blueberry",
+						"Indicator",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "popover-foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae0e779e5a5": {
+					"namePath": [
+						"Components / Select / Content",
+						"FruitsGroup",
+						"Blueberry",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "popover-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae0e77d58b5": {
+					"namePath": [
+						"Components / Select / Content",
+						"FruitsGroup",
+						"Grapes"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.1-5",
+						"p2": "space.8",
+						"p3": "space.1-5",
+						"p4": "space.2",
+						"column-gap": "space.2",
+						"opacity": "opacity.50"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae0e77d58b6": {
+					"namePath": [
+						"Components / Select / Content",
+						"FruitsGroup",
+						"Grapes",
+						"Highlight"
+					],
+					"appliedTokens": {
+						"fill": "accent",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae0e77d58b8": {
+					"namePath": [
+						"Components / Select / Content",
+						"FruitsGroup",
+						"Grapes",
+						"Indicator",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "popover-foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae0e77d58b9": {
+					"namePath": [
+						"Components / Select / Content",
+						"FruitsGroup",
+						"Grapes",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "popover-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae0e780a028": {
+					"namePath": [
+						"Components / Select / Content",
+						"Separator"
+					],
+					"appliedTokens": {
+						"fill": "border"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae0e78a621f": {
+					"namePath": [
+						"Components / Select / Content",
+						"VegetablesGroup"
+					],
+					"appliedTokens": {
+						"p1": "space.1",
+						"p2": "space.1",
+						"p3": "space.1",
+						"p4": "space.1"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae0e7b0f68c": {
+					"namePath": [
+						"Components / Select / Content",
+						"VegetablesGroup",
+						"Vegetables"
+					],
+					"appliedTokens": {
+						"p1": "space.1-5",
+						"p2": "space.2",
+						"p3": "space.1-5",
+						"p4": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae0e7b0f68d": {
+					"namePath": [
+						"Components / Select / Content",
+						"VegetablesGroup",
+						"Vegetables",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.xs",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae0e7b466fb": {
+					"namePath": [
+						"Components / Select / Content",
+						"VegetablesGroup",
+						"Carrot"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.1-5",
+						"p2": "space.8",
+						"p3": "space.1-5",
+						"p4": "space.2",
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae0e7b466fc": {
+					"namePath": [
+						"Components / Select / Content",
+						"VegetablesGroup",
+						"Carrot",
+						"Highlight"
+					],
+					"appliedTokens": {
+						"fill": "accent",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae0e7b466fe": {
+					"namePath": [
+						"Components / Select / Content",
+						"VegetablesGroup",
+						"Carrot",
+						"Indicator",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "popover-foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae0e7b466ff": {
+					"namePath": [
+						"Components / Select / Content",
+						"VegetablesGroup",
+						"Carrot",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "popover-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae0e7b9a15c": {
+					"namePath": [
+						"Components / Select / Content",
+						"VegetablesGroup",
+						"Leek"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.1-5",
+						"p2": "space.8",
+						"p3": "space.1-5",
+						"p4": "space.2",
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae0e7b9a15d": {
+					"namePath": [
+						"Components / Select / Content",
+						"VegetablesGroup",
+						"Leek",
+						"Highlight"
+					],
+					"appliedTokens": {
+						"fill": "accent",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae0e7b9a15f": {
+					"namePath": [
+						"Components / Select / Content",
+						"VegetablesGroup",
+						"Leek",
+						"Indicator",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "popover-foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae0e7b9a160": {
+					"namePath": [
+						"Components / Select / Content",
+						"VegetablesGroup",
+						"Leek",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "popover-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae0ecddd48d": {
+					"namePath": [
+						"Components / Select / Content",
+						"Ring"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"opacity": "opacity.10"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-eae11e219d7c": {
+			"path": "Components/Select",
+			"name": "Trigger",
+			"variantProperties": {
+				"aria-invalid": "false",
+				"disabled": "false",
+				"size": "default"
+			},
+			"parts": {
+				"Icon": {
+					"componentId": "34194205-34cb-806a-8008-ea142eb2489e"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-eae11092b166": {
+					"namePath": [
+						"Components / Select / Trigger"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "input",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.2",
+						"p2": "space.2",
+						"p3": "space.2",
+						"p4": "space.2-5",
+						"column-gap": "space.1-5",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae110e8fd0e": {
+					"namePath": [
+						"Components / Select / Trigger",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae11110f489": {
+					"namePath": [
+						"Components / Select / Trigger",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "muted-foreground"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-eae11e22a36c": {
+			"path": "Components/Select",
+			"name": "Trigger",
+			"variantProperties": {
+				"aria-invalid": "false",
+				"disabled": "false",
+				"size": "sm"
+			},
+			"parts": {
+				"Icon": {
+					"componentId": "34194205-34cb-806a-8008-ea142eb2489e"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-eae1111df562": {
+					"namePath": [
+						"Components / Select / Trigger"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "input",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.2",
+						"p2": "space.2",
+						"p3": "space.2",
+						"p4": "space.2-5",
+						"column-gap": "space.1-5",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae111741be5": {
+					"namePath": [
+						"Components / Select / Trigger",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae1119af712": {
+					"namePath": [
+						"Components / Select / Trigger",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "muted-foreground"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-eae11e232415": {
+			"path": "Components/Select",
+			"name": "Trigger",
+			"variantProperties": {
+				"aria-invalid": "true",
+				"disabled": "false",
+				"size": "default"
+			},
+			"parts": {
+				"Icon": {
+					"componentId": "34194205-34cb-806a-8008-ea142eb2489e"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-eae111a75a97": {
+					"namePath": [
+						"Components / Select / Trigger"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "destructive",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.2",
+						"p2": "space.2",
+						"p3": "space.2",
+						"p4": "space.2-5",
+						"column-gap": "space.1-5",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae111fc3ef0": {
+					"namePath": [
+						"Components / Select / Trigger",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae11222a4ad": {
+					"namePath": [
+						"Components / Select / Trigger",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "muted-foreground"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-eae11e23e463": {
+			"path": "Components/Select",
+			"name": "Trigger",
+			"variantProperties": {
+				"aria-invalid": "false",
+				"disabled": "true",
+				"size": "default"
+			},
+			"parts": {
+				"Icon": {
+					"componentId": "34194205-34cb-806a-8008-ea142eb2489e"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-eae112325421": {
+					"namePath": [
+						"Components / Select / Trigger"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "input",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.2",
+						"p2": "space.2",
+						"p3": "space.2",
+						"p4": "space.2-5",
+						"column-gap": "space.1-5",
+						"shadow": "shadow.xs",
+						"opacity": "opacity.50"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae1129c1798": {
+					"namePath": [
+						"Components / Select / Trigger",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae112c9049f": {
+					"namePath": [
+						"Components / Select / Trigger",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "muted-foreground"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-eae131494d11": {
+			"path": "Components/Combobox",
+			"name": "Label",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-eae130a88afa": {
+					"namePath": [
+						"Components / Combobox / Label"
+					],
+					"appliedTokens": {
+						"p1": "space.1-5",
+						"p2": "space.2",
+						"p3": "space.1-5",
+						"p4": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae130d64471": {
+					"namePath": [
+						"Components / Combobox / Label",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.xs",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-eae1314a1170": {
+			"path": "Components/Combobox",
+			"name": "Separator",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-eae130fc2c8b": {
+					"namePath": [
+						"Components / Combobox / Separator"
+					],
+					"appliedTokens": {
+						"fill": "border"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-eae1314ae8f3": {
+			"path": "Components/Combobox",
+			"name": "Empty",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-eae1310d899e": {
+					"namePath": [
+						"Components / Combobox / Empty"
+					],
+					"appliedTokens": {
+						"p1": "space.2",
+						"p3": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae131241b71": {
+					"namePath": [
+						"Components / Combobox / Empty",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-eae13871530b": {
+			"path": "Components/Combobox",
+			"name": "Content",
+			"variantProperties": {},
+			"parts": {
+				"Astro": {
+					"componentId": "411cee6b-cc3d-8041-8008-eae063356029"
+				},
+				"Next.js": {
+					"componentId": "411cee6b-cc3d-8041-8008-eae063356029"
+				},
+				"Nuxt": {
+					"componentId": "411cee6b-cc3d-8041-8008-eae063356029"
+				},
+				"Remix": {
+					"componentId": "411cee6b-cc3d-8041-8008-eae063356029"
+				},
+				"SvelteKit": {
+					"componentId": "411cee6b-cc3d-8041-8008-eae063356029"
+				}
+			},
+			"wrappers": [
+				"Options"
+			],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-eae1314b24ea": {
+					"namePath": [
+						"Components / Combobox / Content"
+					],
+					"appliedTokens": {
+						"fill": "popover",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"shadow": "shadow.md"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae1316cad1c": {
+					"namePath": [
+						"Components / Combobox / Content",
+						"Options"
+					],
+					"appliedTokens": {
+						"p1": "space.1",
+						"p2": "space.1",
+						"p3": "space.1",
+						"p4": "space.1"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae13196eaf8": {
+					"namePath": [
+						"Components / Combobox / Content",
+						"Options",
+						"Next.js"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.1-5",
+						"p2": "space.8",
+						"p3": "space.1-5",
+						"p4": "space.2",
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae13196eafa": {
+					"namePath": [
+						"Components / Combobox / Content",
+						"Options",
+						"Next.js",
+						"Indicator",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "popover-foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae13196eafb": {
+					"namePath": [
+						"Components / Combobox / Content",
+						"Options",
+						"Next.js",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "popover-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae13196eafc": {
+					"namePath": [
+						"Components / Combobox / Content",
+						"Options",
+						"Next.js",
+						"Highlight"
+					],
+					"appliedTokens": {
+						"fill": "accent",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae1319b0843": {
+					"namePath": [
+						"Components / Combobox / Content",
+						"Options",
+						"SvelteKit"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.1-5",
+						"p2": "space.8",
+						"p3": "space.1-5",
+						"p4": "space.2",
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae1319b0845": {
+					"namePath": [
+						"Components / Combobox / Content",
+						"Options",
+						"SvelteKit",
+						"Indicator",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "popover-foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae1319b0846": {
+					"namePath": [
+						"Components / Combobox / Content",
+						"Options",
+						"SvelteKit",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "popover-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae1319b0847": {
+					"namePath": [
+						"Components / Combobox / Content",
+						"Options",
+						"SvelteKit",
+						"Highlight"
+					],
+					"appliedTokens": {
+						"fill": "accent",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae1319f0f98": {
+					"namePath": [
+						"Components / Combobox / Content",
+						"Options",
+						"Nuxt"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.1-5",
+						"p2": "space.8",
+						"p3": "space.1-5",
+						"p4": "space.2",
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae1319f0f9a": {
+					"namePath": [
+						"Components / Combobox / Content",
+						"Options",
+						"Nuxt",
+						"Indicator",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "popover-foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae1319f0f9b": {
+					"namePath": [
+						"Components / Combobox / Content",
+						"Options",
+						"Nuxt",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "popover-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae1319f0f9c": {
+					"namePath": [
+						"Components / Combobox / Content",
+						"Options",
+						"Nuxt",
+						"Highlight"
+					],
+					"appliedTokens": {
+						"fill": "accent",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae131a2dd49": {
+					"namePath": [
+						"Components / Combobox / Content",
+						"Options",
+						"Remix"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.1-5",
+						"p2": "space.8",
+						"p3": "space.1-5",
+						"p4": "space.2",
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae131a2dd4b": {
+					"namePath": [
+						"Components / Combobox / Content",
+						"Options",
+						"Remix",
+						"Indicator",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "popover-foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae131a2dd4c": {
+					"namePath": [
+						"Components / Combobox / Content",
+						"Options",
+						"Remix",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "popover-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae131a2dd4d": {
+					"namePath": [
+						"Components / Combobox / Content",
+						"Options",
+						"Remix",
+						"Highlight"
+					],
+					"appliedTokens": {
+						"fill": "accent",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae131a86eae": {
+					"namePath": [
+						"Components / Combobox / Content",
+						"Options",
+						"Astro"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.1-5",
+						"p2": "space.8",
+						"p3": "space.1-5",
+						"p4": "space.2",
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae131a86eb0": {
+					"namePath": [
+						"Components / Combobox / Content",
+						"Options",
+						"Astro",
+						"Indicator",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "popover-foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae131a86eb1": {
+					"namePath": [
+						"Components / Combobox / Content",
+						"Options",
+						"Astro",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "popover-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae131a86eb2": {
+					"namePath": [
+						"Components / Combobox / Content",
+						"Options",
+						"Astro",
+						"Highlight"
+					],
+					"appliedTokens": {
+						"fill": "accent",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae137e1b024": {
+					"namePath": [
+						"Components / Combobox / Content",
+						"Ring"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"opacity": "opacity.10"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-eae167575a26": {
+			"path": "Components/Combobox",
+			"name": "Input",
+			"variantProperties": {
+				"disabled": "false",
+				"showClear": "false"
+			},
+			"parts": {
+				"icon / ChevronDown": {
+					"componentId": "34194205-34cb-806a-8008-ea142eb2489e"
+				}
+			},
+			"wrappers": [
+				"Chevron"
+			],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-eae15c354722": {
+					"namePath": [
+						"Components / Combobox / Input"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "input",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.1",
+						"p4": "space.2-5",
+						"column-gap": "space.1-5",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae15c7e94ab": {
+					"namePath": [
+						"Components / Combobox / Input",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae15caab36f": {
+					"namePath": [
+						"Components / Combobox / Input",
+						"Chevron",
+						"icon / ChevronDown",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "muted-foreground"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-eae16758360b": {
+			"path": "Components/Combobox",
+			"name": "Input",
+			"variantProperties": {
+				"disabled": "false",
+				"showClear": "true"
+			},
+			"parts": {
+				"icon / X": {
+					"componentId": "34194205-34cb-806a-8008-ea142ef3e605"
+				}
+			},
+			"wrappers": [
+				"Clear"
+			],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-eae15cb85429": {
+					"namePath": [
+						"Components / Combobox / Input"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "input",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.1",
+						"p4": "space.2-5",
+						"column-gap": "space.1-5",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae15cfe81ee": {
+					"namePath": [
+						"Components / Combobox / Input",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae15d2a8931": {
+					"namePath": [
+						"Components / Combobox / Input",
+						"Clear",
+						"icon / X",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "muted-foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae15d2a8932": {
+					"namePath": [
+						"Components / Combobox / Input",
+						"Clear",
+						"icon / X",
+						"Stroke 2"
+					],
+					"appliedTokens": {
+						"stroke-color": "muted-foreground"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-eae1675928a6": {
+			"path": "Components/Combobox",
+			"name": "Input",
+			"variantProperties": {
+				"disabled": "true",
+				"showClear": "false"
+			},
+			"parts": {
+				"icon / ChevronDown": {
+					"componentId": "34194205-34cb-806a-8008-ea142eb2489e"
+				}
+			},
+			"wrappers": [
+				"Chevron"
+			],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-eae15d4389a5": {
+					"namePath": [
+						"Components / Combobox / Input"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "input",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.1",
+						"p4": "space.2-5",
+						"column-gap": "space.1-5",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae15d8a0edb": {
+					"namePath": [
+						"Components / Combobox / Input",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal",
+						"opacity": "opacity.50"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae15daf6cd6": {
+					"namePath": [
+						"Components / Combobox / Input",
+						"Chevron"
+					],
+					"appliedTokens": {
+						"opacity": "opacity.50"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae15db4e3de": {
+					"namePath": [
+						"Components / Combobox / Input",
+						"Chevron",
+						"icon / ChevronDown",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "muted-foreground"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-eae185a8fa2a": {
+			"path": "Components/Combobox",
+			"name": "Chip",
+			"variantProperties": {},
+			"parts": {
+				"icon / X": {
+					"componentId": "34194205-34cb-806a-8008-ea142ef3e605"
+				}
+			},
+			"wrappers": [
+				"Remove"
+			],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-eae17e6a3861": {
+					"namePath": [
+						"Components / Combobox / Chip"
+					],
+					"appliedTokens": {
+						"fill": "muted",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p4": "space.1-5",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae17e997457": {
+					"namePath": [
+						"Components / Combobox / Chip",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.xs",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae17ec1221b": {
+					"namePath": [
+						"Components / Combobox / Chip",
+						"Remove"
+					],
+					"appliedTokens": {
+						"opacity": "opacity.50"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae17ec7ba0b": {
+					"namePath": [
+						"Components / Combobox / Chip",
+						"Remove",
+						"icon / X",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae17ec7ba0c": {
+					"namePath": [
+						"Components / Combobox / Chip",
+						"Remove",
+						"icon / X",
+						"Stroke 2"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-eae18bec37c9": {
+			"path": "Components/Combobox",
+			"name": "Chips",
+			"variantProperties": {},
+			"parts": {
+				"Next.js": {
+					"componentId": "411cee6b-cc3d-8041-8008-eae185a8fa2a"
+				},
+				"Nuxt": {
+					"componentId": "411cee6b-cc3d-8041-8008-eae185a8fa2a"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-eae185dba78e": {
+					"namePath": [
+						"Components / Combobox / Chips"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "input",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.1-5",
+						"p2": "space.1-5",
+						"p3": "space.1-5",
+						"p4": "space.1-5",
+						"row-gap": "space.1-5",
+						"column-gap": "space.1-5",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae186339949": {
+					"namePath": [
+						"Components / Combobox / Chips",
+						"Next.js"
+					],
+					"appliedTokens": {
+						"fill": "muted",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p4": "space.1-5",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae18633994a": {
+					"namePath": [
+						"Components / Combobox / Chips",
+						"Next.js",
+						"Remove"
+					],
+					"appliedTokens": {
+						"opacity": "opacity.50"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae18633994c": {
+					"namePath": [
+						"Components / Combobox / Chips",
+						"Next.js",
+						"Remove",
+						"icon / X",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae18633994d": {
+					"namePath": [
+						"Components / Combobox / Chips",
+						"Next.js",
+						"Remove",
+						"icon / X",
+						"Stroke 2"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae18633994e": {
+					"namePath": [
+						"Components / Combobox / Chips",
+						"Next.js",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.xs",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae18637d746": {
+					"namePath": [
+						"Components / Combobox / Chips",
+						"Nuxt"
+					],
+					"appliedTokens": {
+						"fill": "muted",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p4": "space.1-5",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae18637d747": {
+					"namePath": [
+						"Components / Combobox / Chips",
+						"Nuxt",
+						"Remove"
+					],
+					"appliedTokens": {
+						"opacity": "opacity.50"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae18637d749": {
+					"namePath": [
+						"Components / Combobox / Chips",
+						"Nuxt",
+						"Remove",
+						"icon / X",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae18637d74a": {
+					"namePath": [
+						"Components / Combobox / Chips",
+						"Nuxt",
+						"Remove",
+						"icon / X",
+						"Stroke 2"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae18637d74b": {
+					"namePath": [
+						"Components / Combobox / Chips",
+						"Nuxt",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.xs",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-eae1863aae75": {
+					"namePath": [
+						"Components / Combobox / Chips",
+						"Placeholder"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
 					},
 					"unbound": []
 				}
