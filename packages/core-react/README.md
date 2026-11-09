@@ -100,8 +100,14 @@ Penpot can't say everything a class list says. The library twin keeps every chec
 - **`rounded-md` is `radius`, 2px rounder.** Code derives `rounded-md` as `calc(var(--radius) - 2px)` (8px); Penpot has no derived token, so the applied-token rule puts `radius` (10px) on the corners.
 - **A colour at an opacity is a tint layer.** Applying a colour token resets the fill's opacity to 1, so Button `destructive`'s `bg-destructive/10` is an absolute `Tint` rectangle behind the label: fill `destructive`, layer opacity `opacity.10`. Penpot can't change an opacity by theme, so dark's `/20` stays at 10%.
 - **`dark:` overrides that pick another semantic are dropped.** Button `outline`'s `dark:border-input dark:bg-input/30` stay `border` and `background`.
-- **Hover, focus, `aria-*` and `disabled` states have no variants.** Only cva keys become variant properties.
-- **An icon's stroke stays 2px when resized.** lucide scales the stroke with the icon's size; Penpot scales the paths (constraints `scale`) but not the stroke width.
+- **Hover and focus states have no variants**, and neither do the focus and `aria-invalid` rings (`ring-3 ring-*/20`). A state backed by a prop is a variant property named after it, with values `true` / `false`: Checkbox `checked` / `disabled` / `aria-invalid`, Switch `checked` / `disabled`, Input and Textarea `disabled` / `aria-invalid`. Button has none: it was built before the form controls.
+- **A disabled control is the whole twin at `opacity.50`**, as `data-disabled:opacity-50` fades the whole element.
+- **RadioGroup's item has no `checked` variant**, because `RadioGroupItem` has no `checked` prop (the group's `value` picks it). `Components/RadioGroup/Item` holds a hidden `Checked` layer, which a copy shows to draw the selected item.
+- **Input and Textarea fill with `background`** where code is `bg-transparent`. A Penpot board with no fill casts its shadow from its children, so `shadow.xs` smeared the placeholder text; on a page the fill looks the same.
+- **Checkbox's corners are `border-radius.sm`** (6px, the `rounded-sm` it is in code), not `radius`, which would make a 16px box nearly round.
+- **Field `responsive` looks like `vertical`.** It goes horizontal in a field group 28rem or wider, a container query Penpot can't express.
+- **The dark-mode switch thumb is wrong.** Code's thumb is `dark:bg-foreground` unchecked and `dark:bg-primary-foreground` checked. The twin keeps `background`, so in Dark an unchecked thumb is near-black on the track.
+- **An icon's stroke stays 2px when resized.** lucide scales the stroke with the icon's size; Penpot scales the paths (constraints `scale`) but not the stroke width. A twin that resizes an icon copy sets the copy's stroke width by hand (Checkbox's 14px check: 2 × 14 / 24 ≈ 1.167).
 - **An icon's dot is a filled circle.** lucide draws a dot (`Info`, `CircleExclamationPoint`) as a 0.01px path with round caps, which Penpot doesn't render; the twin uses a 2×2 ellipse with fill `foreground`, the same shape.
 - **Library icons use lucide's canonical names, never aliases** (`CircleExclamationPoint`, not `CircleAlert`), so a lucide major that drops an alias doesn't break drift rule 4. Icon twins are built from `lucide-react`'s own icon data over MCP, so their geometry matches the installed version.
 
@@ -113,6 +119,14 @@ Where upstream steps off the tokens, the file says so in a header comment and fi
 
 - `button.tsx`: secondary's `hover:bg-[color-mix(…)]` is `hover:bg-secondary/80`, and the small sizes' `rounded-[min(var(--radius-md),…)]` corners are dropped for the base `rounded-md` (the same 8px at today's `radius`).
 - `dialog.tsx`, `alert-dialog.tsx`: the overlay's `bg-black/10` is `bg-foreground/10 dark:bg-background/10`, near-black at 10% in both modes. Dialog's popup centres with `inset-x-4 mx-auto` instead of `left-1/2 w-full max-w-[calc(100%-2rem)] -translate-x-1/2` (the same 1rem gutter). Alert Dialog's header drops its three `grid-rows-[…]` templates; implicit rows lay out the same.
+- `checkbox.tsx`: the box's `rounded-[4px]` is `rounded-sm` (6px at today's `radius`, 2px rounder).
+- `checkbox.tsx`, `radio-group.tsx`: `disabled:` is `data-disabled:`. The box and the item are `<span>`s Base UI marks `data-disabled`, so `:disabled` never matched and a disabled control didn't fade.
+- `separator.tsx`: `data-horizontal:` / `data-vertical:` are `data-[orientation=horizontal]:` / `data-[orientation=vertical]:`, the attribute Base UI 1.9 sets; upstream's never matched, so the line was 0px tall (and Field's separator a 10px bar).
+- `input.tsx`, `textarea.tsx`: `transition-[color,box-shadow]` is `transition-all`.
+- `switch.tsx`: the track's `h-[18.4px] w-[32px]` and `h-[14px] w-[24px]` are `h-4.5 w-8` and `h-3.5 w-6` (the default track 0.4px shorter; `space.4-5` was added for it), and the thumb's `translate-x-[calc(100%-2px)]` is the step it works out to, `translate-x-3.5` / `translate-x-2.5`.
+- `field.tsx`: `responsive`'s `@md/field-group:` is `@min-[28rem]/field-group:`. A container query can't read a token through `var()`, so the width is written out: 28rem is `size.md`'s 448px. Field's `leading-snug` reads `line-height.snug`, added for it.
+
+The shadcn CLI resolves `components.json`'s `utils` alias to the npm package `cn` and writes `src/components/…` imports: after a pull, point them back at `../lib/utils.js` and `./<name>.js`, and drop any `cn` dependency it added.
 
 Upstream's open and close animations (`animate-in`, `fade-in-0`, `zoom-in-95`, …) come from `tw-animate-css`, which `styles.css` imports after Tailwind.
 

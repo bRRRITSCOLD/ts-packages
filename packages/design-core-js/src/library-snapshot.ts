@@ -49,7 +49,8 @@ const checkedTokenAttributeSchema = z.enum(CHECKED_TOKEN_ATTRIBUTES)
  * neither an applied token nor an unbound attribute is left out.
  *
  * - `namePath`: the layer names from the component's main instance down to this layer, used
- *   only to name the layer in drift messages.
+ *   to name the layer in drift messages and, through a part's role, to tell the layers of a
+ *   slot placeholder part from the component's own.
  * - `appliedTokens`: the token name applied to each checked attribute.
  * - `unbound`: the checked attributes set to a non-default value with no token applied.
  */

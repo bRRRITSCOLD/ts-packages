@@ -14,12 +14,13 @@ export type TokenFile = Record<'primitive' | 'light' | 'dark', DesignTokens>
 /** Font sizes are stored in px and emitted relative to the root font size. */
 const ROOT_FONT_SIZE_PX = 16
 
-/** shadcn's `rounded-*` scale, every step derived from the one `radius` semantic. */
+/** shadcn's `rounded-*` scale, every step derived from the one `radius` semantic; `rounded-full` reads the `border-radius.full` primitive. */
 const RADIUS_SCALE = [
 	'--radius-sm: calc(var(--radius) - 4px);',
 	'--radius-md: calc(var(--radius) - 2px);',
 	'--radius-lg: var(--radius);',
 	'--radius-xl: calc(var(--radius) + 4px);',
+	'--radius-full: var(--border-radius-full);',
 ]
 
 const pxToRem = {

@@ -763,6 +763,49 @@ describe('checkDrift', () => {
 			expect(checkDrift(createDriftCheckInput(library)).errors).toEqual([])
 		})
 
+		it('should skip the layers of a slot placeholder part inside another component', () => {
+			const library = {
+				...createInStepLibrary(),
+				slot: createLibraryComponent({ path: '_internal', name: 'Slot', layers }),
+				group: createLibraryComponent({
+					name: 'CardContent',
+					exceptionsRecord: { v: 1, slots: ['Body'] },
+					parts: { Body: { componentId: 'slot' } },
+					layers: {
+						copy: createLibraryLayer({
+							namePath: ['CardContent', 'Body'],
+							unbound: ['fill', 'stroke-color'],
+						}),
+						role: createLibraryLayer({
+							namePath: ['CardContent', 'Body', 'Role'],
+							unbound: ['fill'],
+						}),
+					},
+				}),
+			}
+
+			expect(checkDrift(createDriftCheckInput(library)).errors).toEqual([])
+		})
+
+		it('should still check the other layers of a component with a slot placeholder part', () => {
+			const library = {
+				...createInStepLibrary(),
+				slot: createLibraryComponent({ path: '_internal', name: 'Slot', layers }),
+				group: createLibraryComponent({
+					name: 'CardContent',
+					exceptionsRecord: { v: 1, slots: ['Body'] },
+					parts: { Body: { componentId: 'slot' } },
+					layers: {
+						board: createLibraryLayer({ namePath: ['CardContent'], unbound: ['fill'] }),
+					},
+				}),
+			}
+
+			expect(
+				checkDrift(createDriftCheckInput(library)).errors.map(({ rule }) => rule)
+			).toEqual([7])
+		})
+
 		it('should still check a component outside _internal/ with the same layers', () => {
 			const library = { card: createLibraryComponent({ name: 'Card', layers }) }
 

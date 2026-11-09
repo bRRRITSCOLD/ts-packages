@@ -16,6 +16,7 @@ export {
 	AlertDialogTrigger,
 } from './components/alert-dialog.js'
 export { Button, buttonVariants } from './components/button.js'
+export { Checkbox } from './components/checkbox.js'
 export {
 	Dialog,
 	DialogClose,
@@ -28,4 +29,23 @@ export {
 	DialogTitle,
 	DialogTrigger,
 } from './components/dialog.js'
+export {
+	Field,
+	FieldContent,
+	FieldDescription,
+	FieldError,
+	FieldGroup,
+	FieldLabel,
+	FieldLegend,
+	FieldSeparator,
+	FieldSet,
+	FieldTitle,
+	fieldVariants,
+} from './components/field.js'
+export { Input } from './components/input.js'
+export { Label } from './components/label.js'
+export { RadioGroup, RadioGroupItem } from './components/radio-group.js'
+export { Separator } from './components/separator.js'
+export { Switch } from './components/switch.js'
+export { Textarea } from './components/textarea.js'
 export { cn } from './lib/utils.js'
