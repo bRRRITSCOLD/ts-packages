@@ -18,8 +18,13 @@ import {
 	closeOpenPull,
 	commitSnapshot,
 	createPull,
+	deferOpenPull,
+	FORK_PULL,
+	LOCKSTEP_PULL,
 	listOpenPulls,
+	listPullsIntoBase,
 	OPEN_PULL,
+	OPEN_PULL_LISTED,
 	REPO,
 	readBaseRef,
 	readSnapshot,
@@ -97,6 +102,7 @@ describe('refreshLibrarySnapshot (Penpot recordings and GitHub replayed by nock)
 		const scopes = serve(
 			readSnapshot(BASE, STALE_SNAPSHOT),
 			listOpenPulls(null),
+			listPullsIntoBase([]),
 			...commitSnapshot(snapshot, false),
 			createPull()
 		)
@@ -114,6 +120,7 @@ describe('refreshLibrarySnapshot (Penpot recordings and GitHub replayed by nock)
 		const scopes = serve(
 			readSnapshot(BASE, null),
 			listOpenPulls(null),
+			listPullsIntoBase([]),
 			...commitSnapshot(snapshot, false),
 			createPull()
 		)
@@ -126,6 +133,7 @@ describe('refreshLibrarySnapshot (Penpot recordings and GitHub replayed by nock)
 		const scopes = serve(
 			readSnapshot(BASE, STALE_SNAPSHOT),
 			listOpenPulls(null),
+			listPullsIntoBase([]),
 			...commitSnapshot(snapshot, true),
 			createPull()
 		)
@@ -139,6 +147,7 @@ describe('refreshLibrarySnapshot (Penpot recordings and GitHub replayed by nock)
 		const scopes = serve(
 			readSnapshot(BASE, STALE_SNAPSHOT),
 			listOpenPulls(OPEN_PULL),
+			listPullsIntoBase([OPEN_PULL_LISTED]),
 			readSnapshot('design/snapshot-refresh', STALE_SNAPSHOT),
 			...commitSnapshot(snapshot, true)
 		)
@@ -156,10 +165,62 @@ describe('refreshLibrarySnapshot (Penpot recordings and GitHub replayed by nock)
 		const scopes = serve(
 			readSnapshot(BASE, STALE_SNAPSHOT),
 			listOpenPulls(OPEN_PULL),
+			listPullsIntoBase([OPEN_PULL_LISTED]),
 			readSnapshot('design/snapshot-refresh', snapshot)
 		)
 
 		await expect(refresh().result).resolves.toMatchObject({ outcome: 'up-to-date' })
+		expect(scopes.every((scope) => scope.isDone())).toBe(true)
+	})
+
+	it('should open no PR when an open lockstep PR already carries the snapshot', async () => {
+		// No commit or createPull interceptors: either would fail the run. The fork PR is never read.
+		const scopes = serve(
+			readSnapshot(BASE, STALE_SNAPSHOT),
+			listOpenPulls(null),
+			listPullsIntoBase([FORK_PULL, LOCKSTEP_PULL]),
+			readSnapshot(LOCKSTEP_PULL.head.sha, snapshot)
+		)
+		const { result, lines } = refresh()
+
+		await expect(result).resolves.toEqual({
+			outcome: 'deferred',
+			pullRequest: { number: LOCKSTEP_PULL.number, url: LOCKSTEP_PULL.html_url },
+		})
+		expect(scopes.every((scope) => scope.isDone())).toBe(true)
+		expect(lines).toEqual([
+			`Library snapshot changed; lockstep PR #${LOCKSTEP_PULL.number} already carries it: ${LOCKSTEP_PULL.html_url}`,
+		])
+	})
+
+	it('should close the open refresh PR when an open lockstep PR already carries the snapshot', async () => {
+		const scopes = serve(
+			readSnapshot(BASE, STALE_SNAPSHOT),
+			listOpenPulls(OPEN_PULL),
+			listPullsIntoBase([OPEN_PULL_LISTED, LOCKSTEP_PULL]),
+			readSnapshot(LOCKSTEP_PULL.head.sha, snapshot),
+			...deferOpenPull()
+		)
+		const { result, lines } = refresh()
+
+		await expect(result).resolves.toMatchObject({ outcome: 'deferred' })
+		expect(scopes.every((scope) => scope.isDone())).toBe(true)
+		expect(lines).toEqual([
+			`Library snapshot changed; lockstep PR #${LOCKSTEP_PULL.number} already carries it, closed refresh PR #${OPEN_PULL.number}: ${OPEN_PULL.html_url}`,
+		])
+	})
+
+	it('should still open a refresh PR when an open PR holds a different snapshot', async () => {
+		const scopes = serve(
+			readSnapshot(BASE, STALE_SNAPSHOT),
+			listOpenPulls(null),
+			listPullsIntoBase([LOCKSTEP_PULL]),
+			readSnapshot(LOCKSTEP_PULL.head.sha, STALE_SNAPSHOT),
+			...commitSnapshot(snapshot, false),
+			createPull()
+		)
+
+		await expect(refresh().result).resolves.toMatchObject({ outcome: 'opened' })
 		expect(scopes.every((scope) => scope.isDone())).toBe(true)
 	})
 

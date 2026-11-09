@@ -19,6 +19,14 @@ export type CreateGitHubClientParameters = {
 /** An open pull request, as the refresh needs it. */
 export type GitHubPullRequest = { number: number; url: string }
 
+/** An open pull request with its head: the branch, the commit and the repo it comes from. */
+export type GitHubOpenPullRequest = GitHubPullRequest & {
+	headRef: string
+	headSha: string
+	/** `owner/name` of the head's repo; differs from the client's `repo` for a fork. */
+	headRepo: string
+}
+
 /** What {@link GitHubClient.commitFile} commits. */
 export type CommitFileParameters = {
 	/** The branch the commit sits on top of. */
@@ -36,6 +44,8 @@ export type GitHubClient = {
 	readFile: (path: string, ref: string) => Promise<string | null>
 	/** The open pull request from `branch` into `base`, or `null`. */
 	findOpenPullRequest: (branch: string, base: string) => Promise<GitHubPullRequest | null>
+	/** Every open pull request into `base` (first 100). */
+	listOpenPullRequests: (base: string) => Promise<GitHubOpenPullRequest[]>
 	/**
 	 * Commits `content` at `path` as a single commit on top of `base`, then points `branch` at
 	 * it: created when missing, force-moved when it exists, so the branch never piles up commits.
@@ -114,6 +124,24 @@ export const createGitHubClient = ({
 				`/pulls?${query}`
 			)
 			return pull ? { number: pull.number, url: pull.html_url } : null
+		},
+
+		listOpenPullRequests: async (base) => {
+			const query = new URLSearchParams({ state: 'open', base, per_page: '100' })
+			const pulls = await json<
+				{
+					number: number
+					html_url: string
+					head: { ref: string; sha: string; repo: { full_name: string } | null }
+				}[]
+			>('GET', `/pulls?${query}`)
+			return pulls.map((pull) => ({
+				number: pull.number,
+				url: pull.html_url,
+				headRef: pull.head.ref,
+				headSha: pull.head.sha,
+				headRepo: pull.head.repo?.full_name ?? '',
+			}))
 		},
 
 		readBranchSha: async (branch) => readBranchSha(branch),

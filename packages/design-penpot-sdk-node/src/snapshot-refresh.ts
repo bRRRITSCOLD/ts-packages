@@ -3,7 +3,12 @@ import { parseArgs } from 'node:util'
 
 import type { LibrarySnapshot } from '@brrritscold/design-core-js/library-snapshot'
 
-import { createGitHubClient, type GitHubPullRequest } from './lib/github.js'
+import {
+	createGitHubClient,
+	type GitHubClient,
+	type GitHubOpenPullRequest,
+	type GitHubPullRequest,
+} from './lib/github.js'
 import { readLibrarySnapshot } from './library-snapshot.js'
 
 export type { GitHubPullRequest }
@@ -98,11 +103,32 @@ export const serializeLibrarySnapshot = (snapshot: LibrarySnapshot): string =>
 /**
  * What a refresh did: `unchanged` (the snapshot equals the base branch's, no PR open), `closed`
  * (it equals the base branch's, so the open refresh PR was closed and its branch deleted),
+ * `deferred` (another open PR into the base branch, a lockstep `core-react` PR, already holds the
+ * same snapshot: no refresh PR, and an open one is closed; `pullRequest` is the lockstep PR),
  * `up-to-date` (the open refresh PR already holds it), `opened` or `updated` a refresh PR.
  */
 export type SnapshotRefreshResult =
 	| { outcome: 'unchanged' }
-	| { outcome: 'closed' | 'up-to-date' | 'opened' | 'updated'; pullRequest: GitHubPullRequest }
+	| {
+			outcome: 'closed' | 'deferred' | 'up-to-date' | 'opened' | 'updated'
+			pullRequest: GitHubPullRequest
+	  }
+
+/**
+ * The first open same-repo PR into `base`, other than the refresh PR, whose head holds exactly
+ * `snapshot`. A fork's head is skipped: the contents API reads this repo only.
+ */
+const findLockstepPullRequest = async (
+	github: GitHubClient,
+	{ repo, base, snapshot }: { repo: string; base: string; snapshot: string }
+): Promise<GitHubOpenPullRequest | null> => {
+	const candidates = (await github.listOpenPullRequests(base)).filter(
+		(pull) => pull.headRef !== SNAPSHOT_REFRESH_BRANCH && pull.headRepo === repo
+	)
+	for (const pull of candidates)
+		if ((await github.readFile(LIBRARY_SNAPSHOT_PATH, pull.headSha)) === snapshot) return pull
+	return null
+}
 
 /** What {@link refreshLibrarySnapshot} needs: the configuration, and optionally `fetch` and a logger. */
 export type RefreshLibrarySnapshotParameters = SnapshotRefreshConfig & {
@@ -118,6 +144,11 @@ export type RefreshLibrarySnapshotParameters = SnapshotRefreshConfig & {
  * {@link SNAPSHOT_REFRESH_BRANCH} (rebuilt on top of the base branch) and opens a PR, or
  * updates the refresh PR already open. Unchanged closes a refresh PR still open (comment, close,
  * delete the branch) and otherwise does nothing.
+ *
+ * A changed snapshot that an open lockstep PR (any other same-repo PR into the base branch)
+ * already holds byte for byte is deferred to it: the library was edited for code that hasn't
+ * merged yet, so a refresh PR would only fail the drift check against the base branch. Once the
+ * lockstep PR merges, the next refresh finds the snapshot unchanged.
  *
  * @example
  * ```ts
@@ -165,6 +196,23 @@ export const refreshLibrarySnapshot = async ({
 	if (unchanged) {
 		log(`Library snapshot unchanged from ${repo}@${base}; no PR opened.`)
 		return { outcome: 'unchanged' }
+	}
+
+	const lockstep = await findLockstepPullRequest(github, { repo, base, snapshot })
+	if (lockstep) {
+		const carried = `lockstep PR #${lockstep.number} already carries it`
+		if (open) {
+			await github.commentOnPullRequest(
+				open.number,
+				`Lockstep PR #${lockstep.number} already carries this library snapshot; nothing to merge here.`
+			)
+			await github.closePullRequest(open.number)
+			await github.deleteBranch(SNAPSHOT_REFRESH_BRANCH)
+			log(
+				`Library snapshot changed; ${carried}, closed refresh PR #${open.number}: ${open.url}`
+			)
+		} else log(`Library snapshot changed; ${carried}: ${lockstep.url}`)
+		return { outcome: 'deferred', pullRequest: { number: lockstep.number, url: lockstep.url } }
 	}
 
 	if (
