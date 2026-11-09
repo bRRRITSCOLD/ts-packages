@@ -184,6 +184,10 @@
 				"xl": {
 					"$type": "borderRadius",
 					"$value": "14px"
+				},
+				"xs": {
+					"$type": "borderRadius",
+					"$value": "2px"
 				}
 			},
 			"color": {
@@ -335,6 +339,10 @@
 				"wide": {
 					"$type": "letterSpacing",
 					"$value": "0.4px"
+				},
+				"widest": {
+					"$type": "letterSpacing",
+					"$value": "1.6px"
 				}
 			},
 			"line-height": {
@@ -374,6 +382,48 @@
 				}
 			},
 			"shadow": {
+				"lg": {
+					"$type": "shadow",
+					"$value": [
+						{
+							"offsetX": "0px",
+							"offsetY": "10px",
+							"blur": "15px",
+							"spread": "0px",
+							"color": "#0000001a",
+							"inset": false
+						},
+						{
+							"offsetX": "0px",
+							"offsetY": "4px",
+							"blur": "6px",
+							"spread": "0px",
+							"color": "#0000001a",
+							"inset": false
+						}
+					]
+				},
+				"md": {
+					"$type": "shadow",
+					"$value": [
+						{
+							"offsetX": "0px",
+							"offsetY": "4px",
+							"blur": "6px",
+							"spread": "0px",
+							"color": "#0000001a",
+							"inset": false
+						},
+						{
+							"offsetX": "0px",
+							"offsetY": "2px",
+							"blur": "4px",
+							"spread": "0px",
+							"color": "#0000001a",
+							"inset": false
+						}
+					]
+				},
 				"sm": {
 					"$type": "shadow",
 					"$value": [
@@ -495,6 +545,14 @@
 				"24": {
 					"$type": "spacing",
 					"$value": "96px"
+				},
+				"32": {
+					"$type": "spacing",
+					"$value": "128px"
+				},
+				"72": {
+					"$type": "spacing",
+					"$value": "288px"
 				},
 				"0-5": {
 					"$type": "spacing",
@@ -5470,6 +5528,4015 @@
 						"font-family": "font-family.sans",
 						"font-size": "font-size.sm",
 						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead40eb489e7": {
+			"path": "Components/Dialog",
+			"name": "Title",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead40eafeabe": {
+					"namePath": [
+						"Components / Dialog / Title",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "popover-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead40ee43f38": {
+			"path": "Components/Dialog",
+			"name": "Description",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead40ee16ed2": {
+					"namePath": [
+						"Components / Dialog / Description",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead414b1dc91": {
+			"path": "Components/Dialog",
+			"name": "Header",
+			"variantProperties": {},
+			"parts": {
+				"Description": {
+					"componentId": "411cee6b-cc3d-8041-8008-ead40ee43f38"
+				},
+				"Title": {
+					"componentId": "411cee6b-cc3d-8041-8008-ead40eb489e7"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead414a5ef2e": {
+					"namePath": [
+						"Components / Dialog / Header"
+					],
+					"appliedTokens": {
+						"row-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead414abdeab": {
+					"namePath": [
+						"Components / Dialog / Header",
+						"Title",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "popover-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead414ae2026": {
+					"namePath": [
+						"Components / Dialog / Header",
+						"Description",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead4242a3d7d": {
+			"path": "Components/Dialog",
+			"name": "Footer",
+			"variantProperties": {},
+			"parts": {
+				"Cancel": {
+					"componentId": "34194205-34cb-806a-8008-e98872808076"
+				},
+				"Save": {
+					"componentId": "34194205-34cb-806a-8008-e98872588913"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead4241c0dcf": {
+					"namePath": [
+						"Components / Dialog / Footer"
+					],
+					"appliedTokens": {
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead424226e17": {
+					"namePath": [
+						"Components / Dialog / Footer",
+						"Cancel"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "border",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1-5",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead424226e18": {
+					"namePath": [
+						"Components / Dialog / Footer",
+						"Cancel",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead42425574c": {
+					"namePath": [
+						"Components / Dialog / Footer",
+						"Save"
+					],
+					"appliedTokens": {
+						"fill": "primary",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1-5"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead42425574d": {
+					"namePath": [
+						"Components / Dialog / Footer",
+						"Save",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "primary-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead42439ef65": {
+			"path": "Components/Dialog",
+			"name": "Overlay",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead42434d632": {
+					"namePath": [
+						"Components / Dialog / Overlay"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"opacity": "opacity.10"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead43ed943b8": {
+			"path": "Components/Dialog",
+			"name": "Content",
+			"variantProperties": {},
+			"parts": {
+				"Body": {
+					"componentId": "411cee6b-cc3d-8041-8008-eacbe3bb726f"
+				},
+				"Dismiss": {
+					"componentId": "34194205-34cb-806a-8008-e98872f374b8"
+				},
+				"Footer": {
+					"componentId": "411cee6b-cc3d-8041-8008-ead4242a3d7d"
+				},
+				"Header": {
+					"componentId": "411cee6b-cc3d-8041-8008-ead414b1dc91"
+				}
+			},
+			"wrappers": [],
+			"exceptionsRecord": {
+				"v": 1,
+				"slots": [
+					"Body"
+				]
+			},
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead43ebcbb45": {
+					"namePath": [
+						"Components / Dialog / Content"
+					],
+					"appliedTokens": {
+						"fill": "popover",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.6",
+						"p2": "space.6",
+						"p3": "space.6",
+						"p4": "space.6",
+						"row-gap": "space.6"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead43ec30975": {
+					"namePath": [
+						"Components / Dialog / Content",
+						"Header"
+					],
+					"appliedTokens": {
+						"row-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead43ec30977": {
+					"namePath": [
+						"Components / Dialog / Content",
+						"Header",
+						"Description",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead43ec30979": {
+					"namePath": [
+						"Components / Dialog / Content",
+						"Header",
+						"Title",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "popover-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead43ec5e4e1": {
+					"namePath": [
+						"Components / Dialog / Content",
+						"Body"
+					],
+					"appliedTokens": {},
+					"unbound": [
+						"fill",
+						"stroke-color"
+					]
+				},
+				"411cee6b-cc3d-8041-8008-ead43ec5e4e2": {
+					"namePath": [
+						"Components / Dialog / Content",
+						"Body",
+						"Role"
+					],
+					"appliedTokens": {},
+					"unbound": [
+						"fill"
+					]
+				},
+				"411cee6b-cc3d-8041-8008-ead43ec8f5a2": {
+					"namePath": [
+						"Components / Dialog / Content",
+						"Footer"
+					],
+					"appliedTokens": {
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead43ec8f5a3": {
+					"namePath": [
+						"Components / Dialog / Content",
+						"Footer",
+						"Save"
+					],
+					"appliedTokens": {
+						"fill": "primary",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1-5"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead43ec8f5a4": {
+					"namePath": [
+						"Components / Dialog / Content",
+						"Footer",
+						"Save",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "primary-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead43ec8f5a5": {
+					"namePath": [
+						"Components / Dialog / Content",
+						"Footer",
+						"Cancel"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "border",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1-5",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead43ec8f5a6": {
+					"namePath": [
+						"Components / Dialog / Content",
+						"Footer",
+						"Cancel",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead43ecb8e70": {
+					"namePath": [
+						"Components / Dialog / Content",
+						"Dismiss"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead43ed25093": {
+					"namePath": [
+						"Components / Dialog / Content",
+						"Ring"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"opacity": "opacity.10"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead43f8f3a16": {
+					"namePath": [
+						"Components / Dialog / Content",
+						"Dismiss",
+						"icon / X",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead43f8f3a17": {
+					"namePath": [
+						"Components / Dialog / Content",
+						"Dismiss",
+						"icon / X",
+						"Stroke 2"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead4602cc706": {
+			"path": "Components/AlertDialog",
+			"name": "Title",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead46028b541": {
+					"namePath": [
+						"Components / AlertDialog / Title",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "popover-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.lg",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead460594822": {
+			"path": "Components/AlertDialog",
+			"name": "Description",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead460563c32": {
+					"namePath": [
+						"Components / AlertDialog / Description",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead4608834a5": {
+			"path": "Components/AlertDialog",
+			"name": "Media",
+			"variantProperties": {},
+			"parts": {
+				"Icon": {
+					"componentId": "34194205-34cb-806a-8008-ea13f5a78643"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead4607e766a": {
+					"namePath": [
+						"Components / AlertDialog / Media"
+					],
+					"appliedTokens": {
+						"fill": "muted",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4608369e6": {
+					"namePath": [
+						"Components / AlertDialog / Media",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4608369e7": {
+					"namePath": [
+						"Components / AlertDialog / Media",
+						"Icon",
+						"Stroke 2"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4608369e8": {
+					"namePath": [
+						"Components / AlertDialog / Media",
+						"Icon",
+						"Stroke 3"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4608369e9": {
+					"namePath": [
+						"Components / AlertDialog / Media",
+						"Icon",
+						"Stroke 4"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4608369ea": {
+					"namePath": [
+						"Components / AlertDialog / Media",
+						"Icon",
+						"Stroke 5"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead460a5d818": {
+			"path": "Components/AlertDialog",
+			"name": "Action",
+			"variantProperties": {},
+			"parts": {
+				"Button": {
+					"componentId": "34194205-34cb-806a-8008-e98872588913"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead460a2651d": {
+					"namePath": [
+						"Components / AlertDialog / Action",
+						"Button"
+					],
+					"appliedTokens": {
+						"fill": "primary",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1-5"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead460a2651e": {
+					"namePath": [
+						"Components / AlertDialog / Action",
+						"Button",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "primary-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead460ae04a0": {
+			"path": "Components/AlertDialog",
+			"name": "Cancel",
+			"variantProperties": {},
+			"parts": {
+				"Button": {
+					"componentId": "34194205-34cb-806a-8008-e98872808076"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead460aa6227": {
+					"namePath": [
+						"Components / AlertDialog / Cancel",
+						"Button"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "border",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1-5",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead460aa6228": {
+					"namePath": [
+						"Components / AlertDialog / Cancel",
+						"Button",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead4680d954e": {
+			"path": "Components/AlertDialog",
+			"name": "Header",
+			"variantProperties": {},
+			"parts": {
+				"Description": {
+					"componentId": "411cee6b-cc3d-8041-8008-ead460594822"
+				},
+				"Media": {
+					"componentId": "411cee6b-cc3d-8041-8008-ead4608834a5"
+				},
+				"Title": {
+					"componentId": "411cee6b-cc3d-8041-8008-ead4602cc706"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead467f89ff5": {
+					"namePath": [
+						"Components / AlertDialog / Header"
+					],
+					"appliedTokens": {
+						"row-gap": "space.1-5"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46803b724": {
+					"namePath": [
+						"Components / AlertDialog / Header",
+						"Media"
+					],
+					"appliedTokens": {
+						"fill": "muted",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46803da20": {
+					"namePath": [
+						"Components / AlertDialog / Header",
+						"Media",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46803da21": {
+					"namePath": [
+						"Components / AlertDialog / Header",
+						"Media",
+						"Icon",
+						"Stroke 2"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46803da22": {
+					"namePath": [
+						"Components / AlertDialog / Header",
+						"Media",
+						"Icon",
+						"Stroke 3"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46803da23": {
+					"namePath": [
+						"Components / AlertDialog / Header",
+						"Media",
+						"Icon",
+						"Stroke 4"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46803da24": {
+					"namePath": [
+						"Components / AlertDialog / Header",
+						"Media",
+						"Icon",
+						"Stroke 5"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead468074158": {
+					"namePath": [
+						"Components / AlertDialog / Header",
+						"Title",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "popover-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.lg",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46809db9b": {
+					"namePath": [
+						"Components / AlertDialog / Header",
+						"Description",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead46823f480": {
+			"path": "Components/AlertDialog",
+			"name": "Footer",
+			"variantProperties": {},
+			"parts": {
+				"Action": {
+					"componentId": "411cee6b-cc3d-8041-8008-ead460a5d818"
+				},
+				"Cancel": {
+					"componentId": "411cee6b-cc3d-8041-8008-ead460ae04a0"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead468192a65": {
+					"namePath": [
+						"Components / AlertDialog / Footer"
+					],
+					"appliedTokens": {
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4681e6758": {
+					"namePath": [
+						"Components / AlertDialog / Footer",
+						"Cancel",
+						"Button"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "border",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1-5",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4681e6759": {
+					"namePath": [
+						"Components / AlertDialog / Footer",
+						"Cancel",
+						"Button",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46820e448": {
+					"namePath": [
+						"Components / AlertDialog / Footer",
+						"Action",
+						"Button"
+					],
+					"appliedTokens": {
+						"fill": "primary",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1-5"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46820e449": {
+					"namePath": [
+						"Components / AlertDialog / Footer",
+						"Action",
+						"Button",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "primary-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead468337042": {
+			"path": "Components/AlertDialog",
+			"name": "Overlay",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead4682d5959": {
+					"namePath": [
+						"Components / AlertDialog / Overlay"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"opacity": "opacity.10"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead46f6c96ef": {
+			"path": "Components/AlertDialog",
+			"name": "Content",
+			"variantProperties": {
+				"size": "default"
+			},
+			"parts": {
+				"Footer": {
+					"componentId": "411cee6b-cc3d-8041-8008-ead46823f480"
+				},
+				"Header": {
+					"componentId": "411cee6b-cc3d-8041-8008-ead4680d954e"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead46f5006ca": {
+					"namePath": [
+						"Components / AlertDialog / Content"
+					],
+					"appliedTokens": {
+						"fill": "popover",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.6",
+						"p2": "space.6",
+						"p3": "space.6",
+						"p4": "space.6",
+						"row-gap": "space.6"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46f5d6d74": {
+					"namePath": [
+						"Components / AlertDialog / Content",
+						"Header"
+					],
+					"appliedTokens": {
+						"row-gap": "space.1-5"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46f5d6d76": {
+					"namePath": [
+						"Components / AlertDialog / Content",
+						"Header",
+						"Description",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46f5d6d78": {
+					"namePath": [
+						"Components / AlertDialog / Content",
+						"Header",
+						"Title",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "popover-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.lg",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46f5d6d79": {
+					"namePath": [
+						"Components / AlertDialog / Content",
+						"Header",
+						"Media"
+					],
+					"appliedTokens": {
+						"fill": "muted",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46f5d6d7b": {
+					"namePath": [
+						"Components / AlertDialog / Content",
+						"Header",
+						"Media",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46f5d6d7c": {
+					"namePath": [
+						"Components / AlertDialog / Content",
+						"Header",
+						"Media",
+						"Icon",
+						"Stroke 2"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46f5d6d7d": {
+					"namePath": [
+						"Components / AlertDialog / Content",
+						"Header",
+						"Media",
+						"Icon",
+						"Stroke 3"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46f5d6d7e": {
+					"namePath": [
+						"Components / AlertDialog / Content",
+						"Header",
+						"Media",
+						"Icon",
+						"Stroke 4"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46f5d6d7f": {
+					"namePath": [
+						"Components / AlertDialog / Content",
+						"Header",
+						"Media",
+						"Icon",
+						"Stroke 5"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46f61f25c": {
+					"namePath": [
+						"Components / AlertDialog / Content",
+						"Footer"
+					],
+					"appliedTokens": {
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46f61f25e": {
+					"namePath": [
+						"Components / AlertDialog / Content",
+						"Footer",
+						"Action",
+						"Button"
+					],
+					"appliedTokens": {
+						"fill": "primary",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1-5"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46f61f25f": {
+					"namePath": [
+						"Components / AlertDialog / Content",
+						"Footer",
+						"Action",
+						"Button",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "primary-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46f61f261": {
+					"namePath": [
+						"Components / AlertDialog / Content",
+						"Footer",
+						"Cancel",
+						"Button"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "border",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1-5",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46f61f262": {
+					"namePath": [
+						"Components / AlertDialog / Content",
+						"Footer",
+						"Cancel",
+						"Button",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46f64cf4e": {
+					"namePath": [
+						"Components / AlertDialog / Content",
+						"Ring"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"opacity": "opacity.10"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead46fcf01f9": {
+			"path": "Components/AlertDialog",
+			"name": "Content",
+			"variantProperties": {
+				"size": "sm"
+			},
+			"parts": {
+				"Footer": {
+					"componentId": "411cee6b-cc3d-8041-8008-ead46823f480"
+				},
+				"Header": {
+					"componentId": "411cee6b-cc3d-8041-8008-ead4680d954e"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead46fbc2ac4": {
+					"namePath": [
+						"Components / AlertDialog / Content"
+					],
+					"appliedTokens": {
+						"fill": "popover",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.6",
+						"p2": "space.6",
+						"p3": "space.6",
+						"p4": "space.6",
+						"row-gap": "space.6"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46fc310e2": {
+					"namePath": [
+						"Components / AlertDialog / Content",
+						"Header"
+					],
+					"appliedTokens": {
+						"row-gap": "space.1-5"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46fc310e4": {
+					"namePath": [
+						"Components / AlertDialog / Content",
+						"Header",
+						"Description",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46fc310e6": {
+					"namePath": [
+						"Components / AlertDialog / Content",
+						"Header",
+						"Title",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "popover-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.lg",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46fc310e7": {
+					"namePath": [
+						"Components / AlertDialog / Content",
+						"Header",
+						"Media"
+					],
+					"appliedTokens": {
+						"fill": "muted",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46fc310e9": {
+					"namePath": [
+						"Components / AlertDialog / Content",
+						"Header",
+						"Media",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46fc310ea": {
+					"namePath": [
+						"Components / AlertDialog / Content",
+						"Header",
+						"Media",
+						"Icon",
+						"Stroke 2"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46fc310eb": {
+					"namePath": [
+						"Components / AlertDialog / Content",
+						"Header",
+						"Media",
+						"Icon",
+						"Stroke 3"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46fc310ec": {
+					"namePath": [
+						"Components / AlertDialog / Content",
+						"Header",
+						"Media",
+						"Icon",
+						"Stroke 4"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46fc310ed": {
+					"namePath": [
+						"Components / AlertDialog / Content",
+						"Header",
+						"Media",
+						"Icon",
+						"Stroke 5"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46fc5fb85": {
+					"namePath": [
+						"Components / AlertDialog / Content",
+						"Footer"
+					],
+					"appliedTokens": {
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46fc5fb87": {
+					"namePath": [
+						"Components / AlertDialog / Content",
+						"Footer",
+						"Action",
+						"Button"
+					],
+					"appliedTokens": {
+						"fill": "primary",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1-5"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46fc5fb88": {
+					"namePath": [
+						"Components / AlertDialog / Content",
+						"Footer",
+						"Action",
+						"Button",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "primary-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46fc5fb8a": {
+					"namePath": [
+						"Components / AlertDialog / Content",
+						"Footer",
+						"Cancel",
+						"Button"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "border",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1-5",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46fc5fb8b": {
+					"namePath": [
+						"Components / AlertDialog / Content",
+						"Footer",
+						"Cancel",
+						"Button",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead46fc81bbb": {
+					"namePath": [
+						"Components / AlertDialog / Content",
+						"Ring"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"opacity": "opacity.10"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead487df4107": {
+			"path": "Components/Sheet",
+			"name": "Title",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead487db9201": {
+					"namePath": [
+						"Components / Sheet / Title",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead4880c7140": {
+			"path": "Components/Sheet",
+			"name": "Description",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead48808dc4c": {
+					"namePath": [
+						"Components / Sheet / Description",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead48838fd92": {
+			"path": "Components/Sheet",
+			"name": "Header",
+			"variantProperties": {},
+			"parts": {
+				"Description": {
+					"componentId": "411cee6b-cc3d-8041-8008-ead4880c7140"
+				},
+				"Title": {
+					"componentId": "411cee6b-cc3d-8041-8008-ead487df4107"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead4882fc022": {
+					"namePath": [
+						"Components / Sheet / Header"
+					],
+					"appliedTokens": {
+						"p1": "space.4",
+						"p2": "space.4",
+						"p3": "space.4",
+						"p4": "space.4",
+						"row-gap": "space.1-5"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead488342784": {
+					"namePath": [
+						"Components / Sheet / Header",
+						"Title",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4883623c0": {
+					"namePath": [
+						"Components / Sheet / Header",
+						"Description",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead4885e017f": {
+			"path": "Components/Sheet",
+			"name": "Footer",
+			"variantProperties": {},
+			"parts": {
+				"Cancel": {
+					"componentId": "34194205-34cb-806a-8008-e98872808076"
+				},
+				"Save": {
+					"componentId": "34194205-34cb-806a-8008-e98872588913"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead48851352e": {
+					"namePath": [
+						"Components / Sheet / Footer"
+					],
+					"appliedTokens": {
+						"p1": "space.4",
+						"p2": "space.4",
+						"p3": "space.4",
+						"p4": "space.4",
+						"row-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead48855d28f": {
+					"namePath": [
+						"Components / Sheet / Footer",
+						"Save"
+					],
+					"appliedTokens": {
+						"fill": "primary",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1-5"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead488560bce": {
+					"namePath": [
+						"Components / Sheet / Footer",
+						"Save",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "primary-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead48858c7a2": {
+					"namePath": [
+						"Components / Sheet / Footer",
+						"Cancel"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "border",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1-5",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead48858c7a3": {
+					"namePath": [
+						"Components / Sheet / Footer",
+						"Cancel",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead494c812eb": {
+			"path": "Components/Sheet",
+			"name": "Content",
+			"variantProperties": {
+				"side": "right"
+			},
+			"parts": {
+				"Body": {
+					"componentId": "411cee6b-cc3d-8041-8008-eacbe3bb726f"
+				},
+				"Dismiss": {
+					"componentId": "34194205-34cb-806a-8008-e98872f374b8"
+				},
+				"Footer": {
+					"componentId": "411cee6b-cc3d-8041-8008-ead4885e017f"
+				},
+				"Header": {
+					"componentId": "411cee6b-cc3d-8041-8008-ead48838fd92"
+				}
+			},
+			"wrappers": [],
+			"exceptionsRecord": {
+				"v": 1,
+				"slots": [
+					"Body"
+				]
+			},
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead494a9b632": {
+					"namePath": [
+						"Components / Sheet / Content"
+					],
+					"appliedTokens": {
+						"fill": "popover",
+						"row-gap": "space.4",
+						"shadow": "shadow.lg"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead494b1d2c9": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Header"
+					],
+					"appliedTokens": {
+						"p1": "space.4",
+						"p2": "space.4",
+						"p3": "space.4",
+						"p4": "space.4",
+						"row-gap": "space.1-5"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead494b1d2cb": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Header",
+						"Description",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead494b1d2cd": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Header",
+						"Title",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead494b57312": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Body"
+					],
+					"appliedTokens": {},
+					"unbound": [
+						"fill",
+						"stroke-color"
+					]
+				},
+				"411cee6b-cc3d-8041-8008-ead494b57313": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Body",
+						"Role"
+					],
+					"appliedTokens": {},
+					"unbound": [
+						"fill"
+					]
+				},
+				"411cee6b-cc3d-8041-8008-ead494b8eb0d": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Footer"
+					],
+					"appliedTokens": {
+						"p1": "space.4",
+						"p2": "space.4",
+						"p3": "space.4",
+						"p4": "space.4",
+						"row-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead494b8eb0e": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Footer",
+						"Cancel"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "border",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1-5",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead494b8eb0f": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Footer",
+						"Cancel",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead494b8eb10": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Footer",
+						"Save"
+					],
+					"appliedTokens": {
+						"fill": "primary",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1-5"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead494b8eb11": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Footer",
+						"Save",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "primary-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead494bb8f68": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Dismiss"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead494c1cbce": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Border"
+					],
+					"appliedTokens": {
+						"fill": "border"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead49c60c388": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Dismiss",
+						"icon / X",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead49c60c389": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Dismiss",
+						"icon / X",
+						"Stroke 2"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead4950da0b8": {
+			"path": "Components/Sheet",
+			"name": "Content",
+			"variantProperties": {
+				"side": "left"
+			},
+			"parts": {
+				"Body": {
+					"componentId": "411cee6b-cc3d-8041-8008-eacbe3bb726f"
+				},
+				"Dismiss": {
+					"componentId": "34194205-34cb-806a-8008-e98872f374b8"
+				},
+				"Footer": {
+					"componentId": "411cee6b-cc3d-8041-8008-ead4885e017f"
+				},
+				"Header": {
+					"componentId": "411cee6b-cc3d-8041-8008-ead48838fd92"
+				}
+			},
+			"wrappers": [],
+			"exceptionsRecord": {
+				"v": 1,
+				"slots": [
+					"Body"
+				]
+			},
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead494f42231": {
+					"namePath": [
+						"Components / Sheet / Content"
+					],
+					"appliedTokens": {
+						"fill": "popover",
+						"row-gap": "space.4",
+						"shadow": "shadow.lg"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead494fa2d1a": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Header"
+					],
+					"appliedTokens": {
+						"p1": "space.4",
+						"p2": "space.4",
+						"p3": "space.4",
+						"p4": "space.4",
+						"row-gap": "space.1-5"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead494fa2d1c": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Header",
+						"Description",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead494fa2d1e": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Header",
+						"Title",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead494fcd8cf": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Body"
+					],
+					"appliedTokens": {},
+					"unbound": [
+						"fill",
+						"stroke-color"
+					]
+				},
+				"411cee6b-cc3d-8041-8008-ead494fcd8d0": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Body",
+						"Role"
+					],
+					"appliedTokens": {},
+					"unbound": [
+						"fill"
+					]
+				},
+				"411cee6b-cc3d-8041-8008-ead494ff8cb5": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Footer"
+					],
+					"appliedTokens": {
+						"p1": "space.4",
+						"p2": "space.4",
+						"p3": "space.4",
+						"p4": "space.4",
+						"row-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead494ff8cb6": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Footer",
+						"Cancel"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "border",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1-5",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead494ff8cb7": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Footer",
+						"Cancel",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead494ff8cb8": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Footer",
+						"Save"
+					],
+					"appliedTokens": {
+						"fill": "primary",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1-5"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead494ff8cb9": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Footer",
+						"Save",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "primary-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead49502a0bd": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Dismiss"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead49506f08d": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Border"
+					],
+					"appliedTokens": {
+						"fill": "border"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead49c5ded3c": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Dismiss",
+						"icon / X",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead49c5ded3d": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Dismiss",
+						"icon / X",
+						"Stroke 2"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead495515a03": {
+			"path": "Components/Sheet",
+			"name": "Content",
+			"variantProperties": {
+				"side": "top"
+			},
+			"parts": {
+				"Body": {
+					"componentId": "411cee6b-cc3d-8041-8008-eacbe3bb726f"
+				},
+				"Dismiss": {
+					"componentId": "34194205-34cb-806a-8008-e98872f374b8"
+				},
+				"Footer": {
+					"componentId": "411cee6b-cc3d-8041-8008-ead4885e017f"
+				},
+				"Header": {
+					"componentId": "411cee6b-cc3d-8041-8008-ead48838fd92"
+				}
+			},
+			"wrappers": [],
+			"exceptionsRecord": {
+				"v": 1,
+				"slots": [
+					"Body"
+				]
+			},
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead49537f372": {
+					"namePath": [
+						"Components / Sheet / Content"
+					],
+					"appliedTokens": {
+						"fill": "popover",
+						"row-gap": "space.4",
+						"shadow": "shadow.lg"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4953e0fec": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Header"
+					],
+					"appliedTokens": {
+						"p1": "space.4",
+						"p2": "space.4",
+						"p3": "space.4",
+						"p4": "space.4",
+						"row-gap": "space.1-5"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4953e0fee": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Header",
+						"Description",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4953e0ff0": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Header",
+						"Title",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead495408bb3": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Body"
+					],
+					"appliedTokens": {},
+					"unbound": [
+						"fill",
+						"stroke-color"
+					]
+				},
+				"411cee6b-cc3d-8041-8008-ead495408bb4": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Body",
+						"Role"
+					],
+					"appliedTokens": {},
+					"unbound": [
+						"fill"
+					]
+				},
+				"411cee6b-cc3d-8041-8008-ead49542cde5": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Footer"
+					],
+					"appliedTokens": {
+						"p1": "space.4",
+						"p2": "space.4",
+						"p3": "space.4",
+						"p4": "space.4",
+						"row-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead49542cde6": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Footer",
+						"Cancel"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "border",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1-5",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead49542cde7": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Footer",
+						"Cancel",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead49542cde8": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Footer",
+						"Save"
+					],
+					"appliedTokens": {
+						"fill": "primary",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1-5"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead49542cde9": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Footer",
+						"Save",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "primary-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead49545518b": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Dismiss"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4954a169c": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Border"
+					],
+					"appliedTokens": {
+						"fill": "border"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead49c5a0a0d": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Dismiss",
+						"icon / X",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead49c5a0a0e": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Dismiss",
+						"icon / X",
+						"Stroke 2"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead4958f7dcd": {
+			"path": "Components/Sheet",
+			"name": "Content",
+			"variantProperties": {
+				"side": "bottom"
+			},
+			"parts": {
+				"Body": {
+					"componentId": "411cee6b-cc3d-8041-8008-eacbe3bb726f"
+				},
+				"Dismiss": {
+					"componentId": "34194205-34cb-806a-8008-e98872f374b8"
+				},
+				"Footer": {
+					"componentId": "411cee6b-cc3d-8041-8008-ead4885e017f"
+				},
+				"Header": {
+					"componentId": "411cee6b-cc3d-8041-8008-ead48838fd92"
+				}
+			},
+			"wrappers": [],
+			"exceptionsRecord": {
+				"v": 1,
+				"slots": [
+					"Body"
+				]
+			},
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead4957661ea": {
+					"namePath": [
+						"Components / Sheet / Content"
+					],
+					"appliedTokens": {
+						"fill": "popover",
+						"row-gap": "space.4",
+						"shadow": "shadow.lg"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4957c65ca": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Header"
+					],
+					"appliedTokens": {
+						"p1": "space.4",
+						"p2": "space.4",
+						"p3": "space.4",
+						"p4": "space.4",
+						"row-gap": "space.1-5"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4957c65cc": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Header",
+						"Description",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4957c65ce": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Header",
+						"Title",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4957edae1": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Body"
+					],
+					"appliedTokens": {},
+					"unbound": [
+						"fill",
+						"stroke-color"
+					]
+				},
+				"411cee6b-cc3d-8041-8008-ead4957edae2": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Body",
+						"Role"
+					],
+					"appliedTokens": {},
+					"unbound": [
+						"fill"
+					]
+				},
+				"411cee6b-cc3d-8041-8008-ead4958162aa": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Footer"
+					],
+					"appliedTokens": {
+						"p1": "space.4",
+						"p2": "space.4",
+						"p3": "space.4",
+						"p4": "space.4",
+						"row-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4958162ab": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Footer",
+						"Cancel"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"stroke-color": "border",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1-5",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4958162ac": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Footer",
+						"Cancel",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4958162ad": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Footer",
+						"Save"
+					],
+					"appliedTokens": {
+						"fill": "primary",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1-5"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4958162ae": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Footer",
+						"Save",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "primary-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead49584331a": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Dismiss"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead495889bd3": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Border"
+					],
+					"appliedTokens": {
+						"fill": "border"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead49c56586e": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Dismiss",
+						"icon / X",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead49c56586f": {
+					"namePath": [
+						"Components / Sheet / Content",
+						"Dismiss",
+						"icon / X",
+						"Stroke 2"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead4af88bf92": {
+			"path": "Components/Popover",
+			"name": "Title",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead4af82f43a": {
+					"namePath": [
+						"Components / Popover / Title",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "popover-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead4afb906bf": {
+			"path": "Components/Popover",
+			"name": "Description",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead4afb53a7e": {
+					"namePath": [
+						"Components / Popover / Description",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead4b050500b": {
+			"path": "Components/Popover",
+			"name": "Header",
+			"variantProperties": {},
+			"parts": {
+				"Description": {
+					"componentId": "411cee6b-cc3d-8041-8008-ead4afb906bf"
+				},
+				"Title": {
+					"componentId": "411cee6b-cc3d-8041-8008-ead4af88bf92"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead4b0439eae": {
+					"namePath": [
+						"Components / Popover / Header"
+					],
+					"appliedTokens": {
+						"row-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4b0491a45": {
+					"namePath": [
+						"Components / Popover / Header",
+						"Title",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "popover-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4b04bb952": {
+					"namePath": [
+						"Components / Popover / Header",
+						"Description",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead4b0b811fd": {
+			"path": "Components/Popover",
+			"name": "Content",
+			"variantProperties": {},
+			"parts": {
+				"Body": {
+					"componentId": "411cee6b-cc3d-8041-8008-eacbe3bb726f"
+				},
+				"Header": {
+					"componentId": "411cee6b-cc3d-8041-8008-ead4b050500b"
+				}
+			},
+			"wrappers": [],
+			"exceptionsRecord": {
+				"v": 1,
+				"slots": [
+					"Body"
+				]
+			},
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead4b0a50e78": {
+					"namePath": [
+						"Components / Popover / Content"
+					],
+					"appliedTokens": {
+						"fill": "popover",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.4",
+						"p2": "space.4",
+						"p3": "space.4",
+						"p4": "space.4",
+						"row-gap": "space.4",
+						"shadow": "shadow.md"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4b0ab0bcf": {
+					"namePath": [
+						"Components / Popover / Content",
+						"Header"
+					],
+					"appliedTokens": {
+						"row-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4b0ab0bd1": {
+					"namePath": [
+						"Components / Popover / Content",
+						"Header",
+						"Description",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4b0ab0bd3": {
+					"namePath": [
+						"Components / Popover / Content",
+						"Header",
+						"Title",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "popover-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4b0ae198e": {
+					"namePath": [
+						"Components / Popover / Content",
+						"Body"
+					],
+					"appliedTokens": {},
+					"unbound": [
+						"fill",
+						"stroke-color"
+					]
+				},
+				"411cee6b-cc3d-8041-8008-ead4b0ae198f": {
+					"namePath": [
+						"Components / Popover / Content",
+						"Body",
+						"Role"
+					],
+					"appliedTokens": {},
+					"unbound": [
+						"fill"
+					]
+				},
+				"411cee6b-cc3d-8041-8008-ead4b0b08818": {
+					"namePath": [
+						"Components / Popover / Content",
+						"Ring"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"opacity": "opacity.10"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead4c383572e": {
+			"path": "Components/Tooltip",
+			"name": "Content",
+			"variantProperties": {
+				"side": "top"
+			},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead4c36d2cc9": {
+					"namePath": [
+						"Components / Tooltip / Content"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.1-5",
+						"p2": "space.3",
+						"p3": "space.1-5",
+						"p4": "space.3",
+						"column-gap": "space.1-5"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4c3776f2f": {
+					"namePath": [
+						"Components / Tooltip / Content",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.xs",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4c37b834b": {
+					"namePath": [
+						"Components / Tooltip / Content",
+						"Arrow"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"r1": "border-radius.xs",
+						"r2": "border-radius.xs",
+						"r3": "border-radius.xs",
+						"r4": "border-radius.xs"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead4c3ea3c9c": {
+			"path": "Components/Tooltip",
+			"name": "Content",
+			"variantProperties": {
+				"side": "right"
+			},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead4c3dc37f5": {
+					"namePath": [
+						"Components / Tooltip / Content"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.1-5",
+						"p2": "space.3",
+						"p3": "space.1-5",
+						"p4": "space.3",
+						"column-gap": "space.1-5"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4c3e0cb91": {
+					"namePath": [
+						"Components / Tooltip / Content",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.xs",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4c3e34215": {
+					"namePath": [
+						"Components / Tooltip / Content",
+						"Arrow"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"r1": "border-radius.xs",
+						"r2": "border-radius.xs",
+						"r3": "border-radius.xs",
+						"r4": "border-radius.xs"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead4c44e6a86": {
+			"path": "Components/Tooltip",
+			"name": "Content",
+			"variantProperties": {
+				"side": "bottom"
+			},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead4c44006f2": {
+					"namePath": [
+						"Components / Tooltip / Content"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.1-5",
+						"p2": "space.3",
+						"p3": "space.1-5",
+						"p4": "space.3",
+						"column-gap": "space.1-5"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4c44571a4": {
+					"namePath": [
+						"Components / Tooltip / Content",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.xs",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4c447bce6": {
+					"namePath": [
+						"Components / Tooltip / Content",
+						"Arrow"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"r1": "border-radius.xs",
+						"r2": "border-radius.xs",
+						"r3": "border-radius.xs",
+						"r4": "border-radius.xs"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead4c4c4bc50": {
+			"path": "Components/Tooltip",
+			"name": "Content",
+			"variantProperties": {
+				"side": "left"
+			},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead4c4b5328c": {
+					"namePath": [
+						"Components / Tooltip / Content"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.1-5",
+						"p2": "space.3",
+						"p3": "space.1-5",
+						"p4": "space.3",
+						"column-gap": "space.1-5"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4c4bc772a": {
+					"namePath": [
+						"Components / Tooltip / Content",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "background",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.xs",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4c4beb83b": {
+					"namePath": [
+						"Components / Tooltip / Content",
+						"Arrow"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"r1": "border-radius.xs",
+						"r2": "border-radius.xs",
+						"r3": "border-radius.xs",
+						"r4": "border-radius.xs"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead4e4b03eb3": {
+			"path": "Components/DropdownMenu",
+			"name": "Shortcut",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead4e4ab754a": {
+					"namePath": [
+						"Components / DropdownMenu / Shortcut",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.xs",
+						"font-weight": "font-weight.normal",
+						"letter-spacing": "letter-spacing.widest"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead4e4e13352": {
+			"path": "Components/DropdownMenu",
+			"name": "Label",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead4e4d62a5b": {
+					"namePath": [
+						"Components / DropdownMenu / Label"
+					],
+					"appliedTokens": {
+						"p1": "space.1-5",
+						"p2": "space.2",
+						"p3": "space.1-5",
+						"p4": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4e4dd39d1": {
+					"namePath": [
+						"Components / DropdownMenu / Label",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.xs",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead4e519ee69": {
+			"path": "Components/DropdownMenu",
+			"name": "Separator",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead4e5137cfb": {
+					"namePath": [
+						"Components / DropdownMenu / Separator"
+					],
+					"appliedTokens": {
+						"fill": "border"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead4ec9a1977": {
+			"path": "Components/DropdownMenu",
+			"name": "Item",
+			"variantProperties": {
+				"variant": "default"
+			},
+			"parts": {
+				"Shortcut": {
+					"componentId": "411cee6b-cc3d-8041-8008-ead4e4b03eb3"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead4ec841e43": {
+					"namePath": [
+						"Components / DropdownMenu / Item"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.1-5",
+						"p2": "space.2",
+						"p3": "space.1-5",
+						"p4": "space.2",
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4ec8b08d7": {
+					"namePath": [
+						"Components / DropdownMenu / Item",
+						"Highlight"
+					],
+					"appliedTokens": {
+						"fill": "accent",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4ec92ef83": {
+					"namePath": [
+						"Components / DropdownMenu / Item",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "popover-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4ec960b08": {
+					"namePath": [
+						"Components / DropdownMenu / Item",
+						"Shortcut",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.xs",
+						"font-weight": "font-weight.normal",
+						"letter-spacing": "letter-spacing.widest"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead4ed0206a1": {
+			"path": "Components/DropdownMenu",
+			"name": "Item",
+			"variantProperties": {
+				"variant": "destructive"
+			},
+			"parts": {
+				"Shortcut": {
+					"componentId": "411cee6b-cc3d-8041-8008-ead4e4b03eb3"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead4ecf1b1fa": {
+					"namePath": [
+						"Components / DropdownMenu / Item"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.1-5",
+						"p2": "space.2",
+						"p3": "space.1-5",
+						"p4": "space.2",
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4ecf61aeb": {
+					"namePath": [
+						"Components / DropdownMenu / Item",
+						"Highlight"
+					],
+					"appliedTokens": {
+						"fill": "destructive",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"opacity": "opacity.10"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4ecfb82bb": {
+					"namePath": [
+						"Components / DropdownMenu / Item",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "destructive",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4ecfea520": {
+					"namePath": [
+						"Components / DropdownMenu / Item",
+						"Shortcut",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.xs",
+						"font-weight": "font-weight.normal",
+						"letter-spacing": "letter-spacing.widest"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead4f99b8bb6": {
+			"path": "Components/DropdownMenu",
+			"name": "CheckboxItem",
+			"variantProperties": {
+				"checked": "false"
+			},
+			"parts": {
+				"Indicator": {
+					"componentId": "34194205-34cb-806a-8008-ea142ea85e42"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead4f980fb11": {
+					"namePath": [
+						"Components / DropdownMenu / CheckboxItem"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.1-5",
+						"p2": "space.8",
+						"p3": "space.1-5",
+						"p4": "space.2",
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4f9873cbb": {
+					"namePath": [
+						"Components / DropdownMenu / CheckboxItem",
+						"Highlight"
+					],
+					"appliedTokens": {
+						"fill": "accent",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4f98e1725": {
+					"namePath": [
+						"Components / DropdownMenu / CheckboxItem",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "popover-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4f991a01b": {
+					"namePath": [
+						"Components / DropdownMenu / CheckboxItem",
+						"Indicator",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead4fa1d2464": {
+			"path": "Components/DropdownMenu",
+			"name": "CheckboxItem",
+			"variantProperties": {
+				"checked": "true"
+			},
+			"parts": {
+				"Indicator": {
+					"componentId": "34194205-34cb-806a-8008-ea142ea85e42"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead4fa059518": {
+					"namePath": [
+						"Components / DropdownMenu / CheckboxItem"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.1-5",
+						"p2": "space.8",
+						"p3": "space.1-5",
+						"p4": "space.2",
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4fa0cf7de": {
+					"namePath": [
+						"Components / DropdownMenu / CheckboxItem",
+						"Highlight"
+					],
+					"appliedTokens": {
+						"fill": "accent",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4fa128d34": {
+					"namePath": [
+						"Components / DropdownMenu / CheckboxItem",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "popover-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4fa15027e": {
+					"namePath": [
+						"Components / DropdownMenu / CheckboxItem",
+						"Indicator",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead4faaa1aa6": {
+			"path": "Components/DropdownMenu",
+			"name": "RadioItem",
+			"variantProperties": {},
+			"parts": {
+				"Checked": {
+					"componentId": "34194205-34cb-806a-8008-ea142ea85e42"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead4fa961457": {
+					"namePath": [
+						"Components / DropdownMenu / RadioItem"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.1-5",
+						"p2": "space.8",
+						"p3": "space.1-5",
+						"p4": "space.2",
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4fa9a6ca0": {
+					"namePath": [
+						"Components / DropdownMenu / RadioItem",
+						"Highlight"
+					],
+					"appliedTokens": {
+						"fill": "accent",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4fa9f9f56": {
+					"namePath": [
+						"Components / DropdownMenu / RadioItem",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "popover-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4faa24155": {
+					"namePath": [
+						"Components / DropdownMenu / RadioItem",
+						"Checked",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead4fb19843d": {
+			"path": "Components/DropdownMenu",
+			"name": "SubTrigger",
+			"variantProperties": {},
+			"parts": {
+				"Chevron": {
+					"componentId": "34194205-34cb-806a-8008-ea142ecd7ae5"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead4fb06c906": {
+					"namePath": [
+						"Components / DropdownMenu / SubTrigger"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.1-5",
+						"p2": "space.2",
+						"p3": "space.1-5",
+						"p4": "space.2",
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4fb0b9ca9": {
+					"namePath": [
+						"Components / DropdownMenu / SubTrigger",
+						"Highlight"
+					],
+					"appliedTokens": {
+						"fill": "accent",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4fb10c3cf": {
+					"namePath": [
+						"Components / DropdownMenu / SubTrigger",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "popover-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead4fb140219": {
+					"namePath": [
+						"Components / DropdownMenu / SubTrigger",
+						"Chevron",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead50a04146a": {
+			"path": "Components/DropdownMenu",
+			"name": "Content",
+			"variantProperties": {},
+			"parts": {
+				"Billing": {
+					"componentId": "411cee6b-cc3d-8041-8008-ead4ec9a1977"
+				},
+				"Delete": {
+					"componentId": "411cee6b-cc3d-8041-8008-ead4ed0206a1"
+				},
+				"Label": {
+					"componentId": "411cee6b-cc3d-8041-8008-ead4e4e13352"
+				},
+				"Profile": {
+					"componentId": "411cee6b-cc3d-8041-8008-ead4ec9a1977"
+				},
+				"Separator": {
+					"componentId": "411cee6b-cc3d-8041-8008-ead4e519ee69"
+				},
+				"Settings": {
+					"componentId": "411cee6b-cc3d-8041-8008-ead4ec9a1977"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead509d31998": {
+					"namePath": [
+						"Components / DropdownMenu / Content"
+					],
+					"appliedTokens": {
+						"fill": "popover",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.1",
+						"p2": "space.1",
+						"p3": "space.1",
+						"p4": "space.1",
+						"shadow": "shadow.md"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead509e05208": {
+					"namePath": [
+						"Components / DropdownMenu / Content",
+						"Label"
+					],
+					"appliedTokens": {
+						"p1": "space.1-5",
+						"p2": "space.2",
+						"p3": "space.1-5",
+						"p4": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead509e05209": {
+					"namePath": [
+						"Components / DropdownMenu / Content",
+						"Label",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.xs",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead509e4e2ad": {
+					"namePath": [
+						"Components / DropdownMenu / Content",
+						"Profile"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.1-5",
+						"p2": "space.2",
+						"p3": "space.1-5",
+						"p4": "space.2",
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead509e4e2af": {
+					"namePath": [
+						"Components / DropdownMenu / Content",
+						"Profile",
+						"Shortcut",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.xs",
+						"font-weight": "font-weight.normal",
+						"letter-spacing": "letter-spacing.widest"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead509e4e2b0": {
+					"namePath": [
+						"Components / DropdownMenu / Content",
+						"Profile",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "popover-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead509e4e2b1": {
+					"namePath": [
+						"Components / DropdownMenu / Content",
+						"Profile",
+						"Highlight"
+					],
+					"appliedTokens": {
+						"fill": "accent",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead509eb76ec": {
+					"namePath": [
+						"Components / DropdownMenu / Content",
+						"Settings"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.1-5",
+						"p2": "space.2",
+						"p3": "space.1-5",
+						"p4": "space.2",
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead509eb76ee": {
+					"namePath": [
+						"Components / DropdownMenu / Content",
+						"Settings",
+						"Shortcut",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.xs",
+						"font-weight": "font-weight.normal",
+						"letter-spacing": "letter-spacing.widest"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead509eb76ef": {
+					"namePath": [
+						"Components / DropdownMenu / Content",
+						"Settings",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "popover-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead509eb76f0": {
+					"namePath": [
+						"Components / DropdownMenu / Content",
+						"Settings",
+						"Highlight"
+					],
+					"appliedTokens": {
+						"fill": "accent",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead509f0509c": {
+					"namePath": [
+						"Components / DropdownMenu / Content",
+						"Billing"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.1-5",
+						"p2": "space.2",
+						"p3": "space.1-5",
+						"p4": "space.2",
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead509f0509e": {
+					"namePath": [
+						"Components / DropdownMenu / Content",
+						"Billing",
+						"Shortcut",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.xs",
+						"font-weight": "font-weight.normal",
+						"letter-spacing": "letter-spacing.widest"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead509f0509f": {
+					"namePath": [
+						"Components / DropdownMenu / Content",
+						"Billing",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "popover-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead509f050a0": {
+					"namePath": [
+						"Components / DropdownMenu / Content",
+						"Billing",
+						"Highlight"
+					],
+					"appliedTokens": {
+						"fill": "accent",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead509f60a8d": {
+					"namePath": [
+						"Components / DropdownMenu / Content",
+						"Separator"
+					],
+					"appliedTokens": {
+						"fill": "border"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead509f8c0da": {
+					"namePath": [
+						"Components / DropdownMenu / Content",
+						"Delete"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.1-5",
+						"p2": "space.2",
+						"p3": "space.1-5",
+						"p4": "space.2",
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead509f8c0dc": {
+					"namePath": [
+						"Components / DropdownMenu / Content",
+						"Delete",
+						"Shortcut",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.xs",
+						"font-weight": "font-weight.normal",
+						"letter-spacing": "letter-spacing.widest"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead509f8c0dd": {
+					"namePath": [
+						"Components / DropdownMenu / Content",
+						"Delete",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "destructive",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead509f8c0de": {
+					"namePath": [
+						"Components / DropdownMenu / Content",
+						"Delete",
+						"Highlight"
+					],
+					"appliedTokens": {
+						"fill": "destructive",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"opacity": "opacity.10"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead509fc59f6": {
+					"namePath": [
+						"Components / DropdownMenu / Content",
+						"Ring"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"opacity": "opacity.10"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"411cee6b-cc3d-8041-8008-ead50a633203": {
+			"path": "Components/DropdownMenu",
+			"name": "SubContent",
+			"variantProperties": {},
+			"parts": {
+				"Email": {
+					"componentId": "411cee6b-cc3d-8041-8008-ead4ec9a1977"
+				},
+				"Message": {
+					"componentId": "411cee6b-cc3d-8041-8008-ead4ec9a1977"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"411cee6b-cc3d-8041-8008-ead50a4dcdfc": {
+					"namePath": [
+						"Components / DropdownMenu / SubContent"
+					],
+					"appliedTokens": {
+						"fill": "popover",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.1",
+						"p2": "space.1",
+						"p3": "space.1",
+						"p4": "space.1",
+						"shadow": "shadow.lg"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead50a53ab12": {
+					"namePath": [
+						"Components / DropdownMenu / SubContent",
+						"Email"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.1-5",
+						"p2": "space.2",
+						"p3": "space.1-5",
+						"p4": "space.2",
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead50a53ab14": {
+					"namePath": [
+						"Components / DropdownMenu / SubContent",
+						"Email",
+						"Shortcut",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.xs",
+						"font-weight": "font-weight.normal",
+						"letter-spacing": "letter-spacing.widest"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead50a53ab15": {
+					"namePath": [
+						"Components / DropdownMenu / SubContent",
+						"Email",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "popover-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead50a53ab16": {
+					"namePath": [
+						"Components / DropdownMenu / SubContent",
+						"Email",
+						"Highlight"
+					],
+					"appliedTokens": {
+						"fill": "accent",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead50a57cecc": {
+					"namePath": [
+						"Components / DropdownMenu / SubContent",
+						"Message"
+					],
+					"appliedTokens": {
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"p1": "space.1-5",
+						"p2": "space.2",
+						"p3": "space.1-5",
+						"p4": "space.2",
+						"column-gap": "space.2"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead50a57cece": {
+					"namePath": [
+						"Components / DropdownMenu / SubContent",
+						"Message",
+						"Shortcut",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "muted-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.xs",
+						"font-weight": "font-weight.normal",
+						"letter-spacing": "letter-spacing.widest"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead50a57cecf": {
+					"namePath": [
+						"Components / DropdownMenu / SubContent",
+						"Message",
+						"Text"
+					],
+					"appliedTokens": {
+						"fill": "popover-foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead50a57ced0": {
+					"namePath": [
+						"Components / DropdownMenu / SubContent",
+						"Message",
+						"Highlight"
+					],
+					"appliedTokens": {
+						"fill": "accent",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius"
+					},
+					"unbound": []
+				},
+				"411cee6b-cc3d-8041-8008-ead50a5bbda9": {
+					"namePath": [
+						"Components / DropdownMenu / SubContent",
+						"Ring"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground",
+						"r1": "radius",
+						"r2": "radius",
+						"r3": "radius",
+						"r4": "radius",
+						"opacity": "opacity.10"
 					},
 					"unbound": []
 				}
