@@ -24,9 +24,14 @@ import {
  *
  * `allowlist` names the exports that should never be in the design system library (`cn`,
  * `useDataTable`, `Toaster`), so they are not reported as coverage gaps.
+ *
+ * `valueAllowlist` does the same for prop literals no variant should ever show, keyed
+ * `<Export>.<prop>`: values a type inherits that render like another value
+ * (`{ "Input.aria-invalid": ["grammar", "spelling"] }`).
  */
 export const driftConfigSchema = z.strictObject({
 	allowlist: z.array(z.string()),
+	valueAllowlist: z.record(z.string(), z.array(z.string())).optional(),
 })
 
 /** The drift-check config; see {@link driftConfigSchema}. */
@@ -401,11 +406,12 @@ const collectVariantValues = (snapshot: LibrarySnapshot): Map<string, ValuesByPr
 
 /**
  * The coverage report: each export no library component links to (unless allowlisted), and
- * each literal of a prop the library sets that no variant uses (`default` omits the prop).
+ * each literal of a prop the library sets that no variant uses (`default` omits the prop),
+ * unless on the value allowlist.
  */
 const reportCoverage = (
 	manifest: CodeManifest,
-	allowlist: string[],
+	{ allowlist, valueAllowlist = {} }: DriftConfig,
 	linked: Map<string, ValuesByProperty>
 ): CoverageGap[] =>
 	Object.entries(manifest.exports).flatMap(([exportName, { props }]): CoverageGap[] => {
@@ -416,6 +422,7 @@ const reportCoverage = (
 			if (codeProp?.type !== 'literals') return []
 			return codeProp.values
 				.filter((value) => !used.has(value))
+				.filter((value) => !valueAllowlist[`${exportName}.${prop}`]?.includes(value))
 				.map((value) => ({ export: exportName, prop, value }))
 		})
 	})
@@ -528,6 +535,6 @@ export const checkDrift = ({
 	return {
 		errors: uniqueBy(errors).sort(byComponentThenRule),
 		unchecked: uniqueBy(unchecked),
-		coverageGaps: reportCoverage(manifest, config.allowlist, linked),
+		coverageGaps: reportCoverage(manifest, config, linked),
 	}
 }

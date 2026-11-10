@@ -903,5 +903,20 @@ describe('checkDrift', () => {
 				checkDrift(createDriftCheckInput(createInStepLibrary(), manifest)).coverageGaps
 			).toEqual([{ export: 'Button', prop: 'variant', value: 'secondary' }])
 		})
+
+		it('should not report a prop literal on the value allowlist, and still report the others', () => {
+			const manifest = createCodeManifest()
+			manifest.exports.Button.props.variant = {
+				type: 'literals',
+				values: ['default', 'outline', 'secondary', 'ghost'],
+				optional: true,
+			}
+			const input = createDriftCheckInput(createInStepLibrary(), manifest)
+			input.config.valueAllowlist = { 'Button.variant': ['secondary'] }
+
+			expect(checkDrift(input).coverageGaps).toEqual([
+				{ export: 'Button', prop: 'variant', value: 'ghost' },
+			])
+		})
 	})
 })
