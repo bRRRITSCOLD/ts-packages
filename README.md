@@ -2,7 +2,7 @@
 
 Turborepo + pnpm monorepo for shared TypeScript libraries, published to npm under `@brrritscold`.
 
-**API reference:** https://brrritscold.github.io/ts-packages/
+**API reference:** https://brrritscold.github.io/ts-packages/ · **core-react Storybook:** https://brrritscold.github.io/ts-packages/core-react/
 
 | Package                                                                                                                     | Runtime        | What                                                                      |
 | --------------------------------------------------------------------------------------------------------------------------- | -------------- | ------------------------------------------------------------------------- |
@@ -15,7 +15,7 @@ Turborepo + pnpm monorepo for shared TypeScript libraries, published to npm unde
 | [`@brrritscold/design-core-node`](./packages/design-core-node) (private)                                                    | node           | code manifest generator, `design-drift` CLI                               |
 | [`@brrritscold/design-penpot-sdk-node`](./packages/design-penpot-sdk-node) (private)                                        | node           | Penpot RPC client, library-snapshot normalizer, `design-snapshot-refresh` |
 | [`@brrritscold/design-penpot-ui`](https://github.com/bRRRITSCOLD/ts-packages/tree/main/packages/design-penpot-ui) (private) | browser        | link inspector Penpot plugin, `read-links.js` link reader                 |
-| [`@brrritscold/core-react`](https://github.com/bRRRITSCOLD/ts-packages/tree/main/packages/core-react) (private)             | browser + SSR  | React components, design tokens, `styles.css` (Storybook is its docs)     |
+| [`@brrritscold/core-react`](https://github.com/bRRRITSCOLD/ts-packages/tree/main/packages/core-react)                       | browser + SSR  | React components, design tokens, `styles.css` (Storybook is its docs)     |
 
 ## Develop
 

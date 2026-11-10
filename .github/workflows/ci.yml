@@ -13,6 +13,17 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
+              with:
+                  # the PR's base commit, for the changeset check
+                  fetch-depth: 0
+            # From core-react 1.0.0 on, a PR that changes a published core-react file needs
+            # a changeset naming the package. Stories are not published, so they are exempt.
+            # Rules: docs/design-system/SPEC.md → D3.
+            - name: core-react changes carry a changeset
+              if: github.event_name == 'pull_request'
+              env:
+                  BASE: ${{ github.event.pull_request.base.sha }}
+              run: node scripts/check-changeset.mjs "$BASE"
             - uses: pnpm/action-setup@v4
             - uses: actions/setup-node@v4
               with:
@@ -178,7 +189,7 @@ jobs:
                     echo "::notice title=Release result: NOT published::Nothing new; every package version is already on npm."
                   fi
 
-    # Publishes the API reference to GitHub Pages only when the release job
+    # Publishes the API reference and core-react's Storybook (/core-react/) to GitHub Pages only when the release job
     # actually published to npm, so the site always matches what is on npm.
     docs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.release.outputs.published == 'true'
@@ -204,6 +215,9 @@ jobs:
             - run: pnpm install --frozen-lockfile
             - run: pnpm build
             - run: pnpm docs:build
+            # core-react's docs are its Storybook, served next to the API reference
+            - run: pnpm --filter @brrritscold/core-react storybook:build
+            - run: cp -r packages/core-react/storybook-static site/core-react
             - uses: actions/upload-pages-artifact@v3
               with:
                   path: site
