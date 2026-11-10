@@ -44,7 +44,7 @@ The exceptions record lives in `sharedPluginData` namespace `brrritscold.core-re
 
 Rules 7–9 skip `_internal/` components (the slot placeholder keeps its raw magenta fill), as the resolver links them to no code. They read each component's `layers`, which the snapshot refresh computes from Penpot so the check stays offline. Checked attributes (`CHECKED_TOKEN_ATTRIBUTES`), on every layer of every main component including nested part copies, each only when set to a non-default value: fill, stroke colour, radius `r1`–`r4`, padding `p1`–`p4`, row/column gap, font family/size/weight, letter spacing, shadow, opacity ≠ 1. Exempt: x/y, width/height, stroke width, rotation, margin. Messages name a layer by its name path and id: ``layer `Button / Label` (3f2a…)``. Whether a layer has the _right_ semantic token is left to review.
 
-Coverage gaps: exports with no library component, minus the `allowlist` in `design/drift.config.json`; and literal values of a prop the library sets that no variant uses.
+Coverage gaps: exports with no library component, minus the `allowlist` in `design/drift.config.json`; and literal values of a prop the library sets that no variant uses, minus the `valueAllowlist` (keyed `<Export>.<prop>`).
 
 ## Token sync
 

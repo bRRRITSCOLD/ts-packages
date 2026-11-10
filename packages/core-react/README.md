@@ -87,11 +87,11 @@ The CI job `drift` keeps this package and the design system library in Penpot ho
 2. `pnpm drift:check` checks `design/library.snapshot.json` against the manifest and `tokens/tokens.json` (drift rules 1–9 in `@brrritscold/design-core-js`). Library → code mismatches fail; code → library gaps are a warning, except the exports on the allowlist.
 3. Every token the PR's base `tokens.json` has and this one doesn't needs a `design/token-migrations.json` entry, or the job fails (`design-drift migrations`).
 
-| File                           | Holds                                                                                                        |
-| ------------------------------ | ------------------------------------------------------------------------------------------------------------ |
-| `design/library.snapshot.json` | the normalized library file; written only by the snapshot refresh, never by hand                             |
-| `design/drift.config.json`     | `allowlist`: exports that never get a library twin (`cn`, cva configs like `buttonVariants`)                 |
-| `design/token-migrations.json` | append-only `[{ "version", "from", "to" }]`; `to: null` when nothing replaces the token. Token sync reads it |
+| File                           | Holds                                                                                                                                                                                                                                                                                                                                      |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `design/library.snapshot.json` | the normalized library file; written only by the snapshot refresh, never by hand                                                                                                                                                                                                                                                           |
+| `design/drift.config.json`     | `allowlist`: exports that never get a library twin (`cn`, cva configs like `buttonVariants`); `valueAllowlist`: prop values no variant shows (`aria-invalid` `grammar` / `spelling` render like `false`, since `aria-invalid:` matches only `"true"`; `TooltipContent` `side` `inline-start` / `inline-end` match `left` / `right` in LTR) |
+| `design/token-migrations.json` | append-only `[{ "version", "from", "to" }]`; `to: null` when nothing replaces the token. Token sync reads it                                                                                                                                                                                                                               |
 
 Fixing a red check, lockstep PRs and promotion: the personal-ai `design-system` skill.
 

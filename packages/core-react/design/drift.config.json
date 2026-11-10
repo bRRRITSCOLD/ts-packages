@@ -55,5 +55,12 @@
 		"useComboboxAnchor",
 		"useDataTable",
 		"useToastManager"
-	]
+	],
+	"valueAllowlist": {
+		"Checkbox.aria-invalid": ["grammar", "spelling"],
+		"Input.aria-invalid": ["grammar", "spelling"],
+		"SelectTrigger.aria-invalid": ["grammar", "spelling"],
+		"Textarea.aria-invalid": ["grammar", "spelling"],
+		"TooltipContent.side": ["inline-end", "inline-start"]
+	}
 }
