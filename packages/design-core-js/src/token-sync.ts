@@ -54,7 +54,8 @@ export const findUnmigratedTokens = ({
  * A shape token sync leaves for a human: it applies a migrated token `from` that has no
  * replacement (`to: null`), still applies it after the sync re-pointed it, or doesn't read back
  * a token whose value changed after the sync re-applied it, or (a copy) still resolves it
- * differently from the shapes outside copies.
+ * differently from the shapes outside copies, or (a copy) applies a changed token that no shape
+ * outside a copy applies, so it was left to follow its main.
  */
 export type FlaggedShape = {
 	page: string
@@ -555,7 +556,9 @@ const syncTokens = async (
 	// whose text fill was overridden on its old font), and re-applying a token on one that follows
 	// detaches it and races Penpot carrying the main's change. So copies are waited for, and only
 	// those that still don't resolve like the reference are re-applied. A token or property with
-	// no reference (every shape applying it is a copy) re-applies on every copy.
+	// no reference (every shape applying it is a copy, as in a page design file whose mains live
+	// in the library) leaves its copies alone: their main changes when the file accepts the
+	// library update, so each is flagged for a human to check after that, never re-applied (#132).
 	const known = ({ token, properties }: Job) =>
 		properties.every((property) => reference.has(referenceKey(token.name, property)))
 	const followed = (job: Job) =>
@@ -592,14 +595,23 @@ const syncTokens = async (
 	}
 	if (copies.length) {
 		if (reference.size) await settle(copies)
-		const stale = copies.filter((job) => !followed(job))
+		for (const { page, shape, token, properties } of copies.filter((job) => !known(job)))
+			flagged.push({
+				page,
+				shapeId: shape.id,
+				shape: shape.name,
+				token: token.name,
+				properties,
+				reason: `\`${token.name}\` changed value and every shape applying it here is a component copy, so it was left to follow its main (re-applying it would detach it): once the file has accepted the library update, apply it again on ${properties.join(', ')} only if this shape still resolves the old value`,
+			})
+		const stale = copies.filter((job) => known(job) && !followed(job))
 		if (stale.length) {
 			await reapply(stale)
-			if (stale.some(known)) await settle(stale)
+			await settle(stale)
 		}
 		for (const job of stale)
 			if (!readsBack(job)) report(job, false, NO_READ_BACK)
-			else if (known(job) && !followed(job))
+			else if (!followed(job))
 				report(job, false, 'did not resolve what the shapes outside copies resolve')
 			else report(job, true, '')
 	}
@@ -710,7 +722,9 @@ const syncTokens = async (
  * time to follow their mains, and only a copy that still doesn't resolve what those shapes
  * resolve is re-applied, since re-applying on one that follows detaches it from its main. A
  * shape that doesn't read the token back, or a re-applied copy that still resolves differently,
- * is flagged.
+ * is flagged. A copy applying a token (on a property) that no shape outside a copy applies, as
+ * in a page design file whose mains live in the library, has nothing to be compared with: it is
+ * never re-applied, and is flagged to check once the file has accepted the library update.
  *
  * Each migration whose `from` is still in the file adds `to`, re-applies it on every shape
  * whose `shape.tokens` names `from` (same properties) and removes `from` once no shape applies
