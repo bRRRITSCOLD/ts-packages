@@ -84,7 +84,7 @@
 		"test:e2e": "vitest run --project e2e",
 		"test:e2e:watch": "vitest --project e2e",
 		"test:integration": "vitest run --project integration",
-		"test:integration:ci": "npm run test:integration:setup && npm run test:integration && npm run test:integration:teardown",
+		"test:integration:ci": "npm run test:integration:setup && { npm run test:integration; code=$?; npm run test:integration:teardown; exit $code; }",
 		"test:integration:setup": "tsx ./tests/integration/__utils__/setup.ts",
 		"test:integration:teardown": "tsx ./tests/integration/__utils__/teardown.ts",
 		"test:integration:watch": "vitest --project integration",
