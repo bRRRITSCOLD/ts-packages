@@ -16,6 +16,7 @@ import {
 	createTokenFile,
 	type FakeBehaviour,
 	type FakeFileState,
+	type FakeShape,
 	readCatalog,
 	runScript,
 } from './__fixtures__/buildTokenSyncScript.unit.fixtures.js'
@@ -240,6 +241,144 @@ describe('buildTokenSyncScript', () => {
 			}
 			expect(main.resolved['font-weight']).toBe('500')
 			expect(await sync(fake, [], withNewSans())).toEqual({ changes: [], flagged: [] })
+		})
+
+		describe('on component copies', () => {
+			/** A page with a main applying `font-family.sans`, resolved to the old value. */
+			const pageWith = (...copies: ((main: FakeShape) => FakeShape)[]) => {
+				const main = createShape(
+					'Label',
+					{ fontFamily: 'font-family.sans' },
+					{ resolved: { fontFamily: OLD_SANS } }
+				)
+				const shapes = copies.map((copy) => copy(main))
+				return {
+					main,
+					shapes,
+					state: {
+						pages: [
+							{
+								name: 'Screens',
+								root: createShape('Root', {}, { children: [main, ...shapes] }),
+							},
+						],
+					},
+				}
+			}
+
+			it('should wait for a copy that follows its main and leave it attached', async () => {
+				const {
+					shapes: [copy],
+					state,
+				} = pageWith((followed) =>
+					createShape('Label copy', {}, { follows: followed, lag: 2 })
+				)
+				const fake = await syncedFile(state)
+
+				const { changes, flagged } = await sync(fake, [], withNewSans())
+
+				expect(changes).toEqual([
+					'update token `primitive/font-family.sans`',
+					're-apply `font-family.sans` on fontFamily of `Label` (shape-Label) on page `Screens`',
+				])
+				expect(flagged).toEqual([])
+				expect(copy.detached).toBe(false)
+				expect(copy.tokens.fontFamily).toBe('font-family.sans')
+				expect(copy.resolved.fontFamily).toEqual(NEW_SANS)
+			})
+
+			it("should re-apply a copy that doesn't follow its main", async () => {
+				const {
+					shapes: [copy],
+					state,
+				} = pageWith(() =>
+					createShape(
+						'Overridden copy',
+						{ fontFamily: 'font-family.sans' },
+						{ copy: true, resolved: { fontFamily: OLD_SANS } }
+					)
+				)
+				const fake = await syncedFile(state)
+
+				const { changes, flagged } = await sync(fake, [], withNewSans())
+
+				expect(changes).toContain(
+					're-apply `font-family.sans` on fontFamily of `Overridden copy` (shape-Overridden copy) on page `Screens`'
+				)
+				expect(flagged).toEqual([])
+				expect(copy.resolved.fontFamily).toEqual(NEW_SANS)
+				expect(await sync(fake, [], withNewSans())).toEqual({ changes: [], flagged: [] })
+			})
+
+			it('should apply the token back on a copy that lost it while its main was re-applied', async () => {
+				const copy = createShape(
+					'Overridden copy',
+					{ fontFamily: 'font-family.sans' },
+					{ copy: true, resolved: { fontFamily: OLD_SANS } }
+				)
+				// Penpot carries the main's toggle off to the copy before its toggle back on: the copy
+				// applies the token when the sync looks for users, and has lost it by its re-apply.
+				const tokensOf = Object.getOwnPropertyDescriptor(copy, 'tokens')?.get
+				let reads = 0
+				Object.defineProperty(copy, 'tokens', {
+					get() {
+						const tokens = tokensOf?.call(copy)
+						if (++reads !== 1) return tokens
+						const found = { ...tokens }
+						delete tokens.fontFamily
+						return found
+					},
+				})
+				const { state } = pageWith(() => copy)
+				const fake = await syncedFile(state)
+
+				const { flagged } = await sync(fake, [], withNewSans())
+
+				expect(flagged).toEqual([])
+				expect(copy.tokens.fontFamily).toBe('font-family.sans')
+				expect(copy.resolved.fontFamily).toEqual(NEW_SANS)
+			})
+
+			it('should re-apply every copy when no shape outside a copy applies the token', async () => {
+				const copy = createShape(
+					'Label copy',
+					{ fontFamily: 'font-family.sans' },
+					{ copy: true, resolved: { fontFamily: OLD_SANS } }
+				)
+				const fake = await syncedFile({ pages: [{ name: 'Screens', root: copy }] })
+
+				const { changes } = await sync(fake, [], withNewSans())
+
+				expect(changes).toEqual([
+					'update token `primitive/font-family.sans`',
+					're-apply `font-family.sans` on fontFamily of `Label copy` (shape-Label copy) on page `Screens`',
+				])
+				expect(copy.resolved.fontFamily).toEqual(NEW_SANS)
+			})
+
+			it('should flag a re-applied copy that still resolves differently from its main', async () => {
+				const { state } = pageWith(() =>
+					createShape(
+						'Stale copy',
+						{ fontFamily: 'font-family.sans' },
+						{ copy: true, stale: true, resolved: { fontFamily: OLD_SANS } }
+					)
+				)
+				const fake = await syncedFile(state)
+
+				const { flagged } = await sync(fake, [], withNewSans())
+
+				expect(flagged).toEqual([
+					{
+						page: 'Screens',
+						shapeId: 'shape-Stale copy',
+						shape: 'Stale copy',
+						token: 'font-family.sans',
+						properties: ['fontFamily'],
+						reason: '`font-family.sans` changed value and re-applying it did not resolve what the shapes outside copies resolve: apply it again on fontFamily',
+					},
+				])
+			})
 		})
 
 		it('should re-apply the tokens that reference a changed token too', async () => {

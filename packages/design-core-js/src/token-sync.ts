@@ -53,7 +53,8 @@ export const findUnmigratedTokens = ({
 /**
  * A shape token sync leaves for a human: it applies a migrated token `from` that has no
  * replacement (`to: null`), still applies it after the sync re-pointed it, or doesn't read back
- * a token whose value changed after the sync re-applied it.
+ * a token whose value changed after the sync re-applied it, or (a copy) still resolves it
+ * differently from the shapes outside copies.
  */
 export type FlaggedShape = {
 	page: string
@@ -112,6 +113,38 @@ export type PenpotShape = {
 	applyToken: (token: PenpotToken, properties: string[]) => void
 	/** Whether the shape is a component copy; re-applying a token reaches copies last. */
 	isComponentCopyInstance?: () => boolean
+	// The attributes a token resolves into. Token sync reads them to tell a copy that followed its
+	// main from one that needs a changed token re-applied.
+	fills?: { fillColor?: string }[] | string
+	strokes?: { strokeColor?: string; strokeWidth?: number }[]
+	fontFamily?: string
+	fontId?: string
+	fontSize?: string
+	fontWeight?: string
+	letterSpacing?: string | number
+	lineHeight?: string | number
+	textTransform?: string | null
+	textDecoration?: string | null
+	opacity?: number
+	shadows?: unknown[]
+	borderRadiusTopLeft?: number
+	borderRadiusTopRight?: number
+	borderRadiusBottomRight?: number
+	borderRadiusBottomLeft?: number
+	width?: number
+	height?: number
+	flex?: PenpotLayout | null
+	grid?: PenpotLayout | null
+}
+
+/** The padding and gaps of a flex or grid layout board, as the Penpot 2.18.6 plugin API holds them. */
+export type PenpotLayout = {
+	leftPadding?: number
+	rightPadding?: number
+	topPadding?: number
+	bottomPadding?: number
+	rowGap?: number
+	columnGap?: number
 }
 
 /**
@@ -155,9 +188,21 @@ type TokenSyncPlan = {
 	/** The migrations still to apply, each `to` resolved to a token of the token file. */
 	migrations: { from: string; to: string | null }[]
 	pauseMs: number
+	/**
+	 * How long to wait for copies to follow their mains, in polls of `pauseMs`: until nothing
+	 * watched changed for `quietPolls` polls, at most `maxPolls`.
+	 */
+	settle: { quietPolls: number; maxPolls: number }
 }
 
 const DEFAULT_PAUSE_MS = 300
+/**
+ * Penpot 2.18.6 took 0.5–1.3 s to carry a main's change to one copy, and stalled for seconds
+ * carrying one to hundreds; copies are judged once nothing changed for this long.
+ */
+const SETTLE_QUIET_MS = 2500
+/** The longest one wait for copies lasts. */
+const SETTLE_MAX_MS = 20000
 
 /** A shadow layer's spread, as a number of pixels. */
 const spreadOf = (layer: unknown) =>
@@ -390,9 +435,8 @@ const syncTokens = async (
 
 	// Re-apply: Penpot doesn't re-resolve the shapes applying a token whose value changed, nor
 	// those applying a token that references it (#120). Each is toggled off and back on across
-	// pauses, since applying a token toggles it and settles asynchronously; non-copies go first so
-	// plain copies have followed their mains before their turn. A shape whose token doesn't read
-	// back afterwards is flagged.
+	// pauses, since applying a token toggles it and settles asynchronously. A shape whose token
+	// doesn't read back afterwards is flagged. Copies are handled after, below.
 	const allTokens = () => catalog.sets.flatMap((set) => set.tokens)
 	const references = ({ value }: PenpotToken) =>
 		(JSON.stringify(value ?? '').match(/\{[^{}]+\}/g) ?? []).map((ref) => ref.slice(1, -1))
@@ -408,27 +452,156 @@ const syncTokens = async (
 		const token = allTokens().find((candidate) => candidate.name === name)
 		return token ? usersOf(name).map((user) => ({ ...user, token })) : []
 	})
-	const isCopy = ({ shape }: { shape: PenpotShape }) => shape.isComponentCopyInstance?.() ?? false
-	for (const batch of [jobs.filter((job) => !isCopy(job)), jobs.filter(isCopy)]) {
-		if (!batch.length) continue
-		for (const { shape, token, properties } of batch) shape.applyToken(token, properties)
+	type Job = (typeof jobs)[number]
+	const isCopy = ({ shape }: Job) => shape.isComponentCopyInstance?.() ?? false
+	// What a property resolved to on a shape, as JSON; `undefined` for a property it can't read.
+	const layout = (shape: PenpotShape) => shape.flex ?? shape.grid ?? undefined
+	const readers: Record<string, (shape: PenpotShape) => unknown> = {
+		fill: ({ fills }) =>
+			Array.isArray(fills) ? fills.map(({ fillColor }) => fillColor) : fills,
+		strokeColor: ({ strokes }) => strokes?.map(({ strokeColor }) => strokeColor),
+		strokeWidth: ({ strokes }) => strokes?.map(({ strokeWidth }) => strokeWidth),
+		fontFamily: ({ fontFamily, fontId }) => [fontFamily, fontId],
+		fontSize: ({ fontSize }) => fontSize,
+		fontWeight: ({ fontWeight }) => fontWeight,
+		letterSpacing: ({ letterSpacing }) => letterSpacing,
+		textCase: ({ textTransform }) => textTransform,
+		textDecoration: ({ textDecoration }) => textDecoration,
+		typography: (shape) => [
+			shape.fontFamily,
+			shape.fontId,
+			shape.fontSize,
+			shape.fontWeight,
+			shape.letterSpacing,
+			shape.lineHeight,
+			shape.textTransform,
+		],
+		opacity: ({ opacity }) => opacity,
+		shadow: ({ shadows }) => shadows,
+		borderRadiusTopLeft: (shape) => shape.borderRadiusTopLeft,
+		borderRadiusTopRight: (shape) => shape.borderRadiusTopRight,
+		borderRadiusBottomRight: (shape) => shape.borderRadiusBottomRight,
+		borderRadiusBottomLeft: (shape) => shape.borderRadiusBottomLeft,
+		width: ({ width }) => width,
+		height: ({ height }) => height,
+		paddingLeft: (shape) => layout(shape)?.leftPadding,
+		paddingRight: (shape) => layout(shape)?.rightPadding,
+		paddingTop: (shape) => layout(shape)?.topPadding,
+		paddingBottom: (shape) => layout(shape)?.bottomPadding,
+		rowGap: (shape) => layout(shape)?.rowGap,
+		columnGap: (shape) => layout(shape)?.columnGap,
+	}
+	const readout = (shape: PenpotShape, property: string) => {
+		try {
+			const value = Object.hasOwn(readers, property) ? readers[property](shape) : undefined
+			return value === undefined ? undefined : JSON.stringify(value)
+		} catch {
+			return undefined
+		}
+	}
+	const readsBack = ({ shape, token, properties }: Job) =>
+		properties.every((property) => shape.tokens?.[property] === token.name)
+	// Off where it is on, then on where it is off: Penpot can carry a main's toggle off to a copy
+	// well before its toggle back on, and toggling a copy that lost the token would leave it off.
+	const toggle = (batch: Job[], applied: boolean) => {
+		for (const { shape, token, properties } of batch) {
+			const toggled = properties.filter(
+				(property) => (shape.tokens?.[property] === token.name) === applied
+			)
+			if (toggled.length) shape.applyToken(token, toggled)
+		}
+	}
+	const reapply = async (batch: Job[]) => {
+		toggle(batch, true)
 		await pause()
-		for (const { shape, token, properties } of batch) shape.applyToken(token, properties)
+		toggle(batch, false)
 		await pause()
-		for (const { page, shape, token, properties } of batch)
-			if (properties.every((property) => shape.tokens?.[property] === token.name))
-				changes.push(
-					`re-apply \`${token.name}\` on ${properties.join(', ')} of \`${shape.name}\` (${shape.id}) on page \`${page}\``
+	}
+	const report = (job: Job, resolved: boolean, why: string) => {
+		const { page, shape, token, properties } = job
+		if (resolved)
+			changes.push(
+				`re-apply \`${token.name}\` on ${properties.join(', ')} of \`${shape.name}\` (${shape.id}) on page \`${page}\``
+			)
+		else
+			flagged.push({
+				page,
+				shapeId: shape.id,
+				shape: shape.name,
+				token: token.name,
+				properties,
+				reason: `\`${token.name}\` changed value and re-applying it ${why}: apply it again on ${properties.join(', ')}`,
+			})
+	}
+	const NO_READ_BACK = 'did not read back'
+	// Shapes outside copies first. What they resolve to afterwards is the reference a copy is
+	// held to, per token and property.
+	const nonCopies = jobs.filter((job) => !isCopy(job))
+	const copies = jobs.filter(isCopy)
+	if (nonCopies.length) await reapply(nonCopies)
+	const reference = new Map<string, string>()
+	const referenceKey = (token: string, property: string) => `${token}\u0000${property}`
+	for (const job of nonCopies) {
+		const resolved = readsBack(job)
+		report(job, resolved, NO_READ_BACK)
+		if (resolved)
+			for (const property of job.properties) {
+				const value = readout(job.shape, property)
+				const key = referenceKey(job.token.name, property)
+				if (value !== undefined && !reference.has(key)) reference.set(key, value)
+			}
+	}
+	// A copy follows its main unless the main's change can't reach it (Penpot 2.18.6 keeps a copy
+	// whose text fill was overridden on its old font), and re-applying a token on one that follows
+	// detaches it and races Penpot carrying the main's change. So copies are waited for, and only
+	// those that still don't resolve like the reference are re-applied. A token or property with
+	// no reference (every shape applying it is a copy) re-applies on every copy.
+	const known = ({ token, properties }: Job) =>
+		properties.every((property) => reference.has(referenceKey(token.name, property)))
+	const followed = (job: Job) =>
+		known(job) &&
+		readsBack(job) &&
+		job.properties.every(
+			(property) =>
+				readout(job.shape, property) ===
+				reference.get(referenceKey(job.token.name, property))
+		)
+	const settle = async (batch: Job[]) => {
+		const watched = () =>
+			JSON.stringify(
+				batch.map(({ shape, properties }) =>
+					properties.map((property) => [
+						shape.tokens?.[property],
+						readout(shape, property),
+					])
 				)
-			else
-				flagged.push({
-					page,
-					shapeId: shape.id,
-					shape: shape.name,
-					token: token.name,
-					properties,
-					reason: `\`${token.name}\` changed value and re-applying it did not read back: apply it again on ${properties.join(', ')}`,
-				})
+			)
+		let last = watched()
+		for (
+			let poll = 0, quiet = 0;
+			poll < plan.settle.maxPolls &&
+			quiet < plan.settle.quietPolls &&
+			!batch.every((job) => !known(job) || followed(job));
+			poll++
+		) {
+			await pause()
+			const now = watched()
+			quiet = now === last ? quiet + 1 : 0
+			last = now
+		}
+	}
+	if (copies.length) {
+		if (reference.size) await settle(copies)
+		const stale = copies.filter((job) => !followed(job))
+		if (stale.length) {
+			await reapply(stale)
+			if (stale.some(known)) await settle(stale)
+		}
+		for (const job of stale)
+			if (!readsBack(job)) report(job, false, NO_READ_BACK)
+			else if (known(job) && !followed(job))
+				report(job, false, 'did not resolve what the shapes outside copies resolve')
+			else report(job, true, '')
 	}
 
 	// Migrations: re-point every shape that applies `from` to `to`, on the same properties.
@@ -532,8 +705,12 @@ const syncTokens = async (
  * A token whose value or description differs takes the new one in place. When Penpot refuses
  * that, or the type changed, the token is removed and added again; an add that fails twice
  * restores the old token, and the script throws once everything else is synced. Every shape
- * applying a token whose value changed (or a token referencing it) has it re-applied, toggled
- * off and back on, so it resolves the new value; one that doesn't read it back is flagged.
+ * outside a component copy applying a token whose value changed (or a token referencing it) has
+ * it re-applied, toggled off and back on, so it resolves the new value. Copies are then given
+ * time to follow their mains, and only a copy that still doesn't resolve what those shapes
+ * resolve is re-applied, since re-applying on one that follows detaches it from its main. A
+ * shape that doesn't read the token back, or a re-applied copy that still resolves differently,
+ * is flagged.
  *
  * Each migration whose `from` is still in the file adds `to`, re-applies it on every shape
  * whose `shape.tokens` names `from` (same properties) and removes `from` once no shape applies
@@ -571,6 +748,10 @@ export const buildTokenSyncScript = ({
 		defaultTheme: { group: 'Mode', name: 'Light' },
 		migrations: resolveMigrations(migrations, tokenNames),
 		pauseMs,
+		settle: {
+			quietPolls: pauseMs > 0 ? Math.ceil(SETTLE_QUIET_MS / pauseMs) : 1,
+			maxPolls: pauseMs > 0 ? Math.ceil(SETTLE_MAX_MS / pauseMs) : 3,
+		},
 	}
 	return [
 		'// Token sync, generated by @brrritscold/design-core-js/token-sync from tokens.json and',

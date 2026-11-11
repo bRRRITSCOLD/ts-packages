@@ -68,14 +68,21 @@ export type FakeShape = PenpotShape & {
 	tokens: Record<string, string>
 	resolved: Record<string, unknown>
 	children: FakeShape[]
+	detached: boolean
 }
 
 /**
  * A shape applying the given tokens, each resolved to `resolved[property]`. `applyToken`
  * toggles, as Penpot's does: a property already applying the token loses it, any other takes it
- * and resolves the token's current value. A `stubborn` shape ignores `applyToken`, like a shape
- * Penpot won't re-point; a `racy` one drops every second call, like a toggle back on that landed
- * before the toggle off settled; a `copy` is a component copy.
+ * and resolves the token's current value. `fills` and `fontFamily` read `resolved` the way the
+ * script reads Penpot's attributes.
+ *
+ * A `stubborn` shape ignores `applyToken`, like a shape Penpot won't re-point; a `racy` one drops
+ * every second call, like a toggle back on that landed before the toggle off settled; a `stale`
+ * one takes the token but keeps resolving the old value; a `copy` is a component copy. A copy
+ * that `follows` a main mirrors the main's tokens and resolved values `lag` reads after they
+ * change, as Penpot carries a main's change to its copies, until `applyToken` on the copy
+ * detaches it.
  */
 export const createShape = (
 	name: string,
@@ -84,38 +91,83 @@ export const createShape = (
 		children = [],
 		stubborn = false,
 		racy = false,
+		stale = false,
 		copy = false,
+		follows,
+		lag = 0,
 		resolved = {},
 	}: {
 		children?: FakeShape[]
 		stubborn?: boolean
 		racy?: boolean
+		stale?: boolean
 		copy?: boolean
+		follows?: FakeShape
+		lag?: number
 		resolved?: Record<string, unknown>
 	} = {}
 ): FakeShape => {
 	let calls = 0
-	const shape: FakeShape = {
+	const own = { tokens: { ...tokens }, resolved: { ...resolved } }
+	// What the copy shows of its main: the main's state as of `lag` reads after it last changed.
+	let detached = !follows
+	let seen = follows ? JSON.stringify([follows.tokens, follows.resolved]) : ''
+	let shown = follows ? { tokens: { ...follows.tokens }, resolved: { ...follows.resolved } } : own
+	let reads = 0
+	const current = () => {
+		if (detached || !follows) return own
+		const now = JSON.stringify([follows.tokens, follows.resolved])
+		if (now !== seen) {
+			seen = now
+			reads = 0
+		}
+		if (++reads > lag)
+			shown = { tokens: { ...follows.tokens }, resolved: { ...follows.resolved } }
+		return shown
+	}
+	const shape = {
 		id: `shape-${name}`,
 		name,
-		tokens: { ...tokens },
-		resolved: { ...resolved },
 		children,
-		isComponentCopyInstance: () => copy,
-		applyToken: (token, properties) => {
+		get tokens() {
+			return current().tokens
+		},
+		get resolved() {
+			return current().resolved
+		},
+		get fills() {
+			const { fill } = current().resolved
+			return fill === undefined ? [] : [{ fillColor: String(fill) }]
+		},
+		get fontFamily() {
+			const family = current().resolved.fontFamily
+			return family === undefined ? undefined : JSON.stringify(family)
+		},
+		isComponentCopyInstance: () => copy || Boolean(follows),
+		applyToken: (token: PenpotToken, properties: string[]) => {
 			calls++
 			if (stubborn || (racy && calls % 2 === 0)) return
+			if (!detached) {
+				const { tokens: mirrored, resolved: values } = current()
+				own.tokens = { ...mirrored }
+				own.resolved = { ...values }
+				detached = true
+			}
 			for (const property of properties)
-				if (shape.tokens[property] === token.name) {
-					delete shape.tokens[property]
-					delete shape.resolved[property]
+				if (own.tokens[property] === token.name) {
+					delete own.tokens[property]
+					delete own.resolved[property]
 				} else {
-					shape.tokens[property] = token.name
-					shape.resolved[property] = token.value
+					own.tokens[property] = token.name
+					if (!stale) own.resolved[property] = token.value
 				}
 		},
+		/** Whether `applyToken` detached this copy from the main it followed. */
+		get detached() {
+			return Boolean(follows) && detached
+		},
 	}
-	return shape
+	return shape as FakeShape
 }
 
 /** What the fake file holds before a sync: sets of `{ type, value }` by name, themes, pages. */
