@@ -1,0 +1,4 @@
+{
+	"allowlist": ["buttonVariants", "cn"],
+	"pending": { "Button": "*" }
+}
