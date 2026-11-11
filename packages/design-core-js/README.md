@@ -2,7 +2,7 @@
 
 The component link between the design system library and `core-react`, as pure code: the resolver, the exceptions-record, library-snapshot and token-file schemas, the drift check's rule engine and its coverage report. Browser + node; Penpot lives only at the edges, so everything here takes normalized shapes, never raw Penpot objects.
 
-**Private.** Not published, ignored by Changesets. Spec: [`docs/design-system/SPEC.md` § C](https://github.com/bRRRITSCOLD/ts-packages/blob/main/docs/design-system/SPEC.md); terms: [`GLOSSARY.md`](https://github.com/bRRRITSCOLD/ts-packages/blob/main/docs/design-system/GLOSSARY.md).
+Published to npm and released with Changesets. Spec: [`docs/design-system/SPEC.md` § C](https://github.com/bRRRITSCOLD/ts-packages/blob/main/docs/design-system/SPEC.md); terms: [`GLOSSARY.md`](https://github.com/bRRRITSCOLD/ts-packages/blob/main/docs/design-system/GLOSSARY.md).
 
 ## Tripwire
 

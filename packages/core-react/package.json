@@ -36,6 +36,7 @@
 		},
 		"./styles.css": "./dist/styles.css",
 		"./tokens.json": "./dist/tokens.json",
+		"./library.snapshot.json": "./dist/library.snapshot.json",
 		"./testing": {
 			"types": "./dist/testing.d.ts",
 			"default": "./dist/testing.js"
