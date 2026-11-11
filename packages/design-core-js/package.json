@@ -1,6 +1,6 @@
 {
 	"name": "@brrritscold/design-core-js",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "The component link between the design system library and core-react: resolver, exceptions-record and library-snapshot schemas, drift-check rule engine and coverage report; the token sync script builder.",
 	"license": "MIT",
 	"author": "Blaine Richardson",

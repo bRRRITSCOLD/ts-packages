@@ -26,12 +26,25 @@ const isHttpPatchedAfterImporting = (entry: string): boolean => {
 	return output.trim() === 'true'
 }
 
-describe('entry isolation', () => {
-	it('should not patch http when importing the docker entry', () => {
-		expect(isHttpPatchedAfterImporting('docker.ts')).toBe(false)
-	})
+// Each case spawns a fresh node process that compiles the entry with tsx and loads its
+// dependencies (testcontainers for docker.ts), which can take several seconds on a busy
+// CI runner, so the cases get more than vitest's 5 s default.
+const SPAWN_TIMEOUT_MS = 30_000
 
-	it('should patch http when importing the nock entry (probe sanity check)', () => {
-		expect(isHttpPatchedAfterImporting('nock.ts')).toBe(true)
-	})
+describe('entry isolation', () => {
+	it(
+		'should not patch http when importing the docker entry',
+		() => {
+			expect(isHttpPatchedAfterImporting('docker.ts')).toBe(false)
+		},
+		SPAWN_TIMEOUT_MS
+	)
+
+	it(
+		'should patch http when importing the nock entry (probe sanity check)',
+		() => {
+			expect(isHttpPatchedAfterImporting('nock.ts')).toBe(true)
+		},
+		SPAWN_TIMEOUT_MS
+	)
 })
