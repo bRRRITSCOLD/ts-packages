@@ -85,7 +85,7 @@ Scripts beyond the contract: `build:styles` (the token half of `build`), `drift:
 The CI job `drift` keeps this package and the design system library in Penpot honest, offline and without Penpot credentials:
 
 1. `pnpm drift:manifest` writes `code-manifest.json` (gitignored; CI uploads it as the `code-manifest` artifact) from the built `.d.ts`: every export, each prop's literal union, the icon names. Run `build` first.
-2. `pnpm drift:check` checks `design/library.snapshot.json` against the manifest and `tokens/tokens.json` (drift rules 1–9 in `@brrritscold/design-core-js`). Library → code mismatches fail; code → library gaps are a warning, except the exports on the allowlist.
+2. `pnpm drift:check` checks `design/library.snapshot.json` against the manifest and `tokens/tokens.json` (drift rules 1–10 in `@brrritscold/design-core-js`). Library → code mismatches fail; code → library gaps are a warning, except the exports on the allowlist.
 3. Every token the PR's base `tokens.json` has and this one doesn't needs a `design/token-migrations.json` entry, or the job fails (`design-drift migrations`).
 
 | File                           | Holds                                                                                                                                                                                                                                                                                                                                      |
