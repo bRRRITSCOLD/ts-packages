@@ -13,9 +13,15 @@ const plural = (count: number, one: string, many: string) => `${count} ${count =
 
 /**
  * Renders the drift report as a GitHub step summary: a table of errors (component → rule →
- * expected vs found), the unchecked components, and the coverage gaps in a collapsed section.
+ * expected vs found), the unchecked components, and the coverage gaps and pending gaps in
+ * collapsed sections.
  */
-export const formatStepSummary = ({ errors, unchecked, coverageGaps }: DriftReport): string => {
+export const formatStepSummary = ({
+	errors,
+	unchecked,
+	coverageGaps,
+	pending,
+}: DriftReport): string => {
 	const lines = ['## Drift check', '']
 	if (errors.length)
 		lines.push(
@@ -62,6 +68,25 @@ export const formatStepSummary = ({ errors, unchecked, coverageGaps }: DriftRepo
 			'</details>',
 			''
 		)
+	if (pending.length)
+		lines.push(
+			'<details>',
+			`<summary>Pending (${pending.length}): in the design system library, not built in the code yet</summary>`,
+			'',
+			...markdownTable(
+				['Component', 'Rule', 'Expected', 'Found', 'Entry'],
+				pending.map(({ component, rule, expected, found, entry }) => [
+					component,
+					`${rule} ${DRIFT_RULE_NAMES[rule]}`,
+					expected,
+					found,
+					`\`${entry}\``,
+				])
+			),
+			'',
+			'</details>',
+			''
+		)
 	return lines.join('\n')
 }
 
@@ -74,11 +99,29 @@ const escapeCommand = (text: string, property = false) => {
 const annotation = (level: 'error' | 'warning', title: string, message: string) =>
 	`::${level} title=${escapeCommand(title, true)}::${escapeCommand(message)}`
 
+/** One warning for all pending gaps, naming each component once per entry covering it. */
+const formatPendingAnnotation = (pending: DriftReport['pending']): string[] => {
+	if (!pending.length) return []
+	const items = [...new Set(pending.map(({ component, entry }) => `${component} (${entry})`))]
+	return [
+		annotation(
+			'warning',
+			'Drift check: pending',
+			`${plural(items.length, 'library item', 'library items')} the code has not built yet, listed as pending: ${items.join(', ')}`
+		),
+	]
+}
+
 /**
  * Renders the drift report as GitHub Actions job annotations: an error per mismatch, a warning
- * per unchecked component, and one warning for all coverage gaps.
+ * per unchecked component, one warning for all coverage gaps and one for all pending gaps.
  */
-export const formatAnnotations = ({ errors, unchecked, coverageGaps }: DriftReport): string[] => [
+export const formatAnnotations = ({
+	errors,
+	unchecked,
+	coverageGaps,
+	pending,
+}: DriftReport): string[] => [
 	...errors.map(({ rule, component, expected, found }) =>
 		annotation(
 			'error',
@@ -106,6 +149,7 @@ export const formatAnnotations = ({ errors, unchecked, coverageGaps }: DriftRepo
 				),
 			]
 		: []),
+	...formatPendingAnnotation(pending),
 ]
 
 /**

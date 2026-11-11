@@ -126,6 +126,7 @@ Penpot can't say everything a class list says. The library twin keeps every chec
 - **An icon's stroke stays 2px when resized.** lucide scales the stroke with the icon's size; Penpot scales the paths (constraints `scale`) but not the stroke width. A twin that resizes an icon copy sets the copy's stroke width by hand (Checkbox's 14px check: 2 × 14 / 24 ≈ 1.167).
 - **An icon's dot is a filled circle.** lucide draws a dot (`Info`, `CircleExclamationPoint`) as a 0.01px path with round caps, which Penpot doesn't render; the twin uses a 2×2 ellipse with fill `foreground`, the same shape.
 - **Library icons use lucide's canonical names, never aliases** (`CircleExclamationPoint`, not `CircleAlert`), so a lucide major that drops an alias doesn't break drift rule 4. Icon twins are built from `lucide-react`'s own icon data over MCP, so their geometry matches the installed version.
+- **`lucide-react` is pinned exactly, and every Lucide bump is its own core-react release.** A Lucide release that only adds icons is a core-react minor; one that renames or removes an icon is a major. Other renderers (the GPUI library) vendor Lucide at the version this `package.json` names, so a range would let apps resolve a different icon set than the one released and checked against drift.
 
 ## Data table
 

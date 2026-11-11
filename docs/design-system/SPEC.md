@@ -335,12 +335,15 @@ Read path: RPC **`get-file` without a `features` param** (the backend resolves p
 7. **unbound** — a layer's `unbound` list isn't empty.
 8. **unknown token** — an applied token name isn't in `tokens.json`.
 9. **primitive colour** — fill or stroke colour applied from a `primitive` token.
+10. **pending** — every `pending` entry of `design/drift.config.json` covers something the library has and the code lacks.
 
 Checked attributes (rules 7–9), on every layer of every main component including nested part copies, each only when set to a non-default value: fill, stroke colour, radius r1–r4, padding, row/column gap, font family/size/weight, letter spacing, shadow, opacity ≠ 1. Exempt: x/y, width/height, stroke width, rotation, margin. Whether a layer has the _right_ semantic token is left to review.
 
 Code → library: exports with no library counterpart are a coverage gap; those that should never be in the library (`useDataTable`, `Toaster`, `cn`, …) are on the allowlist `design/drift.config.json`; anything else is a warning.
 
-**Output:** a GitHub step summary table (component → rule → expected vs found) plus job annotations; coverage gaps in a collapsed section; no auto-filed issues. `design-core-js`'s README carries a tripwire: a rule change updates the `design-system` skill.
+**Pending** (library → code, for a renderer that follows `core-react`, such as `core-gpui`): the optional `pending` key of `design/drift.config.json` lists library items that renderer hasn't built yet, so a promotion that adds one doesn't hold back every later bump. Keyed by export, then by variant property: `{ "Card": "*", "Button": { "orientation": "*", "variant": ["brand"] } }`. `"*"` on a component covers it and its parts (the components under its path, `Components/Card/Header` under `Components/Card`); `"*"` on a variant property covers the property and its values; a list names single variant values, spelled as the library spells them. What the code lacks of a pending item is a **pending gap**, a warning, instead of the error: rule 1 (no such export), rule 2 (no such prop, value not in the union) and rule 5 (a value map's prop missing in the code). Everything else stays an error: the rules that check the library alone (3, 5's schema and roles, 6–9), and a prop the code has in another form (required, boolean). An entry that covers nothing is **stale**, a rule-10 error naming the entry: the code has it now, or the library snapshot no longer has it. Library → code only; renames are never pending (fix them on the bump branch). `core-react` never uses `pending`: it is code-first. Left out, nothing is pending.
+
+**Output:** a GitHub step summary table (component → rule → expected vs found) plus job annotations; coverage gaps and pending gaps in collapsed sections; no auto-filed issues. `design-core-js`'s README carries a tripwire: a rule change updates the `design-system` skill.
 
 ### Snapshot refresh
 
@@ -412,7 +415,7 @@ _Decided in:_ [Should the component link ship as a reusable open-source Penpot C
 
 ### `design/` in `core-react`
 
-`library.snapshot.json`, `drift.config.json` (allowlist), `token-migrations.json` (append-only `[{ "version", "from", "to" }]`, starts empty).
+`library.snapshot.json`, `drift.config.json` (allowlist; a renderer that follows `core-react` adds `pending`), `token-migrations.json` (append-only `[{ "version", "from", "to" }]`, starts empty).
 
 ### Repo plumbing
 
@@ -475,7 +478,7 @@ _Decided in:_ [What shape does @brrritscold/core-react take?][t10], [How do libr
 
 - Make `core-react` publishable; add a **`1.0.0`** changeset; merge the Version Packages PR.
 - From now on every `core-react` PR touching `src/`, `tokens.json` or `styles.css` **requires a changeset** (CI fails without one). Library-only changes with no published file (annotation, a snapshot-only refresh) get none.
-- **Bumps:** minor = new component, icon, variant value, optional prop, semantic token. Major = renamed/removed prop, removed variant value, removed component/icon, renamed/removed token, changed default. Patch = token _value_ change, or a visual/behaviour fix with the same API. Every major changeset has a `### Migration` section with exact before → after pairs and a pointer to the matching token migrations; review rejects one without it.
+- **Bumps:** minor = new component, icon, variant value, optional prop, semantic token. Major = renamed/removed prop, removed variant value, removed component/icon, renamed/removed token, changed default. Patch = token _value_ change, or a visual/behaviour fix with the same API. `lucide-react` is pinned exactly: a Lucide bump that only adds icons is a minor, one that renames or removes an icon is a major. Every major changeset has a `### Migration` section with exact before → after pairs and a pointer to the matching token migrations; review rejects one without it.
 - **No library version.** The snapshot at tag `@brrritscold/core-react@x.y.z` is the library state that release matches. No named Penpot versions.
 - Storybook deploys to GitHub Pages at `/ts-packages/core-react/`, next to typedoc; the README links it.
 - One-time check with a throwaway Next app: with `@brrritscold/core-react` and `/icons` in `optimizePackageImports`, a dev compile doesn't load all of lucide.

@@ -68,6 +68,10 @@ _Avoid_: API surface, schema, docgen
 Something `core-react` exposes that has no counterpart in the design system library; reported, never drift.
 _Avoid_: missing component, reverse drift
 
+**Pending gap**:
+Something the design system library has that a renderer following `core-react` hasn't built yet, listed under `pending` in the drift config; reported, never drift. An entry that no longer covers anything is stale, and that is drift.
+_Avoid_: ignored drift, skipped component
+
 **Design token**:
 A named design decision (a colour, a space, a type size) defined once in the token file and used by both the design tool and `core-react`.
 _Avoid_: variable, style
