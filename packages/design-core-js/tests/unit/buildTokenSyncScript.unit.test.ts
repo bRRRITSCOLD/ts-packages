@@ -3,13 +3,20 @@ import { describe, expect, it } from 'vitest'
 import coreReactTokens from '../../../core-react/tokens/tokens.json' with { type: 'json' }
 // testee
 import { checkDrift, DRIFT_RULE } from '../../src/drift-check.js'
-import { TOKEN_THEMES, type TokenFile, tokenFileSchema } from '../../src/token-file.js'
+import {
+	type DesignTokenGroup,
+	TOKEN_THEMES,
+	type TokenFile,
+	tokenFileSchema,
+} from '../../src/token-file.js'
 import { buildTokenSyncScript, type TokenMigration } from '../../src/token-sync.js'
 import {
 	createFakePenpot,
 	createShape,
 	createTokenFile,
+	type FakeBehaviour,
 	type FakeFileState,
+	type FakeShape,
 	readCatalog,
 	runScript,
 } from './__fixtures__/buildTokenSyncScript.unit.fixtures.js'
@@ -121,7 +128,7 @@ describe('buildTokenSyncScript', () => {
 			expect(readCatalog(fake).activeThemes).toEqual(['Mode/Light'])
 			expect(changes).toEqual([
 				'remove token `primitive/color.stray`',
-				'replace token `primitive/color.white`',
+				'update token `primitive/color.white`',
 				'add token `primitive/font-family.sans`',
 				'add token `primitive/font-weight.medium`',
 				'add token `primitive/shadow.xs`',
@@ -160,10 +167,414 @@ describe('buildTokenSyncScript', () => {
 
 			expect(tokenCatalogErrors(fake)).toHaveLength(2)
 			expect((await sync(fake)).changes).toEqual([
-				'replace token `primitive/shadow.xs`',
-				'replace token `light/primary`',
+				'update token `primitive/shadow.xs`',
+				'update token `light/primary`',
 			])
 			expect(tokenCatalogErrors(fake)).toEqual([])
+		})
+	})
+
+	describe('a token whose value changed', () => {
+		/** The fixture token file with `font-family.sans` changed, as #119 changed it. */
+		const withNewSans = (): TokenFile => {
+			const tokens = createTokenFile()
+			tokens.primitive['font-family'] = {
+				sans: {
+					$type: 'fontFamilies',
+					$value: 'Inter, ui-sans-serif, system-ui, sans-serif',
+				},
+			}
+			return tokens
+		}
+		const OLD_SANS = ['ui-sans-serif', 'system-ui']
+		const NEW_SANS = ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif']
+		const sansToken = (fake: ReturnType<typeof createFakePenpot>) =>
+			fake.penpot.library.local.tokens.sets[0].tokens.find(
+				({ name }) => name === 'font-family.sans'
+			)
+
+		/** A file synced from the fixture token file, then set to misbehave. */
+		const syncedThen = async (state: FakeFileState, behaviour: FakeBehaviour) => {
+			const fake = await syncedFile(state)
+			fake.behaviour = behaviour
+			return fake
+		}
+
+		it('should set the new value on the token in place, and make no change on a second run', async () => {
+			const fake = await syncedFile()
+			const before = sansToken(fake)
+
+			const { changes } = await sync(fake, [], withNewSans())
+
+			expect(changes).toEqual(['update token `primitive/font-family.sans`'])
+			expect(sansToken(fake)).toBe(before)
+			expect(before?.value).toEqual(NEW_SANS)
+			expect(tokenCatalogErrors(fake, withNewSans())).toEqual([])
+			expect(await sync(fake, [], withNewSans())).toEqual({ changes: [], flagged: [] })
+		})
+
+		it('should re-apply it on every shape applying it, copies last, so each resolves the new value', async () => {
+			const copy = createShape(
+				'Title copy',
+				{ 'font-family': 'font-family.sans' },
+				{ copy: true, resolved: { 'font-family': OLD_SANS } }
+			)
+			const main = createShape(
+				'Title',
+				{ 'font-family': 'font-family.sans', 'font-weight': 'font-weight.medium' },
+				{ resolved: { 'font-family': OLD_SANS, 'font-weight': '500' } }
+			)
+			const root = createShape('Root', {}, { children: [copy, main] })
+			const fake = await syncedFile({ pages: [{ name: 'Screens', root }] })
+
+			const { changes, flagged } = await sync(fake, [], withNewSans())
+
+			expect(changes).toEqual([
+				'update token `primitive/font-family.sans`',
+				're-apply `font-family.sans` on font-family of `Title` (shape-Title) on page `Screens`',
+				're-apply `font-family.sans` on font-family of `Title copy` (shape-Title copy) on page `Screens`',
+			])
+			expect(flagged).toEqual([])
+			for (const shape of [main, copy]) {
+				expect(shape.tokens['font-family']).toBe('font-family.sans')
+				expect(shape.resolved['font-family']).toEqual(NEW_SANS)
+			}
+			expect(main.resolved['font-weight']).toBe('500')
+			expect(await sync(fake, [], withNewSans())).toEqual({ changes: [], flagged: [] })
+		})
+
+		describe('on component copies', () => {
+			/** A page with a main applying `font-family.sans`, resolved to the old value. */
+			const pageWith = (...copies: ((main: FakeShape) => FakeShape)[]) => {
+				const main = createShape(
+					'Label',
+					{ fontFamily: 'font-family.sans' },
+					{ resolved: { fontFamily: OLD_SANS } }
+				)
+				const shapes = copies.map((copy) => copy(main))
+				return {
+					main,
+					shapes,
+					state: {
+						pages: [
+							{
+								name: 'Screens',
+								root: createShape('Root', {}, { children: [main, ...shapes] }),
+							},
+						],
+					},
+				}
+			}
+
+			it('should wait for a copy that follows its main and leave it attached', async () => {
+				const {
+					shapes: [copy],
+					state,
+				} = pageWith((followed) =>
+					createShape('Label copy', {}, { follows: followed, lag: 2 })
+				)
+				const fake = await syncedFile(state)
+
+				const { changes, flagged } = await sync(fake, [], withNewSans())
+
+				expect(changes).toEqual([
+					'update token `primitive/font-family.sans`',
+					're-apply `font-family.sans` on fontFamily of `Label` (shape-Label) on page `Screens`',
+				])
+				expect(flagged).toEqual([])
+				expect(copy.detached).toBe(false)
+				expect(copy.tokens.fontFamily).toBe('font-family.sans')
+				expect(copy.resolved.fontFamily).toEqual(NEW_SANS)
+			})
+
+			it("should re-apply a copy that doesn't follow its main", async () => {
+				const {
+					shapes: [copy],
+					state,
+				} = pageWith(() =>
+					createShape(
+						'Overridden copy',
+						{ fontFamily: 'font-family.sans' },
+						{ copy: true, resolved: { fontFamily: OLD_SANS } }
+					)
+				)
+				const fake = await syncedFile(state)
+
+				const { changes, flagged } = await sync(fake, [], withNewSans())
+
+				expect(changes).toContain(
+					're-apply `font-family.sans` on fontFamily of `Overridden copy` (shape-Overridden copy) on page `Screens`'
+				)
+				expect(flagged).toEqual([])
+				expect(copy.resolved.fontFamily).toEqual(NEW_SANS)
+				expect(await sync(fake, [], withNewSans())).toEqual({ changes: [], flagged: [] })
+			})
+
+			it('should apply the token back on a copy that lost it while its main was re-applied', async () => {
+				const copy = createShape(
+					'Overridden copy',
+					{ fontFamily: 'font-family.sans' },
+					{ copy: true, resolved: { fontFamily: OLD_SANS } }
+				)
+				// Penpot carries the main's toggle off to the copy before its toggle back on: the copy
+				// applies the token when the sync looks for users, and has lost it by its re-apply.
+				const tokensOf = Object.getOwnPropertyDescriptor(copy, 'tokens')?.get
+				let reads = 0
+				Object.defineProperty(copy, 'tokens', {
+					get() {
+						const tokens = tokensOf?.call(copy)
+						if (++reads !== 1) return tokens
+						const found = { ...tokens }
+						delete tokens.fontFamily
+						return found
+					},
+				})
+				const { state } = pageWith(() => copy)
+				const fake = await syncedFile(state)
+
+				const { flagged } = await sync(fake, [], withNewSans())
+
+				expect(flagged).toEqual([])
+				expect(copy.tokens.fontFamily).toBe('font-family.sans')
+				expect(copy.resolved.fontFamily).toEqual(NEW_SANS)
+			})
+
+			it('should re-apply every copy when no shape outside a copy applies the token', async () => {
+				const copy = createShape(
+					'Label copy',
+					{ fontFamily: 'font-family.sans' },
+					{ copy: true, resolved: { fontFamily: OLD_SANS } }
+				)
+				const fake = await syncedFile({ pages: [{ name: 'Screens', root: copy }] })
+
+				const { changes } = await sync(fake, [], withNewSans())
+
+				expect(changes).toEqual([
+					'update token `primitive/font-family.sans`',
+					're-apply `font-family.sans` on fontFamily of `Label copy` (shape-Label copy) on page `Screens`',
+				])
+				expect(copy.resolved.fontFamily).toEqual(NEW_SANS)
+			})
+
+			it('should flag a re-applied copy that still resolves differently from its main', async () => {
+				const { state } = pageWith(() =>
+					createShape(
+						'Stale copy',
+						{ fontFamily: 'font-family.sans' },
+						{ copy: true, stale: true, resolved: { fontFamily: OLD_SANS } }
+					)
+				)
+				const fake = await syncedFile(state)
+
+				const { flagged } = await sync(fake, [], withNewSans())
+
+				expect(flagged).toEqual([
+					{
+						page: 'Screens',
+						shapeId: 'shape-Stale copy',
+						shape: 'Stale copy',
+						token: 'font-family.sans',
+						properties: ['fontFamily'],
+						reason: '`font-family.sans` changed value and re-applying it did not resolve what the shapes outside copies resolve: apply it again on fontFamily',
+					},
+				])
+			})
+		})
+
+		it('should re-apply the tokens that reference a changed token too', async () => {
+			const tokens = createTokenFile()
+			tokens.primitive.color = {
+				white: { $type: 'color', $value: '#ffffff' },
+				neutral: { 900: { $type: 'color', $value: '#0a0a0a' } },
+			}
+			const button = createShape('Button', { fill: 'primary' })
+			const text = createShape('Text', { fill: 'color.white' })
+			const fake = await syncedFile({
+				pages: [
+					{
+						name: 'Screens',
+						root: createShape('Root', {}, { children: [button, text] }),
+					},
+				],
+			})
+
+			const { changes } = await sync(fake, [], tokens)
+
+			expect(changes).toEqual([
+				'update token `primitive/color.neutral.900`',
+				're-apply `primary` on fill of `Button` (shape-Button) on page `Screens`',
+			])
+			expect(button.resolved.fill).toBe('{color.neutral.900}')
+			expect(text.resolved).toEqual({})
+		})
+
+		it('should set a number as a string and a single shadow as a list of layers, as the plugin typings declare', async () => {
+			const fake = await syncedFile()
+			const assigned: unknown[] = []
+			for (const token of fake.penpot.library.local.tokens.sets[0].tokens) {
+				const descriptor = Object.getOwnPropertyDescriptor(token, 'value')
+				Object.defineProperty(token, 'value', {
+					get: descriptor?.get,
+					set(next) {
+						assigned.push(next)
+						descriptor?.set?.call(token, next)
+					},
+				})
+			}
+			const tokens = createTokenFile()
+			tokens.primitive['font-weight'] = { medium: { $type: 'fontWeights', $value: 600 } }
+			const xs = {
+				color: '#00000014',
+				offsetX: '0px',
+				offsetY: '1px',
+				blur: '2px',
+				spread: '0px',
+			}
+			;(tokens.primitive.shadow as DesignTokenGroup).xs = { $type: 'shadow', $value: xs }
+
+			const { changes } = await sync(fake, [], tokens)
+
+			expect(changes).toEqual([
+				'update token `primitive/font-weight.medium`',
+				'update token `primitive/shadow.xs`',
+			])
+			expect(assigned).toEqual(['600', [xs]])
+		})
+
+		it('should not re-apply a token whose description alone changed', async () => {
+			const button = createShape('Button', { fill: 'primary' })
+			const fake = await syncedFile({ pages: [{ name: 'Screens', root: button }] })
+			const tokens = createTokenFile()
+			tokens.light.primary.$description = 'Main action fill'
+
+			const { changes } = await sync(fake, [], tokens)
+
+			expect(changes).toEqual(['update token `light/primary`'])
+			expect(button.resolved).toEqual({})
+		})
+
+		it('should flag a shape whose re-applied token does not read back', async () => {
+			const title = createShape(
+				'Title',
+				{ 'font-family': 'font-family.sans' },
+				{ racy: true }
+			)
+			const fake = await syncedFile({ pages: [{ name: 'Screens', root: title }] })
+
+			const { changes, flagged } = await sync(fake, [], withNewSans())
+
+			expect(changes).toEqual(['update token `primitive/font-family.sans`'])
+			expect(flagged).toEqual([
+				{
+					page: 'Screens',
+					shapeId: 'shape-Title',
+					shape: 'Title',
+					token: 'font-family.sans',
+					properties: ['font-family'],
+					reason: '`font-family.sans` changed value and re-applying it did not read back: apply it again on font-family',
+				},
+			])
+		})
+
+		describe('when Penpot will not set the value in place', () => {
+			it.each([
+				['refuses the assignment', 'throws'],
+				['ignores the assignment', 'ignored'],
+			] as const)(
+				'should remove and add the token again when Penpot %s',
+				async (_, valueSetter) => {
+					const title = createShape('Title', { 'font-family': 'font-family.sans' })
+					const fake = await syncedThen(
+						{ pages: [{ name: 'Screens', root: title }] },
+						{ valueSetter }
+					)
+
+					const { changes } = await sync(fake, [], withNewSans())
+
+					expect(changes).toEqual([
+						'replace token `primitive/font-family.sans`',
+						're-apply `font-family.sans` on font-family of `Title` (shape-Title) on page `Screens`',
+					])
+					expect(sansToken(fake)?.value).toEqual(NEW_SANS)
+					expect(title.resolved['font-family']).toEqual(NEW_SANS)
+					expect(await sync(fake, [], withNewSans())).toEqual({
+						changes: [],
+						flagged: [],
+					})
+				}
+			)
+
+			it('should replace a token whose type changed', async () => {
+				const fake = await syncedFile({
+					sets: [
+						{
+							name: 'primitive',
+							tokens: { 'font-weight.medium': { type: 'number', value: '500' } },
+						},
+					],
+				})
+
+				expect(readCatalog(fake).tokens.primitive['font-weight']).toEqual({
+					medium: { $type: 'fontWeights', $value: '500' },
+				})
+			})
+
+			it('should retry an add that throws once', async () => {
+				let attempts = 0
+				const fake = await syncedThen(
+					{},
+					{
+						valueSetter: 'throws',
+						failAdd: ({ name }) => name === 'font-family.sans' && ++attempts === 1,
+					}
+				)
+
+				const { changes } = await sync(fake, [], withNewSans())
+
+				expect(changes).toEqual(['replace token `primitive/font-family.sans`'])
+				expect(sansToken(fake)?.value).toEqual(NEW_SANS)
+			})
+
+			it('should restore the removed token, sync everything else and then throw, when its add keeps failing', async () => {
+				const text = createShape('Text', { fill: 'color.white' })
+				const fake = await syncedThen(
+					{ pages: [{ name: 'Screens', root: text }] },
+					{
+						valueSetter: 'throws',
+						failAdd: ({ value }) =>
+							value === 'Inter, ui-sans-serif, system-ui, sans-serif',
+					}
+				)
+				const tokens = withNewSans()
+				tokens.primitive.color = {
+					white: { $type: 'color', $value: '#fafafa' },
+					neutral: { 900: { $type: 'color', $value: '#171717' } },
+				}
+
+				const error = await sync(fake, [], tokens).catch((thrown: unknown) => thrown)
+
+				expect((error as Error).message).toBe(
+					[
+						'Token sync could not replace these tokens; it synced everything else:',
+						'- `primitive/font-family.sans`: adding the new value failed twice (Value not valid: Field 0.name is invalid: Empty field. Field value is invalid: Token has circular reference); the old token was restored',
+						'Changes it made: ["replace token `primitive/color.white`","re-apply `color.white` on fill of `Text` (shape-Text) on page `Screens`"]',
+						'Flagged shapes: []',
+					].join('\n')
+				)
+				expect(sansToken(fake)?.value).toEqual(OLD_SANS)
+				expect(text.resolved.fill).toBe('#fafafa')
+			})
+
+			it('should throw with the token to re-add by hand when restoring it fails too', async () => {
+				const fake = await syncedThen(
+					{},
+					{ valueSetter: 'throws', failAdd: ({ name }) => name === 'font-family.sans' }
+				)
+
+				await expect(sync(fake, [], withNewSans())).rejects.toThrow(
+					'and restoring the old token failed too (Value not valid: Field 0.name is invalid: Empty field. Field value is invalid: Token has circular reference). Re-add it by hand in set `primitive`: addToken({"type":"fontFamilies","name":"font-family.sans","value":"ui-sans-serif, system-ui"})'
+				)
+			})
 		})
 	})
 
