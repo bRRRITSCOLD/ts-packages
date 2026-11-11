@@ -145,7 +145,7 @@ Description:
 > Use when building or changing `@brrritscold/core-react`: vendoring a shadcn (Base UI) component, keying cva variants to Penpot variant properties, exporting compound parts, adding an icon, story or component object, editing the token file and its Style Dictionary build, or releasing it. Covers where core-react departs from ts-package-layout. For using it in an app see ts-frontend-app; for the Penpot side see design-system.
 
 Sections:
-1. **What lives here** — exports `.`, `/icons`, `/data-table`, `/styles.css`, `/tokens.json`, `/testing`. Every library component is an export; nothing app-specific.
+1. **What lives here** — exports `.`, `/icons`, `/data-table`, `/styles.css`, `/tokens.json`, `/library.snapshot.json`, `/testing`. Every library component is an export; nothing app-specific.
 2. **Where core-react departs from ts-package-layout** — ESM-only unbundled `tsc`, the one allowed root entry (a pure barrel), CSS/JSON exports, Storybook as the docs.
 3. **Adding a component** — the D2 checklist below.
 4. **Icons** — `lucide-react` re-exported from `/icons` as `<Name>Icon`.
@@ -293,7 +293,7 @@ _Decided in:_ [How do agents and CI get Penpot credentials?][t30] with amendment
 
 ## C — ts-packages: `design-*` packages and side images
 
-Four **private** (`"private": true`) workspace packages, ignored by Changesets. Penpot lives only at the edges; the resolver and rule engine take **normalized shapes** (component path, variant properties, parts by role, exceptions record), never raw Penpot objects. The link inspector, link reader and drift check share **one pure resolver**, so they can't disagree.
+Four workspace packages. `design-core-js` and `design-core-node` are published to npm (other renderers run `design-drift check` at an exact version); `design-penpot-sdk-node` and `design-penpot-ui` stay **private** (`"private": true`) and ignored by Changesets. Penpot lives only at the edges; the resolver and rule engine take **normalized shapes** (component path, variant properties, parts by role, exceptions record), never raw Penpot objects. The link inspector, link reader and drift check share **one pure resolver**, so they can't disagree.
 
 | Package                  | Holds                                                                                                                            | Runtime        |
 | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------- | -------------- |
@@ -376,17 +376,18 @@ _Decided in:_ [Should the component link ship as a reusable open-source Penpot C
 ### Package `@brrritscold/core-react` (`packages/core-react`)
 
 - **ESM only, unbundled:** `tsc -p tsconfig.build.json` emits one `.js` + `.d.ts` per source file so each keeps its own `"use client"`. No tsup, no CJS. `"sideEffects": ["*.css"]`. Framework-agnostic: no `next/*` imports.
-- **`build`:** Style Dictionary (`tokens/tokens.json` → `dist/styles.css`) → copy `tokens.json` to `dist/` → `tsc`. Script names stay on the contract.
+- **`build`:** Style Dictionary (`tokens/tokens.json` → `dist/styles.css`) → copy `tokens.json` and `design/library.snapshot.json` to `dist/` → `tsc`. Script names stay on the contract.
 - **Exports:**
 
-  | Subpath         | Holds                                                                                   |
-  | --------------- | --------------------------------------------------------------------------------------- |
-  | `.`             | one pure file of named component and part exports plus `cn`; no logic, no `export * as` |
-  | `./icons`       | `export * from "lucide-react"`; apps use the `<Name>Icon` aliases                       |
-  | `./data-table`  | `useDataTable` only                                                                     |
-  | `./styles.css`  | built theme, carrying its own `@source "./**/*.js"` so apps need only the one `@import` |
-  | `./tokens.json` | raw token file                                                                          |
-  | `./testing`     | component objects; `@playwright/test` optional peer                                     |
+  | Subpath                   | Holds                                                                                   |
+  | ------------------------- | --------------------------------------------------------------------------------------- |
+  | `.`                       | one pure file of named component and part exports plus `cn`; no logic, no `export * as` |
+  | `./icons`                 | `export * from "lucide-react"`; apps use the `<Name>Icon` aliases                       |
+  | `./data-table`            | `useDataTable` only                                                                     |
+  | `./styles.css`            | built theme, carrying its own `@source "./**/*.js"` so apps need only the one `@import` |
+  | `./tokens.json`           | raw token file                                                                          |
+  | `./library.snapshot.json` | the library snapshot this release matches, for other renderers' drift checks            |
+  | `./testing`               | component objects; `@playwright/test` optional peer                                     |
 
   No per-component subpaths. Add `core-react` to the allowlist in `scripts/check-entries.mjs` (it is the only package with a root entry).
 - **Source layout:** `components.json` kept (shadcn CLI vendors more later); `src/components/<kebab>.tsx` one per shadcn component with its part exports; `src/lib/utils.ts` (`cn`); `src/icons.ts`; `src/data-table.ts`; `src/index.ts` (re-exports only). Vendored files stay close to upstream so a re-pull diffs cleanly; upstream `"use client"` kept verbatim. Every deviation from `ts-package-layout` is documented in the package README.

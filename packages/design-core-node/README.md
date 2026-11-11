@@ -2,7 +2,7 @@
 
 The drift check's node side: the code manifest generator (the TypeScript compiler API over `core-react`'s built `.d.ts`) and the `design-drift` CLI that checks a library snapshot against it and prints the token sync script. The rules themselves live in [`@brrritscold/design-core-js`](https://github.com/bRRRITSCOLD/ts-packages/tree/main/packages/design-core-js).
 
-**Private.** Not published, ignored by Changesets. Spec: [`docs/design-system/SPEC.md` § C](https://github.com/bRRRITSCOLD/ts-packages/blob/main/docs/design-system/SPEC.md); terms: [`GLOSSARY.md`](https://github.com/bRRRITSCOLD/ts-packages/blob/main/docs/design-system/GLOSSARY.md).
+Published to npm and released with Changesets. Spec: [`docs/design-system/SPEC.md` § C](https://github.com/bRRRITSCOLD/ts-packages/blob/main/docs/design-system/SPEC.md); terms: [`GLOSSARY.md`](https://github.com/bRRRITSCOLD/ts-packages/blob/main/docs/design-system/GLOSSARY.md).
 
 ## CLI
 
