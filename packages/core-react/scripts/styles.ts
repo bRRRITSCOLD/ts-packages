@@ -1,6 +1,7 @@
 /**
- * Builds `dist/styles.css` from the token file with Style Dictionary: Tailwind and tw-animate-css
- * (the `animate-in` / `fade-in-0` / `zoom-in-95` utilities shadcn components open and close with),
+ * Builds `dist/styles.css` from the token file with Style Dictionary: Tailwind, tw-animate-css
+ * (the `animate-in` / `fade-in-0` / `zoom-in-95` utilities shadcn components open and close with)
+ * and Inter's `@font-face` rules,
  * the primitives and light semantics on `:root`, the dark semantics on `.dark`, and the Tailwind
  * theme: Tailwind's default scales cleared for every token type, and each token mapped to the
  * utilities that read it, so `p-4` is `padding: var(--space-4)`.
@@ -10,6 +11,12 @@ import type { DesignTokens, TransformedToken } from 'style-dictionary/types'
 
 /** The token file: the top-level sets `primitive`, `light` and `dark`, each a DTCG token tree. */
 export type TokenFile = Record<'primitive' | 'light' | 'dark', DesignTokens>
+
+/**
+ * `font-family.sans` names Inter first, and every renderer loads it: core-react through
+ * `@fontsource/inter` at the four `font-weight.*` steps, so apps get it with the one `@import`.
+ */
+const INTER_WEIGHTS = [400, 500, 600, 700]
 
 /** Font sizes are stored in px and emitted relative to the root font size. */
 const ROOT_FONT_SIZE_PX = 16
@@ -181,6 +188,7 @@ export const buildStyles = async ({ primitive, light, dark }: TokenFile): Promis
 		'/* Generated from tokens/tokens.json by scripts/build-styles.ts. Do not edit. */',
 		'@import "tailwindcss";',
 		'@import "tw-animate-css";',
+		...INTER_WEIGHTS.map((weight) => `@import "@fontsource/inter/${weight}.css";`),
 		'@source "./**/*.js";',
 		'',
 		'@custom-variant dark (&:is(.dark *));',

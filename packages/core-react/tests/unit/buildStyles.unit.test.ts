@@ -22,6 +22,16 @@ describe('buildStyles', () => {
 		expect(css).toContain('@custom-variant dark (&:is(.dark *));')
 	})
 
+	it('should load Inter at the four weights the tokens use, before any rule', async () => {
+		const css = await buildStyles(tokenFile())
+
+		for (const weight of [400, 500, 600, 700])
+			expect(css).toContain(`@import "@fontsource/inter/${weight}.css";`)
+		expect(css.indexOf('@import "@fontsource/inter/700.css";')).toBeLessThan(
+			css.indexOf('@custom-variant')
+		)
+	})
+
 	it('should import tw-animate-css, which shadcn components animate open and closed with', async () => {
 		const css = await buildStyles(tokenFile())
 
