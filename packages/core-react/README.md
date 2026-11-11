@@ -61,19 +61,19 @@ Scripts beyond the contract: `build:styles` (the token half of `build`), `drift:
 - **`$type`s** follow Penpot's token types, so token sync writes them as they are: `color`, `spacing`, `sizing`, `borderRadius`, `fontFamilies`, `fontSizes`, `fontWeights`, `number` (line height), `letterSpacing`, `shadow`, `opacity`.
 - **`styles.css`**: primitives and light semantics on `:root`, dark semantics on `.dark`, then the `@theme inline` block. It clears Tailwind's default scale for every token type and maps the tokens in their place, so a utility reads its token's variable (`p-4` → `var(--space-4)`) and changing a token changes every class that uses it:
 
-  | Token              | Utilities                                                                                                             |
-  | ------------------ | --------------------------------------------------------------------------------------------------------------------- |
-  | colour semantics   | `bg-primary`, `text-muted-foreground`, `border-input`, …                                                              |
-  | `radius`           | `rounded-sm` … `rounded-xl`, shadcn's derived scale                                                                   |
-  | `space.*`          | spacing and sizing: `p-4`, `gap-1.5`, `h-9`, `size-4`, `inset-x-4`                                                    |
-  | `size.*`           | `max-w-xs` … `max-w-2xl`                                                                                              |
-  | `font-family.*`    | `font-sans`, `font-mono`                                                                                              |
-  | `font-size.*`      | `text-xs` … `text-2xl` (font size only; line height comes from `leading-*`, inherited from `body`'s `leading-normal`) |
-  | `font-weight.*`    | `font-normal` … `font-bold`                                                                                           |
-  | `line-height.*`    | `leading-tight`, `leading-normal`, `leading-relaxed`                                                                  |
-  | `letter-spacing.*` | `tracking-tight`, `tracking-normal`, `tracking-wide`                                                                  |
-  | `shadow.*`         | `shadow-xs`, `shadow-sm`                                                                                              |
-  | `opacity.*`        | `opacity-0`, `opacity-10`, `opacity-50`, `opacity-100`, and a colour's `/10` or `/50` modifier                        |
+  | Token              | Utilities                                                                                                                                                                             |
+  | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | colour semantics   | `bg-primary`, `text-muted-foreground`, `border-input`, …                                                                                                                              |
+  | `radius-*`         | `rounded-xs` … `rounded-xl`, one semantic per step aliasing its `border-radius.*` primitive; `rounded-full` reads `border-radius.full`. `radius` itself stays for shadcn's `--radius` |
+  | `space.*`          | spacing and sizing: `p-4`, `gap-1.5`, `h-9`, `size-4`, `inset-x-4`                                                                                                                    |
+  | `size.*`           | `max-w-xs` … `max-w-2xl`                                                                                                                                                              |
+  | `font-family.*`    | `font-sans`, `font-mono`                                                                                                                                                              |
+  | `font-size.*`      | `text-xs` … `text-2xl` (font size only; line height comes from `leading-*`, inherited from `body`'s `leading-normal`)                                                                 |
+  | `font-weight.*`    | `font-normal` … `font-bold`                                                                                                                                                           |
+  | `line-height.*`    | `leading-tight`, `leading-normal`, `leading-relaxed`                                                                                                                                  |
+  | `letter-spacing.*` | `tracking-tight`, `tracking-normal`, `tracking-wide`                                                                                                                                  |
+  | `shadow.*`         | `shadow-xs`, `shadow-sm`                                                                                                                                                              |
+  | `opacity.*`        | `opacity-0`, `opacity-10`, `opacity-50`, `opacity-100`, and a colour's `/10` or `/50` modifier                                                                                        |
 
   A token already named as its theme variable (`--font-weight-medium`, `--shadow-xs`, `--opacity-50`) sits in a second `@theme inline reference` block, so Tailwind doesn't emit it again as a variable pointing at itself. Breakpoints, motion and z-index keep Tailwind's defaults. Font sizes are stored in px and emitted as rem; opacities are stored as fractions and emitted as percentages, the form a colour modifier's `color-mix()` takes. Style Dictionary fails the build on a broken reference.
 
@@ -99,7 +99,7 @@ Fixing a red check, lockstep PRs and promotion: the personal-ai `design-system` 
 
 Penpot can't say everything a class list says. The library twin keeps every checked attribute on a token and accepts these known differences:
 
-- **`rounded-md` is `radius`, 2px rounder.** Code derives `rounded-md` as `calc(var(--radius) - 2px)` (8px); Penpot has no derived token, so the applied-token rule puts `radius` (10px) on the corners.
+- **Some corners still carry `radius`, not their step.** The `rounded-*` scale is the `radius-*` semantics in `tokens.json`, but library components built before those existed carry `radius` (10px) where the code uses `rounded-md` (8px) or another step. They move to the matching `radius-<step>` in [#116](https://github.com/bRRRITSCOLD/ts-packages/issues/116).
 - **A colour at an opacity is a tint layer.** Applying a colour token resets the fill's opacity to 1, so Button `destructive`'s `bg-destructive/10` is an absolute `Tint` rectangle behind the label: fill `destructive`, layer opacity `opacity.10`. Penpot can't change an opacity by theme, so dark's `/20` stays at 10%.
 - **`dark:` overrides that pick another semantic are dropped.** Button `outline`'s `dark:border-input dark:bg-input/30` stay `border` and `background`.
 - **Hover and focus states have no variants**, and neither do the focus and `aria-invalid` rings (`ring-3 ring-*/20`). A state backed by a prop is a variant property named after it, with values `true` / `false`: Checkbox `checked` / `disabled` / `aria-invalid`, Switch `checked` / `disabled`, Input and Textarea `disabled` / `aria-invalid`. Button has none: it was built before the form controls.
