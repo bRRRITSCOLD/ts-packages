@@ -24,7 +24,7 @@ const meta = {
 	title: 'Components/Field',
 	component: Field,
 	render: (args) => (
-		<FieldGroup className="w-96">
+		<FieldGroup className="w-sm">
 			<Field {...args}>
 				<FieldLabel htmlFor="field-story-username">Username</FieldLabel>
 				<Input id="field-story-username" placeholder="ada" />
@@ -47,7 +47,7 @@ export const Vertical: Story = {}
 export const Horizontal: Story = {
 	args: { orientation: 'horizontal' },
 	render: (args) => (
-		<FieldGroup className="w-96">
+		<FieldGroup className="w-sm">
 			<Field {...args}>
 				<Switch id="field-story-marketing" />
 				<FieldContent>
@@ -68,7 +68,7 @@ export const Responsive: Story = { args: { orientation: 'responsive' } }
 
 export const Legend: Story = {
 	render: () => (
-		<FieldSet className="w-96">
+		<FieldSet className="w-sm">
 			<FieldLegend>Notifications</FieldLegend>
 			<FieldDescription>Where we reach you.</FieldDescription>
 			<FieldGroup className="gap-3">
@@ -92,7 +92,7 @@ export const Legend: Story = {
 
 export const LegendAsLabel: Story = {
 	render: () => (
-		<FieldSet className="w-96">
+		<FieldSet className="w-sm">
 			<FieldLegend variant="label">Contact</FieldLegend>
 			<Field>
 				<FieldLabel htmlFor="field-story-phone">Phone</FieldLabel>
@@ -107,7 +107,7 @@ export const LegendAsLabel: Story = {
 
 export const Separator: Story = {
 	render: () => (
-		<FieldGroup className="w-96">
+		<FieldGroup className="w-sm">
 			<Field>
 				<FieldLabel htmlFor="field-story-first">First name</FieldLabel>
 				<Input id="field-story-first" />
@@ -127,7 +127,7 @@ export const Separator: Story = {
 
 export const Invalid: Story = {
 	render: () => (
-		<FieldGroup className="w-96">
+		<FieldGroup className="w-sm">
 			<Field data-invalid>
 				<FieldLabel htmlFor="field-story-email-invalid">Email</FieldLabel>
 				<Input id="field-story-email-invalid" aria-invalid defaultValue="ada@" />

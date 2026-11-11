@@ -54,12 +54,14 @@ const untokened = (css: string, vars: Set<string>): string[] =>
 		})
 		.map(([declaration]) => declaration)
 
-const components = sourceFiles().filter(
-	(file) => file.startsWith('src/components/') && !file.endsWith('.stories.tsx')
-)
-const classes = [...new Set(components.flatMap(componentClasses))].filter(
-	(cls) => !MARKER.test(cls)
-)
+/** The classes these files apply, once each, without the `group` / `peer` markers. */
+const classesIn = (files: string[]) =>
+	[...new Set(files.flatMap(componentClasses))].filter((cls) => !MARKER.test(cls))
+
+const isStory = (file: string) => file.endsWith('.stories.tsx')
+const componentFiles = sourceFiles().filter((file) => file.startsWith('src/components/'))
+const classes = classesIn(componentFiles.filter((file) => !isStory(file)))
+const storyClasses = classesIn(componentFiles.filter(isStory))
 
 describe('tokens', () => {
 	let theme: Awaited<ReturnType<typeof __unstable__loadDesignSystem>>
@@ -78,6 +80,15 @@ describe('tokens', () => {
 
 		expect(classes.length).toBeGreaterThan(0)
 		expect(classes.filter((_, i) => css[i] === null)).toEqual([])
+	})
+
+	// Tailwind drops a class it can't resolve without a word, so a story's `w-96` (there is no
+	// `space-96`) built fine and left its box unstyled in the published Storybook.
+	it('should resolve every class the stories use to a utility of the built theme', () => {
+		const css = theme.candidatesToCss(storyClasses)
+
+		expect(storyClasses.length).toBeGreaterThan(0)
+		expect(storyClasses.filter((_, i) => css[i] === null)).toEqual([])
 	})
 
 	it('should read a token for every token property a component class sets', () => {
