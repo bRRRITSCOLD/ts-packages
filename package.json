@@ -22,7 +22,7 @@
 		"test:stories": "turbo run test:stories",
 		"test:unit": "turbo run test:unit",
 		"typecheck": "turbo run typecheck",
-		"version-packages": "changeset version"
+		"version-packages": "changeset version && biome format --write"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.4.8",
