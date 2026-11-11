@@ -14,15 +14,8 @@ export type TokenFile = Record<'primitive' | 'light' | 'dark', DesignTokens>
 /** Font sizes are stored in px and emitted relative to the root font size. */
 const ROOT_FONT_SIZE_PX = 16
 
-/** shadcn's `rounded-*` scale, every step derived from the one `radius` semantic; `rounded-full` reads the `border-radius.full` primitive. */
-const RADIUS_SCALE = [
-	'--radius-xs: calc(var(--radius) - 8px);',
-	'--radius-sm: calc(var(--radius) - 4px);',
-	'--radius-md: calc(var(--radius) - 2px);',
-	'--radius-lg: var(--radius);',
-	'--radius-xl: calc(var(--radius) + 4px);',
-	'--radius-full: var(--border-radius-full);',
-]
+/** `rounded-full` reads the `border-radius.full` primitive; the rest of the scale is the `radius-*` semantics. */
+const RADIUS_FULL = '--radius-full: var(--border-radius-full);'
 
 const pxToRem = {
 	type: 'value' as const,
@@ -153,7 +146,7 @@ const block = (at: string, lines: string[]) =>
 
 /**
  * The Tailwind theme: every default scale a token type replaces is cleared, then each primitive
- * scale, each colour semantic and the radius scale is mapped to the utilities that read it. A
+ * scale, each colour semantic and the `radius-*` semantics are mapped to the utilities that read them. A
  * token already named as its theme variable (`--font-weight-medium`, `--shadow-xs`) is declared
  * `reference`, so Tailwind doesn't also emit it as `--font-weight-medium: var(--font-weight-medium)`.
  */
@@ -168,7 +161,9 @@ const theme = (primitive: DesignTokens, semantics: DesignTokens) => {
 	}
 	for (const { name, type } of tokensIn(semantics)) {
 		if (type === 'color') inline.push(`--color-${name}: var(--${name});`)
-		if (name === 'radius') inline.push(...RADIUS_SCALE)
+		// `radius-md` is already named as its theme variable (`rounded-md`), so it's a reference.
+		if (/^radius-/.test(name)) reference.push(`--${name}: var(--${name});`)
+		if (name === 'radius') inline.push(RADIUS_FULL)
 	}
 	return [block('@theme inline', inline), block('@theme inline reference', reference)].join(
 		'\n\n'

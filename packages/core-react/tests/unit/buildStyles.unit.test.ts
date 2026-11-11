@@ -83,13 +83,13 @@ describe('buildStyles', () => {
 		expect(block(css, '@theme inline')).not.toContain('--font-weight-medium: var(')
 	})
 
-	it('should derive the rounded-* scale from the radius semantic', async () => {
-		const theme = block(await buildStyles(tokenFile()), '@theme inline')
+	it('should map the rounded-* scale to the radius-* semantics, with no calc()', async () => {
+		const css = await buildStyles(tokenFile())
 
-		expect(theme).toContain('--radius-sm: calc(var(--radius) - 4px);')
-		expect(theme).toContain('--radius-md: calc(var(--radius) - 2px);')
-		expect(theme).toContain('--radius-lg: var(--radius);')
-		expect(theme).toContain('--radius-xl: calc(var(--radius) + 4px);')
+		expect(block(css, ':root')).toContain('--radius-md: var(--border-radius-md);')
+		expect(block(css, '@theme inline reference')).toContain('--radius-md: var(--radius-md);')
+		expect(block(css, '@theme inline')).toContain('--radius-full: var(--border-radius-full);')
+		expect(css).not.toContain('calc(var(--radius)')
 	})
 
 	it('should emit a font size stored in px as rem', async () => {

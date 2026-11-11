@@ -14,7 +14,11 @@ export const tokenFile = (): TokenFile => ({
 			'4': { $type: 'spacing', $value: '16px' },
 			'1-5': { $type: 'spacing', $value: '6px' },
 		},
-		'border-radius': { lg: { $type: 'borderRadius', $value: '10px' } },
+		'border-radius': {
+			md: { $type: 'borderRadius', $value: '8px' },
+			lg: { $type: 'borderRadius', $value: '10px' },
+			full: { $type: 'borderRadius', $value: '9999px' },
+		},
 		'font-size': { sm: { $type: 'fontSizes', $value: '14px' } },
 		'font-weight': { medium: { $type: 'fontWeights', $value: 500 } },
 		opacity: { '50': { $type: 'opacity', $value: 0.5 } },
@@ -23,10 +27,12 @@ export const tokenFile = (): TokenFile => ({
 		background: { $type: 'color', $value: '{color.white}' },
 		'primary-foreground': { $type: 'color', $value: '{color.neutral.100}' },
 		radius: { $type: 'borderRadius', $value: '{border-radius.lg}' },
+		'radius-md': { $type: 'borderRadius', $value: '{border-radius.md}' },
 	},
 	dark: {
 		background: { $type: 'color', $value: '{color.neutral.900}' },
 		'primary-foreground': { $type: 'color', $value: '{color.neutral.900}' },
 		radius: { $type: 'borderRadius', $value: '{border-radius.lg}' },
+		'radius-md': { $type: 'borderRadius', $value: '{border-radius.md}' },
 	},
 })
