@@ -1,7 +1,6 @@
 {
 	"name": "@brrritscold/design-core-node",
 	"version": "0.1.0",
-	"private": true,
 	"description": "The drift check's node side: the code manifest generator (TS compiler API over core-react's .d.ts) and the drift-check CLI.",
 	"license": "MIT",
 	"author": "Blaine Richardson",
@@ -11,6 +10,9 @@
 		"type": "git",
 		"url": "git+https://github.com/bRRRITSCOLD/ts-packages.git",
 		"directory": "packages/design-core-node"
+	},
+	"publishConfig": {
+		"access": "public"
 	},
 	"files": [
 		"bin",

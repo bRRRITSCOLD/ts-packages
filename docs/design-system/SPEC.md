@@ -145,7 +145,7 @@ Description:
 > Use when building or changing `@brrritscold/core-react`: vendoring a shadcn (Base UI) component, keying cva variants to Penpot variant properties, exporting compound parts, adding an icon, story or component object, editing the token file and its Style Dictionary build, or releasing it. Covers where core-react departs from ts-package-layout. For using it in an app see ts-frontend-app; for the Penpot side see design-system.
 
 Sections:
-1. **What lives here** — exports `.`, `/icons`, `/data-table`, `/styles.css`, `/tokens.json`, `/testing`. Every library component is an export; nothing app-specific.
+1. **What lives here** — exports `.`, `/icons`, `/data-table`, `/styles.css`, `/tokens.json`, `/library.snapshot.json`, `/testing`. Every library component is an export; nothing app-specific.
 2. **Where core-react departs from ts-package-layout** — ESM-only unbundled `tsc`, the one allowed root entry (a pure barrel), CSS/JSON exports, Storybook as the docs.
 3. **Adding a component** — the D2 checklist below.
 4. **Icons** — `lucide-react` re-exported from `/icons` as `<Name>Icon`.
@@ -293,7 +293,7 @@ _Decided in:_ [How do agents and CI get Penpot credentials?][t30] with amendment
 
 ## C — ts-packages: `design-*` packages and side images
 
-Four **private** (`"private": true`) workspace packages, ignored by Changesets. Penpot lives only at the edges; the resolver and rule engine take **normalized shapes** (component path, variant properties, parts by role, exceptions record), never raw Penpot objects. The link inspector, link reader and drift check share **one pure resolver**, so they can't disagree.
+Four workspace packages. `design-core-js` and `design-core-node` are published to npm (other renderers run `design-drift check` at an exact version); `design-penpot-sdk-node` and `design-penpot-ui` stay **private** (`"private": true`) and ignored by Changesets. Penpot lives only at the edges; the resolver and rule engine take **normalized shapes** (component path, variant properties, parts by role, exceptions record), never raw Penpot objects. The link inspector, link reader and drift check share **one pure resolver**, so they can't disagree.
 
 | Package                  | Holds                                                                                                                            | Runtime        |
 | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------- | -------------- |
@@ -335,12 +335,15 @@ Read path: RPC **`get-file` without a `features` param** (the backend resolves p
 7. **unbound** — a layer's `unbound` list isn't empty.
 8. **unknown token** — an applied token name isn't in `tokens.json`.
 9. **primitive colour** — fill or stroke colour applied from a `primitive` token.
+10. **pending** — every `pending` entry of `design/drift.config.json` covers something the library has and the code lacks.
 
 Checked attributes (rules 7–9), on every layer of every main component including nested part copies, each only when set to a non-default value: fill, stroke colour, radius r1–r4, padding, row/column gap, font family/size/weight, letter spacing, shadow, opacity ≠ 1. Exempt: x/y, width/height, stroke width, rotation, margin. Whether a layer has the _right_ semantic token is left to review.
 
 Code → library: exports with no library counterpart are a coverage gap; those that should never be in the library (`useDataTable`, `Toaster`, `cn`, …) are on the allowlist `design/drift.config.json`; anything else is a warning.
 
-**Output:** a GitHub step summary table (component → rule → expected vs found) plus job annotations; coverage gaps in a collapsed section; no auto-filed issues. `design-core-js`'s README carries a tripwire: a rule change updates the `design-system` skill.
+**Pending** (library → code, for a renderer that follows `core-react`, such as `core-gpui`): the optional `pending` key of `design/drift.config.json` lists library items that renderer hasn't built yet, so a promotion that adds one doesn't hold back every later bump. Keyed by export, then by variant property: `{ "Card": "*", "Button": { "orientation": "*", "variant": ["brand"] } }`. `"*"` on a component covers it and its parts (the components under its path, `Components/Card/Header` under `Components/Card`); `"*"` on a variant property covers the property and its values; a list names single variant values, spelled as the library spells them. What the code lacks of a pending item is a **pending gap**, a warning, instead of the error: rule 1 (no such export), rule 2 (no such prop, value not in the union) and rule 5 (a value map's prop missing in the code). Everything else stays an error: the rules that check the library alone (3, 5's schema and roles, 6–9), and a prop the code has in another form (required, boolean). An entry that covers nothing is **stale**, a rule-10 error naming the entry: the code has it now, or the library snapshot no longer has it. Library → code only; renames are never pending (fix them on the bump branch). `core-react` never uses `pending`: it is code-first. Left out, nothing is pending.
+
+**Output:** a GitHub step summary table (component → rule → expected vs found) plus job annotations; coverage gaps and pending gaps in collapsed sections; no auto-filed issues. `design-core-js`'s README carries a tripwire: a rule change updates the `design-system` skill.
 
 ### Snapshot refresh
 
@@ -376,17 +379,18 @@ _Decided in:_ [Should the component link ship as a reusable open-source Penpot C
 ### Package `@brrritscold/core-react` (`packages/core-react`)
 
 - **ESM only, unbundled:** `tsc -p tsconfig.build.json` emits one `.js` + `.d.ts` per source file so each keeps its own `"use client"`. No tsup, no CJS. `"sideEffects": ["*.css"]`. Framework-agnostic: no `next/*` imports.
-- **`build`:** Style Dictionary (`tokens/tokens.json` → `dist/styles.css`) → copy `tokens.json` to `dist/` → `tsc`. Script names stay on the contract.
+- **`build`:** Style Dictionary (`tokens/tokens.json` → `dist/styles.css`) → copy `tokens.json` and `design/library.snapshot.json` to `dist/` → `tsc`. Script names stay on the contract.
 - **Exports:**
 
-  | Subpath         | Holds                                                                                   |
-  | --------------- | --------------------------------------------------------------------------------------- |
-  | `.`             | one pure file of named component and part exports plus `cn`; no logic, no `export * as` |
-  | `./icons`       | `export * from "lucide-react"`; apps use the `<Name>Icon` aliases                       |
-  | `./data-table`  | `useDataTable` only                                                                     |
-  | `./styles.css`  | built theme, carrying its own `@source "./**/*.js"` so apps need only the one `@import` |
-  | `./tokens.json` | raw token file                                                                          |
-  | `./testing`     | component objects; `@playwright/test` optional peer                                     |
+  | Subpath                   | Holds                                                                                   |
+  | ------------------------- | --------------------------------------------------------------------------------------- |
+  | `.`                       | one pure file of named component and part exports plus `cn`; no logic, no `export * as` |
+  | `./icons`                 | `export * from "lucide-react"`; apps use the `<Name>Icon` aliases                       |
+  | `./data-table`            | `useDataTable` only                                                                     |
+  | `./styles.css`            | built theme, carrying its own `@source "./**/*.js"` so apps need only the one `@import` |
+  | `./tokens.json`           | raw token file                                                                          |
+  | `./library.snapshot.json` | the library snapshot this release matches, for other renderers' drift checks            |
+  | `./testing`               | component objects; `@playwright/test` optional peer                                     |
 
   No per-component subpaths. Add `core-react` to the allowlist in `scripts/check-entries.mjs` (it is the only package with a root entry).
 - **Source layout:** `components.json` kept (shadcn CLI vendors more later); `src/components/<kebab>.tsx` one per shadcn component with its part exports; `src/lib/utils.ts` (`cn`); `src/icons.ts`; `src/data-table.ts`; `src/index.ts` (re-exports only). Vendored files stay close to upstream so a re-pull diffs cleanly; upstream `"use client"` kept verbatim. Every deviation from `ts-package-layout` is documented in the package README.
@@ -411,7 +415,7 @@ _Decided in:_ [Should the component link ship as a reusable open-source Penpot C
 
 ### `design/` in `core-react`
 
-`library.snapshot.json`, `drift.config.json` (allowlist), `token-migrations.json` (append-only `[{ "version", "from", "to" }]`, starts empty).
+`library.snapshot.json`, `drift.config.json` (allowlist; a renderer that follows `core-react` adds `pending`), `token-migrations.json` (append-only `[{ "version", "from", "to" }]`, starts empty).
 
 ### Repo plumbing
 
@@ -474,7 +478,7 @@ _Decided in:_ [What shape does @brrritscold/core-react take?][t10], [How do libr
 
 - Make `core-react` publishable; add a **`1.0.0`** changeset; merge the Version Packages PR.
 - From now on every `core-react` PR touching `src/`, `tokens.json` or `styles.css` **requires a changeset** (CI fails without one). Library-only changes with no published file (annotation, a snapshot-only refresh) get none.
-- **Bumps:** minor = new component, icon, variant value, optional prop, semantic token. Major = renamed/removed prop, removed variant value, removed component/icon, renamed/removed token, changed default. Patch = token _value_ change, or a visual/behaviour fix with the same API. Every major changeset has a `### Migration` section with exact before → after pairs and a pointer to the matching token migrations; review rejects one without it.
+- **Bumps:** minor = new component, icon, variant value, optional prop, semantic token. Major = renamed/removed prop, removed variant value, removed component/icon, renamed/removed token, changed default. Patch = token _value_ change, or a visual/behaviour fix with the same API. `lucide-react` is pinned exactly: a Lucide bump that only adds icons is a minor, one that renames or removes an icon is a major. Every major changeset has a `### Migration` section with exact before → after pairs and a pointer to the matching token migrations; review rejects one without it.
 - **No library version.** The snapshot at tag `@brrritscold/core-react@x.y.z` is the library state that release matches. No named Penpot versions.
 - Storybook deploys to GitHub Pages at `/ts-packages/core-react/`, next to typedoc; the README links it.
 - One-time check with a throwaway Next app: with `@brrritscold/core-react` and `/icons` in `optimizePackageImports`, a dev compile doesn't load all of lucide.

@@ -1,0 +1,7 @@
+{
+	"allowlist": ["buttonVariants", "cn"],
+	"pending": {
+		"Tag": "*",
+		"Badge": { "variant": ["ghost"] }
+	}
+}

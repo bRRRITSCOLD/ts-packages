@@ -2,7 +2,7 @@
 
 The drift check's node side: the code manifest generator (the TypeScript compiler API over `core-react`'s built `.d.ts`) and the `design-drift` CLI that checks a library snapshot against it and prints the token sync script. The rules themselves live in [`@brrritscold/design-core-js`](https://github.com/bRRRITSCOLD/ts-packages/tree/main/packages/design-core-js).
 
-**Private.** Not published, ignored by Changesets. Spec: [`docs/design-system/SPEC.md` § C](https://github.com/bRRRITSCOLD/ts-packages/blob/main/docs/design-system/SPEC.md); terms: [`GLOSSARY.md`](https://github.com/bRRRITSCOLD/ts-packages/blob/main/docs/design-system/GLOSSARY.md).
+Published to npm and released with Changesets. Spec: [`docs/design-system/SPEC.md` § C](https://github.com/bRRRITSCOLD/ts-packages/blob/main/docs/design-system/SPEC.md); terms: [`GLOSSARY.md`](https://github.com/bRRRITSCOLD/ts-packages/blob/main/docs/design-system/GLOSSARY.md).
 
 ## CLI
 
@@ -18,15 +18,15 @@ design-drift check --manifest code-manifest.json \
 
 `--tokens` is `core-react`'s token file: rule 6 compares the snapshot's token catalog with it, rules 8 and 9 look applied tokens up in it.
 
-`check` writes one job annotation per error to stdout (plus a warning per unchecked component and one for all coverage gaps) and appends the step summary to `$GITHUB_STEP_SUMMARY`: a table of component → rule → expected vs found, the unchecked components, and the coverage gaps in a collapsed section. Without `$GITHUB_STEP_SUMMARY` the summary goes to stdout.
+`check` writes one job annotation per error to stdout (plus a warning per unchecked component, one for all coverage gaps and one for all pending gaps) and appends the step summary to `$GITHUB_STEP_SUMMARY`: a table of component → rule → expected vs found, the unchecked components, and the coverage gaps and pending gaps in collapsed sections. Without `$GITHUB_STEP_SUMMARY` the summary goes to stdout.
 
 | Exit | Means                                                                                             |
 | ---- | ------------------------------------------------------------------------------------------------- |
-| 0    | no drift; coverage gaps and unchecked components only warn                                        |
+| 0    | no drift; coverage gaps, pending gaps and unchecked components only warn                          |
 | 1    | drift: the library disagrees with `core-react`                                                    |
 | 2    | a usage error, an input file that doesn't match its schema, or a token Penpot can't hold (loudly) |
 
-`design/drift.config.json` is `{ "allowlist": ["cn", "useDataTable", "Toaster", …] }`: exports that should never be in the library.
+`design/drift.config.json` is `{ "allowlist": ["cn", "useDataTable", "Toaster", …] }`: exports that should never be in the library. Optional keys: `valueAllowlist` (prop values no variant shows, keyed `<Export>.<prop>`) and, for a renderer that follows `core-react`, `pending` (library items it hasn't built yet: `{ "Card": "*", "Button": { "variant": ["brand"] } }`, reported as pending gaps instead of errors; a stale entry fails under rule 10). See [`design-core-js`'s drift rules](https://github.com/bRRRITSCOLD/ts-packages/tree/main/packages/design-core-js#drift-rules).
 
 ## Token sync
 
@@ -76,8 +76,8 @@ import { … } from '@brrritscold/design-core-node/drift-check'
 | Export                   | Kind     | Summary                                                                                                                                                                                                                                                                                                                                     |
 | ------------------------ | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `DriftCliIo`             | type     | What the drift-check CLI reads and writes: the process and the file system by default.                                                                                                                                                                                                                                                      |
-| `formatAnnotations`      | function | Renders the drift report as GitHub Actions job annotations: an error per mismatch, a warning per unchecked component, and one warning for all coverage gaps.                                                                                                                                                                                |
-| `formatStepSummary`      | function | Renders the drift report as a GitHub step summary: a table of errors (component → rule → expected vs found), the unchecked components, and the coverage gaps in a collapsed section.                                                                                                                                                        |
+| `formatAnnotations`      | function | Renders the drift report as GitHub Actions job annotations: an error per mismatch, a warning per unchecked component, one warning for all coverage gaps and one for all pending gaps.                                                                                                                                                       |
+| `formatStepSummary`      | function | Renders the drift report as a GitHub step summary: a table of errors (component → rule → expected vs found), the unchecked components, and the coverage gaps and pending gaps in collapsed sections.                                                                                                                                        |
 | `formatUnmigratedTokens` | function | Renders the tokens removed from tokens.json without a token migration as GitHub Actions job annotations, an error each, or the all-clear line when there are none.                                                                                                                                                                          |
 | `runDriftCli`            | function | Runs the `design-drift` CLI and returns its exit code: `manifest` writes the code manifest, `check` runs the drift check (1 on drift), `migrations` checks every removed token has a token migration (1 on any without), `token-sync` prints the token sync script; 2 on a usage error, an invalid input file or a token Penpot can't hold. |
 
