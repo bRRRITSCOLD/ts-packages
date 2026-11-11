@@ -1,0 +1,1 @@
+Penpot export evidence for the core-react PR closing ts-packages#107 and #116: the design system library's twins before and after, in Light and Dark (`Mode` theme), exported at 2x, plus Storybook crops for Button and Badge. Not code; delete this branch once the PR merges.
