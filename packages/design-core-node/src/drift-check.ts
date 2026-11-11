@@ -54,10 +54,10 @@ const USAGE = `Usage: design-drift <command> [options]
 
   check --manifest <code-manifest.json> --snapshot <library.snapshot.json> --tokens <tokens.json>
         --config <drift.config.json>
-      Check the library snapshot against the code manifest and the token file (rules 1-9).
+      Check the library snapshot against the code manifest and the token file (rules 1-10).
       Writes job annotations to stdout
       and the step summary to $GITHUB_STEP_SUMMARY (stdout when unset).
-      Exit 1 on drift; coverage gaps and unchecked components only warn.
+      Exit 1 on drift; coverage gaps, pending gaps and unchecked components only warn.
 
   migrations --base <base tokens.json> --tokens <tokens.json> --migrations <token-migrations.json>
       Check that every token the base token file has and tokens.json doesn't has a token

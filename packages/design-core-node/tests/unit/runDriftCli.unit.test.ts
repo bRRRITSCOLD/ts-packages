@@ -15,6 +15,8 @@ const DESIGN_FIXTURES = [
 	'tokens.json',
 	'token-migrations.json',
 	'drift.config.json',
+	'drift.pending.config.json',
+	'drift.stale.config.json',
 ]
 const MANIFEST = 'code-manifest.json'
 const STEP_SUMMARY = 'step-summary.md'
@@ -69,8 +71,8 @@ const cliWithManifest = () => {
 	return drift
 }
 
-/** Runs `check` on a snapshot fixture against the fixture manifest and config. */
-const check = (snapshot: string) => {
+/** Runs `check` on a snapshot fixture against the fixture manifest and a config fixture. */
+const check = (snapshot: string, config = 'drift.config.json') => {
 	const drift = cliWithManifest()
 	const exitCode = drift.run(
 		'check',
@@ -81,7 +83,7 @@ const check = (snapshot: string) => {
 		'--tokens',
 		fixture('design/tokens.json'),
 		'--config',
-		fixture('design/drift.config.json')
+		fixture(`design/${config}`)
 	)
 	return { ...drift, exitCode, summary: drift.files.get(STEP_SUMMARY) }
 }
@@ -188,6 +190,58 @@ describe('design-drift CLI', () => {
 					'</details>',
 					'',
 				].join('\n')
+			)
+		})
+	})
+
+	describe('check, library ahead of the code on pending items', () => {
+		it('should warn once for every pending gap, failing only on the other errors (exit 1)', () => {
+			const { exitCode, stdout } = check(
+				'library.drifted.snapshot.json',
+				'drift.pending.config.json'
+			)
+
+			expect(exitCode).toBe(1)
+			const errorTitles = stdout
+				.filter((line) => line.startsWith('::error'))
+				.map((line) => line.slice(0, line.indexOf('::', 2)))
+			expect(errorTitles).not.toContain(
+				'::error title=Drift rule 1 (export)%3A Components/Tag'
+			)
+			expect(errorTitles).not.toContain(
+				'::error title=Drift rule 2 (variant)%3A Components/Badge'
+			)
+			expect(errorTitles).toHaveLength(7)
+			expect(stdout.at(-1)).toBe(
+				'::warning title=Drift check%3A pending::2 library items the code has not built yet, listed as pending: Components/Badge (Badge.variant=ghost), Components/Tag (Tag)'
+			)
+		})
+
+		it('should list the pending gaps in a collapsed section of the step summary', () => {
+			const { summary } = check('library.drifted.snapshot.json', 'drift.pending.config.json')
+
+			expect(summary).toContain(
+				[
+					'<details>',
+					'<summary>Pending (2): in the design system library, not built in the code yet</summary>',
+					'',
+					'| Component | Rule | Expected | Found | Entry |',
+					'| --- | --- | --- | --- | --- |',
+					'| Components/Badge | 2 variant | `variant` one of "default" \\| "secondary" | "ghost" | `Badge.variant=ghost` |',
+					'| Components/Tag | 1 export | export `Tag` in @brrritscold/core-react | no such export | `Tag` |',
+					'',
+					'</details>',
+					'',
+				].join('\n')
+			)
+		})
+
+		it('should fail on a stale pending entry, naming it (exit 1)', () => {
+			const { exitCode, stdout } = check('library.snapshot.json', 'drift.stale.config.json')
+
+			expect(exitCode).toBe(1)
+			expect(stdout[0]).toBe(
+				'::error title=Drift rule 10 (pending)%3A drift.config.json::Expected `pending` entry `Button` to name something the library has and the code lacks; found the code has it: remove the entry'
 			)
 		})
 	})
