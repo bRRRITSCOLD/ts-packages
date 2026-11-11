@@ -52,13 +52,14 @@ export const findUnmigratedTokens = ({
 
 /**
  * A shape token sync leaves for a human: it applies a migrated token `from` that has no
- * replacement (`to: null`), or still applies it after the sync re-pointed it.
+ * replacement (`to: null`), still applies it after the sync re-pointed it, or doesn't read back
+ * a token whose value changed after the sync re-applied it.
  */
 export type FlaggedShape = {
 	page: string
 	shapeId: string
 	shape: string
-	/** The migrated token the shape still applies. */
+	/** The migrated token the shape still applies, or the changed token it should apply. */
 	token: string
 	/** The properties it applies the token on, as `shape.tokens` names them. */
 	properties: string[]
@@ -71,7 +72,7 @@ export type FlaggedShape = {
  */
 export type TokenSyncResult = { changes: string[]; flagged: FlaggedShape[] }
 
-/** A token as the Penpot 2.18.6 plugin API holds it. */
+/** A token as the Penpot 2.18.6 plugin API holds it; `value` and `description` are writable. */
 export type PenpotToken = {
 	name: string
 	type: string
@@ -109,6 +110,8 @@ export type PenpotShape = {
 	tokens?: Record<string, string>
 	children?: PenpotShape[]
 	applyToken: (token: PenpotToken, properties: string[]) => void
+	/** Whether the shape is a component copy; re-applying a token reaches copies last. */
+	isComponentCopyInstance?: () => boolean
 }
 
 /**
@@ -236,10 +239,26 @@ const syncTokens = async (
 		}
 	if (wrote) await pause()
 
-	// Tokens: a token that differs is removed and added again (Penpot has no update); an extra
-	// one is removed, unless a migration decides it below.
-	const additions: { set: PenpotTokenSet; name: string; token: DesignToken; replace: boolean }[] =
-		[]
+	// Tokens: a token that differs takes the new value in place (`token.value` is writable), so
+	// its id and the shapes applying it stay put. When Penpot refuses that, or the type changed,
+	// it is removed and added again, one token at a time; an add that fails twice restores the old
+	// token, so a failure never leaves the file without it (#120). An extra token is removed,
+	// unless a migration decides it below.
+	const asToken = ({ type, value, description }: PenpotToken): DesignToken => ({
+		$type: type,
+		$value: value,
+		...(description ? { $description: description } : {}),
+	})
+	const sameValue = (a: DesignToken, b: DesignToken) =>
+		isSameToken({ $type: a.$type, $value: a.$value }, { $type: b.$type, $value: b.$value })
+	const tokenIn = (set: PenpotTokenSet, name: string) =>
+		set.tokens.find((token) => token.name === name)
+	type Pending = { set: PenpotTokenSet; name: string; expected: DesignToken; old: DesignToken }
+	const updates: Pending[] = []
+	const replacements: Pending[] = []
+	const additions: { set: PenpotTokenSet; name: string; token: DesignToken }[] = []
+	// Tokens whose value changed: the shapes applying them are re-applied below.
+	const revalued = new Set<string>()
 	wrote = false
 	for (const { name: setName, tokens } of plan.sets) {
 		const set = setNamed(setName)
@@ -249,33 +268,110 @@ const syncTokens = async (
 			const expected = Object.hasOwn(tokens, existing.name)
 				? tokens[existing.name]
 				: undefined
-			const found: DesignToken = {
-				$type: existing.type,
-				$value: existing.value,
-				...(existing.description ? { $description: existing.description } : {}),
-			}
+			const found = asToken(existing)
 			if (expected && isSameToken(expected, found)) continue
 			if (!expected && migrating.has(existing.name)) continue
-			existing.remove()
 			wrote = true
-			if (expected)
-				additions.push({ set, name: existing.name, token: expected, replace: true })
-			else changes.push(`remove token \`${setName}/${existing.name}\``)
+			if (!expected) {
+				existing.remove()
+				changes.push(`remove token \`${setName}/${existing.name}\``)
+				continue
+			}
+			const pending = {
+				set,
+				name: existing.name,
+				expected,
+				old: JSON.parse(JSON.stringify(found)) as DesignToken,
+			}
+			if (existing.type !== expected.$type) {
+				replacements.push(pending)
+				continue
+			}
+			try {
+				// The value setter's form, per the plugin typings: a string, or a list of shadow layers.
+				const { $type, $value } = expected
+				if (!sameValue(expected, found))
+					existing.value =
+						typeof $value === 'number'
+							? String($value)
+							: $type === 'shadow' && $value && typeof $value === 'object'
+								? Array.isArray($value)
+									? $value
+									: [$value]
+								: $value
+				if ((expected.$description ?? '') !== existing.description)
+					existing.description = expected.$description ?? ''
+				updates.push(pending)
+			} catch {
+				replacements.push(pending)
+			}
 		}
 		for (const [name, token] of Object.entries(tokens))
-			if (!present.has(name)) additions.push({ set, name, token, replace: false })
+			if (!present.has(name)) additions.push({ set, name, token })
 	}
 	if (wrote) await pause()
-	for (const { set, name, token, replace } of additions) {
-		const added = set.addToken({ type: token.$type, name, value: token.$value })
-		if (token.$description) added.description = token.$description
-		changes.push(`${replace ? 'replace' : 'add'} token \`${set.name}/${name}\``)
+	// An in-place write that didn't read back after the pause falls back to a replacement.
+	for (const pending of updates) {
+		const { set, name, expected, old } = pending
+		const now = tokenIn(set, name)
+		if (!now || !isSameToken(expected, asToken(now))) {
+			replacements.push(pending)
+			continue
+		}
+		changes.push(`update token \`${set.name}/${name}\``)
+		if (!sameValue(expected, old)) revalued.add(name)
 	}
-	if (additions.length) await pause()
+	// What `addToken` takes: tokens.json's form, a font family list joined as tokens.json writes it.
+	const payload = (name: string, { $type, $value }: DesignToken) => ({
+		type: $type,
+		name,
+		value: $type === 'fontFamilies' && Array.isArray($value) ? $value.join(', ') : $value,
+	})
+	const add = (set: PenpotTokenSet, name: string, token: DesignToken) => {
+		const added = set.addToken(payload(name, token))
+		if (token.$description) added.description = token.$description
+	}
+	const message = (error: unknown) => (error instanceof Error ? error.message : String(error))
+	const failures: string[] = []
+	for (const { set, name, expected, old } of replacements) {
+		tokenIn(set, name)?.remove()
+		await pause()
+		let failure: unknown
+		let added = false
+		for (let attempt = 0; attempt < 2 && !added; attempt++)
+			try {
+				add(set, name, expected)
+				added = true
+			} catch (error) {
+				failure = error
+				await pause()
+			}
+		const label = `${set.name}/${name}`
+		if (added) {
+			changes.push(`replace token \`${label}\``)
+			if (!sameValue(expected, old)) revalued.add(name)
+			continue
+		}
+		try {
+			add(set, name, old)
+			failures.push(
+				`\`${label}\`: adding the new value failed twice (${message(failure)}); the old token was restored`
+			)
+		} catch (error) {
+			failures.push(
+				`\`${label}\`: adding the new value failed twice (${message(failure)}), and restoring the old token failed too (${message(error)}). Re-add it by hand in set \`${set.name}\`: addToken(${JSON.stringify(payload(name, old))})`
+			)
+		}
+	}
+	for (const { set, name, token } of additions) {
+		add(set, name, token)
+		changes.push(`add token \`${set.name}/${name}\``)
+	}
+	if (additions.length || replacements.length) await pause()
 
-	// Migrations: re-point every shape that applies `from` to `to`, on the same properties.
+	// Every shape on every page, read only when a migration or a re-apply needs them.
 	const shapes: { page: string; shape: PenpotShape }[] = []
-	if (migrations.length)
+	if (migrations.length || revalued.size)
 		for (const page of penpot.currentFile?.pages ?? []) {
 			const stack = [page.root]
 			while (stack.length) {
@@ -291,6 +387,51 @@ const syncTokens = async (
 				.map(([property]) => property)
 			return properties.length ? [{ page, shape, properties }] : []
 		})
+
+	// Re-apply: Penpot doesn't re-resolve the shapes applying a token whose value changed, nor
+	// those applying a token that references it (#120). Each is toggled off and back on across
+	// pauses, since applying a token toggles it and settles asynchronously; non-copies go first so
+	// plain copies have followed their mains before their turn. A shape whose token doesn't read
+	// back afterwards is flagged.
+	const allTokens = () => catalog.sets.flatMap((set) => set.tokens)
+	const references = ({ value }: PenpotToken) =>
+		(JSON.stringify(value ?? '').match(/\{[^{}]+\}/g) ?? []).map((ref) => ref.slice(1, -1))
+	for (let grew = revalued.size > 0; grew; ) {
+		grew = false
+		for (const token of allTokens())
+			if (!revalued.has(token.name) && references(token).some((name) => revalued.has(name))) {
+				revalued.add(token.name)
+				grew = true
+			}
+	}
+	const jobs = [...revalued].flatMap((name) => {
+		const token = allTokens().find((candidate) => candidate.name === name)
+		return token ? usersOf(name).map((user) => ({ ...user, token })) : []
+	})
+	const isCopy = ({ shape }: { shape: PenpotShape }) => shape.isComponentCopyInstance?.() ?? false
+	for (const batch of [jobs.filter((job) => !isCopy(job)), jobs.filter(isCopy)]) {
+		if (!batch.length) continue
+		for (const { shape, token, properties } of batch) shape.applyToken(token, properties)
+		await pause()
+		for (const { shape, token, properties } of batch) shape.applyToken(token, properties)
+		await pause()
+		for (const { page, shape, token, properties } of batch)
+			if (properties.every((property) => shape.tokens?.[property] === token.name))
+				changes.push(
+					`re-apply \`${token.name}\` on ${properties.join(', ')} of \`${shape.name}\` (${shape.id}) on page \`${page}\``
+				)
+			else
+				flagged.push({
+					page,
+					shapeId: shape.id,
+					shape: shape.name,
+					token: token.name,
+					properties,
+					reason: `\`${token.name}\` changed value and re-applying it did not read back: apply it again on ${properties.join(', ')}`,
+				})
+	}
+
+	// Migrations: re-point every shape that applies `from` to `to`, on the same properties.
 	const flag = (token: string, reason: string) =>
 		usersOf(token).map(({ page, shape, properties }) =>
 			flagged.push({ page, shapeId: shape.id, shape: shape.name, token, properties, reason })
@@ -368,6 +509,15 @@ const syncTokens = async (
 		catalog.themes.find(isTheme(defaultTheme))?.toggleActive()
 		changes.push(`activate theme \`${themeLabel(defaultTheme)}\``)
 	}
+	if (failures.length)
+		throw new Error(
+			[
+				'Token sync could not replace these tokens; it synced everything else:',
+				...failures.map((failure) => `- ${failure}`),
+				`Changes it made: ${JSON.stringify(changes)}`,
+				`Flagged shapes: ${JSON.stringify(flagged)}`,
+			].join('\n')
+		)
 	return { changes, flagged }
 }
 
@@ -378,6 +528,12 @@ const syncTokens = async (
  * `light`, `dark`, created in that order) and tokens, and exactly the themes
  * {@link TOKEN_THEMES}, activating `Mode/Light` when no `Mode` theme is active. Values compare
  * with {@link sameToken}, the comparison drift rule 6 makes, embedded by its source text.
+ *
+ * A token whose value or description differs takes the new one in place. When Penpot refuses
+ * that, or the type changed, the token is removed and added again; an add that fails twice
+ * restores the old token, and the script throws once everything else is synced. Every shape
+ * applying a token whose value changed (or a token referencing it) has it re-applied, toggled
+ * off and back on, so it resolves the new value; one that doesn't read it back is flagged.
  *
  * Each migration whose `from` is still in the file adds `to`, re-applies it on every shape
  * whose `shape.tokens` names `from` (same properties) and removes `from` once no shape applies

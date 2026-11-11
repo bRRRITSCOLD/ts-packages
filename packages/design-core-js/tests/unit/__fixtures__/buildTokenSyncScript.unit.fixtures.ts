@@ -60,26 +60,59 @@ export const createTokenFile = (): TokenFile => ({
 	},
 })
 
-/** A fake shape: `tokens` maps a property to a token name, as Penpot's `shape.tokens` does. */
-export type FakeShape = PenpotShape & { tokens: Record<string, string>; children: FakeShape[] }
+/**
+ * A fake shape: `tokens` maps a property to a token name, as Penpot's `shape.tokens` does, and
+ * `resolved` holds the value each property last resolved to, which only `applyToken` refreshes.
+ */
+export type FakeShape = PenpotShape & {
+	tokens: Record<string, string>
+	resolved: Record<string, unknown>
+	children: FakeShape[]
+}
 
 /**
- * A shape applying the given tokens. A `stubborn` shape ignores `applyToken`, like a shape
- * Penpot won't re-point.
+ * A shape applying the given tokens, each resolved to `resolved[property]`. `applyToken`
+ * toggles, as Penpot's does: a property already applying the token loses it, any other takes it
+ * and resolves the token's current value. A `stubborn` shape ignores `applyToken`, like a shape
+ * Penpot won't re-point; a `racy` one drops every second call, like a toggle back on that landed
+ * before the toggle off settled; a `copy` is a component copy.
  */
 export const createShape = (
 	name: string,
 	tokens: Record<string, string> = {},
-	{ children = [], stubborn = false }: { children?: FakeShape[]; stubborn?: boolean } = {}
+	{
+		children = [],
+		stubborn = false,
+		racy = false,
+		copy = false,
+		resolved = {},
+	}: {
+		children?: FakeShape[]
+		stubborn?: boolean
+		racy?: boolean
+		copy?: boolean
+		resolved?: Record<string, unknown>
+	} = {}
 ): FakeShape => {
+	let calls = 0
 	const shape: FakeShape = {
 		id: `shape-${name}`,
 		name,
 		tokens: { ...tokens },
+		resolved: { ...resolved },
 		children,
+		isComponentCopyInstance: () => copy,
 		applyToken: (token, properties) => {
-			if (stubborn) return
-			for (const property of properties) shape.tokens[property] = token.name
+			calls++
+			if (stubborn || (racy && calls % 2 === 0)) return
+			for (const property of properties)
+				if (shape.tokens[property] === token.name) {
+					delete shape.tokens[property]
+					delete shape.resolved[property]
+				} else {
+					shape.tokens[property] = token.name
+					shape.resolved[property] = token.value
+				}
 		},
 	}
 	return shape
@@ -90,6 +123,17 @@ export type FakeFileState = {
 	sets?: { name: string; tokens: Record<string, { type: string; value: unknown }> }[]
 	themes?: (TokenTheme & { active?: boolean })[]
 	pages?: { name: string; root: FakeShape }[]
+}
+
+/** How the fake's writes misbehave, to stand in for a Penpot that refuses one. */
+export type FakeBehaviour = {
+	/**
+	 * What assigning `token.value` does: store it (the default, as the plugin typings declare),
+	 * throw, or silently keep the old value.
+	 */
+	valueSetter?: 'works' | 'throws' | 'ignored'
+	/** `addToken` throws, like Penpot's validation did in #120, when this returns true. */
+	failAdd?: (token: { type: string; name: string; value: unknown }) => boolean
 }
 
 /** How Penpot 2.18.6 stores a value: numbers as strings, font families as a list, shadows as layers. */
@@ -112,12 +156,13 @@ const store = (type: string, value: unknown): unknown => {
 /**
  * An in-memory fake of the parts of Penpot 2.18.6's plugin API token sync uses, behaving as
  * the first manual sync found it: values stored in Penpot's form, `addSet` / `removeSet` on a
- * theme taking a set object, one active theme per group. `writes` counts every write.
+ * theme taking a set object, one active theme per group. `writes` counts every write; set
+ * `behaviour` to make later writes misbehave.
  */
 export const createFakePenpot = (state: FakeFileState = {}) => {
 	let nextId = 0
 	const id = () => `id-${++nextId}`
-	const fake = { writes: 0 }
+	const fake: { writes: number; behaviour: FakeBehaviour } = { writes: 0, behaviour: {} }
 	const write = () => {
 		fake.writes++
 	}
@@ -133,10 +178,23 @@ export const createFakePenpot = (state: FakeFileState = {}) => {
 				write()
 				if (set.tokens.some((token) => token.name === tokenName))
 					throw new Error(`A token named ${tokenName} already exists`)
+				if (fake.behaviour.failAdd?.({ type, name: tokenName, value }))
+					throw new Error(
+						'Value not valid: Field 0.name is invalid: Empty field. Field value is invalid: Token has circular reference'
+					)
+				let stored = store(type, value)
 				const token: PenpotToken = {
 					name: tokenName,
 					type,
-					value: store(type, value),
+					get value() {
+						return stored
+					},
+					set value(next) {
+						const setter = fake.behaviour.valueSetter ?? 'works'
+						if (setter === 'throws') throw new Error('Object is not extensible')
+						write()
+						if (setter === 'works') stored = store(type, next)
+					},
 					description: '',
 					remove: () => {
 						write()

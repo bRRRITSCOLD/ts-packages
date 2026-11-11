@@ -40,7 +40,7 @@ The script ([`buildTokenSyncScript`](https://github.com/bRRRITSCOLD/ts-packages/
 
 1. Build `design-core-js` and `design-core-node` from `main` (or the `core-react` PR, for the library's lockstep sync) and print the script as above.
 2. Open the file to sync in the Penpot tab the MCP key drives: **one file at a time**, the design system library first, then each page design file.
-3. Pass the whole script, unchanged, as the code of **one `execute_code` call**. It returns `{ changes, flagged }`: what it wrote, and the shapes a human must look at (a migrated token with no replacement, or one a shape still applies).
+3. Pass the whole script, unchanged, as the code of **one `execute_code` call**. It returns `{ changes, flagged }`: what it wrote (including every shape it re-applied a changed token on), and the shapes a human must look at (a migrated token with no replacement, one a shape still applies, or a changed token a shape didn't read back after re-applying). If it throws naming tokens it couldn't replace, it restored each one's old value and synced the rest; fix the cause and run it again.
 4. Run it again in the same tab. It must return `changes: []`; anything else is a bug to report, not to re-run away.
 
 A token Penpot can't hold (a negative shadow spread, a CSS-string shadow) or a migration whose `to` reaches no token fails the command with exit 2 and prints no script, so nothing is written.
