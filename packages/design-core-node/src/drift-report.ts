@@ -25,7 +25,7 @@ export const formatStepSummary = ({
 	const lines = ['## Drift check', '']
 	if (errors.length)
 		lines.push(
-			`**${plural(errors.length, 'error', 'errors')}**: the design system library disagrees with core-react. Fix the library, then refresh the snapshot.`,
+			`**${plural(errors.length, 'error', 'errors')}**: the design system library disagrees with the code. Fix the library, then refresh the snapshot.`,
 			'',
 			...markdownTable(
 				['Component', 'Rule', 'Expected', 'Found'],
@@ -38,7 +38,7 @@ export const formatStepSummary = ({
 			),
 			''
 		)
-	else lines.push('No drift: the design system library agrees with core-react.', '')
+	else lines.push('No drift: the design system library agrees with the code.', '')
 	if (unchecked.length)
 		lines.push(
 			`### Unchecked (${unchecked.length})`,
@@ -54,7 +54,7 @@ export const formatStepSummary = ({
 	if (coverageGaps.length)
 		lines.push(
 			'<details>',
-			`<summary>Coverage gaps (${coverageGaps.length}): in core-react, not in the design system library</summary>`,
+			`<summary>Coverage gaps (${coverageGaps.length}): in the code, not in the design system library</summary>`,
 			'',
 			...markdownTable(
 				['Export', 'Prop', 'Value'],
@@ -141,7 +141,7 @@ export const formatAnnotations = ({
 				annotation(
 					'warning',
 					'Drift check: coverage gaps',
-					`${plural(coverageGaps.length, 'export or prop value', 'exports or prop values')} of core-react ${coverageGaps.length === 1 ? 'has' : 'have'} no counterpart in the design system library: ${coverageGaps
+					`${plural(coverageGaps.length, 'export or prop value', 'exports or prop values')} of the code ${coverageGaps.length === 1 ? 'has' : 'have'} no counterpart in the design system library: ${coverageGaps
 						.map(({ export: name, prop, value }) =>
 							prop ? `${name} ${prop}=${value}` : name
 						)
