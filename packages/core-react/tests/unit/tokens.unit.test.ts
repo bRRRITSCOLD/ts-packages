@@ -100,6 +100,14 @@ describe('tokens', () => {
 		expect(offenders).toEqual([])
 	})
 
+	it('should fill fields, outline controls and destructive tints from per-mode tokens, not a dark: alpha', () => {
+		// `input-background`, `outline-background` and `destructive-background` hold these
+		// alphas per mode, so the library can apply them; a `dark:` arm would split the rule again.
+		const darkAlpha = /^dark:(?:[^:]+:)*bg-(?:input\/30|destructive\/20)$/
+
+		expect(classes.filter((cls) => darkAlpha.test(cls))).toEqual([])
+	})
+
 	it('should leave out the Tailwind default scales a token type replaces', () => {
 		const defaults = [
 			'p-13',
