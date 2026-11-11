@@ -45,7 +45,7 @@ const meta = {
 			<DropdownMenuTrigger render={<Button variant="outline" />}>
 				Open menu
 			</DropdownMenuTrigger>
-			<DropdownMenuContent className="w-56">
+			<DropdownMenuContent className="w-72">
 				<DropdownMenuGroup>
 					<DropdownMenuLabel>My account</DropdownMenuLabel>
 					<DropdownMenuItem {...args}>
@@ -98,7 +98,7 @@ export const Checkboxes: Story = {
 			<DropdownMenuTrigger render={<Button variant="outline" />}>
 				Open menu
 			</DropdownMenuTrigger>
-			<DropdownMenuContent className="w-56">
+			<DropdownMenuContent className="w-72">
 				<DropdownMenuGroup>
 					<DropdownMenuLabel>Appearance</DropdownMenuLabel>
 					<DropdownMenuCheckboxItem defaultChecked closeOnClick={false}>
@@ -130,7 +130,7 @@ export const RadioItems: Story = {
 				<DropdownMenuTrigger render={<Button variant="outline" />}>
 					Open menu
 				</DropdownMenuTrigger>
-				<DropdownMenuContent className="w-56">
+				<DropdownMenuContent className="w-72">
 					<DropdownMenuGroup>
 						<DropdownMenuLabel>Panel position</DropdownMenuLabel>
 						<DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
@@ -164,7 +164,7 @@ export const Submenu: Story = {
 			<DropdownMenuTrigger render={<Button variant="outline" />}>
 				Open menu
 			</DropdownMenuTrigger>
-			<DropdownMenuContent className="w-56">
+			<DropdownMenuContent className="w-72">
 				<DropdownMenuItem>New file</DropdownMenuItem>
 				<DropdownMenuSub>
 					<DropdownMenuSubTrigger>Share</DropdownMenuSubTrigger>

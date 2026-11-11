@@ -8,7 +8,7 @@ const meta = {
 	title: 'Components/Separator',
 	component: Separator,
 	render: (args) => (
-		<div className="flex h-10 w-64 items-center justify-center">
+		<div className="flex h-10 w-72 items-center justify-center">
 			<Separator {...args} />
 		</div>
 	),

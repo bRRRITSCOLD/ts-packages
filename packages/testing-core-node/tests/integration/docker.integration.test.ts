@@ -80,6 +80,30 @@ describe('docker.ts', () => {
 		await Promise.all([m.stop(), p.stop(), l.stop()])
 	})
 
+	describe('PostgresContainer', () => {
+		// the official image starts a socket-only server for init, stops it, then starts
+		// the real one - a container handed back on the port alone can still answer
+		// "the database system is starting up"
+		it('should resolve start only once postgres accepts TCP connections', async () => {
+			p = createPostgresContainer()
+
+			await p.start()
+
+			const { exitCode, output } = await p.startedContainer!.exec([
+				'pg_isready',
+				'--host=127.0.0.1',
+				`--port=${postgresFixture.port}`,
+				`--username=${postgresFixture.username}`,
+				`--dbname=${postgresFixture.database}`,
+			])
+
+			expect({ exitCode, output: output.trim() }).toEqual({
+				exitCode: 0,
+				output: `127.0.0.1:${postgresFixture.port} - accepting connections`,
+			})
+		})
+	})
+
 	it('should start and stop FlociContainer', async () => {
 		f = createFlociContainer()
 

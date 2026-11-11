@@ -1,4 +1,10 @@
-import { GenericContainer, StartedTestContainer, Wait, WaitStrategy } from 'testcontainers'
+import {
+	GenericContainer,
+	HealthCheck,
+	StartedTestContainer,
+	Wait,
+	WaitStrategy,
+} from 'testcontainers'
 
 const labels = { application: 'brrritscold-testing-core-node' }
 
@@ -36,6 +42,7 @@ export class Container {
 		port: number
 		environment: Record<string, string>
 		waitStrategy?: WaitStrategy
+		healthCheck?: HealthCheck
 		reuse?: boolean
 	}) {
 		this.exposedPort = params.port
@@ -45,6 +52,8 @@ export class Container {
 			.withEnvironment(params.environment)
 
 		if (params.reuse ?? true) this.container = this.container.withReuse()
+
+		if (params.healthCheck) this.container = this.container.withHealthCheck(params.healthCheck)
 
 		if (params.waitStrategy)
 			this.container = this.container.withWaitStrategy(params.waitStrategy)
@@ -249,6 +258,14 @@ export class MongoDbAtlasLocalContainer extends Container {
 /**
  * PostgreSQL (`postgres` image) test container on port 5432, configured with the given user, password and database.
  *
+ * `start()` resolves only once postgres accepts TCP connections. The official image
+ * runs init against a temporary server, stops it and starts the real one, and the
+ * real one binds its port before it finishes starting up - so an open port alone can
+ * still answer `the database system is starting up`. Readiness is a `pg_isready`
+ * health check over TCP: the temporary init server listens on the unix socket only,
+ * so it cannot pass, and an already-initialised data directory (one start, one
+ * "ready" line) or a reused container needs no special case.
+ *
  * @example
  * // node_modules
  * import { PostgresContainer } from '@brrritscold/testing-core-node/docker'
@@ -274,14 +291,31 @@ export class PostgresContainer extends Container {
 		database: string
 		port?: number
 	}) {
+		const port = params.port || 5432
+
 		super({
 			image: `postgres${params.version ? `:${params.version}` : ''}`,
-			port: params.port || 5432,
+			port,
 			environment: {
 				POSTGRES_USER: params.username,
 				POSTGRES_PASSWORD: params.password,
 				POSTGRES_DB: params.database,
 			},
+			healthCheck: {
+				test: [
+					'CMD',
+					'pg_isready',
+					'--host=127.0.0.1',
+					`--port=${port}`,
+					`--username=${params.username}`,
+					`--dbname=${params.database}`,
+				],
+				interval: 250,
+				timeout: 1_000,
+				// failures only turn the container unhealthy after ~60s, the default startup timeout
+				retries: 240,
+			},
+			waitStrategy: Wait.forHealthCheck(),
 		})
 	}
 }
