@@ -104,7 +104,7 @@ describe('design-drift CLI', () => {
 
 			expect(exitCode).toBe(0)
 			expect(stdout).toEqual([
-				'::warning title=Drift check%3A coverage gaps::1 export or prop value of core-react has no counterpart in the design system library: Toggle',
+				'::warning title=Drift check%3A coverage gaps::1 export or prop value of the code has no counterpart in the design system library: Toggle',
 			])
 		})
 
@@ -115,10 +115,10 @@ describe('design-drift CLI', () => {
 				[
 					'## Drift check',
 					'',
-					'No drift: the design system library agrees with core-react.',
+					'No drift: the design system library agrees with the code.',
 					'',
 					'<details>',
-					'<summary>Coverage gaps (1): in core-react, not in the design system library</summary>',
+					'<summary>Coverage gaps (1): in the code, not in the design system library</summary>',
 					'',
 					'| Export | Prop | Value |',
 					'| --- | --- | --- |',
@@ -147,7 +147,7 @@ describe('design-drift CLI', () => {
 				'::error title=Drift rule 6 (token catalog)%3A Token catalog::Expected `light` token `primary` = color "{color.neutral.900}" (re-run token sync); found color "{color.neutral.100}"',
 				'::error title=Drift rule 4 (icon)%3A icon/Envelope::Expected export `EnvelopeIcon` in @brrritscold/core-react/icons; found no such icon',
 				'::warning title=Drift check%3A unchecked component::Components/DatePicker links to @brrritscold/other-react, which the drift check cannot check',
-				'::warning title=Drift check%3A coverage gaps::1 export or prop value of core-react has no counterpart in the design system library: Toggle',
+				'::warning title=Drift check%3A coverage gaps::1 export or prop value of the code has no counterpart in the design system library: Toggle',
 			])
 		})
 
@@ -158,7 +158,7 @@ describe('design-drift CLI', () => {
 				[
 					'## Drift check',
 					'',
-					'**9 errors**: the design system library disagrees with core-react. Fix the library, then refresh the snapshot.',
+					'**9 errors**: the design system library disagrees with the code. Fix the library, then refresh the snapshot.',
 					'',
 					'| Component | Rule | Expected | Found |',
 					'| --- | --- | --- | --- |',
@@ -181,7 +181,7 @@ describe('design-drift CLI', () => {
 					'| Components/DatePicker | @brrritscold/other-react |',
 					'',
 					'<details>',
-					'<summary>Coverage gaps (1): in core-react, not in the design system library</summary>',
+					'<summary>Coverage gaps (1): in the code, not in the design system library</summary>',
 					'',
 					'| Export | Prop | Value |',
 					'| --- | --- | --- |',
