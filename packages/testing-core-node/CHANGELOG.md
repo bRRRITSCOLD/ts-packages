@@ -1,5 +1,11 @@
 # @brrritscold/testing-core-node
 
+## 0.3.1
+
+### Patch Changes
+
+- [#131](https://github.com/bRRRITSCOLD/ts-packages/pull/131) [`7906dbd`](https://github.com/bRRRITSCOLD/ts-packages/commit/7906dbdad480c32cf01bb93adeb1acc43d4a747d) Thanks [@bRRRITSCOLD](https://github.com/bRRRITSCOLD)! - `PostgresContainer.start()` resolves only once postgres accepts TCP connections, via a `pg_isready` health check, instead of as soon as the port is bound. The official image binds its port before it finishes starting up, so a client connecting straight after `start()` could get `the database system is starting up`. `Container` takes an optional `healthCheck`.
+
 ## 0.3.0
 
 ### Minor Changes
