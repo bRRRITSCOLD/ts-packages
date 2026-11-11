@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 // testee
-import { checkDrift } from '../../src/drift-check.js'
+import { checkDrift, type DriftConfig } from '../../src/drift-check.js'
 import type { LibraryComponent } from '../../src/library-snapshot.js'
 // fixtures
 import {
@@ -19,6 +19,7 @@ describe('checkDrift', () => {
 			errors: [],
 			unchecked: [],
 			coverageGaps: [],
+			pending: [],
 		})
 	})
 
@@ -866,6 +867,290 @@ describe('checkDrift', () => {
 			expect(
 				checkDrift(createDriftCheckInput(library)).errors.map(({ rule }) => rule)
 			).toEqual([7, 8, 9])
+		})
+	})
+
+	describe('pending: library items a renderer has not built yet', () => {
+		const withPending = (
+			pending: NonNullable<DriftConfig['pending']>,
+			library = createInStepLibrary(),
+			manifest = createCodeManifest()
+		) => {
+			const input = createDriftCheckInput(library, manifest)
+			input.config.pending = pending
+			return input
+		}
+		const button = (variantProperties: Record<string, string>, exceptionsRecord?: unknown) =>
+			createLibraryComponent({ name: 'Button', variantProperties, exceptionsRecord })
+
+		it('should report a pending component missing in the code as pending, naming the entry, not as an error', () => {
+			const library = {
+				...createInStepLibrary(),
+				badge: createLibraryComponent({ name: 'Badge' }),
+			}
+
+			expect(checkDrift(withPending({ Badge: '*' }, library))).toMatchObject({
+				errors: [],
+				pending: [
+					{
+						rule: 1,
+						component: 'Components/Badge',
+						expected: 'export `Badge` in @brrritscold/core-react',
+						found: 'no such export',
+						entry: 'Badge',
+					},
+				],
+			})
+		})
+
+		it('should cover the parts of a pending component', () => {
+			const manifest = createCodeManifest()
+			delete manifest.exports.Card
+			delete manifest.exports.CardHeader
+			delete manifest.exports.CardContent
+
+			const report = checkDrift(withPending({ Card: '*' }, createInStepLibrary(), manifest))
+
+			expect(report.errors).toEqual([])
+			expect(report.pending.map(({ component, entry }) => [component, entry])).toEqual([
+				['Components/Card', 'Card'],
+				['Components/Card/Content', 'Card'],
+				['Components/Card/Header', 'Card'],
+			])
+		})
+
+		it('should keep a pending component while one of its parts is still missing', () => {
+			const manifest = createCodeManifest()
+			delete manifest.exports.CardHeader
+
+			const report = checkDrift(withPending({ Card: '*' }, createInStepLibrary(), manifest))
+
+			expect(report.errors).toEqual([])
+			expect(report.pending.map(({ component }) => component)).toEqual([
+				'Components/Card/Header',
+			])
+		})
+
+		it('should not cover a component whose name only starts with the pending one', () => {
+			const library = {
+				...createInStepLibrary(),
+				cardinal: createLibraryComponent({ name: 'Cardinal' }),
+			}
+			const manifest = createCodeManifest()
+			delete manifest.exports.Card
+
+			expect(
+				checkDrift(withPending({ Card: '*' }, library, manifest)).errors.map(
+					({ rule, component }) => [rule, component]
+				)
+			).toEqual([[1, 'Components/Cardinal']])
+		})
+
+		it('should still fail a pending component on the rules that check the library alone', () => {
+			const library = {
+				...createInStepLibrary(),
+				badge: createLibraryComponent({
+					name: 'Badge',
+					layers: { 'badge-board': createLibraryLayer({ unbound: ['fill'] }) },
+				}),
+			}
+
+			const report = checkDrift(withPending({ Badge: '*' }, library))
+
+			expect(report.errors.map(({ rule }) => rule)).toEqual([7])
+			expect(report.pending.map(({ rule }) => rule)).toEqual([1])
+		})
+
+		it('should report a pending variant property the code lacks as pending', () => {
+			const library = {
+				...createInStepLibrary(),
+				'button-vertical': button({ variant: 'default', orientation: 'vertical' }),
+			}
+
+			expect(
+				checkDrift(withPending({ Button: { orientation: '*' } }, library))
+			).toMatchObject({
+				errors: [],
+				pending: [
+					{
+						rule: 2,
+						component: 'Components/Button',
+						expected: 'prop `orientation` (boolean or literal union) on `Button`',
+						found: 'no such prop',
+						entry: 'Button.orientation',
+					},
+				],
+			})
+		})
+
+		it('should cover the values of a pending variant property the code has only some of', () => {
+			const library = {
+				...createInStepLibrary(),
+				'button-horizontal': button({ orientation: 'horizontal' }),
+				'button-vertical': button({ orientation: 'vertical' }),
+			}
+			const manifest = createCodeManifest()
+			manifest.exports.Button.props.orientation = {
+				type: 'literals',
+				values: ['horizontal'],
+				optional: true,
+			}
+
+			const report = checkDrift(
+				withPending({ Button: { orientation: '*' } }, library, manifest)
+			)
+
+			expect(report.errors).toEqual([])
+			expect(report.pending).toEqual([
+				{
+					rule: 2,
+					component: 'Components/Button',
+					expected: '`orientation` one of "horizontal"',
+					found: '"vertical"',
+					entry: 'Button.orientation',
+				},
+			])
+		})
+
+		it('should report a pending value the code lacks as pending, and still fail one not listed', () => {
+			const library = {
+				...createInStepLibrary(),
+				'button-brand': button({ variant: 'brand' }),
+				'button-ghost': button({ variant: 'ghost' }),
+			}
+
+			const report = checkDrift(withPending({ Button: { variant: ['brand'] } }, library))
+
+			expect(report.pending).toEqual([
+				{
+					rule: 2,
+					component: 'Components/Button',
+					expected: '`variant` one of "default" | "outline"',
+					found: '"brand"',
+					entry: 'Button.variant=brand',
+				},
+			])
+			expect(report.errors).toEqual([
+				{
+					rule: 2,
+					component: 'Components/Button',
+					expected: '`variant` one of "default" | "outline"',
+					found: '"ghost"',
+				},
+			])
+		})
+
+		it('should key a mapped property by its variant property and value, not by the prop', () => {
+			const record = { v: 1, props: { variant: { from: 'Look', map: { Brand: 'brand' } } } }
+			const library = { 'button-brand': button({ Look: 'Brand' }, record) }
+
+			expect(checkDrift(withPending({ Button: { Look: ['Brand'] } }, library))).toMatchObject(
+				{
+					errors: [],
+					pending: [{ rule: 2, found: '"brand"', entry: 'Button.Look=Brand' }],
+				}
+			)
+		})
+
+		it('should report the prop a pending mapped property sets, missing in the code, as pending', () => {
+			const manifest = createCodeManifest()
+			delete manifest.exports.Button.props.disabled
+
+			expect(
+				checkDrift(withPending({ Button: { state: '*' } }, createInStepLibrary(), manifest))
+			).toMatchObject({
+				errors: [],
+				pending: [
+					{
+						rule: 5,
+						component: 'Components/Button',
+						expected: '`props` keys → props of `Button`',
+						found: '`disabled`: no such prop',
+						entry: 'Button.state',
+					},
+				],
+			})
+		})
+
+		it('should still fail a prop the code has in another form under a pending property', () => {
+			const library = { button: button({ size: 'default' }) }
+			const manifest = createCodeManifest()
+			manifest.exports.Button.props.size = {
+				type: 'literals',
+				values: ['default', 'sm', 'lg'],
+				optional: false,
+			}
+
+			expect(
+				checkDrift(withPending({ Button: { size: '*' } }, library, manifest)).errors
+			).toContainEqual({
+				rule: 2,
+				component: 'Components/Button',
+				expected: '`size` optional (the variant value `default` omits it)',
+				found: 'required',
+			})
+		})
+
+		describe('stale entries', () => {
+			const stale = (entry: string, found: string) => ({
+				rule: 10,
+				component: 'drift.config.json',
+				expected: `\`pending\` entry \`${entry}\` to name something the library has and the code lacks`,
+				found,
+			})
+			const CODE_HAS_IT = 'the code has it: remove the entry'
+			const LIBRARY_LACKS_IT = 'the library snapshot does not have it: remove the entry'
+
+			it('should fail a pending component the code has, with its parts', () => {
+				expect(checkDrift(withPending({ Card: '*' })).errors).toEqual([
+					stale('Card', CODE_HAS_IT),
+				])
+			})
+
+			it('should fail a pending component the library snapshot does not have', () => {
+				expect(checkDrift(withPending({ Badge: '*' })).errors).toEqual([
+					stale('Badge', LIBRARY_LACKS_IT),
+				])
+			})
+
+			it('should fail a pending variant property the code has, and one the library does not have', () => {
+				expect(
+					checkDrift(withPending({ Button: { size: '*', orientation: '*' } })).errors
+				).toEqual([
+					stale('Button.orientation', LIBRARY_LACKS_IT),
+					stale('Button.size', CODE_HAS_IT),
+				])
+			})
+
+			it('should fail a pending value the code has, and one the library does not have', () => {
+				expect(
+					checkDrift(withPending({ Button: { variant: ['outline', 'brand'] } })).errors
+				).toEqual([
+					stale('Button.variant=brand', LIBRARY_LACKS_IT),
+					stale('Button.variant=outline', CODE_HAS_IT),
+				])
+			})
+
+			it('should not fail a pending value of a component the code lacks altogether', () => {
+				const library = {
+					...createInStepLibrary(),
+					'button-brand': button({ variant: 'brand' }),
+				}
+				const manifest = createCodeManifest()
+				delete manifest.exports.Button
+
+				expect(
+					checkDrift(withPending({ Button: { variant: ['brand'] } }, library, manifest))
+						.errors
+				).toEqual([
+					{
+						rule: 1,
+						component: 'Components/Button',
+						expected: 'export `Button` in @brrritscold/core-react',
+						found: 'no such export',
+					},
+				])
+			})
 		})
 	})
 
