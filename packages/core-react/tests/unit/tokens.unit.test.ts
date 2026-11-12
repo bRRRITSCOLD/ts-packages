@@ -127,9 +127,31 @@ describe('tokens', () => {
 	})
 
 	describe('status colours', () => {
-		const STATUSES = ['success', 'warning', 'info']
-		/** Each mode's tint alpha, as `destructive-background` has it. */
-		const ALPHA = { light: 0.1, dark: 0.2 }
+		const HUES = { success: 'green', warning: 'amber', info: 'blue' }
+		const STATUSES = Object.keys(HUES) as (keyof typeof HUES)[]
+		/**
+		 * The colour each mode tints behind status text, and at what alpha. Light's text is a darker
+		 * step than its tint (green.800 on green.600 at 10%), so the text reads at AA; dark tints its
+		 * own colour at 20%, as `destructive-background` does.
+		 */
+		const TINT = {
+			light: {
+				source: (status: keyof typeof HUES) => `color.${HUES[status]}.600`,
+				alpha: 0.1,
+			},
+			dark: { source: (status: keyof typeof HUES) => status, alpha: 0.2 },
+		}
+
+		/** An `rgba()` tint laid over an opaque `#rrggbb` colour, as `#rrggbb`. */
+		const over = (tint: string, base: string) => {
+			const [r = 0, g = 0, b = 0, a = 0] = (/rgba\(([^)]+)\)/.exec(tint)?.[1] ?? '')
+				.split(',')
+				.map(Number)
+			return `#${channels(base)
+				.map((c, i) => Math.round(a * ([r, g, b][i] ?? 0) + (1 - a) * c))
+				.map((c) => c.toString(16).padStart(2, '0'))
+				.join('')}`
+		}
 
 		/** WCAG 2 relative luminance of a `#rrggbb` colour. */
 		const luminance = (hex: string) => {
@@ -146,12 +168,27 @@ describe('tokens', () => {
 		}
 
 		it.each(['light', 'dark'] as const)(
-			'should tint each status background with its colour at the %s alpha',
+			'should tint each status background with its %s tint colour and alpha',
 			(mode) => {
 				for (const status of STATUSES) {
-					const [r, g, b] = channels(resolve(mode, status))
+					const [r, g, b] = channels(resolve(mode, TINT[mode].source(status)))
 					expect(resolve(mode, `${status}-background`), status).toBe(
-						`rgba(${r}, ${g}, ${b}, ${ALPHA[mode]})`
+						`rgba(${r}, ${g}, ${b}, ${TINT[mode].alpha})`
+					)
+				}
+			}
+		)
+
+		it.each(['light', 'dark'] as const)(
+			'should make each status text read at 4.5:1 on its own %s tint, as a Badge shows it',
+			(mode) => {
+				for (const status of STATUSES) {
+					const tint = over(
+						resolve(mode, `${status}-background`),
+						resolve(mode, 'background')
+					)
+					expect(contrast(resolve(mode, status), tint), status).toBeGreaterThanOrEqual(
+						4.5
 					)
 				}
 			}

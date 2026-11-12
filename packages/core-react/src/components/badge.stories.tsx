@@ -49,31 +49,18 @@ const readsStatusTokens =
 		probe.remove()
 	}
 
-/**
- * In light, `text-<status>` on its 10% tint is under AA's 4.5:1 for the badge's text-xs label:
- * green.600 2.96:1, amber.600 2.86:1, blue.600 4.49:1 (dark's 400 steps on their 20% tint read
- * 7.77, 7.97 and 5.80). The pairs are the token file's (#146), so they are flagged rather than
- * changed here, as Avatar's fallback is; every other rule runs.
- */
-const statusContrast = {
-	a11y: { config: { rules: [{ id: 'color-contrast', enabled: false }] } },
-}
-
 export const Success: Story = {
 	args: { variant: 'success' },
-	parameters: statusContrast,
 	play: readsStatusTokens('success'),
 }
 
 export const Warning: Story = {
 	args: { variant: 'warning' },
-	parameters: statusContrast,
 	play: readsStatusTokens('warning'),
 }
 
 export const Info: Story = {
 	args: { variant: 'info' },
-	parameters: statusContrast,
 	play: readsStatusTokens('info'),
 }
 
