@@ -166,6 +166,19 @@ export {
 	SheetTitle,
 	SheetTrigger,
 } from './components/sheet.js'
+export {
+	Sidebar,
+	SidebarContent,
+	SidebarFooter,
+	SidebarGroup,
+	SidebarGroupLabel,
+	SidebarHeader,
+	SidebarMenu,
+	SidebarMenuBadge,
+	SidebarMenuButton,
+	SidebarMenuItem,
+	SidebarSeparator,
+} from './components/sidebar.js'
 export { Skeleton } from './components/skeleton.js'
 export { Switch } from './components/switch.js'
 export {

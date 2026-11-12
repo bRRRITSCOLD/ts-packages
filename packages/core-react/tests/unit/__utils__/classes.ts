@@ -63,10 +63,27 @@ export const BASE_UI_VARS = [
 	'--toast-swipe-movement-y',
 ]
 
-/** `origin-(--transform-origin)`: a utility reading one of Base UI's runtime variables. */
+/**
+ * The CSS variables a core-react component declares for its caller to override, as shadcn's
+ * `--sidebar-width`. The component defaults each one from a token
+ * (`[--sidebar-width:var(--spacing-64)]`), so reading it (`w-(--sidebar-width)`) reads a token
+ * unless the caller sets it.
+ */
+export const COMPONENT_VARS = ['--sidebar-width']
+
+/**
+ * `origin-(--transform-origin)`, `w-(--sidebar-width)`: a utility reading one of Base UI's runtime
+ * variables or a component variable.
+ */
 const readsBaseUiVar = (utility: string) => {
 	const read = /^[\w-]+-\((--[\w-]+)\)$/.exec(utility)?.[1]
-	return read !== undefined && BASE_UI_VARS.includes(read)
+	return read !== undefined && (BASE_UI_VARS.includes(read) || COMPONENT_VARS.includes(read))
+}
+
+/** `[--sidebar-width:var(--spacing-64)]`: a component variable defaulted from one spacing token. */
+const declaresComponentVar = (utility: string) => {
+	const [, name = '', value = ''] = /^\[(--[\w-]+):(.+)\]$/.exec(utility) ?? []
+	return COMPONENT_VARS.includes(name) && /^var\(--spacing-[\w-]+\)$/.test(value)
 }
 
 /**
@@ -92,7 +109,10 @@ const computesFromBaseUiVar = (utility: string) => {
 
 /** `bg-[#fff]`, `p-[13px]`, `bg-(--brand)`, `[mask-type:luminance]`, `bg-primary/[0.4]`. */
 const isArbitraryValue = (utility: string) =>
-	/[[(]/.test(utility) && !readsBaseUiVar(utility) && !computesFromBaseUiVar(utility)
+	/[[(]/.test(utility) &&
+	!readsBaseUiVar(utility) &&
+	!computesFromBaseUiVar(utility) &&
+	!declaresComponentVar(utility)
 
 const PALETTE =
 	'slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose'
