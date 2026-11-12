@@ -78,6 +78,27 @@ describe('source scan', () => {
 			])
 		})
 
+		it('should reject a component variable declared from a raw value, and an unlisted variable', () => {
+			expect(
+				forbiddenClasses([
+					'[--sidebar-width:16rem]',
+					'[--sidebar-width:calc(var(--spacing-64)+1px)]',
+					'[--brand-width:var(--spacing-64)] w-(--brand-width)',
+				])
+			).toEqual([
+				'[--sidebar-width:16rem]',
+				'[--sidebar-width:calc(var(--spacing-64)+1px)]',
+				'[--brand-width:var(--spacing-64)]',
+				'w-(--brand-width)',
+			])
+		})
+
+		it('should accept a component variable read by a utility and declared from a spacing token', () => {
+			expect(
+				forbiddenClasses(['w-(--sidebar-width) [--sidebar-width:var(--spacing-64)]'])
+			).toEqual([])
+		})
+
 		it('should accept token utilities and arbitrary variants', () => {
 			expect(
 				forbiddenClasses([

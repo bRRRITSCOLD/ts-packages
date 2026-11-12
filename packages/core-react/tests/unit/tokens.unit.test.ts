@@ -8,7 +8,7 @@ import { beforeAll, describe, expect, it } from 'vitest'
 // testee
 import { buildStyles, type TokenFile, tokenVars } from '../../scripts/styles.js'
 // utils
-import { BASE_UI_VARS, componentClasses, sourceFiles } from './__utils__/classes.js'
+import { BASE_UI_VARS, COMPONENT_VARS, componentClasses, sourceFiles } from './__utils__/classes.js'
 import { PACKAGE_DIR } from './__utils__/package.js'
 
 const tokens = JSON.parse(
@@ -48,8 +48,12 @@ const untokened = (css: string, vars: Set<string>): string[] =>
 			const read = [...value.matchAll(/var\((--[\w-]+)/g)].map(([, name = '']) => name)
 			const plain = value.replace(/\s*!important\s*$/, '').trim()
 			return (
-				!read.some((name) => vars.has(name) || BASE_UI_VARS.includes(name)) &&
-				!KEYWORD.test(plain)
+				!read.some(
+					(name) =>
+						vars.has(name) ||
+						BASE_UI_VARS.includes(name) ||
+						COMPONENT_VARS.includes(name)
+				) && !KEYWORD.test(plain)
 			)
 		})
 		.map(([declaration]) => declaration)
