@@ -1,6 +1,6 @@
 {
 	"name": "@brrritscold/core-react",
-	"version": "1.3.0",
+	"version": "1.4.0",
 	"description": "The component library: shadcn (Base UI) React components on Tailwind v4, themed from one design token file and linked to the design system library in Penpot.",
 	"license": "MIT",
 	"author": "Blaine Richardson",
