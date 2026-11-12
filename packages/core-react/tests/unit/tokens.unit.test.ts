@@ -63,6 +63,24 @@ const componentFiles = sourceFiles().filter((file) => file.startsWith('src/compo
 const classes = classesIn(componentFiles.filter((file) => !isStory(file)))
 const storyClasses = classesIn(componentFiles.filter(isStory))
 
+/** A semantic token's colour in a mode, its references followed down to a `#rrggbb` primitive. */
+const resolve = (mode: 'light' | 'dark', name: string): string => {
+	const lookup = (path: string): unknown =>
+		path
+			.split('.')
+			.reduce<unknown>(
+				(node, key) => (node as Record<string, unknown> | undefined)?.[key],
+				path.includes('.') ? tokens.primitive : tokens[mode]
+			)
+	let value = String((lookup(name) as { $value: unknown } | undefined)?.$value)
+	for (let ref = /^\{(.+)\}$/.exec(value); ref; ref = /^\{(.+)\}$/.exec(value))
+		value = String((lookup(ref[1] ?? '') as { $value: unknown } | undefined)?.$value)
+	return value
+}
+
+const channels = (hex: string) =>
+	[1, 3, 5].map((i) => Number.parseInt(hex.slice(i, i + 2), 16)) as [number, number, number]
+
 describe('tokens', () => {
 	let theme: Awaited<ReturnType<typeof __unstable__loadDesignSystem>>
 	const vars = new Set(tokenVars(tokens))
@@ -100,10 +118,10 @@ describe('tokens', () => {
 		expect(offenders).toEqual([])
 	})
 
-	it('should fill fields, outline controls and destructive tints from per-mode tokens, not a dark: alpha', () => {
-		// `input-background`, `outline-background` and `destructive-background` hold these
-		// alphas per mode, so the library can apply them; a `dark:` arm would split the rule again.
-		const darkAlpha = /^dark:(?:[^:]+:)*bg-(?:input\/30|destructive\/20)$/
+	it('should fill fields, outline controls, destructive tints and overlays from per-mode tokens, not a dark: alpha', () => {
+		// `input-background`, `outline-background`, `destructive-background` and `overlay` hold
+		// these alphas per mode, so the library can apply them; a `dark:` arm would split the rule again.
+		const darkAlpha = /^dark:(?:[^:]+:)*bg-(?:input\/30|destructive\/20|background\/10)$/
 
 		expect(classes.filter((cls) => darkAlpha.test(cls))).toEqual([])
 	})
@@ -112,28 +130,6 @@ describe('tokens', () => {
 		const STATUSES = ['success', 'warning', 'info']
 		/** Each mode's tint alpha, as `destructive-background` has it. */
 		const ALPHA = { light: 0.1, dark: 0.2 }
-
-		/** A semantic token's colour in a mode, its references followed down to a `#rrggbb` primitive. */
-		const resolve = (mode: 'light' | 'dark', name: string): string => {
-			const lookup = (path: string): unknown =>
-				path
-					.split('.')
-					.reduce<unknown>(
-						(node, key) => (node as Record<string, unknown> | undefined)?.[key],
-						path.includes('.') ? tokens.primitive : tokens[mode]
-					)
-			let value = String((lookup(name) as { $value: unknown } | undefined)?.$value)
-			for (let ref = /^\{(.+)\}$/.exec(value); ref; ref = /^\{(.+)\}$/.exec(value))
-				value = String((lookup(ref[1] ?? '') as { $value: unknown } | undefined)?.$value)
-			return value
-		}
-
-		const channels = (hex: string) =>
-			[1, 3, 5].map((i) => Number.parseInt(hex.slice(i, i + 2), 16)) as [
-				number,
-				number,
-				number,
-			]
 
 		/** WCAG 2 relative luminance of a `#rrggbb` colour. */
 		const luminance = (hex: string) => {
@@ -185,6 +181,14 @@ describe('tokens', () => {
 
 			expect(utilities.filter((_, i) => css[i] === null)).toEqual([])
 		})
+	})
+
+	it('should scrim overlays with foreground at 10% in light and background at 10% in dark', () => {
+		const [lr, lg, lb] = channels(resolve('light', 'foreground'))
+		const [dr, dg, db] = channels(resolve('dark', 'background'))
+
+		expect(resolve('light', 'overlay')).toBe(`rgba(${lr}, ${lg}, ${lb}, 0.1)`)
+		expect(resolve('dark', 'overlay')).toBe(`rgba(${dr}, ${dg}, ${db}, 0.1)`)
 	})
 
 	it('should leave out the Tailwind default scales a token type replaces', () => {

@@ -2,7 +2,7 @@
 
 // Vendored from shadcn's base-vega registry (Base UI). Kept close to upstream so a re-pull diffs
 // cleanly; the only edits put arbitrary values back on tokens (see README → Vendoring): the
-// overlay's `bg-black/10` is `bg-foreground/10 dark:bg-background/10`, as in Dialog, and the
+// overlay's `bg-black/10` is `bg-overlay`, as in Dialog, and the
 // slide-in offsets `translate-x-[2.5rem]` (and the other sides) are the step they equal,
 // `translate-x-10`.
 
@@ -33,7 +33,7 @@ function SheetOverlay({ className, ...props }: SheetPrimitive.Backdrop.Props) {
 		<SheetPrimitive.Backdrop
 			data-slot="sheet-overlay"
 			className={cn(
-				'fixed inset-0 z-50 bg-foreground/10 dark:bg-background/10 transition-opacity duration-150 data-ending-style:opacity-0 data-starting-style:opacity-0 supports-backdrop-filter:backdrop-blur-xs',
+				'fixed inset-0 z-50 bg-overlay transition-opacity duration-150 data-ending-style:opacity-0 data-starting-style:opacity-0 supports-backdrop-filter:backdrop-blur-xs',
 				className
 			)}
 			{...props}
