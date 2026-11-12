@@ -20,6 +20,11 @@ const openSheet = async (name: string) => {
 	const sheet = await screen.findByRole('dialog', { name })
 	await waitFor(() => expect(sheet).not.toHaveAttribute('data-starting-style'))
 	await waitFor(() => expect(getComputedStyle(sheet).opacity).toBe('1'))
+	// The fade can finish before the slide: wait for every transition on the sheet to end, or
+	// the edge reads a sub-pixel offset (-3.5e-7) instead of 0.
+	await waitFor(() =>
+		expect(sheet.getAnimations().filter((a) => a.playState === 'running')).toEqual([])
+	)
 	return sheet
 }
 
