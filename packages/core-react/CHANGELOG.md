@@ -1,5 +1,19 @@
 # @brrritscold/core-react
 
+## 1.3.0
+
+### Minor Changes
+
+- [#151](https://github.com/bRRRITSCOLD/ts-packages/pull/151) [`b82ad3e`](https://github.com/bRRRITSCOLD/ts-packages/commit/b82ad3e521884c6b99e7be60b2b106f216a10ec7) Thanks [@bRRRITSCOLD](https://github.com/bRRRITSCOLD)! - `font-family.mono` is now `JetBrains Mono, ui-monospace, SFMono-Regular, Menlo, monospace`. Before, it began with `ui-monospace`, which Penpot can't render. `styles.css` loads JetBrains Mono (OFL-1.1) from `@fontsource/jetbrains-mono`, pinned at `5.3.0`. It is imported at 400, 500, 600 and 700, the same weights as Inter, so `font-mono` renders the real font in every app without setup. JetBrains Mono turns code ligatures on by default (`=>`, `!=`); set `font-variant-ligatures: none` where they are unwanted.
+
+- [#150](https://github.com/bRRRITSCOLD/ts-packages/pull/150) [`ebddc03`](https://github.com/bRRRITSCOLD/ts-packages/commit/ebddc035419212393c755ca7e391f5613f112758) Thanks [@bRRRITSCOLD](https://github.com/bRRRITSCOLD)! - An `overlay` semantic token holds the scrim behind a modal popup: `foreground` at 10% in light and `background` at 10% in dark (near-black in both). Dialog, AlertDialog and Sheet's overlays read `bg-overlay` instead of `bg-foreground/10 dark:bg-background/10`, so the design system library can apply it. Nothing renders differently.
+
+- [#150](https://github.com/bRRRITSCOLD/ts-packages/pull/150) [`ebddc03`](https://github.com/bRRRITSCOLD/ts-packages/commit/ebddc035419212393c755ca7e391f5613f112758) Thanks [@bRRRITSCOLD](https://github.com/bRRRITSCOLD)! - Status colours: `success`, `warning` and `info` semantic tokens, each with a `-foreground` and a `-background`, and Badge variants for them.
+  - `success` is green, `warning` amber and `info` blue: `green.800`, `amber.800` and `blue.700` in light, the 400 step in dark. The green, amber and blue 400 and 600 steps, `green.800`, `amber.800` and `blue.700` join the primitives.
+  - `<status>-background` is the 600 step at 10% in light, and the status colour at 20% in dark, as `destructive-background` is.
+  - `<status>-foreground` is text on the solid colour at 4.5:1 or more: `white` in light, `neutral.950` in dark.
+  - Badge `success`, `warning` and `info` read `text-<status>` on `bg-<status>-background`, shaped like `destructive`, at 5.8:1 or more in both modes. Utilities such as `bg-success`, `text-warning-foreground` and `bg-info-background` come with the tokens.
+
 ## 1.2.0
 
 ### Minor Changes
