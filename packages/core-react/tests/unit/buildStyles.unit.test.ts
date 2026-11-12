@@ -32,6 +32,16 @@ describe('buildStyles', () => {
 		)
 	})
 
+	it('should load JetBrains Mono at the four weights the tokens use, before any rule', async () => {
+		const css = await buildStyles(tokenFile())
+
+		for (const weight of [400, 500, 600, 700])
+			expect(css).toContain(`@import "@fontsource/jetbrains-mono/${weight}.css";`)
+		expect(css.indexOf('@import "@fontsource/jetbrains-mono/700.css";')).toBeLessThan(
+			css.indexOf('@custom-variant')
+		)
+	})
+
 	it('should import tw-animate-css, which shadcn components animate open and closed with', async () => {
 		const css = await buildStyles(tokenFile())
 
