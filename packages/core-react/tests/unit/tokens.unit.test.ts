@@ -108,6 +108,85 @@ describe('tokens', () => {
 		expect(classes.filter((cls) => darkAlpha.test(cls))).toEqual([])
 	})
 
+	describe('status colours', () => {
+		const STATUSES = ['success', 'warning', 'info']
+		/** Each mode's tint alpha, as `destructive-background` has it. */
+		const ALPHA = { light: 0.1, dark: 0.2 }
+
+		/** A semantic token's colour in a mode, its references followed down to a `#rrggbb` primitive. */
+		const resolve = (mode: 'light' | 'dark', name: string): string => {
+			const lookup = (path: string): unknown =>
+				path
+					.split('.')
+					.reduce<unknown>(
+						(node, key) => (node as Record<string, unknown> | undefined)?.[key],
+						path.includes('.') ? tokens.primitive : tokens[mode]
+					)
+			let value = String((lookup(name) as { $value: unknown } | undefined)?.$value)
+			for (let ref = /^\{(.+)\}$/.exec(value); ref; ref = /^\{(.+)\}$/.exec(value))
+				value = String((lookup(ref[1] ?? '') as { $value: unknown } | undefined)?.$value)
+			return value
+		}
+
+		const channels = (hex: string) =>
+			[1, 3, 5].map((i) => Number.parseInt(hex.slice(i, i + 2), 16)) as [
+				number,
+				number,
+				number,
+			]
+
+		/** WCAG 2 relative luminance of a `#rrggbb` colour. */
+		const luminance = (hex: string) => {
+			const [r, g, b] = channels(hex).map((c) => {
+				const s = c / 255
+				return s <= 0.04045 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4
+			}) as [number, number, number]
+			return 0.2126 * r + 0.7152 * g + 0.0722 * b
+		}
+
+		const contrast = (a: string, b: string) => {
+			const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x) as [number, number]
+			return (hi + 0.05) / (lo + 0.05)
+		}
+
+		it.each(['light', 'dark'] as const)(
+			'should tint each status background with its colour at the %s alpha',
+			(mode) => {
+				for (const status of STATUSES) {
+					const [r, g, b] = channels(resolve(mode, status))
+					expect(resolve(mode, `${status}-background`), status).toBe(
+						`rgba(${r}, ${g}, ${b}, ${ALPHA[mode]})`
+					)
+				}
+			}
+		)
+
+		it.each(['light', 'dark'] as const)(
+			'should give each status a %s foreground that reads at 4.5:1 on its colour',
+			(mode) => {
+				for (const status of STATUSES) {
+					const ratio = contrast(
+						resolve(mode, `${status}-foreground`),
+						resolve(mode, status)
+					)
+					expect(ratio, status).toBeGreaterThanOrEqual(4.5)
+				}
+			}
+		)
+
+		it('should make the status utilities', () => {
+			const utilities = STATUSES.flatMap((status) => [
+				`bg-${status}`,
+				`text-${status}`,
+				`text-${status}-foreground`,
+				`bg-${status}-background`,
+			])
+			const css = theme.candidatesToCss(utilities)
+
+			expect(utilities.filter((_, i) => css[i] === null)).toEqual([])
+		})
+	})
+
 	it('should leave out the Tailwind default scales a token type replaces', () => {
 		const defaults = [
 			'p-13',
