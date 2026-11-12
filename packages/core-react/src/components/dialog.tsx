@@ -2,8 +2,7 @@
 
 // Vendored from shadcn's base-vega registry (Base UI). Kept close to upstream so a re-pull diffs
 // cleanly; the only edits put arbitrary values back on tokens (see README → Vendoring): the
-// overlay's `bg-black/10` is `bg-foreground/10 dark:bg-background/10` (near-black at 10% in both
-// modes), and the popup's `left-1/2 w-full max-w-[calc(100%-2rem)] -translate-x-1/2` is
+// overlay's `bg-black/10` is `bg-overlay` (near-black at 10% in both modes), and the popup's `left-1/2 w-full max-w-[calc(100%-2rem)] -translate-x-1/2` is
 // `inset-x-4 mx-auto` (the same 1rem gutter, centred by its auto margins).
 
 import { Dialog as DialogPrimitive } from '@base-ui/react/dialog'
@@ -33,7 +32,7 @@ function DialogOverlay({ className, ...props }: DialogPrimitive.Backdrop.Props) 
 		<DialogPrimitive.Backdrop
 			data-slot="dialog-overlay"
 			className={cn(
-				'fixed inset-0 isolate z-50 bg-foreground/10 dark:bg-background/10 duration-100 supports-backdrop-filter:backdrop-blur-xs data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0',
+				'fixed inset-0 isolate z-50 bg-overlay duration-100 supports-backdrop-filter:backdrop-blur-xs data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0',
 				className
 			)}
 			{...props}

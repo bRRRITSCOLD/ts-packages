@@ -26,6 +26,44 @@ export const Secondary: Story = { args: { variant: 'secondary' } }
 
 export const Destructive: Story = { args: { variant: 'destructive' } }
 
+/**
+ * The status variants tint their text's colour behind it, as `destructive` does: `text-<status>`
+ * on `bg-<status>-background`. The play reads both off the tokens, so it holds in either mode.
+ */
+const readsStatusTokens =
+	(status: 'success' | 'warning' | 'info'): Story['play'] =>
+	async (context) => {
+		await meta.play(context)
+		const badge = context.canvas.getByText('Badge')
+		// The tokens' resolved values, written onto a probe so the browser serialises them as it
+		// serialises the badge's computed colours.
+		const theme = getComputedStyle(context.canvasElement)
+		const probe = document.createElement('span')
+		probe.style.color = theme.getPropertyValue(`--${status}`)
+		probe.style.backgroundColor = theme.getPropertyValue(`--${status}-background`)
+		context.canvasElement.append(probe)
+		await expect(getComputedStyle(badge).color).toBe(getComputedStyle(probe).color)
+		await expect(getComputedStyle(badge).backgroundColor).toBe(
+			getComputedStyle(probe).backgroundColor
+		)
+		probe.remove()
+	}
+
+export const Success: Story = {
+	args: { variant: 'success' },
+	play: readsStatusTokens('success'),
+}
+
+export const Warning: Story = {
+	args: { variant: 'warning' },
+	play: readsStatusTokens('warning'),
+}
+
+export const Info: Story = {
+	args: { variant: 'info' },
+	play: readsStatusTokens('info'),
+}
+
 export const Outline: Story = { args: { variant: 'outline' } }
 
 export const Ghost: Story = { args: { variant: 'ghost' } }

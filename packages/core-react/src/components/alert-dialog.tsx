@@ -2,8 +2,7 @@
 
 // Vendored from shadcn's base-vega registry (Base UI). Kept close to upstream so a re-pull diffs
 // cleanly; the only edits put arbitrary values back on tokens (see README → Vendoring): the
-// overlay's `bg-black/10` is `bg-foreground/10 dark:bg-background/10` (near-black at 10% in both
-// modes), and the header's three `grid-rows-[…]` templates are dropped: implicit auto rows
+// overlay's `bg-black/10` is `bg-overlay` (near-black at 10% in both modes), and the header's three `grid-rows-[…]` templates are dropped: implicit auto rows
 // stretch to the same layout, with and without media.
 
 import { AlertDialog as AlertDialogPrimitive } from '@base-ui/react/alert-dialog'
@@ -29,7 +28,7 @@ function AlertDialogOverlay({ className, ...props }: AlertDialogPrimitive.Backdr
 		<AlertDialogPrimitive.Backdrop
 			data-slot="alert-dialog-overlay"
 			className={cn(
-				'fixed inset-0 isolate z-50 bg-foreground/10 dark:bg-background/10 duration-100 supports-backdrop-filter:backdrop-blur-xs data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0',
+				'fixed inset-0 isolate z-50 bg-overlay duration-100 supports-backdrop-filter:backdrop-blur-xs data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0',
 				className
 			)}
 			{...props}

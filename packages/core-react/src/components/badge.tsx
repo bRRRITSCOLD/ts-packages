@@ -1,6 +1,7 @@
 // Vendored from shadcn's base-vega registry (Base UI `useRender`). Kept close to upstream so a re-pull
 // diffs cleanly; the only edits put arbitrary values back on tokens (see README → Vendoring):
 // `rounded-4xl` is `rounded-full` (the same pill on a 20px badge) and `ring-[3px]` is `ring-3`.
+// `success`, `warning` and `info` are ours, shaped as `destructive` on the status tokens.
 import { mergeProps } from '@base-ui/react/merge-props'
 import { useRender } from '@base-ui/react/use-render'
 import { cva, type VariantProps } from 'class-variance-authority'
@@ -15,6 +16,11 @@ const badgeVariants = cva(
 				secondary: 'bg-secondary text-secondary-foreground [a]:hover:bg-secondary/80',
 				destructive:
 					'bg-destructive-background text-destructive focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 [a]:hover:bg-destructive/20',
+				success:
+					'bg-success-background text-success focus-visible:ring-success/20 dark:focus-visible:ring-success/40 [a]:hover:bg-success/20',
+				warning:
+					'bg-warning-background text-warning focus-visible:ring-warning/20 dark:focus-visible:ring-warning/40 [a]:hover:bg-warning/20',
+				info: 'bg-info-background text-info focus-visible:ring-info/20 dark:focus-visible:ring-info/40 [a]:hover:bg-info/20',
 				outline:
 					'border-border text-foreground [a]:hover:bg-muted [a]:hover:text-muted-foreground',
 				ghost: 'hover:bg-muted hover:text-muted-foreground dark:hover:bg-muted/50',
