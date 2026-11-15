@@ -58,6 +58,7 @@ export {
 	CardTitle,
 } from './components/card.js'
 export { Checkbox } from './components/checkbox.js'
+export { Checks, checksVariants } from './components/checks.js'
 export {
 	Combobox,
 	ComboboxChip,
@@ -180,6 +181,7 @@ export {
 	SidebarSeparator,
 } from './components/sidebar.js'
 export { Skeleton } from './components/skeleton.js'
+export { StateDot, stateDotVariants } from './components/state-dot.js'
 export { Switch } from './components/switch.js'
 export {
 	Table,
