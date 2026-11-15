@@ -906,6 +906,84 @@
 		}
 	],
 	"components": {
+		"2541531f-7822-802e-8008-f32048e2f75e": {
+			"path": "icon",
+			"name": "BellOff",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"2541531f-7822-802e-8008-f320347ddab2": {
+					"namePath": [
+						"icon / BellOff",
+						"Stroke 4"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"2541531f-7822-802e-8008-f320347e3470": {
+					"namePath": [
+						"icon / BellOff",
+						"Stroke 3"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"2541531f-7822-802e-8008-f320347e3471": {
+					"namePath": [
+						"icon / BellOff",
+						"Stroke 2"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"2541531f-7822-802e-8008-f320347e78d4": {
+					"namePath": [
+						"icon / BellOff",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"2541531f-7822-802e-8008-f32057266322": {
+			"path": "icon",
+			"name": "MessageSquareDot",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"2541531f-7822-802e-8008-f32052bab4ea": {
+					"namePath": [
+						"icon / MessageSquareDot",
+						"Stroke 2"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"2541531f-7822-802e-8008-f32052bab4eb": {
+					"namePath": [
+						"icon / MessageSquareDot",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				}
+			}
+		},
 		"2d55422c-4cf4-80e5-8008-eb6353e4f2fc": {
 			"path": "Components/Toast",
 			"name": "Title",
