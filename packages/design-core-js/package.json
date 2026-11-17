@@ -103,5 +103,8 @@
 	"keywords": [
 		"brrritscold",
 		"typescript"
-	]
+	],
+	"devDependencies": {
+		"@penpot/plugin-types": "1.5.0"
+	}
 }

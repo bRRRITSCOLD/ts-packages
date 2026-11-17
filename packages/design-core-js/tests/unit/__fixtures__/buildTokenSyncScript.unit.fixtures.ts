@@ -60,6 +60,9 @@ export const createTokenFile = (): TokenFile => ({
 	},
 })
 
+/** The id of the fake file's own library: a copy whose main has another `libraryId` is remote. */
+export const LOCAL_LIBRARY_ID = 'file-local'
+
 /**
  * A fake shape: `tokens` maps a property to a token name, as Penpot's `shape.tokens` does, and
  * `resolved` holds the value each property last resolved to, which only `applyToken` refreshes.
@@ -82,7 +85,8 @@ export type FakeShape = PenpotShape & {
  * one takes the token but keeps resolving the old value; a `copy` is a component copy. A copy
  * that `follows` a main mirrors the main's tokens and resolved values `lag` reads after they
  * change, as Penpot carries a main's change to its copies, until `applyToken` on the copy
- * detaches it.
+ * detaches it. A copy's main lives in `mainLibrary`, the fake file's own library by default; a
+ * copy of a main in another file (a connected library) names that file's id.
  */
 export const createShape = (
 	name: string,
@@ -96,6 +100,7 @@ export const createShape = (
 		follows,
 		lag = 0,
 		resolved = {},
+		mainLibrary = LOCAL_LIBRARY_ID,
 	}: {
 		children?: FakeShape[]
 		stubborn?: boolean
@@ -105,6 +110,7 @@ export const createShape = (
 		follows?: FakeShape
 		lag?: number
 		resolved?: Record<string, unknown>
+		mainLibrary?: string
 	} = {}
 ): FakeShape => {
 	let calls = 0
@@ -144,6 +150,9 @@ export const createShape = (
 			return family === undefined ? undefined : JSON.stringify(family)
 		},
 		isComponentCopyInstance: () => copy || Boolean(follows),
+		// A copy is the head of its own component tree here; its component names the main's file.
+		componentHead: () => (copy || follows ? shape : null),
+		component: () => (copy || follows ? { libraryId: mainLibrary } : null),
 		applyToken: (token: PenpotToken, properties: string[]) => {
 			calls++
 			if (stubborn || (racy && calls % 2 === 0)) return
@@ -316,6 +325,7 @@ export const createFakePenpot = (state: FakeFileState = {}) => {
 	const penpot: TokenSyncPenpot = {
 		library: {
 			local: {
+				id: LOCAL_LIBRARY_ID,
 				tokens: {
 					get sets() {
 						return [...sets]
