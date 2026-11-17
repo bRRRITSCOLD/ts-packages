@@ -131,7 +131,8 @@ describe('tokens', () => {
 	})
 
 	describe('status colours', () => {
-		const HUES = { success: 'green', warning: 'amber', info: 'blue' }
+		// `merged` is a pull request's state, built as the statuses are: one hue, a tint, a foreground.
+		const HUES = { success: 'green', warning: 'amber', info: 'blue', merged: 'violet' }
 		const STATUSES = Object.keys(HUES) as (keyof typeof HUES)[]
 		/**
 		 * The colour each mode tints behind status text, and at what alpha. Light's text is a darker
@@ -207,6 +208,24 @@ describe('tokens', () => {
 						resolve(mode, status)
 					)
 					expect(ratio, status).toBeGreaterThanOrEqual(4.5)
+				}
+			}
+		)
+
+		it.each(['light', 'dark'] as const)(
+			'should make merged read at 4.5:1 on every %s surface a PR row sits on',
+			(mode) => {
+				const SURFACES = [
+					'background',
+					'card',
+					'muted',
+					'accent',
+					'sidebar',
+					'sidebar-accent',
+				]
+				for (const surface of SURFACES) {
+					const ratio = contrast(resolve(mode, 'merged'), resolve(mode, surface))
+					expect(ratio, surface).toBeGreaterThanOrEqual(4.5)
 				}
 			}
 		)
