@@ -16763,6 +16763,9 @@
 				"size": "default"
 			},
 			"parts": {
+				"Body": {
+					"componentId": "411cee6b-cc3d-8041-8008-eacbe3bb726f"
+				},
 				"Footer": {
 					"componentId": "411cee6b-cc3d-8041-8008-ead46823f480"
 				},
@@ -16771,6 +16774,12 @@
 				}
 			},
 			"wrappers": [],
+			"exceptionsRecord": {
+				"v": 1,
+				"slots": [
+					"Body"
+				]
+			},
 			"layers": {
 				"411cee6b-cc3d-8041-8008-ead46f5006ca": {
 					"namePath": [
@@ -17006,6 +17015,28 @@
 						"opacity": "opacity.10"
 					},
 					"unbound": []
+				},
+				"a125dbd8-5a64-80fd-8008-f53e608713ca": {
+					"namePath": [
+						"Components / AlertDialog / Content",
+						"Body"
+					],
+					"appliedTokens": {},
+					"unbound": [
+						"fill",
+						"stroke-color"
+					]
+				},
+				"a125dbd8-5a64-80fd-8008-f53e608713cb": {
+					"namePath": [
+						"Components / AlertDialog / Content",
+						"Body",
+						"Role"
+					],
+					"appliedTokens": {},
+					"unbound": [
+						"fill"
+					]
 				}
 			}
 		},
@@ -17016,6 +17047,9 @@
 				"size": "sm"
 			},
 			"parts": {
+				"Body": {
+					"componentId": "411cee6b-cc3d-8041-8008-eacbe3bb726f"
+				},
 				"Footer": {
 					"componentId": "411cee6b-cc3d-8041-8008-ead46823f480"
 				},
@@ -17024,6 +17058,12 @@
 				}
 			},
 			"wrappers": [],
+			"exceptionsRecord": {
+				"v": 1,
+				"slots": [
+					"Body"
+				]
+			},
 			"layers": {
 				"411cee6b-cc3d-8041-8008-ead46fbc2ac4": {
 					"namePath": [
@@ -17259,6 +17299,28 @@
 						"opacity": "opacity.10"
 					},
 					"unbound": []
+				},
+				"a125dbd8-5a64-80fd-8008-f53e60c19d8d": {
+					"namePath": [
+						"Components / AlertDialog / Content",
+						"Body"
+					],
+					"appliedTokens": {},
+					"unbound": [
+						"fill",
+						"stroke-color"
+					]
+				},
+				"a125dbd8-5a64-80fd-8008-f53e60c19d8e": {
+					"namePath": [
+						"Components / AlertDialog / Content",
+						"Body",
+						"Role"
+					],
+					"appliedTokens": {},
+					"unbound": [
+						"fill"
+					]
 				}
 			}
 		},
@@ -18921,6 +18983,9 @@
 				"variant": "default"
 			},
 			"parts": {
+				"Icon": {
+					"componentId": "34194205-34cb-806a-8008-ea142ede2bbf"
+				},
 				"Shortcut": {
 					"componentId": "411cee6b-cc3d-8041-8008-ead4e4b03eb3"
 				}
@@ -18985,6 +19050,17 @@
 						"letter-spacing": "letter-spacing.widest"
 					},
 					"unbound": []
+				},
+				"a125dbd8-5a64-80fd-8008-f53e4a7cfe55": {
+					"namePath": [
+						"Components / DropdownMenu / Item",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "popover-foreground"
+					},
+					"unbound": []
 				}
 			}
 		},
@@ -18995,6 +19071,9 @@
 				"variant": "destructive"
 			},
 			"parts": {
+				"Icon": {
+					"componentId": "34194205-34cb-806a-8008-ea142ede2bbf"
+				},
 				"Shortcut": {
 					"componentId": "411cee6b-cc3d-8041-8008-ead4e4b03eb3"
 				}
@@ -19057,6 +19136,17 @@
 						"font-size": "font-size.xs",
 						"font-weight": "font-weight.normal",
 						"letter-spacing": "letter-spacing.widest"
+					},
+					"unbound": []
+				},
+				"a125dbd8-5a64-80fd-8008-f53e4aba3fa4": {
+					"namePath": [
+						"Components / DropdownMenu / Item",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "destructive"
 					},
 					"unbound": []
 				}
@@ -19685,6 +19775,54 @@
 						"opacity": "opacity.10"
 					},
 					"unbound": []
+				},
+				"a125dbd8-5a64-80fd-8008-f53e4b08b7a1": {
+					"namePath": [
+						"Components / DropdownMenu / Content",
+						"Billing",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "popover-foreground"
+					},
+					"unbound": []
+				},
+				"a125dbd8-5a64-80fd-8008-f53e4b09b8a7": {
+					"namePath": [
+						"Components / DropdownMenu / Content",
+						"Profile",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "popover-foreground"
+					},
+					"unbound": []
+				},
+				"a125dbd8-5a64-80fd-8008-f53e4b0b609f": {
+					"namePath": [
+						"Components / DropdownMenu / Content",
+						"Settings",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "popover-foreground"
+					},
+					"unbound": []
+				},
+				"a125dbd8-5a64-80fd-8008-f53e4b40373f": {
+					"namePath": [
+						"Components / DropdownMenu / Content",
+						"Delete",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "destructive"
+					},
+					"unbound": []
 				}
 			}
 		},
@@ -19858,6 +19996,30 @@
 						"r3": "radius-md",
 						"r4": "radius-md",
 						"opacity": "opacity.10"
+					},
+					"unbound": []
+				},
+				"a125dbd8-5a64-80fd-8008-f53e4b0abc92": {
+					"namePath": [
+						"Components / DropdownMenu / SubContent",
+						"Message",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "popover-foreground"
+					},
+					"unbound": []
+				},
+				"a125dbd8-5a64-80fd-8008-f53e4b0c61ec": {
+					"namePath": [
+						"Components / DropdownMenu / SubContent",
+						"Email",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "popover-foreground"
 					},
 					"unbound": []
 				}
