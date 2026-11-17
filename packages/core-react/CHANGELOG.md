@@ -1,5 +1,11 @@
 # @brrritscold/core-react
 
+## 1.6.0
+
+### Minor Changes
+
+- [#165](https://github.com/bRRRITSCOLD/ts-packages/pull/165) [`87767c3`](https://github.com/bRRRITSCOLD/ts-packages/commit/87767c3eb04da5e5f96d45eb6f1dd8103506da60) Thanks [@bRRRITSCOLD](https://github.com/bRRRITSCOLD)! - `merged` colour tokens for a merged pull request, GitHub's merged purple on this palette: `merged`, `merged-foreground` and `merged-background` (light and dark), built as the status colours are, on new `violet` 400, 600 and 700 primitives. Utilities `text-merged`, `bg-merged`, `text-merged-foreground` and `bg-merged-background`.
+
 ## 1.5.0
 
 ### Minor Changes
