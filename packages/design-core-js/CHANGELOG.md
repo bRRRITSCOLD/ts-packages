@@ -1,5 +1,15 @@
 # @brrritscold/design-core-js
 
+## 0.2.0
+
+### Minor Changes
+
+- [#175](https://github.com/bRRRITSCOLD/ts-packages/pull/175) [`7657f30`](https://github.com/bRRRITSCOLD/ts-packages/commit/7657f30f91a6695ff3b48bfeb50c5565fefa8486) Thanks [@bRRRITSCOLD](https://github.com/bRRRITSCOLD)! - Add `./stale-colours`: `findStaleColours` lists the layers of a page design file whose stored fill or stroke colour differs from their applied token's value in the file's active theme (Light colours left on library copies in a Dark file), with `resolveColourTokens` and `parseColour`.
+
+### Patch Changes
+
+- [#173](https://github.com/bRRRITSCOLD/ts-packages/pull/173) [`dc65bc5`](https://github.com/bRRRITSCOLD/ts-packages/commit/dc65bc53f80914b72489f040aecf7c76926f2e0e) Thanks [@bRRRITSCOLD](https://github.com/bRRRITSCOLD)! - Token sync: a value change in one set no longer re-applies or flags the users of a same-named token in another set; a reference is followed only within the sets a theme activates together. A copy of a main in another file (a library) is flagged and never re-applied, even when a page-local shape applies the same token, so it is never detached. The docs say to accept the library update before syncing a page design file.
+
 ## 0.1.2
 
 ### Patch Changes
