@@ -55,7 +55,8 @@ export const findUnmigratedTokens = ({
  * replacement (`to: null`), still applies it after the sync re-pointed it, or doesn't read back
  * a token whose value changed after the sync re-applied it, or (a copy) still resolves it
  * differently from the shapes outside copies, or (a copy) applies a changed token that no shape
- * outside a copy applies, so it was left to follow its main.
+ * outside a copy applies, or (a copy) copies a main in another file, so it was left to follow its
+ * main.
  */
 export type FlaggedShape = {
 	page: string
@@ -114,6 +115,11 @@ export type PenpotShape = {
 	applyToken: (token: PenpotToken, properties: string[]) => void
 	/** Whether the shape is a component copy; re-applying a token reaches copies last. */
 	isComponentCopyInstance?: () => boolean
+	/**
+	 * The head of the component tree the shape sits in. Its component's `libraryId` tells a copy
+	 * of a main in this file from a copy of a library main, which token sync never re-applies.
+	 */
+	componentHead?: () => { component: () => { libraryId: string } | null } | null
 	// The attributes a token resolves into. Token sync reads them to tell a copy that followed its
 	// main from one that needs a changed token re-applied.
 	fills?: { fillColor?: string }[] | string
@@ -155,6 +161,8 @@ export type PenpotLayout = {
 export type TokenSyncPenpot = {
 	library: {
 		local: {
+			/** The open file's own library, whose id a copy of a main in this file names. */
+			id: string
 			tokens: {
 				sets: PenpotTokenSet[]
 				themes: PenpotTokenTheme[]
@@ -303,8 +311,11 @@ const syncTokens = async (
 	const updates: Pending[] = []
 	const replacements: Pending[] = []
 	const additions: { set: PenpotTokenSet; name: string; token: DesignToken }[] = []
-	// Tokens whose value changed: the shapes applying them are re-applied below.
-	const revalued = new Set<string>()
+	// Tokens whose value changed, by set and name: the shapes applying them are re-applied below.
+	const revalued = new Map<string, { set: string; name: string }>()
+	const revalue = (set: string, name: string) =>
+		revalued.set(JSON.stringify([set, name]), { set, name })
+	const isRevalued = (set: string, name: string) => revalued.has(JSON.stringify([set, name]))
 	wrote = false
 	for (const { name: setName, tokens } of plan.sets) {
 		const set = setNamed(setName)
@@ -365,7 +376,7 @@ const syncTokens = async (
 			continue
 		}
 		changes.push(`update token \`${set.name}/${name}\``)
-		if (!sameValue(expected, old)) revalued.add(name)
+		if (!sameValue(expected, old)) revalue(set.name, name)
 	}
 	// What `addToken` takes: tokens.json's form, a font family list joined as tokens.json writes it.
 	const payload = (name: string, { $type, $value }: DesignToken) => ({
@@ -395,7 +406,7 @@ const syncTokens = async (
 		const label = `${set.name}/${name}`
 		if (added) {
 			changes.push(`replace token \`${label}\``)
-			if (!sameValue(expected, old)) revalued.add(name)
+			if (!sameValue(expected, old)) revalue(set.name, name)
 			continue
 		}
 		try {
@@ -438,23 +449,45 @@ const syncTokens = async (
 	// those applying a token that references it (#120). Each is toggled off and back on across
 	// pauses, since applying a token toggles it and settles asynchronously. A shape whose token
 	// doesn't read back afterwards is flagged. Copies are handled after, below.
-	const allTokens = () => catalog.sets.flatMap((set) => set.tokens)
 	const references = ({ value }: PenpotToken) =>
 		(JSON.stringify(value ?? '').match(/\{[^{}]+\}/g) ?? []).map((ref) => ref.slice(1, -1))
+	// A reference resolves only among the sets a theme activates together: `dark/outline-background`
+	// referencing `{input-background}` never reads `light/input-background` (#142).
+	const resolvedFrom = (setName: string) =>
+		plan.themes.filter(({ sets }) => sets.includes(setName)).flatMap(({ sets }) => sets)
 	for (let grew = revalued.size > 0; grew; ) {
 		grew = false
-		for (const token of allTokens())
-			if (!revalued.has(token.name) && references(token).some((name) => revalued.has(name))) {
-				revalued.add(token.name)
-				grew = true
+		for (const set of catalog.sets)
+			for (const token of set.tokens) {
+				if (isRevalued(set.name, token.name)) continue
+				const reachable = resolvedFrom(set.name)
+				if (
+					references(token).some((name) =>
+						reachable.some((other) => isRevalued(other, name))
+					)
+				) {
+					revalue(set.name, token.name)
+					grew = true
+				}
 			}
 	}
-	const jobs = [...revalued].flatMap((name) => {
-		const token = allTokens().find((candidate) => candidate.name === name)
-		return token ? usersOf(name).map((user) => ({ ...user, token })) : []
-	})
+	// A shape applies a token by name, whichever set the active theme resolves it from: one changed
+	// set is enough to re-apply its users, with the changed set's token.
+	const revaluedTokens = new Map<string, PenpotToken>()
+	for (const { set, name } of revalued.values()) {
+		const token = setNamed(set)?.tokens.find((candidate) => candidate.name === name)
+		if (token && !revaluedTokens.has(name)) revaluedTokens.set(name, token)
+	}
+	const jobs = [...revaluedTokens].flatMap(([name, token]) =>
+		usersOf(name).map((user) => ({ ...user, token }))
+	)
 	type Job = (typeof jobs)[number]
 	const isCopy = ({ shape }: Job) => shape.isComponentCopyInstance?.() ?? false
+	// A copy of a main in another file (a connected library) changes only when the file accepts the
+	// library update, so it never has a reference to follow, whatever page-local shapes resolve (#141).
+	const localLibrary = penpot.library.local.id
+	const isRemoteCopy = ({ shape }: Job) =>
+		shape.componentHead?.()?.component()?.libraryId !== localLibrary
 	// What a property resolved to on a shape, as JSON; `undefined` for a property it can't read.
 	const layout = (shape: PenpotShape) => shape.flex ?? shape.grid ?? undefined
 	const readers: Record<string, (shape: PenpotShape) => unknown> = {
@@ -538,7 +571,8 @@ const syncTokens = async (
 	// Shapes outside copies first. What they resolve to afterwards is the reference a copy is
 	// held to, per token and property.
 	const nonCopies = jobs.filter((job) => !isCopy(job))
-	const copies = jobs.filter(isCopy)
+	const remoteCopies = jobs.filter((job) => isCopy(job) && isRemoteCopy(job))
+	const copies = jobs.filter((job) => isCopy(job) && !isRemoteCopy(job))
 	if (nonCopies.length) await reapply(nonCopies)
 	const reference = new Map<string, string>()
 	const referenceKey = (token: string, property: string) => `${token}\u0000${property}`
@@ -559,6 +593,17 @@ const syncTokens = async (
 	// no reference (every shape applying it is a copy, as in a page design file whose mains live
 	// in the library) leaves its copies alone: their main changes when the file accepts the
 	// library update, so each is flagged for a human to check after that, never re-applied (#132).
+	// So is a copy of a main in another file, before anything else (#141).
+	const leftToFollow = (job: Job, why: string) =>
+		flagged.push({
+			page: job.page,
+			shapeId: job.shape.id,
+			shape: job.shape.name,
+			token: job.token.name,
+			properties: job.properties,
+			reason: `\`${job.token.name}\` changed value and ${why}, so it was left to follow its main (re-applying it would detach it): once the file has accepted the library update, apply it again on ${job.properties.join(', ')} only if this shape still resolves the old value`,
+		})
+	for (const job of remoteCopies) leftToFollow(job, "this copy's main lives in another file")
 	const known = ({ token, properties }: Job) =>
 		properties.every((property) => reference.has(referenceKey(token.name, property)))
 	const followed = (job: Job) =>
@@ -595,15 +640,8 @@ const syncTokens = async (
 	}
 	if (copies.length) {
 		if (reference.size) await settle(copies)
-		for (const { page, shape, token, properties } of copies.filter((job) => !known(job)))
-			flagged.push({
-				page,
-				shapeId: shape.id,
-				shape: shape.name,
-				token: token.name,
-				properties,
-				reason: `\`${token.name}\` changed value and every shape applying it here is a component copy, so it was left to follow its main (re-applying it would detach it): once the file has accepted the library update, apply it again on ${properties.join(', ')} only if this shape still resolves the old value`,
-			})
+		for (const job of copies.filter((candidate) => !known(candidate)))
+			leftToFollow(job, 'every shape applying it here is a component copy')
 		const stale = copies.filter((job) => known(job) && !followed(job))
 		if (stale.length) {
 			await reapply(stale)
@@ -722,9 +760,12 @@ const syncTokens = async (
  * time to follow their mains, and only a copy that still doesn't resolve what those shapes
  * resolve is re-applied, since re-applying on one that follows detaches it from its main. A
  * shape that doesn't read the token back, or a re-applied copy that still resolves differently,
- * is flagged. A copy applying a token (on a property) that no shape outside a copy applies, as
- * in a page design file whose mains live in the library, has nothing to be compared with: it is
- * never re-applied, and is flagged to check once the file has accepted the library update.
+ * is flagged. A copy of a main in another file (a connected library), or a copy applying a token
+ * (on a property) that no shape outside a copy applies, has nothing to be compared with: it
+ * changes only when the file accepts the library update, so it is never re-applied, and is
+ * flagged to check once the file has accepted that update. A reference is followed only within
+ * the sets a theme activates together, so a change in `light` never re-applies a token that
+ * references the changed name from `dark`.
  *
  * Each migration whose `from` is still in the file adds `to`, re-applies it on every shape
  * whose `shape.tokens` names `from` (same properties) and removes `from` once no shape applies
