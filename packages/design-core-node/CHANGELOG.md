@@ -1,5 +1,14 @@
 # @brrritscold/design-core-node
 
+## 0.1.3
+
+### Patch Changes
+
+- [#173](https://github.com/bRRRITSCOLD/ts-packages/pull/173) [`dc65bc5`](https://github.com/bRRRITSCOLD/ts-packages/commit/dc65bc53f80914b72489f040aecf7c76926f2e0e) Thanks [@bRRRITSCOLD](https://github.com/bRRRITSCOLD)! - Token sync: a value change in one set no longer re-applies or flags the users of a same-named token in another set; a reference is followed only within the sets a theme activates together. A copy of a main in another file (a library) is flagged and never re-applied, even when a page-local shape applies the same token, so it is never detached. The docs say to accept the library update before syncing a page design file.
+
+- Updated dependencies [[`7657f30`](https://github.com/bRRRITSCOLD/ts-packages/commit/7657f30f91a6695ff3b48bfeb50c5565fefa8486), [`dc65bc5`](https://github.com/bRRRITSCOLD/ts-packages/commit/dc65bc53f80914b72489f040aecf7c76926f2e0e)]:
+  - @brrritscold/design-core-js@0.2.0
+
 ## 0.1.2
 
 ### Patch Changes

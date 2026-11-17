@@ -13,13 +13,8 @@ import {
 	type LibrarySnapshot,
 	librarySnapshotSchema,
 } from '@brrritscold/design-core-js/library-snapshot'
-import {
-	type DesignToken,
-	type DesignTokenGroup,
-	designTokenGroupSchema,
-	type TokenTheme,
-} from '@brrritscold/design-core-js/token-file'
 
+import { parse, readTokens, shapeChanged, sortKeys } from './lib/penpot-file.js'
 import {
 	type CreatePenpotRpcClientParameters,
 	createPenpotRpcClient,
@@ -188,35 +183,7 @@ const rawShapeSchema = z
 
 type RawShape = z.output<typeof rawShapeSchema>
 
-/**
- * The tokens lib as JSON `get-file` sends it: Penpot's own DTCG export, the sets by name plus
- * `$themes` and `$metadata`. Absent (or `null`) in a file that never had a token.
- */
-const rawThemeSchema = z.object({
-	group: z.string(),
-	name: z.string(),
-	selectedTokenSets: z.record(z.string(), z.literal('enabled')),
-})
-
-const TOKENS_LIB_META_KEYS = new Set(['$themes', '$metadata'])
-
 const rawPluginDataSchema = z.object({ [EXCEPTIONS_RECORD_KEY]: z.string().optional() })
-
-/** Thrown when `get-file` no longer has the shape the normalizer reads. */
-const shapeChanged = (where: string, detail: string) =>
-	new Error(
-		`Penpot get-file changed shape at ${where} (this package reads Penpot ${PENPOT_VERSION}): ${detail}`
-	)
-
-const parse = <T>(schema: z.ZodType<T>, value: unknown, where: string): T => {
-	const result = schema.safeParse(value)
-	if (!result.success) throw shapeChanged(where, z.prettifyError(result.error))
-	return result.data
-}
-
-/** `{ b: …, a: … }` → `{ a: …, b: … }`, so the snapshot serializes the same every time. */
-const sortKeys = <V>(record: Record<string, V>): Record<string, V> =>
-	Object.fromEntries(Object.entries(record).sort(([a], [b]) => compareCodeUnits(a, b)))
 
 /** `Components / Card` → `Components/Card`: Penpot's display separator, not part of the path. */
 const normalizePath = (path: string) =>
@@ -321,49 +288,6 @@ const readLayer = (shape: RawShape, namePath: string[]): LibraryLayer | undefine
 	}
 	const unbound = [...nonDefaultAttributes(shape)].filter((attribute) => !applied.has(attribute))
 	return applied.size || unbound.length ? { namePath, appliedTokens, unbound } : undefined
-}
-
-/** A DTCG group with its groups sorted and Penpot's empty `$description` dropped. */
-const normalizeTokenGroup = (group: DesignTokenGroup): DesignTokenGroup =>
-	sortKeys(
-		Object.fromEntries(
-			Object.entries(group).map(([name, node]) => {
-				if (!('$value' in node)) return [name, normalizeTokenGroup(node)]
-				const { $type, $value, $description } = node as DesignToken
-				return [name, { $type, $value, ...($description ? { $description } : {}) }]
-			})
-		)
-	)
-
-/** The token catalog and themes of a file's tokens lib; none for a file without one. */
-const readTokens = (
-	tokensLib: Record<string, unknown> | null | undefined,
-	where: string
-): Pick<LibrarySnapshot, 'tokens' | 'tokenThemes'> => {
-	if (!tokensLib) return { tokens: {}, tokenThemes: [] }
-	for (const key of Object.keys(tokensLib))
-		if (key.startsWith('$') && !TOKENS_LIB_META_KEYS.has(key))
-			throw shapeChanged(where, `an unknown key \`${key}\` beside the token sets`)
-	const tokenThemes: TokenTheme[] = parse(
-		z.array(rawThemeSchema),
-		tokensLib.$themes,
-		`${where}.$themes`
-	)
-		.map(({ group, name, selectedTokenSets }) => ({
-			group,
-			name,
-			sets: Object.keys(selectedTokenSets).sort(compareCodeUnits),
-		}))
-		.sort((a, b) => compareCodeUnits(a.group, b.group) || compareCodeUnits(a.name, b.name))
-	const tokens = Object.fromEntries(
-		Object.entries(tokensLib)
-			.filter(([key]) => !TOKENS_LIB_META_KEYS.has(key))
-			.map(([set, group]) => [
-				set,
-				normalizeTokenGroup(parse(designTokenGroupSchema, group, `${where}.${set}`)),
-			])
-	)
-	return { tokens: sortKeys(tokens), tokenThemes }
 }
 
 /**
