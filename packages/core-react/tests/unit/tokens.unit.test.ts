@@ -122,12 +122,48 @@ describe('tokens', () => {
 		expect(offenders).toEqual([])
 	})
 
-	it('should fill fields, outline controls, destructive tints and overlays from per-mode tokens, not a dark: alpha', () => {
-		// `input-background`, `outline-background`, `destructive-background` and `overlay` hold
-		// these alphas per mode, so the library can apply them; a `dark:` arm would split the rule again.
-		const darkAlpha = /^dark:(?:[^:]+:)*bg-(?:input\/30|destructive\/20|background\/10)$/
+	it('should take every alpha that changes by mode from a per-mode token, not a dark: arm', () => {
+		// `input-background`, `outline-background`, `destructive-background`, `overlay` and the
+		// hover, ring, border, track and selected tokens hold these alphas per mode, so the library
+		// and core-gpui can apply them; a `dark:` alpha arm would split the rule again.
+		const darkAlpha = /^dark:(?:[^:]+:)*(?:bg|border|ring|text|outline)-[\w-]+\/\d+$/
 
 		expect(classes.filter((cls) => darkAlpha.test(cls))).toEqual([])
+	})
+
+	describe('per-mode alphas', () => {
+		/** Each token as `[source, alpha]` per mode: the source colour at that alpha, or the source itself at 1. */
+		const ALPHAS = {
+			'muted-hover': { light: ['muted', 1], dark: ['muted', 0.5] },
+			'input-hover': { light: ['input-background', 1], dark: ['input', 0.5] },
+			'destructive-hover': { light: ['destructive', 0.2], dark: ['destructive', 0.3] },
+			'destructive-border': { light: ['destructive', 1], dark: ['destructive', 0.5] },
+			'destructive-ring': { light: ['destructive', 0.2], dark: ['destructive', 0.4] },
+			'success-ring': { light: ['success', 0.2], dark: ['success', 0.4] },
+			'warning-ring': { light: ['warning', 0.2], dark: ['warning', 0.4] },
+			'info-ring': { light: ['info', 0.2], dark: ['info', 0.4] },
+			'unchecked-background': { light: ['input', 1], dark: ['input', 0.8] },
+			'selected-background': { light: ['primary', 0.05], dark: ['primary', 0.1] },
+			'selected-border': { light: ['primary', 0.3], dark: ['primary', 0.2] },
+		} as const
+
+		it.each(['light', 'dark'] as const)(
+			'should hold each per-mode alpha as its %s source colour at its alpha',
+			(mode) => {
+				for (const [name, modes] of Object.entries(ALPHAS)) {
+					const [source, alpha] = modes[mode]
+					const [r, g, b] = channels(resolve(mode, source))
+					expect(resolve(mode, name), name).toBe(
+						alpha === 1 ? resolve(mode, source) : `rgba(${r}, ${g}, ${b}, ${alpha})`
+					)
+				}
+			}
+		)
+
+		// The same rgba() in both: Button `outline` hovered on `input` at 50% in dark, `ghost` on `muted`.
+		it('should hover outline and ghost controls alike, since input is muted in dark', () => {
+			expect(resolve('dark', 'input')).toBe(resolve('dark', 'muted'))
+		})
 	})
 
 	describe('status colours', () => {
