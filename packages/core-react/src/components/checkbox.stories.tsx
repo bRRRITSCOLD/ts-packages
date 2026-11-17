@@ -24,6 +24,17 @@ export const Default: Story = {}
 
 export const Checked: Story = { args: { defaultChecked: true } }
 
+/** Some but not all of a group selected (a data table's select-all): the filled box with a minus. */
+export const Indeterminate: Story = {
+	args: { indeterminate: true },
+	play: async ({ canvas }) => {
+		const checkbox = canvas.getByRole('checkbox', { name: 'Accept terms' })
+		await expect(checkbox).toHaveAttribute('aria-checked', 'mixed')
+		await expect(checkbox.querySelector('.lucide-minus')).toBeVisible()
+		await expect(checkbox.querySelector('.lucide-check')).not.toBeVisible()
+	},
+}
+
 export const Invalid: Story = { args: { 'aria-invalid': true } }
 
 export const Disabled: Story = {

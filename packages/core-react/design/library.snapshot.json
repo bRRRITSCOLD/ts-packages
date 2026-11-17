@@ -14293,7 +14293,8 @@
 			"variantProperties": {
 				"aria-invalid": "false",
 				"checked": "false",
-				"disabled": "false"
+				"disabled": "false",
+				"indeterminate": "false"
 			},
 			"parts": {},
 			"wrappers": [],
@@ -14321,7 +14322,8 @@
 			"variantProperties": {
 				"aria-invalid": "false",
 				"checked": "true",
-				"disabled": "false"
+				"disabled": "false",
+				"indeterminate": "false"
 			},
 			"parts": {
 				"Icon": {
@@ -14364,7 +14366,8 @@
 			"variantProperties": {
 				"aria-invalid": "false",
 				"checked": "false",
-				"disabled": "true"
+				"disabled": "true",
+				"indeterminate": "false"
 			},
 			"parts": {},
 			"wrappers": [],
@@ -14393,7 +14396,8 @@
 			"variantProperties": {
 				"aria-invalid": "false",
 				"checked": "true",
-				"disabled": "true"
+				"disabled": "true",
+				"indeterminate": "false"
 			},
 			"parts": {
 				"Icon": {
@@ -14437,7 +14441,8 @@
 			"variantProperties": {
 				"aria-invalid": "true",
 				"checked": "false",
-				"disabled": "false"
+				"disabled": "false",
+				"indeterminate": "false"
 			},
 			"parts": {},
 			"wrappers": [],
@@ -22323,6 +22328,226 @@
 						"font-family": "font-family.sans",
 						"font-size": "font-size.xs",
 						"font-weight": "font-weight.normal"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"a125dbd8-5a64-80fd-8008-f54196890103": {
+			"path": "Components",
+			"name": "Toggle",
+			"variantProperties": {
+				"disabled": "false",
+				"pressed": "true",
+				"size": "sm",
+				"variant": "default"
+			},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"a125dbd8-5a64-80fd-8008-f54196890104": {
+					"namePath": [
+						"Components / Toggle"
+					],
+					"appliedTokens": {
+						"fill": "muted",
+						"r1": "radius-md",
+						"r2": "radius-md",
+						"r3": "radius-md",
+						"r4": "radius-md",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"a125dbd8-5a64-80fd-8008-f54196890105": {
+					"namePath": [
+						"Components / Toggle",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"a125dbd8-5a64-80fd-8008-f5419e798310": {
+			"path": "Components",
+			"name": "Toggle",
+			"variantProperties": {
+				"disabled": "false",
+				"pressed": "true",
+				"size": "lg",
+				"variant": "default"
+			},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"a125dbd8-5a64-80fd-8008-f5419e79f4d7": {
+					"namePath": [
+						"Components / Toggle"
+					],
+					"appliedTokens": {
+						"fill": "muted",
+						"r1": "radius-md",
+						"r2": "radius-md",
+						"r3": "radius-md",
+						"r4": "radius-md",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1"
+					},
+					"unbound": []
+				},
+				"a125dbd8-5a64-80fd-8008-f5419e79f4d8": {
+					"namePath": [
+						"Components / Toggle",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"a125dbd8-5a64-80fd-8008-f5419ea6263d": {
+			"path": "Components",
+			"name": "Toggle",
+			"variantProperties": {
+				"disabled": "false",
+				"pressed": "true",
+				"size": "sm",
+				"variant": "outline"
+			},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"a125dbd8-5a64-80fd-8008-f5419ea6263e": {
+					"namePath": [
+						"Components / Toggle"
+					],
+					"appliedTokens": {
+						"fill": "muted",
+						"stroke-color": "input",
+						"r1": "radius-md",
+						"r2": "radius-md",
+						"r3": "radius-md",
+						"r4": "radius-md",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"a125dbd8-5a64-80fd-8008-f5419ea6263f": {
+					"namePath": [
+						"Components / Toggle",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"a125dbd8-5a64-80fd-8008-f5419ed10dea": {
+			"path": "Components",
+			"name": "Toggle",
+			"variantProperties": {
+				"disabled": "false",
+				"pressed": "true",
+				"size": "lg",
+				"variant": "outline"
+			},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"a125dbd8-5a64-80fd-8008-f5419ed10deb": {
+					"namePath": [
+						"Components / Toggle"
+					],
+					"appliedTokens": {
+						"fill": "muted",
+						"stroke-color": "input",
+						"r1": "radius-md",
+						"r2": "radius-md",
+						"r3": "radius-md",
+						"r4": "radius-md",
+						"p2": "space.2-5",
+						"p4": "space.2-5",
+						"column-gap": "space.1",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"a125dbd8-5a64-80fd-8008-f5419ed10dec": {
+					"namePath": [
+						"Components / Toggle",
+						"Label"
+					],
+					"appliedTokens": {
+						"fill": "foreground",
+						"font-family": "font-family.sans",
+						"font-size": "font-size.sm",
+						"font-weight": "font-weight.medium"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"a125dbd8-5a64-80fd-8008-f541c067876c": {
+			"path": "Components",
+			"name": "Checkbox",
+			"variantProperties": {
+				"aria-invalid": "false",
+				"checked": "false",
+				"disabled": "false",
+				"indeterminate": "true"
+			},
+			"parts": {
+				"Icon": {
+					"componentId": "eb51704c-a48d-804c-8008-ef33defd0948"
+				}
+			},
+			"wrappers": [],
+			"layers": {
+				"a125dbd8-5a64-80fd-8008-f541c067876d": {
+					"namePath": [
+						"Components / Checkbox"
+					],
+					"appliedTokens": {
+						"fill": "primary",
+						"stroke-color": "primary",
+						"r1": "radius-sm",
+						"r2": "radius-sm",
+						"r3": "radius-sm",
+						"r4": "radius-sm",
+						"shadow": "shadow.xs"
+					},
+					"unbound": []
+				},
+				"a125dbd8-5a64-80fd-8008-f541c9dafa14": {
+					"namePath": [
+						"Components / Checkbox",
+						"Icon",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "primary-foreground"
 					},
 					"unbound": []
 				}

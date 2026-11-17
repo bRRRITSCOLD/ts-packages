@@ -2,10 +2,13 @@
 
 // Vendored from shadcn's base-vega registry (Base UI). Kept close to upstream so a re-pull diffs
 // cleanly; the edits (see README → Vendoring): the box's `rounded-[4px]` is `rounded-sm`, and
-// `disabled:` is `data-disabled:`, since the box is a `<span>` that Base UI marks `data-disabled`.
+// `disabled:` is `data-disabled:`, since the box is a `<span>` that Base UI marks `data-disabled`;
+// and `indeterminate` fills the box like `checked` and draws `MinusIcon` instead of `CheckIcon`
+// (upstream draws the check on an empty box), since Base UI marks it `data-indeterminate`, not
+// `data-checked`.
 
 import { Checkbox as CheckboxPrimitive } from '@base-ui/react/checkbox'
-import { CheckIcon } from 'lucide-react'
+import { CheckIcon, MinusIcon } from 'lucide-react'
 import { cn } from '../lib/utils.js'
 
 function Checkbox({ className, ...props }: CheckboxPrimitive.Root.Props) {
@@ -14,16 +17,17 @@ function Checkbox({ className, ...props }: CheckboxPrimitive.Root.Props) {
 			data-slot="checkbox"
 			className={cn(
 				// dark:aria-invalid beats aria-invalid:aria-checked:border-primary, as upstream's dark arm did.
-				'peer relative flex size-4 shrink-0 items-center justify-center rounded-sm border border-input shadow-xs transition-shadow outline-none group-has-disabled/field:opacity-50 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input after:absolute after:-inset-x-3 after:-inset-y-2 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 data-disabled:cursor-not-allowed data-disabled:opacity-50 aria-invalid:border-destructive-border aria-invalid:ring-3 aria-invalid:ring-destructive-ring dark:aria-invalid:border-destructive-border aria-invalid:aria-checked:border-primary bg-input-background data-checked:border-primary data-checked:bg-primary data-checked:text-primary-foreground group-has-[:focus-visible]/field-label:data-checked:border-primary dark:data-checked:bg-primary',
+				'peer relative flex size-4 shrink-0 items-center justify-center rounded-sm border border-input shadow-xs transition-shadow outline-none group-has-disabled/field:opacity-50 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input after:absolute after:-inset-x-3 after:-inset-y-2 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 data-disabled:cursor-not-allowed data-disabled:opacity-50 aria-invalid:border-destructive-border aria-invalid:ring-3 aria-invalid:ring-destructive-ring dark:aria-invalid:border-destructive-border aria-invalid:aria-checked:border-primary bg-input-background data-checked:border-primary data-checked:bg-primary data-checked:text-primary-foreground group-has-[:focus-visible]/field-label:data-checked:border-primary dark:data-checked:bg-primary data-indeterminate:border-primary data-indeterminate:bg-primary data-indeterminate:text-primary-foreground dark:data-indeterminate:bg-primary',
 				className
 			)}
 			{...props}
 		>
 			<CheckboxPrimitive.Indicator
 				data-slot="checkbox-indicator"
-				className="grid place-content-center text-current transition-none [&>svg]:size-3.5"
+				className="group/checkbox-indicator grid place-content-center text-current transition-none [&>svg]:size-3.5"
 			>
-				<CheckIcon />
+				<CheckIcon className="group-data-indeterminate/checkbox-indicator:hidden" />
+				<MinusIcon className="hidden group-data-indeterminate/checkbox-indicator:block" />
 			</CheckboxPrimitive.Indicator>
 		</CheckboxPrimitive.Root>
 	)
