@@ -17,6 +17,7 @@ import {
 	type FakeBehaviour,
 	type FakeFileState,
 	type FakeShape,
+	LOCAL_LIBRARY_ID,
 	readCatalog,
 	runScript,
 } from './__fixtures__/buildTokenSyncScript.unit.fixtures.js'
@@ -395,6 +396,89 @@ describe('buildTokenSyncScript', () => {
 				})
 			})
 
+			describe('of a main in another file', () => {
+				/**
+				 * A page design file: a page-local shape applies the token, so it gives a reference, beside a
+				 * copy of a library main that still resolves the old value until the file accepts the
+				 * library update.
+				 */
+				const withRemoteCopy = () =>
+					pageWith(() =>
+						createShape(
+							'Library copy',
+							{ fontFamily: 'font-family.sans' },
+							{
+								copy: true,
+								mainLibrary: 'file-library',
+								resolved: { fontFamily: OLD_SANS },
+							}
+						)
+					)
+
+				it('should flag it and never re-apply it, though a page-local shape gives a reference', async () => {
+					const {
+						shapes: [copy],
+						state,
+					} = withRemoteCopy()
+					const fake = await syncedFile(state)
+
+					const { changes, flagged } = await sync(fake, [], withNewSans())
+
+					expect(changes).toEqual([
+						'update token `primitive/font-family.sans`',
+						're-apply `font-family.sans` on fontFamily of `Label` (shape-Label) on page `Screens`',
+					])
+					expect(flagged).toEqual([
+						{
+							page: 'Screens',
+							shapeId: 'shape-Library copy',
+							shape: 'Library copy',
+							token: 'font-family.sans',
+							properties: ['fontFamily'],
+							reason: "`font-family.sans` changed value and this copy's main lives in another file, so it was left to follow its main (re-applying it would detach it): once the file has accepted the library update, apply it again on fontFamily only if this shape still resolves the old value",
+						},
+					])
+					expect(copy.tokens.fontFamily).toBe('font-family.sans')
+					expect(copy.resolved.fontFamily).toEqual(OLD_SANS)
+				})
+
+				it('should make no change on a second run', async () => {
+					const fake = await syncedFile(withRemoteCopy().state)
+					await sync(fake, [], withNewSans())
+
+					expect(await sync(fake, [], withNewSans())).toEqual({
+						changes: [],
+						flagged: [],
+					})
+				})
+
+				it('should re-apply a stale copy of a main in this file, as before', async () => {
+					const {
+						shapes: [copy],
+						state,
+					} = pageWith(() =>
+						createShape(
+							'Local copy',
+							{ fontFamily: 'font-family.sans' },
+							{
+								copy: true,
+								mainLibrary: LOCAL_LIBRARY_ID,
+								resolved: { fontFamily: OLD_SANS },
+							}
+						)
+					)
+					const fake = await syncedFile(state)
+
+					const { changes, flagged } = await sync(fake, [], withNewSans())
+
+					expect(changes).toContain(
+						're-apply `font-family.sans` on fontFamily of `Local copy` (shape-Local copy) on page `Screens`'
+					)
+					expect(flagged).toEqual([])
+					expect(copy.resolved.fontFamily).toEqual(NEW_SANS)
+				})
+			})
+
 			it('should flag a re-applied copy that still resolves differently from its main', async () => {
 				const { state } = pageWith(() =>
 					createShape(
@@ -445,6 +529,72 @@ describe('buildTokenSyncScript', () => {
 			])
 			expect(button.resolved.fill).toBe('{color.neutral.900}')
 			expect(text.resolved).toEqual({})
+		})
+
+		describe('referenced by a token of another set', () => {
+			/**
+			 * The fixture token file with `input-background` in both modes, and `outline-background`
+			 * referencing it in Dark only, as core-react's tokens.json does.
+			 */
+			const withBackgrounds = ({
+				lightInput = '#fafafa',
+				darkInput = '#262626',
+			}: {
+				lightInput?: string
+				darkInput?: string
+			} = {}): TokenFile => {
+				const tokens = createTokenFile()
+				tokens.light['input-background'] = { $type: 'color', $value: lightInput }
+				tokens.light['outline-background'] = { $type: 'color', $value: '{color.white}' }
+				tokens.dark['input-background'] = { $type: 'color', $value: darkInput }
+				tokens.dark['outline-background'] = { $type: 'color', $value: '{input-background}' }
+				return tokens
+			}
+			const page = async () => {
+				const input = createShape('Input', { fill: 'input-background' })
+				const outline = createShape('Outline', { fill: 'outline-background' })
+				const fake = createFakePenpot({
+					pages: [
+						{
+							name: 'Screens',
+							root: createShape('Root', {}, { children: [input, outline] }),
+						},
+					],
+				})
+				await sync(fake, [], withBackgrounds())
+				return { fake, input, outline }
+			}
+
+			it('should not re-apply a token whose reference resolves in a theme that never activates the changed set', async () => {
+				const { fake, input, outline } = await page()
+
+				const { changes, flagged } = await sync(
+					fake,
+					[],
+					withBackgrounds({ lightInput: '#f0f0f0' })
+				)
+
+				expect(changes).toEqual([
+					'update token `light/input-background`',
+					're-apply `input-background` on fill of `Input` (shape-Input) on page `Screens`',
+				])
+				expect(flagged).toEqual([])
+				expect(input.resolved.fill).toBe('#f0f0f0')
+				expect(outline.resolved).toEqual({})
+			})
+
+			it('should re-apply a token whose reference resolves to the changed token in a theme', async () => {
+				const { fake, outline } = await page()
+
+				const { changes } = await sync(fake, [], withBackgrounds({ darkInput: '#171717' }))
+
+				expect(changes).toEqual([
+					'update token `dark/input-background`',
+					're-apply `input-background` on fill of `Input` (shape-Input) on page `Screens`',
+					're-apply `outline-background` on fill of `Outline` (shape-Outline) on page `Screens`',
+				])
+				expect(outline.tokens.fill).toBe('outline-background')
+			})
 		})
 
 		it('should set a number as a string and a single shadow as a list of layers, as the plugin typings declare', async () => {
