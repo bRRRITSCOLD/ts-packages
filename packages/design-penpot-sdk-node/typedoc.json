@@ -1,6 +1,11 @@
 {
 	"$schema": "https://typedoc.org/schema.json",
-	"entryPoints": ["src/library-snapshot.ts", "src/rpc.ts", "src/snapshot-refresh.ts"],
+	"entryPoints": [
+		"src/library-snapshot.ts",
+		"src/rpc.ts",
+		"src/snapshot-refresh.ts",
+		"src/stale-colours.ts"
+	],
 	"readme": "README.md",
 	"includeVersion": true
 }
