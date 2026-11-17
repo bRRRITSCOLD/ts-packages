@@ -19,7 +19,8 @@
 		"LICENSE"
 	],
 	"bin": {
-		"design-snapshot-refresh": "./bin/design-snapshot-refresh.mjs"
+		"design-snapshot-refresh": "./bin/design-snapshot-refresh.mjs",
+		"design-stale-colours": "./bin/design-stale-colours.mjs"
 	},
 	"exports": {
 		"./library-snapshot": {
@@ -54,6 +55,17 @@
 				"default": "./dist/snapshot-refresh.cjs"
 			},
 			"default": "./dist/snapshot-refresh.mjs"
+		},
+		"./stale-colours": {
+			"import": {
+				"types": "./dist/stale-colours.d.ts",
+				"default": "./dist/stale-colours.mjs"
+			},
+			"require": {
+				"types": "./dist/stale-colours.d.cts",
+				"default": "./dist/stale-colours.cjs"
+			},
+			"default": "./dist/stale-colours.mjs"
 		}
 	},
 	"scripts": {
@@ -63,6 +75,7 @@
 		"lint:check": "biome check",
 		"record:penpot": "tsx ./tests/__recordings__/record.ts",
 		"snapshot:refresh": "node ./bin/design-snapshot-refresh.mjs",
+		"stale-colours": "node ./bin/design-stale-colours.mjs",
 		"test:e2e": "vitest run --project e2e",
 		"test:e2e:watch": "vitest --project e2e",
 		"test:integration": "vitest run --project integration",

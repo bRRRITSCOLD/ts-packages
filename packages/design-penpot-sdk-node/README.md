@@ -1,6 +1,6 @@
 # @brrritscold/design-penpot-sdk-node
 
-The design system's Penpot edge: a client for Penpot's backend RPC API, the normalizer that turns a library file's `get-file` answer into a **library snapshot** that validates against `@brrritscold/design-core-js/library-snapshot`. It also holds the **snapshot refresh**, which writes the snapshot and opens or updates its PR. Everything past this package takes the normalized snapshot, never raw Penpot objects.
+The design system's Penpot edge: a client for Penpot's backend RPC API, the normalizer that turns a library file's `get-file` answer into a **library snapshot** that validates against `@brrritscold/design-core-js/library-snapshot`. It also holds the **snapshot refresh**, which writes the snapshot and opens or updates its PR, and the **stale-colour check**, which reads a page design file for colours Penpot left at another theme's value. Everything past this package takes the normalized snapshot, never raw Penpot objects.
 
 **Private.** Not published, ignored by Changesets. Spec: [`docs/design-system/SPEC.md` § C](https://github.com/bRRRITSCOLD/ts-packages/blob/main/docs/design-system/SPEC.md); terms: [`GLOSSARY.md`](https://github.com/bRRRITSCOLD/ts-packages/blob/main/docs/design-system/GLOSSARY.md).
 
@@ -120,13 +120,30 @@ docker run --rm -e PENPOT_URL -e SNAPSHOT_REFRESH_PENPOT_TOKEN -e SNAPSHOT_REFRE
   ghcr.io/brrritscold/design-snapshot-refresh:<short-sha>
 ```
 
+## Stale-colour check
+
+A library copy in a Dark page design can store its library main's **Light** colours: after the file accepts a library update or is reopened, and on a fresh `swapComponent` to a library component. The applied token names stay right; only the stored fill or stroke colour is wrong, and nothing else flags it ([#159](https://github.com/bRRRITSCOLD/ts-packages/issues/159)). `design-stale-colours` reads a file as the automation profile, read only, and lists every layer whose stored colour differs from its applied token's value in the file's active theme:
+
+```bash
+pnpm --filter '@brrritscold/design-penpot-sdk-node...' build
+node packages/design-penpot-sdk-node/bin/design-stale-colours.mjs --file d42f0aaa-d103-81b9-8008-eeaaa3285c56
+# agentdeck (d42f0aaa-…): active theme Mode/Dark; 25650 token colours checked, 0 stale.
+```
+
+- `normalizePageDesignColours` (`./stale-colours`) reads the file: the token catalog and themes, `$metadata.activeSets` in `$metadata.tokenSetOrder` (a later set wins) and `activeThemes`, and every layer with a token on `fill` or `strokeColor`. A shape stores its first fill or stroke; a text stores the first fill of each text run (its own `fills` are empty). A gradient or image fill stores no colour. `board` is the layer's top-level ancestor on the page; `copy` means it has a `shapeRef`.
+- `findStaleColours` (`@brrritscold/design-core-js/stale-colours`) resolves each token in the active sets, following `{references}`, and compares colour and opacity (an rgba token's alpha is its opacity). Tokens that aren't plain colours are skipped. Copies and page-local layers both count.
+- The output groups the stale layers by token and stored colour (largest first, three examples each, with page, board and layer), counts them per board, and ends with the fix: **Toggle the file's Mode theme to Light and back to Dark in Penpot (Tokens → Themes); then re-run.** (the other theme of the active one's group, so a Light file is told the reverse). Toggling makes Penpot re-resolve every applied token.
+- Exit 0 when none is stale, 1 when any is, 2 on a usage error or a failed read. Needs `PENPOT_URL` and `SNAPSHOT_REFRESH_PENPOT_TOKEN`; `~/.config/penpot/env` exports both.
+
+Run it after a page design file accepts a library update, is reopened, or has copies swapped to the library (a promotion re-point).
+
 ## Tests
 
-| Tier          | Runs against                                                                                           | Where                   |
-| ------------- | ------------------------------------------------------------------------------------------------------ | ----------------------- |
-| `unit`        | the normalizer on the committed recordings and mutated copies; the refresh's config and serializer     | every commit, hosted CI |
-| `integration` | `readLibrarySnapshot` and the refresh with nock replaying the recordings and GitHub; no net connect    | every commit, hosted CI |
-| `e2e`         | the live Penpot, as the automation profile (read only; the refresh has no e2e, it would open real PRs) | opt-in, never hosted CI |
+| Tier          | Runs against                                                                                                                          | Where                   |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| `unit`        | the normalizers on the committed recordings and mutated copies; the refresh's config and serializer; the stale-colour report's format | every commit, hosted CI |
+| `integration` | `readLibrarySnapshot`, `readPageDesignColours` and both CLIs with nock replaying the recordings and GitHub; no net connect            | every commit, hosted CI |
+| `e2e`         | the live Penpot, as the automation profile (read only; the refresh has no e2e, it would open real PRs)                                | opt-in, never hosted CI |
 
 `pnpm test:e2e` needs `PENPOT_URL` and `SNAPSHOT_REFRESH_PENPOT_TOKEN` in the process env (never a repo `.env`); a missing one fails the run naming it. It also checks the fixture recording is still what the live Penpot answers.
 
@@ -204,5 +221,21 @@ import { … } from '@brrritscold/design-penpot-sdk-node/snapshot-refresh'
 | `SnapshotRefreshCliIo`             | type     | What runSnapshotRefreshCli reads and writes; the process by default.                                                                                                                                                                                                                                                                                                                                                                                                        |
 | `SnapshotRefreshConfig`            | type     | The snapshot refresh's configuration, as read by readSnapshotRefreshConfig.                                                                                                                                                                                                                                                                                                                                                                                                 |
 | `SnapshotRefreshResult`            | type     | What a refresh did: `unchanged` (the snapshot equals the base branch's, no PR open), `closed` (it equals the base branch's, so the open refresh PR was closed and its branch deleted), `deferred` (another open PR into the base branch, a lockstep `core-react` PR, already holds the same snapshot: no refresh PR, and an open one is closed; `pullRequest` is the lockstep PR), `up-to-date` (the open refresh PR already holds it), `opened` or `updated` a refresh PR. |
+
+### [`@brrritscold/design-penpot-sdk-node/stale-colours`](https://brrritscold.github.io/ts-packages/modules/_brrritscold_design-penpot-sdk-node.stale-colours.html)
+
+```ts
+import { … } from '@brrritscold/design-penpot-sdk-node/stale-colours'
+```
+
+| Export                            | Kind     | Summary                                                                                                                                                                                                                                                                                            |
+| --------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `formatStaleColourReport`         | function | Formats a stale-colour report as lines for the terminal: a header with the active theme and the counts; when any are stale, the stale layers grouped by token and stored colour (largest first, with `examples` layers each), the count per page and board, and the fix (staleColoursFix).         |
+| `normalizePageDesignColours`      | function | Normalizes a raw `get-file` result of a page design file (or the library) for `findStaleColours` (`@brrritscold/design-core-js/stale-colours`): its token catalog and themes, its active themes and sets, and every layer applying a token to a fill or stroke colour, with the colours it stores. |
+| `readPageDesignColours`           | function | Reads a file from Penpot for `findStaleColours`: checks the server runs the pinned Penpot version (throwing if not), calls `get-file` without `features`, and normalizes the result with normalizePageDesignColours.                                                                               |
+| `ReadPageDesignColoursParameters` | type     | What readPageDesignColours needs: the client parameters and the file's id.                                                                                                                                                                                                                         |
+| `runStaleColoursCli`              | function | Runs the `design-stale-colours` CLI and returns its exit code: 0 when no layer of the file stores a stale colour, 1 when any does (with the fix on the last line), 2 on a usage error or a failed read. Read only: it never writes to Penpot.                                                      |
+| `StaleColoursCliIo`               | type     | What runStaleColoursCli reads and writes; the process by default.                                                                                                                                                                                                                                  |
+| `staleColoursFix`                 | function | The line that tells the user how to fix stale colours: toggle the file's theme to the other theme of its group and back, which makes Penpot re-resolve every applied token.                                                                                                                        |
 
 <!-- api:end -->
