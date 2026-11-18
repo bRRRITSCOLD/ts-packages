@@ -1,5 +1,35 @@
 # @brrritscold/core-react
 
+## 1.7.0
+
+### Minor Changes
+
+- [#177](https://github.com/bRRRITSCOLD/ts-packages/pull/177) [`e053ece`](https://github.com/bRRRITSCOLD/ts-packages/commit/e053ece26926d8000dae9e0e4f849a87b9ed0180) Thanks [@bRRRITSCOLD](https://github.com/bRRRITSCOLD)! - Eleven per-mode semantic colour tokens replace the remaining `dark:` alpha arms, so one rule per alpha holds in both modes and the design system library and core-gpui can read it from the token file:
+  - `muted-hover`: the hover fill of Button `outline` and `ghost` and Badge `ghost`, `muted` in light and `muted` at 50% in dark;
+  - `input-hover`: the hover fill of Select's trigger, `input-background` in light and `input` at 50% in dark;
+  - `destructive-hover`: Button `destructive`'s hover fill, `destructive` at 20% in light and 30% in dark;
+  - `destructive-border`: an `aria-invalid` control's border, `destructive` in light and `destructive` at 50% in dark;
+  - `destructive-ring`: an `aria-invalid` control's ring and Button and Badge `destructive`'s focus ring, `destructive` at 20% in light and 40% in dark;
+  - `success-ring`, `warning-ring`, `info-ring`: Badge's status focus rings, the status colour at 20% in light and 40% in dark;
+  - `unchecked-background`: an unchecked Switch's track, `input` in light and `input` at 80% in dark;
+  - `selected-background`, `selected-border`: a selected choice card (a FieldLabel holding a checked control), `primary` at 5% / 30% in light and 10% / 20% in dark.
+
+  Button, Badge, Select, Input, Textarea, Combobox, Checkbox, RadioGroup, Switch, Toggle, Field and the internal InputGroup read them instead of the `dark:` alpha arms. Where an arm also decided which state wins in dark (Button `outline` and `ghost` hovered while expanded, a focused or invalid Button `outline`, a checked and invalid Checkbox or Radio), a `dark:` arm restating the token keeps that precedence. Nothing renders differently in light or dark.
+
+### Patch Changes
+
+- [#183](https://github.com/bRRRITSCOLD/ts-packages/pull/183) [`fa084a3`](https://github.com/bRRRITSCOLD/ts-packages/commit/fa084a3f2d5be21d9fd5908baf35b12f71b786b6) Thanks [@bRRRITSCOLD](https://github.com/bRRRITSCOLD)! - `Checkbox` draws its indeterminate state: `indeterminate` fills the box with `primary`, as `checked` does, and shows `MinusIcon` in place of `CheckIcon`. Before, Base UI's `data-indeterminate` matched no class, so an indeterminate checkbox (a data table's select-all with some rows picked) drew a check on an empty box.
+
+  The published library snapshot (`./library.snapshot.json`) follows:
+  - `Checkbox` gains an `indeterminate` variant property (`true` / `false`). Its one `indeterminate=true` variant (unchecked, enabled, valid) is the filled box with a 14px `icon/Minus` at a 1.167px stroke on `primary-foreground`. Every other variant is unchanged and reads `indeterminate=false`.
+  - `Toggle` gains `pressed=true` at sizes `sm` and `lg`, for both `default` and `outline`: the `pressed=false` main with its fill on `muted`, as `aria-pressed:bg-muted` draws.
+
+- [#181](https://github.com/bRRRITSCOLD/ts-packages/pull/181) [`93cb980`](https://github.com/bRRRITSCOLD/ts-packages/commit/93cb980891e51cb30c14d83ce2866de76ee05233) Thanks [@bRRRITSCOLD](https://github.com/bRRRITSCOLD)! - The published library snapshot (`./library.snapshot.json`) gains two parts:
+  - `DropdownMenu/Item` (both variants) has a hidden leading `Icon` part, a 16px `icon/Circle` copy before `Text` with 1.33px strokes in `popover-foreground` (`destructive` on the `destructive` variant), as `DropdownMenuItem`'s `[&_svg]:size-4` icon child draws. A page design shows it and swaps the icon.
+  - `AlertDialog/Content` (both sizes) has a hidden `Body` slot (`_internal/Slot`) between `Header` and `Footer`, listed in the exceptions record's `slots`, for children between the header and footer.
+
+  Both parts are hidden by default, so existing copies look the same. No code changes.
+
 ## 1.6.0
 
 ### Minor Changes
