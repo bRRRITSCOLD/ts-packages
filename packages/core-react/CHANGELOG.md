@@ -1,5 +1,11 @@
 # @brrritscold/core-react
 
+## 1.7.1
+
+### Patch Changes
+
+- [#186](https://github.com/bRRRITSCOLD/ts-packages/pull/186) [`ff2795b`](https://github.com/bRRRITSCOLD/ts-packages/commit/ff2795bbc3315a3b3787aa6839711eb977fbbe7f) Thanks [@bRRRITSCOLD](https://github.com/bRRRITSCOLD)! - The published library snapshot (`./library.snapshot.json`) gains four icon twins, built from lucide-react 1.68.0's icon data: `icon/ExternalLink`, `icon/GitMerge`, `icon/GitPullRequestClosed` and `icon/GitPullRequestDraft`. Each is a 24×24 board with no fill, `Stroke N` layers with constraints `scale`, and 2px centred strokes in `foreground`, like the other icon twins. No code changes: `./icons` already exports `ExternalLinkIcon`, `GitMergeIcon`, `GitPullRequestClosedIcon` and `GitPullRequestDraftIcon`.
+
 ## 1.7.0
 
 ### Minor Changes
