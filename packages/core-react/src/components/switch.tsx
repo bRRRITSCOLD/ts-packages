@@ -4,6 +4,9 @@
 // cleanly; the only edits put arbitrary values back on tokens (see README → Vendoring): the track's
 // `h-[18.4px] w-[32px]` / `h-[14px] w-[24px]` are `h-4.5 w-8` / `h-3.5 w-6`, and the thumb's
 // `translate-x-[calc(100%-2px)]` is the step it works out to, `translate-x-3.5` / `translate-x-2.5`.
+// The thumb's `dark:data-unchecked:bg-foreground` / `dark:data-checked:bg-primary-foreground` arms
+// are the per-mode `data-unchecked:bg-unchecked-thumb` / `data-checked:bg-checked-thumb`, so the
+// library twin can apply them; they render the same in both modes.
 
 import { Switch as SwitchPrimitive } from '@base-ui/react/switch'
 import { cn } from '../lib/utils.js'
@@ -27,7 +30,7 @@ function Switch({
 		>
 			<SwitchPrimitive.Thumb
 				data-slot="switch-thumb"
-				className="pointer-events-none block rounded-full bg-background ring-0 transition-transform group-data-[size=default]/switch:size-4 group-data-[size=sm]/switch:size-3 group-data-[size=default]/switch:data-checked:translate-x-3.5 group-data-[size=sm]/switch:data-checked:translate-x-2.5 dark:data-checked:bg-primary-foreground group-data-[size=default]/switch:data-unchecked:translate-x-0 group-data-[size=sm]/switch:data-unchecked:translate-x-0 dark:data-unchecked:bg-foreground"
+				className="pointer-events-none block rounded-full bg-background ring-0 transition-transform group-data-[size=default]/switch:size-4 group-data-[size=sm]/switch:size-3 group-data-[size=default]/switch:data-checked:translate-x-3.5 group-data-[size=sm]/switch:data-checked:translate-x-2.5 data-checked:bg-checked-thumb group-data-[size=default]/switch:data-unchecked:translate-x-0 group-data-[size=sm]/switch:data-unchecked:translate-x-0 data-unchecked:bg-unchecked-thumb"
 			/>
 		</SwitchPrimitive.Root>
 	)
