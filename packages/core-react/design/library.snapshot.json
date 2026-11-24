@@ -28,6 +28,11 @@
 				"$type": "color",
 				"$value": "{color.neutral.50}"
 			},
+			"checked-thumb": {
+				"$type": "color",
+				"$value": "{primary-foreground}",
+				"$description": "The thumb of a checked Switch. `background` in light, `primary-foreground` in dark."
+			},
 			"destructive": {
 				"$type": "color",
 				"$value": "{color.red.400}"
@@ -255,6 +260,11 @@
 				"$value": "rgba(38, 38, 38, 0.8)",
 				"$description": "The track of an unchecked toggle: Switch. `input` in light, `input` at 80% in dark."
 			},
+			"unchecked-thumb": {
+				"$type": "color",
+				"$value": "{foreground}",
+				"$description": "The thumb of an unchecked Switch. `background` in light, `foreground` in dark."
+			},
 			"warning": {
 				"$type": "color",
 				"$value": "{color.amber.400}",
@@ -300,6 +310,11 @@
 			"card-foreground": {
 				"$type": "color",
 				"$value": "{color.neutral.950}"
+			},
+			"checked-thumb": {
+				"$type": "color",
+				"$value": "{background}",
+				"$description": "The thumb of a checked Switch. `background` in light, `primary-foreground` in dark."
 			},
 			"destructive": {
 				"$type": "color",
@@ -527,6 +542,11 @@
 				"$type": "color",
 				"$value": "{input}",
 				"$description": "The track of an unchecked toggle: Switch. `input` in light, `input` at 80% in dark."
+			},
+			"unchecked-thumb": {
+				"$type": "color",
+				"$value": "{background}",
+				"$description": "The thumb of an unchecked Switch. `background` in light, `foreground` in dark."
 			},
 			"warning": {
 				"$type": "color",
@@ -14495,7 +14515,7 @@
 						"Thumb"
 					],
 					"appliedTokens": {
-						"fill": "background"
+						"fill": "unchecked-thumb"
 					},
 					"unbound": []
 				}
@@ -14533,7 +14553,7 @@
 						"Thumb"
 					],
 					"appliedTokens": {
-						"fill": "background"
+						"fill": "unchecked-thumb"
 					},
 					"unbound": []
 				}
@@ -14570,7 +14590,7 @@
 						"Thumb"
 					],
 					"appliedTokens": {
-						"fill": "background"
+						"fill": "checked-thumb"
 					},
 					"unbound": []
 				}
@@ -14608,7 +14628,7 @@
 						"Thumb"
 					],
 					"appliedTokens": {
-						"fill": "background"
+						"fill": "checked-thumb"
 					},
 					"unbound": []
 				}
@@ -14645,7 +14665,7 @@
 						"Thumb"
 					],
 					"appliedTokens": {
-						"fill": "background"
+						"fill": "unchecked-thumb"
 					},
 					"unbound": []
 				}
@@ -14683,7 +14703,7 @@
 						"Thumb"
 					],
 					"appliedTokens": {
-						"fill": "background"
+						"fill": "unchecked-thumb"
 					},
 					"unbound": []
 				}
@@ -14720,7 +14740,7 @@
 						"Thumb"
 					],
 					"appliedTokens": {
-						"fill": "background"
+						"fill": "checked-thumb"
 					},
 					"unbound": []
 				}
@@ -14758,7 +14778,7 @@
 						"Thumb"
 					],
 					"appliedTokens": {
-						"fill": "background"
+						"fill": "checked-thumb"
 					},
 					"unbound": []
 				}
@@ -15704,7 +15724,7 @@
 						"Thumb"
 					],
 					"appliedTokens": {
-						"fill": "background"
+						"fill": "unchecked-thumb"
 					},
 					"unbound": []
 				},
