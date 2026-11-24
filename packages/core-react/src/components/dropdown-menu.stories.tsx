@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useState } from 'react'
-import { expect, fn, screen, waitFor } from 'storybook/test'
+import { expect, fn, screen, waitFor, within } from 'storybook/test'
 
 import { TrashIcon } from '../icons.js'
 import { Button } from './button.js'
@@ -157,7 +157,10 @@ export const RadioItems: Story = {
 	},
 }
 
-/** A submenu opens beside its trigger, which stays highlighted while it is open. */
+/**
+ * A submenu opens beside its trigger, which stays highlighted while it is open. Its content
+ * holds what `DropdownMenuContent` does: a labelled group, a separator and a last item.
+ */
 export const Submenu: Story = {
 	render: () => (
 		<DropdownMenu>
@@ -169,8 +172,13 @@ export const Submenu: Story = {
 				<DropdownMenuSub>
 					<DropdownMenuSubTrigger>Share</DropdownMenuSubTrigger>
 					<DropdownMenuSubContent>
-						<DropdownMenuItem>Email</DropdownMenuItem>
-						<DropdownMenuItem>Message</DropdownMenuItem>
+						<DropdownMenuGroup>
+							<DropdownMenuLabel>Share via</DropdownMenuLabel>
+							<DropdownMenuItem>Email</DropdownMenuItem>
+							<DropdownMenuItem>Message</DropdownMenuItem>
+						</DropdownMenuGroup>
+						<DropdownMenuSeparator />
+						<DropdownMenuItem>More…</DropdownMenuItem>
 					</DropdownMenuSubContent>
 				</DropdownMenuSub>
 			</DropdownMenuContent>
@@ -189,6 +197,20 @@ export const Submenu: Story = {
 		)
 		await expect(email.getBoundingClientRect().left).toBeGreaterThanOrEqual(
 			share.getBoundingClientRect().right
+		)
+		const submenu = screen.getAllByRole('menu').find((menu) => menu.contains(email))
+		await expect(submenu).toBeDefined()
+		const sub = within(submenu as HTMLElement)
+		await expect(sub.getByRole('group', { name: 'Share via' })).toContainElement(email)
+		await expect(sub.getAllByRole('menuitem').map((item) => item.textContent)).toEqual([
+			'Email',
+			'Message',
+			'More…',
+		])
+		const separator = sub.getByRole('separator')
+		const more = sub.getByRole('menuitem', { name: 'More…' })
+		await expect(separator.getBoundingClientRect().bottom).toBeLessThanOrEqual(
+			more.getBoundingClientRect().top
 		)
 	},
 }
