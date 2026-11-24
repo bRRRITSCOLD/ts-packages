@@ -1,5 +1,11 @@
 # @brrritscold/core-react
 
+## 1.7.2
+
+### Patch Changes
+
+- [#191](https://github.com/bRRRITSCOLD/ts-packages/pull/191) [`c0ebf01`](https://github.com/bRRRITSCOLD/ts-packages/commit/c0ebf0159bf6c2246f564cbd153a2ca5a40acab1) Thanks [@bRRRITSCOLD](https://github.com/bRRRITSCOLD)! - The published library snapshot (`./library.snapshot.json`) gains `icon/Lock`, built from lucide-react 1.68.0's icon data like the other icon twins, and `DropdownMenu/SubContent` gains the parts `DropdownMenu/Content` has: a `Label`, `Item`s, a `Separator` and a last `Item`, so a page design can draw a submenu with a separator and a third item. The `Submenu` story shows the same (a "Share via" group with Email and Message, a separator, then "More…"). No code changes: `./icons` already exports `LockIcon`, and `DropdownMenuSubContent` already takes any children.
+
 ## 1.7.1
 
 ### Patch Changes
