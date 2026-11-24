@@ -4,6 +4,8 @@ on:
     pull_request:
     push:
         branches: [main]
+    # Republishes the docs site from main, for when a release's deploy failed.
+    workflow_dispatch:
 
 permissions:
     contents: read
@@ -201,23 +203,15 @@ jobs:
                     echo "::notice title=Release result: NOT published::Nothing new; every package version is already on npm."
                   fi
 
-    # Publishes the API reference and core-react's Storybook (/core-react/) to GitHub Pages only when the release job
-    # actually published to npm, so the site always matches what is on npm.
+    # Builds the API reference and core-react's Storybook (/core-react/) for GitHub Pages only when the release job
+    # actually published to npm, so the site always matches what is on npm. A manual run on main rebuilds it from main.
     docs:
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.release.outputs.published == 'true'
+        if: >-
+            !cancelled() && github.ref == 'refs/heads/main' && (github.event_name == 'workflow_dispatch'
+            || (github.event_name == 'push' && needs.release.outputs.published == 'true'))
         needs: release
         runs-on: ubuntu-latest
         timeout-minutes: 20
-        concurrency:
-            group: pages
-            cancel-in-progress: false
-        permissions:
-            contents: read
-            pages: write
-            id-token: write
-        environment:
-            name: github-pages
-            url: ${{ steps.deploy.outputs.page_url }}
         steps:
             - uses: actions/checkout@v4
             - uses: pnpm/action-setup@v4
@@ -234,5 +228,23 @@ jobs:
             - uses: actions/upload-pages-artifact@v3
               with:
                   path: site
+
+    # Deploys in its own job: deploy-pages in the job that uploaded can look the artifact up before
+    # it is listed and fail with 'No artifacts named "github-pages"' (actions/deploy-pages#451).
+    pages:
+        if: ${{ !cancelled() && needs.docs.result == 'success' }}
+        needs: docs
+        runs-on: ubuntu-latest
+        timeout-minutes: 10
+        concurrency:
+            group: pages
+            cancel-in-progress: false
+        permissions:
+            pages: write
+            id-token: write
+        environment:
+            name: github-pages
+            url: ${{ steps.deploy.outputs.page_url }}
+        steps:
             - id: deploy
               uses: actions/deploy-pages@v4

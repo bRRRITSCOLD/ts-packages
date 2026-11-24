@@ -41,11 +41,11 @@ Packages have **no root entry** (`core-react` is the one exception, a pure barre
 
 Docs come from the TSDoc comments in `src/` — there is nothing to write by hand outside them.
 
-| Output                                                   | Where                                                   | Built by                                        |
-| -------------------------------------------------------- | ------------------------------------------------------- | ----------------------------------------------- |
-| API reference site                                       | GitHub Pages                                            | `docs` job in CI, after every release on `main` |
-| `## API` section of each package README (what npm shows) | `packages/*/README.md` between `<!-- api:start/end -->` | `pnpm docs:readme`, committed                   |
-| CHANGELOG with PR + commit links                         | `packages/*/CHANGELOG.md`                               | Changesets, on the Version Packages PR          |
+| Output                                                   | Where                                                   | Built by                                                     |
+| -------------------------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------------ |
+| API reference site                                       | GitHub Pages                                            | `docs` and `pages` jobs in CI, after every release on `main` |
+| `## API` section of each package README (what npm shows) | `packages/*/README.md` between `<!-- api:start/end -->` | `pnpm docs:readme`, committed                                |
+| CHANGELOG with PR + commit links                         | `packages/*/CHANGELOG.md`                               | Changesets, on the Version Packages PR                       |
 
 `pnpm docs:check` runs in CI and fails when TypeDoc warns, a README API section is stale, or a public export has no summary sentence. After changing a public API, run `pnpm docs:readme` and commit the README diff.
 
@@ -70,7 +70,7 @@ feature PR (code + .changeset/*.md) ──merge──▶ main
 
 **Did it publish?** Read the **"Release result"** notice on the run page: `PUBLISHED: name@version, …` or `NOT published` with the reason. Don't go by the job's colour or by which step ran. The `release` job has two named steps, and only one runs per push: _Open or update Version Packages PR (no publish)_ when `.changeset/` holds changeset files, otherwise _Publish unpublished versions to npm (no-op if all are published)_. A green publish step often publishes nothing, for example on any merge after the Version Packages PR. A "Release mode" notice states the mode up front, and the job summary repeats the result.
 
-The `docs` job (GitHub Pages) deploys only when the release job actually published, so the site always matches npm.
+The `docs` job builds the site and the `pages` job deploys it to GitHub Pages, only when the release job actually published, so the site always matches npm. When a deploy fails, run CI by hand on `main` (Actions → CI → Run workflow) to rebuild and redeploy the site from `main`.
 
 This is the standard Changesets flow (as used by pnpm, Astro and Remix): merging code and releasing it are separate steps, with a human gate on the release.
 
