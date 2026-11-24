@@ -166,6 +166,33 @@ describe('tokens', () => {
 		})
 	})
 
+	describe('switch thumb', () => {
+		/** Each thumb token's source per mode: upstream's `bg-background` and its two `dark:` arms. */
+		const THUMBS = {
+			'unchecked-thumb': { light: 'background', dark: 'foreground' },
+			'checked-thumb': { light: 'background', dark: 'primary-foreground' },
+		} as const
+
+		it.each(['light', 'dark'] as const)('should colour each thumb as its %s source', (mode) => {
+			for (const [name, modes] of Object.entries(THUMBS))
+				expect(resolve(mode, name), name).toBe(resolve(mode, modes[mode]))
+		})
+
+		// The library twin applies one token per state; a `dark:` arm picking another semantic
+		// is a colour it can't draw.
+		it('should colour the thumb from its per-mode tokens, not a dark: arm', () => {
+			const thumb = classesIn(['src/components/switch.tsx'])
+
+			expect(thumb).toEqual(
+				expect.arrayContaining([
+					'data-unchecked:bg-unchecked-thumb',
+					'data-checked:bg-checked-thumb',
+				])
+			)
+			expect(thumb.filter((cls) => /^dark:(?:[^:]+:)*bg-/.test(cls))).toEqual([])
+		})
+	})
+
 	describe('status colours', () => {
 		// `merged` is a pull request's state, built as the statuses are: one hue, a tint, a foreground.
 		const HUES = { success: 'green', warning: 'amber', info: 'blue', merged: 'violet' }
