@@ -276,7 +276,8 @@ export const createFakePenpot = (state: FakeFileState = {}) => {
 		return set
 	}
 
-	const asSet = (set: PenpotTokenSet) => {
+	// Penpot 2.18.6 takes the set itself: its typings allow a set's name, but a name throws.
+	const asSet = (set: PenpotTokenSet | string) => {
 		if (typeof set !== 'object' || !set.id) throw new Error('should be an uuid')
 		return set
 	}

@@ -81,45 +81,57 @@ export type PenpotToken = {
 	type: string
 	value: unknown
 	description: string
-	remove: () => void
+	remove(): void
 }
 
-/** A token set as the Penpot 2.18.6 plugin API holds it. */
+/**
+ * A token set as the Penpot 2.18.6 plugin API holds it. `addToken` takes tokens.json's `type`
+ * and `value` as they are, wider than the typings' `TokenType` and `TokenValueString`: Penpot
+ * validates them, and the script reports a token it refuses.
+ */
 export type PenpotTokenSet = {
 	id: string
 	name: string
 	tokens: PenpotToken[]
-	addToken: (token: { type: string; name: string; value: unknown }) => PenpotToken
-	remove: () => void
+	addToken(token: { type: string; name: string; value: unknown }): PenpotToken
+	remove(): void
 }
 
-/** A token theme as the Penpot 2.18.6 plugin API holds it; `addSet` takes the set, not a name. */
+/**
+ * A token theme as the Penpot 2.18.6 plugin API holds it. `addSet` and `removeSet` take a set or
+ * its name in the typings, but Penpot 2.18.6 throws on a name ("should be an uuid"), so the
+ * script always passes the set.
+ */
 export type PenpotTokenTheme = {
 	id: string
 	group: string
 	name: string
 	active: boolean
 	activeSets: PenpotTokenSet[]
-	addSet: (set: PenpotTokenSet) => void
-	removeSet: (set: PenpotTokenSet) => void
-	toggleActive: () => void
-	remove: () => void
+	addSet(set: PenpotTokenSet | string): void
+	removeSet(set: PenpotTokenSet | string): void
+	toggleActive(): void
+	remove(): void
 }
 
-/** A shape as the Penpot 2.18.6 plugin API holds it: `tokens` maps a property to a token name. */
+/**
+ * A shape as the Penpot 2.18.6 plugin API holds it: `tokens` maps a property to a token name.
+ * `applyToken` takes property names as strings, wider than the typings' `TokenProperty`: the
+ * script passes back names Penpot reported in `tokens`.
+ */
 export type PenpotShape = {
 	id: string
 	name: string
 	tokens?: Record<string, string>
 	children?: PenpotShape[]
-	applyToken: (token: PenpotToken, properties: string[]) => void
+	applyToken(token: PenpotToken, properties?: string[]): void
 	/** Whether the shape is a component copy; re-applying a token reaches copies last. */
-	isComponentCopyInstance?: () => boolean
+	isComponentCopyInstance?(): boolean
 	/**
 	 * The head of the component tree the shape sits in. Its component's `libraryId` tells a copy
 	 * of a main in this file from a copy of a library main, which token sync never re-applies.
 	 */
-	componentHead?: () => { component: () => { libraryId: string } | null } | null
+	componentHead?(): { component(): { libraryId: string } | null } | null
 	// The attributes a token resolves into. Token sync reads them to tell a copy that followed its
 	// main from one that needs a changed token re-applied.
 	fills?: { fillColor?: string }[] | string
@@ -166,8 +178,8 @@ export type TokenSyncPenpot = {
 			tokens: {
 				sets: PenpotTokenSet[]
 				themes: PenpotTokenTheme[]
-				addSet: (set: { name: string }) => PenpotTokenSet
-				addTheme: (theme: { group: string; name: string }) => PenpotTokenTheme
+				addSet(set: { name: string }): PenpotTokenSet
+				addTheme(theme: { group: string; name: string }): PenpotTokenTheme
 			}
 		}
 	}
