@@ -22929,6 +22929,191 @@
 				}
 			}
 		},
+		"b649c26c-4db6-80ce-8009-01b0c553ff37": {
+			"path": "icon",
+			"name": "Columns2",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"b649c26c-4db6-80ce-8009-01b0b6a4c15c": {
+					"namePath": [
+						"icon / Columns2",
+						"Stroke 2"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"b649c26c-4db6-80ce-8009-01b0b6a4c15d": {
+					"namePath": [
+						"icon / Columns2",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"b649c26c-4db6-80ce-8009-01b0d7863e51": {
+			"path": "icon",
+			"name": "Rows2",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"b649c26c-4db6-80ce-8009-01b0cf5daa60": {
+					"namePath": [
+						"icon / Rows2",
+						"Stroke 2"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"b649c26c-4db6-80ce-8009-01b0cf5daa61": {
+					"namePath": [
+						"icon / Rows2",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"b649c26c-4db6-80ce-8009-01b0d7d4afa3": {
+			"path": "icon",
+			"name": "Link",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"b649c26c-4db6-80ce-8009-01b0cf629899": {
+					"namePath": [
+						"icon / Link",
+						"Stroke 2"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"b649c26c-4db6-80ce-8009-01b0cf62989a": {
+					"namePath": [
+						"icon / Link",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"b649c26c-4db6-80ce-8009-01b0d8788d49": {
+			"path": "icon",
+			"name": "Unlink",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"b649c26c-4db6-80ce-8009-01b0cf681058": {
+					"namePath": [
+						"icon / Unlink",
+						"Stroke 6"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"b649c26c-4db6-80ce-8009-01b0cf681059": {
+					"namePath": [
+						"icon / Unlink",
+						"Stroke 5"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"b649c26c-4db6-80ce-8009-01b0cf68105a": {
+					"namePath": [
+						"icon / Unlink",
+						"Stroke 4"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"b649c26c-4db6-80ce-8009-01b0cf68105b": {
+					"namePath": [
+						"icon / Unlink",
+						"Stroke 3"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"b649c26c-4db6-80ce-8009-01b0cf684dea": {
+					"namePath": [
+						"icon / Unlink",
+						"Stroke 2"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"b649c26c-4db6-80ce-8009-01b0cf684deb": {
+					"namePath": [
+						"icon / Unlink",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				}
+			}
+		},
+		"b649c26c-4db6-80ce-8009-01b0d8c3f553": {
+			"path": "icon",
+			"name": "Copy",
+			"variantProperties": {},
+			"parts": {},
+			"wrappers": [],
+			"layers": {
+				"b649c26c-4db6-80ce-8009-01b0cf6d0fd8": {
+					"namePath": [
+						"icon / Copy",
+						"Stroke 2"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				},
+				"b649c26c-4db6-80ce-8009-01b0cf6d0fd9": {
+					"namePath": [
+						"icon / Copy",
+						"Stroke 1"
+					],
+					"appliedTokens": {
+						"stroke-color": "foreground"
+					},
+					"unbound": []
+				}
+			}
+		},
 		"eb51704c-a48d-804c-8008-ef2a2543f3fe": {
 			"path": "Components",
 			"name": "Badge",
