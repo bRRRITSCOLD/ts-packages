@@ -1,5 +1,11 @@
 # @brrritscold/core-react
 
+## 1.8.1
+
+### Patch Changes
+
+- [#200](https://github.com/bRRRITSCOLD/ts-packages/pull/200) [`d12ca6f`](https://github.com/bRRRITSCOLD/ts-packages/commit/d12ca6fd856c62b5a1583a9b07194476fb647516) Thanks [@bRRRITSCOLD](https://github.com/bRRRITSCOLD)! - The published library snapshot (`./library.snapshot.json`) gains `icon/Columns2`, `icon/Rows2`, `icon/Link`, `icon/Unlink` and `icon/Copy`, built from lucide-react 1.68.0's icon data like the other icon twins, so a page design's `DropdownMenu/Item` can swap them into its `Icon` part. No code changes: `./icons` already exports `Columns2Icon`, `Rows2Icon`, `LinkIcon`, `UnlinkIcon` and `CopyIcon`.
+
 ## 1.8.0
 
 ### Minor Changes
